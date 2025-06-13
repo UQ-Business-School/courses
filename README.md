@@ -8,10 +8,11 @@ This repository is **strictly for course-specific projects**. It provides a cent
 
 ### Root Directory Policy
 Only **folders** should exist in the root directory. Each folder must:
-- Be named using the **official 8-character course code**, e.g. `MGTS7610`
+- Be named using the **official 8-character course code**, e.g. `mgts7610`
+- Use only **lowercase** for the letters
 - Contain only content related to that specific course
 
-> ✅ **Good:** `MGTS7610/index.html`  
+> ✅ **Good:** `mgts7610/index.html`  
 > ❌ **Bad:** `interactive_tool.html` in root (not tied to a specific course)
 
 ### When to Create a New Repository
@@ -29,12 +30,12 @@ Examples:
 ## 📁 Example Folder Structure
 
 ```
-/MGTS7610/
+/mgts7610/
   ├── index.html
   ├── style.css
   └── /assets/
 
-/TIMS7811/
+/tims7811/
   ├── module1.html
   └── script.js
 ```
@@ -44,11 +45,11 @@ Examples:
 Once deployed, course-specific tools can be accessed at:
 
 ```
-https://uq-business-school.github.io/courses/COURSECODE/
+https://uq-business-school.github.io/courses/coursecode/
 ```
 
 For example:
-- `MGTS7610`: [https://uq-business-school.github.io/courses/MGTS7610/](https://uq-business-school.github.io/courses/MGTS7610/)
+- `MGTS7610`: [https://uq-business-school.github.io/courses/mgts7610/](https://uq-business-school.github.io/courses/mgts7610/)
 
 ---
 
