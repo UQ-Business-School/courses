@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MGTS7610 Activity</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #121212;
+      color: #f5f5f5;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .header {
+      background-color: #006DAE;
+      padding: 15px 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      margin-bottom: 5px;
+      letter-spacing: 0.5px;
+    }
+    
+    .module-title {
+      font-size: 18px;
+      opacity: 0.9;
+      font-weight: normal;
+    }
+    
+    .chat-container {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    #chatbot-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      background-color: #1e1e1e;
+    }
+    
+    .loading {
+      text-align: center;
+      color: #006DAE;
+      font-size: 18px;
+    }
+    
+    .loading-spinner {
+      border: 3px solid rgba(0, 109, 174, 0.3);
+      border-top: 3px solid #006DAE;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    
+    .error {
+      text-align: center;
+      color: #ff6b6b;
+      font-size: 18px;
+      padding: 40px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 768px) {
+      .header {
+        padding: 12px 15px;
+      }
+      
+      .header h1 {
+        font-size: 20px;
+      }
+      
+      .module-title {
+        font-size: 16px;
+      }
+      
+      .chat-container {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>MGTS7610 Writing Assistant</h1>
+    <div class="module-title" id="module-title">Loading Activity...</div>
+  </div>
+  
+  <div class="chat-container">
+    <div id="loading-indicator" class="loading">
+      <div class="loading-spinner"></div>
+      <p>Preparing your activity...</p>
+    </div>
+    <div id="error-indicator" class="error" style="display: none;">
+      <p>Activity not found. Please check the URL or contact your instructor.</p>
+    </div>
+    <iframe id="chatbot-frame" style="display: none;"></iframe>
+  </div>
+
+  <script>
+    // Activity definitions
+    const activities = {
+      'email-subjects': {
+        module: '2',
+        title: 'Email Subject Lines',
+        prompt: 'Practice writing effective email subject lines. I will provide feedback on conciseness, clarity, and impact. FIRST SCENARIO: Email your team about a mandatory meeting Friday at 2pm for project timeline discussion. Write the subject line:'
+      },
+      'effective-sentences': {
+        module: '3A',
+        title: 'Writing Effective Sentences',
+        prompt: 'I have a sentence here from a business scenario that could be made clearer. Can you try rewriting it for clarity? FIRST SCENARIO: Here is the sentence: "In connection with the information we talked about regarding the current project, we want to let you know that we intend to change the deadlines." Now, see if you can make this more direct and to-the-point, using effective writing techniques:'
+      },
+      'active-voice': {
+        module: '2', 
+        title: 'Active and Passive Voice',
+        prompt: 'I will give you sentences in passive voice. Rewrite them in active voice for better communication. First sentence: The report was completed by the team yesterday.'
+      },
+      'acknowledgment-country': {
+        module: '1',
+        title: 'Acknowledgment of Country',
+        prompt: 'Practice writing respectful Acknowledgments of Country using triplets and time values. I will guide you through creating meaningful acknowledgments. First task: Write an acknowledgment for a business meeting in Brisbane.'
+      },
+      'complex-clauses': {
+        module: '3',
+        title: 'Complex Clauses',
+        prompt: 'Practice writing sentences with complex clauses. I will help you combine simple sentences into more sophisticated structures. First exercise: Combine these two sentences using a complex clause: The team finished the project. The deadline was yesterday.'
+      },
+      'clarity': {
+        module: '3',
+        title: 'Improving Clarity',
+        prompt: 'Practice improving unclear sentences. I will give you confusing sentences to rewrite for better clarity. First sentence to improve: The utilization of the methodology was implemented by the stakeholders in the process.'
+      },
+      'third-person': {
+        module: '4',
+        title: 'Third Person and Past Tense',
+        prompt: 'Practice writing in third person and past tense for professional reports. I will give you first-person or present-tense sentences to convert. First sentence: I am analyzing the data and I find interesting patterns.'
+      },
+      'modal-verbs': {
+        module: '5',
+        title: 'Modal Verbs',
+        prompt: 'Practice using modal verbs for appropriate tone and certainty. I will give you sentences to rewrite using suitable modal verbs. First sentence: You complete this task by Friday. (Make this a polite request)'
+      }
+    };
+    
+    // Get URL parameters
+    function getUrlParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+    
+    // Get activity from URL
+    const activityId = getUrlParam('activity');
+    const activity = activities[activityId];
+    
+    console.log('Activity ID:', activityId);
+    console.log('Activity found:', activity);
+    
+    // Function to launch chatbot
+    function launchChatbot() {
+      if (!activity) {
+        // Show error if activity not found
+        document.getElementById('loading-indicator').style.display = 'none';
+        document.getElementById('error-indicator').style.display = 'block';
+        return;
+      }
+      
+      // Update the page title
+      document.getElementById('module-title').textContent = activity.title;
+      document.title = `MGTS7610 - ${activity.title}`;
+      
+      // Build the Zapier chatbot URL with parameters
+      const chatbotUrl = `https://interfaces.zapier.com/embed/chatbot/cmad6y3sx001ayww63u8irixx?module=${activity.module}&title=${encodeURIComponent(activity.title)}&prompt=${encodeURIComponent(activity.prompt)}`;
+      
+      console.log('Loading chatbot with URL:', chatbotUrl);
+      
+      // Set up the iframe
+      const iframe = document.getElementById('chatbot-frame');
+      iframe.src = chatbotUrl;
+      
+      // Show iframe and hide loading after a brief delay
+      setTimeout(() => {
+        document.getElementById('loading-indicator').style.display = 'none';
+        iframe.style.display = 'block';
+      }, 1500);
+    }
+    
+    // Launch when page loads
+    window.addEventListener('load', launchChatbot);
+  </script>
+</body>
+</html>

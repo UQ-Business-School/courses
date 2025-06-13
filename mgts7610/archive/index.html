@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MGTS7610 Writing Assistant</title>
+  <style>
+    :root {
+      --primary-color: #006DAE;
+      --primary-light: #3B8AC4;
+      --secondary-color: #4F2D7F;
+      --dark-color: #121212;
+      --light-text: #f5f5f5;
+      --border-radius: 12px;
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--dark-color);
+      color: var(--light-text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+    
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 1200px;
+      width: 100%;
+    }
+    
+    .header {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 48px;
+      color: var(--light-text);
+      margin-bottom: 5px;
+      text-shadow: 0 0 10px rgba(0, 109, 174, 0.6);
+    }
+    
+    .header p {
+      color: #aaa;
+      font-size: 20px;
+    }
+    
+    .login-form {
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 30px;
+      border-radius: 20px;
+      backdrop-filter: blur(5px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(0, 109, 174, 0.5);
+      margin: 0 auto;
+    }
+    
+    .form-title {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: white;
+      text-shadow: 0 0 10px rgba(0, 109, 174, 0.8);
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 15px 20px;
+      border: 2px solid rgba(0, 109, 174, 0.6);
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      transition: var(--transition);
+      min-height: 50px;
+    }
+    
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 15px 0;
+      border: none;
+      border-radius: 10px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .btn:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .id-hint {
+      margin-top: 15px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    #error-msg {
+      color: #ff6b6b;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    
+    #loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 15px;
+      color: white;
+    }
+    
+    .loading-spinner {
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .verification-container {
+      max-width: 450px;
+      width: 90%;
+      background-color: rgba(20, 20, 20, 0.9);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      border-top: 5px solid var(--primary-color);
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    #success-msg {
+      color: #4caf50;
+      font-size: 22px;
+      margin-bottom: 25px;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .btn-secondary {
+      background-color: #333;
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #444;
+    }
+    
+    .btn-danger {
+      background-color: #f44336;
+    }
+    
+    .btn-danger:hover {
+      background-color: #e53935;
+    }
+    
+    .chat-interface {
+      width: 100%;
+      max-width: 900px;
+      animation: fadeIn 0.5s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .student-info {
+      background-color: rgba(30, 30, 30, 0.9);
+      padding: 15px 20px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .student-name {
+      font-weight: 600;
+      color: var(--light-text);
+    }
+    
+    .student-id {
+      font-family: monospace;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: #ccc;
+    }
+    
+    #chat-container {
+      width: 100%;
+      height: 600px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+      background-color: rgba(20, 20, 20, 0.9);
+      flex-grow: 1;
+      min-height: 500px;
+    }
+    
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 36px;
+      }
+      
+      .header p {
+        font-size: 16px;
+      }
+      
+      .login-form {
+        padding: 20px;
+        width: 95%;
+        max-width: 350px;
+      }
+      
+      .form-title {
+        font-size: 22px;
+      }
+      
+      .form-input {
+        font-size: 16px;
+        padding: 12px 15px;
+      }
+      
+      .id-hint {
+        font-size: 13px;
+      }
+      
+      #chat-container {
+        height: 500px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="header">
+      <h1>MGTS7610 Writing Assistant</h1>
+      <p id="module-specific-title">Writing Support</p>
+    </div>
+    
+    <!-- Login section -->
+    <div id="login-section">
+      <div class="login-form">
+        <h3 class="form-title">Enter Student ID</h3>
+        <input type="text" id="studentIdInput" class="form-input" placeholder="e.g., s1234567" autocomplete="off">
+        <button class="btn" id="verifyBtn">Verify ID</button>
+        
+        <p class="id-hint">Please enter your UQ student ID in the format sXXXXXXX</p>
+        <p id="error-msg"></p>
+        
+        <div id="loading" style="display: none;">
+          <div class="loading-spinner"></div>
+          <span>Verifying...</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Verification Confirmation Section -->
+    <div id="verification-container" style="display: none;" class="verification-container">
+      <p id="success-msg"></p>
+      
+      <div class="button-group">
+        <button class="btn" id="confirmBtn">Yes, that's me</button>
+        <button class="btn btn-danger" id="cancelBtn">No, that's not me</button>
+      </div>
+    </div>
+    
+    <!-- Chat Interface -->
+    <div id="chat-interface" style="display: none;" class="chat-interface">
+      <div class="student-info">
+        <span class="student-name" id="student-name-display"></span>
+        <span class="student-id" id="student-id-display"></span>
+      </div>
+      
+      <div id="chat-container"></div>
+    </div>
+  </div>
+  
+  <script>
+    // Get URL parameters
+    function getUrlParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const value = urlParams.get(param);
+      console.log(`Getting URL parameter: ${param} = ${value}`);
+      return value;
+    }
+    
+    // Store module information
+    const moduleId = getUrlParam('module') || '1'; // Default to module 1 if not specified
+    const moduleTitle = getUrlParam('title') || 'Writing Support';
+    const modulePrompt = getUrlParam('prompt') || 'exploring this topic together'; // Default prompt if not specified
+    
+    // Set module specific title
+    document.getElementById('module-specific-title').textContent = moduleTitle;
+    
+    console.log("Module ID from URL:", moduleId);
+    console.log("Module Title from URL:", moduleTitle);
+    console.log("Module Prompt from URL:", modulePrompt);
+    
+    // Get DOM elements
+    const verifyBtn = document.getElementById('verifyBtn');
+    const confirmBtn = document.getElementById('confirmBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const loginSection = document.getElementById('login-section');
+    const verificationContainer = document.getElementById('verification-container');
+    const errorMsg = document.getElementById('error-msg');
+    const successMsg = document.getElementById('success-msg');
+    const loadingMsg = document.getElementById('loading');
+    const chatContainer = document.getElementById('chat-container');
+    const chatInterface = document.getElementById('chat-interface');
+    const studentIdInput = document.getElementById('studentIdInput');
+    
+    // Store verified student data
+    let verifiedStudent = null;
+    
+    // Add event listener for the verify button
+    verifyBtn.addEventListener('click', verifyStudentId);
+    
+    // Also verify when pressing Enter in the input field
+    studentIdInput.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        verifyStudentId();
+      }
+    });
+    
+    // Verification function
+    async function verifyStudentId() {
+      let studentId = studentIdInput.value.trim();
+      errorMsg.textContent = ""; // clear previous errors
+      
+      if (!studentId) {
+        errorMsg.textContent = "Please enter a student ID";
+        return;
+      }
+      
+      // Basic format validation for students and secret support for staff
+      const studentIdRegex = /^s\d{7}$/i;
+      const staffIdRegex = /^uq[a-z0-9]{6}$/i;
+      
+      // Allow both student and staff IDs to pass, but only show error for student format
+      if (!studentIdRegex.test(studentId) && !staffIdRegex.test(studentId)) {
+        errorMsg.textContent = "Please enter a valid student ID in the format sXXXXXXX";
+        return;
+      }
+      
+      // Normalize the case for student and staff IDs
+      if (studentId.toLowerCase().startsWith('s')) {
+        studentId = studentId.toLowerCase();
+      } else if (studentId.toLowerCase().startsWith('uq')) {
+        studentId = studentId.toLowerCase();
+      }
+      
+      // Show loading message
+      loadingMsg.style.display = "flex";
+      
+      try {
+        // Call the Google Apps Script to verify the ID
+        const apiUrl = 'https://script.google.com/macros/s/AKfycbwx562gU9cfKUxz2z3pPPXFD35lqRQyPOhdsoE7nQi1vEUyjr_ZN6MtDUNpyhjY7lAGxw/exec';
+        console.log("Verifying student ID:", studentId);
+        console.log("Calling API URL:", apiUrl + "?id=" + encodeURIComponent(studentId));
+        
+        // Simple fetch request
+        const response = await fetch(`${apiUrl}?id=${encodeURIComponent(studentId)}`);
+        
+        console.log("Response status:", response.status);
+        
+        // Hide loading message
+        loadingMsg.style.display = "none";
+        
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status}`);
+        }
+        
+        // Get the raw text for debugging
+        const responseText = await response.text();
+        console.log("Raw response text:", responseText);
+        
+        try {
+          // Try to parse as JSON
+          const result = JSON.parse(responseText);
+          console.log("Parsed verification result:", result);
+          
+          // Check if the ID was found
+          if (result.valid) {
+            // Store the verified student data
+            verifiedStudent = result;
+            
+            // Show the confirmation section
+            loginSection.style.display = "none";
+            verificationContainer.style.display = "block";
+            successMsg.textContent = `Hello, ${result.name}! Is this correct?`;
+          } else {
+            // ID not found
+            errorMsg.textContent = "Student ID not found. Please check your ID or contact your course coordinator.";
+          }
+        } catch (parseError) {
+          console.error("JSON parsing error:", parseError);
+          errorMsg.textContent = "Error processing server response. Please try again later.";
+        }
+      } catch (err) {
+        // Hide loading message
+        loadingMsg.style.display = "none";
+        console.error("Verification error:", err);
+        errorMsg.textContent = "Error verifying ID. Please try again later.";
+      }
+    }
+    
+    // Add event listener for the confirm button
+    confirmBtn.addEventListener('click', () => {
+      if (verifiedStudent) {
+        // Hide the verification section
+        verificationContainer.style.display = "none";
+        
+        // Update student info display in the header bar
+        document.getElementById('student-name-display').textContent = verifiedStudent.name;
+        document.getElementById('student-id-display').textContent = verifiedStudent.id;
+        
+        // Show the chat interface
+        chatInterface.style.display = "block";
+        
+        // Launch the chatbot with the verified student data and module ID
+        launchChatbot(verifiedStudent, moduleId);
+      }
+    });
+    
+    // Add event listener for the cancel button
+    cancelBtn.addEventListener('click', () => {
+      // Go back to the login section
+      verificationContainer.style.display = "none";
+      loginSection.style.display = "block";
+      // Clear the input field
+      studentIdInput.value = "";
+    });
+    
+    // Function to launch the chatbot
+    function launchChatbot(studentData, moduleId) {
+      // Get the module title from the page
+      const moduleTitle = document.getElementById('module-specific-title').textContent;
+      
+      // Prepare the chatbot URL with Zapier integration
+      let chatbotUrl = "https://interfaces.zapier.com/embed/chatbot/cmad6y3sx001ayww63u8irixx";
+      
+      // Pass all parameters to the chatbot
+      chatbotUrl += `?studentId=${encodeURIComponent(studentData.id)}`;
+      chatbotUrl += `&studentName=${encodeURIComponent(studentData.name)}`;
+      chatbotUrl += `&moduleId=${encodeURIComponent(moduleId)}`;
+      chatbotUrl += `&title=${encodeURIComponent(moduleTitle)}`;
+      chatbotUrl += `&prompt=${encodeURIComponent(modulePrompt)}`;
+      
+      console.log("Loading chatbot with URL:", chatbotUrl);
+      console.log("Module ID being passed:", moduleId);
+      console.log("Module Title being passed:", moduleTitle);
+      console.log("Module Prompt being passed:", modulePrompt);
+      
+      // Create an iframe to embed the chatbot
+      const iframe = document.createElement('iframe');
+      iframe.src = chatbotUrl;
+      iframe.width = "100%";
+      iframe.height = "100%";
+      iframe.style.border = "none";
+      iframe.setAttribute('allow', 'clipboard-write *');
+      
+      // Add the iframe to the chatbot container
+      chatContainer.innerHTML = "";
+      chatContainer.appendChild(iframe);
+    }
+    
+    // Focus the input field when the page loads
+    window.addEventListener('load', function() {
+      studentIdInput.focus();
+    });
+  </script>
+</body>
+</html>
