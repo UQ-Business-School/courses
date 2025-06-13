@@ -22,7 +22,8 @@ If a project is:
 …it should be created as a **separate repository**.
 
 Examples:
-- ✅ `uq-business-school.github.io/assessment-tool` (multi-course use)
+- ✅ `uq-business-school.github.io/ibis`     (multi-course tool)
+- ✅ `uq-business-school.github.io/jacson`   (multi-course use)
 - ❌ `uq-business-school.github.io/courses/shared-tool` (incorrect use)
 
 ## 📁 Example Folder Structure
