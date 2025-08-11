@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Staff Navigation</title>
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c1810;
+            --background: #e8e3d9;
+            --hover: #937c43;
+        }
+        
+        body {
+            font-family: 'IM Fell English', serif;
+            margin: 0;
+            padding: 2rem;
+            background-color: var(--background);
+            color: var(--primary);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+        }
+
+        .intro {
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 3rem;
+            color: var(--primary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--primary);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            box-shadow: 4px 4px 8px rgba(44, 24, 16, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 12px rgba(44, 24, 16, 0.2);
+            border-color: var(--hover);
+            color: var(--hover);
+        }
+
+        .number {
+            font-size: 2rem;
+            font-family: 'Playfair Display', serif;
+            margin-right: 1rem;
+            min-width: 2.5rem;
+        }
+
+        .title {
+            font-size: 1.2rem;
+        }
+
+        .leaderboard-card {
+            grid-column: 1 / -1;
+            justify-content: center;
+            background-color: var(--primary);
+            color: var(--background);
+        }
+
+        .leaderboard-card:hover {
+            color: var(--background);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="passwordScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--background); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+        <div style="background: white; padding: 2rem; border: 1px solid var(--primary); text-align: center; max-width: 400px; width: 90%;">
+            <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 1rem;">Staff Access Required</h2>
+            <input type="password" id="passwordInput" placeholder="Enter staff password" style="width: 100%; padding: 0.75rem; margin: 1rem 0; border: 1px solid var(--primary);">
+            <button onclick="checkPassword()" style="background: var(--primary); color: var(--background); border: none; padding: 0.75rem 1.5rem; cursor: pointer;">Access Menu</button>
+        </div>
+    </div>
+
+    <script>
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            if (password === 'GrotesStaff2024') { // Change this password
+                document.getElementById('passwordScreen').style.display = 'none';
+                localStorage.setItem('grotesStaffAuth', Date.now());
+            } else {
+                alert('Incorrect password');
+            }
+        }
+
+        // Check if already authenticated
+        const auth = localStorage.getItem('grotesStaffAuth');
+        if (auth && Date.now() - parseInt(auth) < 86400000) { // 24 hour expiry
+            document.getElementById('passwordScreen').style.display = 'none';
+        }
+
+        // Allow Enter key
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
+
+    <div class="container">
+        <h1>Navigation Menu</h1>
+        <p class="intro">Access points for all GrotesQuest resources</p>
+        
+        <div class="grid">
+            <a href="/MGTS1301GrotesQuest/1Sh4k3sp34r3" class="card">
+                <span class="number">1</span>
+                <span class="title">Shakespeare</span>
+            </a>
+            <a href="/MGTS1301GrotesQuest/2C0nfuc1us" class="card">
+                <span class="number">2</span>
+                <span class="title">Confucius</span>
+            </a>
+            <a href="/MGTS1301GrotesQuest/3G41arb4ru" class="card">
+                <span class="number">3</span>
+                <span class="title">Gaiarbau</span>
+            </a>
+            <a href="/MGTS1301GrotesQuest/4Cr4n3_Dr1v3r" class="card">
+                <span class="number">4</span>
+                <span class="title">Crane Driver</span>
+            </a>
+            <a href="/MGTS1301GrotesQuest/5Fr3d4_B4g3" class="card">
+                <span class="number">5</span>
+                <span class="title">Freda Bage</span>
+            </a>
+            <a href="/MGTS1301GrotesQuest/6St4ck_0f_B00ks" class="card">
+                <span class="number">6</span>
+                <span class="title">Stack of Books</span>
+            </a>
+            <a href="/MGTS1301GrotesQuest/7C0l1n_Cl4rk" class="card">
+                <span class="number">7</span>
+                <span class="title">Colin Clark</span>
+            </a>
+            <a href="/MGTS1301GrotesQuest/8O0g3r00_N00nucc4l" class="card">
+                <span class="number">8</span>
+                <span class="title">Oodgeroo Noonuccal</span>
+            </a>
+            <a href="/MGTS1301GrotesQuest/9D0n4ld_Russ3ll" class="card">
+                <span class="number">9</span>
+                <span class="title">Donald Russell</span>
+            </a>
+            <a href="/MGTS1301GrotesQuest/10Gr33n_Tr33_Fr0g" class="card">
+                <span class="number">10</span>
+                <span class="title">Green Tree Frog</span>
+            </a>
+            <a href="/MGTS1301GrotesQuest/11Ant01n3_L4v01s13r" class="card">
+                <span class="number">11</span>
+                <span class="title">Antoine Lavoisier</span>
+            </a>
+            <a href="/MGTS1301GrotesQuest/12h4ppy_3nd1n6" class="card">
+                <span class="number">12</span>
+                <span class="title">Happy Ending</span>
+            </a>
+            <a href="/MGTS1301GrotesQuest/14l34DeR" class="card leaderboard-card">
+                <span class="title">📊 Live Tutorial Leaderboard</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
