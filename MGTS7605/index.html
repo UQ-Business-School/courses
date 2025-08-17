@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Score Distributor - MGTS7605/7560</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* UQ Brand Colours */
+        :root {
+            --uq-purple: #51247A;
+            --uq-light-purple: #962A8B;
+            --uq-dark-purple: #4D2C7B;
+            --uq-white: #FFFFFF;
+            --uq-light-grey: #F5F5F5;
+            --uq-grey: #E8E8E8;
+            --uq-dark-grey: #595959;
+            --uq-black: #2B2B2B;
+            --success-green: #2E7D32;
+            --error-red: #C62828;
+            --warning-yellow: #F9A825;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: var(--uq-light-grey);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--uq-black);
+            line-height: 1.6;
+        }
+        
+        /* Skip to main content link for screen readers */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--uq-purple);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            z-index: 100;
+        }
+        
+        .skip-link:focus {
+            top: 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--uq-white);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: var(--uq-purple);
+            color: var(--uq-white);
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .instructions {
+            background: var(--uq-light-grey);
+            border-left: 4px solid var(--uq-purple);
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+        }
+        
+        .instructions h2 {
+            font-size: 18px;
+            color: var(--uq-purple);
+            margin-bottom: 10px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            color: var(--uq-dark-grey);
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .file-upload-section {
+            margin-bottom: 30px;
+        }
+        
+        .file-upload-section h2 {
+            font-size: 20px;
+            color: var(--uq-purple);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--uq-grey);
+            padding-bottom: 10px;
+        }
+        
+        .file-upload {
+            border: 2px dashed var(--uq-grey);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: var(--uq-light-grey);
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload:focus-within {
+            outline: 3px solid var(--uq-purple);
+            outline-offset: 2px;
+        }
+        
+        .file-upload.has-file {
+            border-color: var(--success-green);
+            background: #E8F5E9;
+        }
+        
+        .file-upload.required {
+            border-color: var(--error-red);
+            background: #FFEBEE;
+        }
+        
+        .file-upload label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--uq-black);
+            font-size: 16px;
+        }
+        
+        .file-upload input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--uq-grey);
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .file-upload input[type="file"]:focus {
+            outline: 3px solid var(--uq-purple);
+            outline-offset: 2px;
+            border-color: var(--uq-purple);
+        }
+        
+        .file-name {
+            margin-top: 10px;
+            color: var(--success-green);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .button {
+            background: var(--uq-purple);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            min-width: 200px;
+        }
+        
+        .button:hover {
+            background: var(--uq-dark-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(81, 36, 122, 0.3);
+        }
+        
+        .button:focus {
+            outline: 3px solid var(--uq-light-purple);
+            outline-offset: 2px;
+        }
+        
+        .button:disabled {
+            background: var(--uq-grey);
+            color: var(--uq-dark-grey);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .status {
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-radius: 4px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .status.show {
+            display: block;
+        }
+        
+        .status.success {
+            background: #E8F5E9;
+            color: var(--success-green);
+            border: 2px solid var(--success-green);
+        }
+        
+        .status.error {
+            background: #FFEBEE;
+            color: var(--error-red);
+            border: 2px solid var(--error-red);
+        }
+        
+        .status.processing {
+            background: #FFF3E0;
+            color: #E65100;
+            border: 2px solid #E65100;
+        }
+        
+        .results {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--uq-light-grey);
+            border-radius: 8px;
+            border: 2px solid var(--uq-purple);
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .results h3 {
+            color: var(--uq-purple);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .results-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid var(--uq-purple);
+        }
+        
+        .stat-card .number {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--uq-purple);
+        }
+        
+        .stat-card .label {
+            color: var(--uq-dark-grey);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .download-button {
+            background: var(--success-green);
+            margin-top: 20px;
+        }
+        
+        .download-button:hover {
+            background: #1B5E20;
+        }
+        
+        .warning-box {
+            background: #FFF3E0;
+            border: 2px solid var(--warning-yellow);
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .warning-box h3 {
+            color: #E65100;
+            margin-bottom: 10px;
+        }
+        
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .results-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .file-upload {
+                border-width: 3px;
+            }
+            
+            .button {
+                border: 2px solid currentColor;
+            }
+        }
+        
+        /* Focus visible for keyboard navigation */
+        *:focus-visible {
+            outline: 3px solid var(--uq-purple);
+            outline-offset: 2px;
+        }
+        
+        .error-list {
+            margin-top: 10px;
+            margin-left: 20px;
+            color: var(--error-red);
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        .team-list {
+            margin-top: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+        
+        .team-list-item {
+            padding: 5px;
+            border-bottom: 1px solid var(--uq-light-grey);
+        }
+    </style>
+</head>
+<body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    
+    <div class="container">
+        <header class="header" role="banner">
+            <h1>Team Score Distributor</h1>
+            <p>MGTS7605/7560 - Automated Team Quiz Score Distribution</p>
+        </header>
+        
+        <main id="main" class="content" role="main">
+            <div class="instructions" role="region" aria-labelledby="instructions-heading">
+                <h2 id="instructions-heading">How to Use</h2>
+                <ol>
+                    <li>Upload the <strong>Team Membership CSV</strong> from Blackboard (with Group Code and User Name columns)</li>
+                    <li>Upload the <strong>Gradescope team quiz CSV</strong> (contains team scores)</li>
+                    <li>Upload the <strong>Blackboard individual scores CSV</strong> (to check attendance)</li>
+                    <li>Upload the <strong>Blackboard team template CSV</strong> (where scores will be added)</li>
+                    <li>Click <strong>"Process Scores"</strong> to generate the output file</li>
+                    <li>Download the result and upload to Blackboard Grade Centre</li>
+                </ol>
+            </div>
+            
+            <div class="warning-box">
+                <h3>⚠️ Important: Team Membership File Required</h3>
+                <p>This version requires a team membership file to maintain privacy. Export this from Blackboard:</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Go to Groups in Blackboard</li>
+                    <li>Export member list as CSV</li>
+                    <li>Must contain "Group Code" and "User Name" columns</li>
+                </ul>
+            </div>
+            
+            <div class="file-upload-section" role="region" aria-labelledby="upload-heading">
+                <h2 id="upload-heading">Upload Files</h2>
+                
+                <div class="file-upload required" id="membership-upload">
+                    <label for="membership-file">
+                        1. Team Membership File (REQUIRED)
+                        <span class="sr-only">(CSV file with team assignments)</span>
+                    </label>
+                    <input type="file" id="membership-file" accept=".csv" aria-describedby="membership-desc">
+                    <small id="membership-desc" style="color: var(--uq-dark-grey); display: block; margin-top: 5px;">
+                        Blackboard export with Group Code and User Name columns
+                    </small>
+                    <div class="file-name" id="membership-filename" aria-live="polite"></div>
+                    <div class="team-list" id="team-list" style="display: none;"></div>
+                </div>
+                
+                <div class="file-upload" id="gradescope-upload">
+                    <label for="gradescope-file">
+                        2. Gradescope Team Quiz Results
+                        <span class="sr-only">(CSV file with team scores)</span>
+                    </label>
+                    <input type="file" id="gradescope-file" accept=".csv" aria-describedby="gradescope-desc">
+                    <small id="gradescope-desc" style="color: var(--uq-dark-grey); display: block; margin-top: 5px;">
+                        File like: Week_X_Formative_Quiz_TEAM__student_responses.csv
+                    </small>
+                    <div class="file-name" id="gradescope-filename" aria-live="polite"></div>
+                </div>
+                
+                <div class="file-upload" id="individual-upload">
+                    <label for="individual-file">
+                        3. Blackboard Individual Scores
+                        <span class="sr-only">(CSV file with individual quiz scores)</span>
+                    </label>
+                    <input type="file" id="individual-file" accept=".csv" aria-describedby="individual-desc">
+                    <small id="individual-desc" style="color: var(--uq-dark-grey); display: block; margin-top: 5px;">
+                        File with "Individual" in the column names
+                    </small>
+                    <div class="file-name" id="individual-filename" aria-live="polite"></div>
+                </div>
+                
+                <div class="file-upload" id="team-upload">
+                    <label for="team-file">
+                        4. Blackboard Team Template
+                        <span class="sr-only">(CSV file template for team scores)</span>
+                    </label>
+                    <input type="file" id="team-file" accept=".csv" aria-describedby="team-desc">
+                    <small id="team-desc" style="color: var(--uq-dark-grey); display: block; margin-top: 5px;">
+                        File with "TEAM" in the column names (currently all zeros)
+                    </small>
+                    <div class="file-name" id="team-filename" aria-live="polite"></div>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button class="button" id="process-button" disabled aria-describedby="button-status">
+                    Process Scores
+                </button>
+                <div id="button-status" class="sr-only" aria-live="polite">Button disabled. Upload all four files to enable.</div>
+            </div>
+            
+            <div class="status" id="status" role="status" aria-live="polite"></div>
+            
+            <div class="results" id="results" role="region" aria-labelledby="results-heading">
+                <h3 id="results-heading">Processing Results</h3>
+                <div class="results-stats" id="stats"></div>
+                <button class="button download-button" id="download-button">
+                    Download Result CSV
+                </button>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        let membershipData = null;
+        let gradescopeData = null;
+        let individualData = null;
+        let teamData = null;
+        let teamMemberships = {};
+        
+        // File upload handlers
+        document.getElementById('membership-file').addEventListener('change', function(e) {
+            handleFileUpload(e, 'membership');
+        });
+        
+        document.getElementById('gradescope-file').addEventListener('change', function(e) {
+            handleFileUpload(e, 'gradescope');
+        });
+        
+        document.getElementById('individual-file').addEventListener('change', function(e) {
+            handleFileUpload(e, 'individual');
+        });
+        
+        document.getElementById('team-file').addEventListener('change', function(e) {
+            handleFileUpload(e, 'team');
+        });
+        
+        function handleFileUpload(event, type) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const csv = e.target.result;
+                const data = parseCSV(csv);
+                
+                if (type === 'membership') {
+                    membershipData = data;
+                    processMembershipData(data);
+                    document.getElementById('membership-filename').textContent = '✓ ' + file.name;
+                    document.getElementById('membership-upload').classList.add('has-file');
+                    document.getElementById('membership-upload').classList.remove('required');
+                } else if (type === 'gradescope') {
+                    gradescopeData = data;
+                    document.getElementById('gradescope-filename').textContent = '✓ ' + file.name;
+                    document.getElementById('gradescope-upload').classList.add('has-file');
+                } else if (type === 'individual') {
+                    individualData = data;
+                    document.getElementById('individual-filename').textContent = '✓ ' + file.name;
+                    document.getElementById('individual-upload').classList.add('has-file');
+                } else if (type === 'team') {
+                    teamData = data;
+                    document.getElementById('team-filename').textContent = '✓ ' + file.name;
+                    document.getElementById('team-upload').classList.add('has-file');
+                }
+                
+                // Enable process button if all files uploaded
+                if (membershipData && gradescopeData && individualData && teamData) {
+                    document.getElementById('process-button').disabled = false;
+                    document.getElementById('button-status').textContent = 'All files uploaded. Button enabled.';
+                }
+            };
+            reader.readAsText(file);
+        }
+        
+        function processMembershipData(data) {
+            teamMemberships = {};
+            let teamCount = 0;
+            
+            // Find the Group Code and User Name columns
+            const groupCol = data.headers.find(h => 
+                h.toLowerCase().includes('group') && h.toLowerCase().includes('code')
+            ) || 'Group Code';
+            
+            const userCol = data.headers.find(h => 
+                h.toLowerCase().includes('user') && h.toLowerCase().includes('name')
+            ) || 'User Name';
+            
+            data.data.forEach(row => {
+                const groupCode = row[groupCol];
+                const userName = row[userCol];
+                
+                if (groupCode && userName) {
+                    // Clean up group name (e.g., "New_gc_Group_gc_1" -> "New Group 1")
+                    const cleanGroupName = groupCode.replace(/_gc_/g, ' ');
+                    
+                    if (!teamMemberships[cleanGroupName]) {
+                        teamMemberships[cleanGroupName] = [];
+                        teamCount++;
+                    }
+                    
+                    teamMemberships[cleanGroupName].push(userName.toLowerCase());
+                }
+            });
+            
+            // Display team summary
+            const teamList = document.getElementById('team-list');
+            teamList.style.display = 'block';
+            teamList.innerHTML = `<strong>Teams Loaded: ${teamCount}</strong><br>`;
+            
+            Object.keys(teamMemberships).sort().forEach(team => {
+                teamList.innerHTML += `<div class="team-list-item">${team}: ${teamMemberships[team].length} members</div>`;
+            });
+        }
+        
+        function parseCSV(csv) {
+            const lines = csv.split('\n').filter(line => line.trim());
+            const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+            const data = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = [];
+                let current = '';
+                let inQuotes = false;
+                
+                for (let j = 0; j < lines[i].length; j++) {
+                    const char = lines[i][j];
+                    
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        values.push(current.trim().replace(/^"|"$/g, ''));
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                values.push(current.trim().replace(/^"|"$/g, ''));
+                
+                const row = {};
+                headers.forEach((header, index) => {
+                    row[header] = values[index] || '';
+                });
+                data.push(row);
+            }
+            
+            return { headers, data };
+        }
+        
+        document.getElementById('process-button').addEventListener('click', processScores);
+        
+        function processScores() {
+            const status = document.getElementById('status');
+            status.className = 'status processing show';
+            status.textContent = 'Processing scores...';
+            
+            try {
+                // Verify team memberships loaded
+                if (Object.keys(teamMemberships).length === 0) {
+                    throw new Error('No team memberships found. Check the membership file format.');
+                }
+                
+                // Find column names
+                const individualScoreCol = individualData.headers.find(h => 
+                    h.includes('Individual') && h.includes('Score')
+                );
+                const teamScoreCol = teamData.headers.find(h => 
+                    h.includes('TEAM') && h.includes('Score')
+                );
+                
+                if (!individualScoreCol || !teamScoreCol) {
+                    throw new Error('Could not find required score columns');
+                }
+                
+                // Get attendees (those with individual scores)
+                const attendees = new Set();
+                individualData.data.forEach(row => {
+                    const score = parseFloat(row[individualScoreCol]) || 0;
+                    if (score > 0) {
+                        attendees.add(row['Username'].toLowerCase());
+                    }
+                });
+                
+                // Get team scores from Gradescope
+                const teamScores = {};
+                gradescopeData.data.forEach(row => {
+                    const team = row['Sections'];
+                    const score = parseFloat(row['Total Score']) || 0;
+                    if (team && !isNaN(score)) {
+                        teamScores[team] = score;
+                    }
+                });
+                
+                // Distribute scores
+                let scoresAssigned = 0;
+                let absentSkipped = 0;
+                let noTeamFound = 0;
+                
+                const outputData = teamData.data.map(row => {
+                    const newRow = { ...row };
+                    const username = row['Username'].toLowerCase();
+                    
+                    if (!attendees.has(username)) {
+                        newRow[teamScoreCol] = '';
+                        absentSkipped++;
+                    } else {
+                        let assigned = false;
+                        for (const [team, members] of Object.entries(teamMemberships)) {
+                            if (members.includes(username) && teamScores[team] !== undefined) {
+                                newRow[teamScoreCol] = teamScores[team];
+                                scoresAssigned++;
+                                assigned = true;
+                                break;
+                            }
+                        }
+                        if (!assigned) {
+                            newRow[teamScoreCol] = '';
+                            noTeamFound++;
+                        }
+                    }
+                    
+                    return newRow;
+                });
+                
+                // Store result for download
+                window.processedData = {
+                    headers: teamData.headers,
+                    data: outputData
+                };
+                
+                // Show results
+                status.className = 'status success show';
+                status.textContent = '✓ Processing complete!';
+                
+                const stats = document.getElementById('stats');
+                stats.innerHTML = `
+                    <div class="stat-card">
+                        <div class="number">${scoresAssigned}</div>
+                        <div class="label">Scores Assigned</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">${absentSkipped}</div>
+                        <div class="label">Absent Students</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">${noTeamFound}</div>
+                        <div class="label">No Team Found</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">${Object.keys(teamScores).length}</div>
+                        <div class="label">Teams Processed</div>
+                    </div>
+                `;
+                
+                document.getElementById('results').classList.add('show');
+                
+            } catch (error) {
+                status.className = 'status error show';
+                status.textContent = '✗ Error: ' + error.message;
+                console.error(error);
+            }
+        }
+        
+        document.getElementById('download-button').addEventListener('click', function() {
+            if (!window.processedData) return;
+            
+            // Create CSV content
+            const headers = window.processedData.headers.map(h => 
+                h.includes(',') ? `"${h}"` : h
+            ).join(',');
+            
+            const rows = window.processedData.data.map(row => {
+                return window.processedData.headers.map(header => {
+                    const value = row[header] || '';
+                    return value.toString().includes(',') ? `"${value}"` : value;
+                }).join(',');
+            });
+            
+            const csv = [headers, ...rows].join('\n');
+            
+            // Download file
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `team_scores_ready_${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>
