@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MGTS7605 Presentation Competition Leaderboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -168,6 +169,9 @@
         .rank-cell {
             font-weight: bold;
             font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .rank-1 { color: var(--gold); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
@@ -175,9 +179,9 @@
         .rank-3 { color: var(--bronze); text-shadow: 0 0 10px rgba(205, 127, 50, 0.5); }
 
         .medal {
+            width: 28px;
+            height: 28px;
             display: inline-block;
-            margin-left: 8px;
-            font-size: 1.5em;
         }
 
         .score-badge {
@@ -274,6 +278,88 @@
             cursor: pointer;
         }
 
+        /* Chart container */
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .view-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid var(--uq-purple);
+            color: var(--uq-purple);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn.active {
+            background: var(--uq-purple);
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: var(--uq-purple);
+            color: white;
+        }
+
+        /* Visual leaderboard items */
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            margin: 12px 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            animation: slideIn 0.5s ease forwards;
+            animation-delay: calc(var(--animation-order) * 0.05s);
+            opacity: 0;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .leaderboard-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .team-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .points {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: var(--uq-purple);
+        }
+
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.8em;
@@ -289,6 +375,10 @@
             
             th, td {
                 padding: 8px;
+            }
+            
+            .chart-container {
+                height: 300px;
             }
         }
 
@@ -334,16 +424,34 @@
         <div class="tab-container">
             <div class="tabs">
                 <button class="tab-button active" onclick="showTab('overall')">🏆 Overall Rankings</button>
-                <button class="tab-button" onclick="showTab('latest')">📊 Latest Scores</button>
-                <button class="tab-button" onclick="showTab('details')">📈 Detailed View</button>
+                <button class="tab-button" onclick="showTab('visual')">📊 Visual Dashboard</button>
+                <button class="tab-button" onclick="showTab('latest')">📈 Latest Scores</button>
+                <button class="tab-button" onclick="showTab('details')">📋 Detailed View</button>
             </div>
 
             <div id="overall" class="tab-content active">
                 <h2 style="color: var(--uq-purple); margin-bottom: 20px;">Semester Rankings</h2>
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="switchView('table', 'overall')">Table View</button>
+                    <button class="view-btn" onclick="switchView('cards', 'overall')">Card View</button>
+                </div>
                 <div id="overallTable" class="loading">
                     <div class="loading-spinner"></div>
                     <p>Loading leaderboard data...</p>
                 </div>
+            </div>
+
+            <div id="visual" class="tab-content">
+                <h2 style="color: var(--uq-purple); margin-bottom: 20px;">Visual Dashboard</h2>
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="switchChartType('bar')">Bar Chart</button>
+                    <button class="view-btn" onclick="switchChartType('line')">Line Chart</button>
+                    <button class="view-btn" onclick="switchChartType('radar')">Radar Chart</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="scoreChart"></canvas>
+                </div>
+                <div id="visualLeaderboard"></div>
             </div>
 
             <div id="latest" class="tab-content">
@@ -376,11 +484,14 @@
     </div>
 
     <script>
-        // Google Sheets published CSV URLs
-        const SHEETS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSilThH09A-USgpe_e3AZT5LBm3uvknXi0rjiAWfBWQ7zzTySwF-OH7cCjkSh1HK7SqYQpEi1knq1ne/pub?gid=1843112097&single=true&output=csv';
+        // Google Sheets published CSV URL
+        const SHEETS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSilThH09A-USgpe_e3AZT5LBm3uvknXi0rjiAWfBWQ7zzTySwF-OH7cCjkSh1HK7SqYQpEi1knq1ne/pub?gid=202663569&single=true&output=csv';
         
         let leaderboardData = [];
         let allWeeks = new Set();
+        let scoreChart = null;
+        let currentChartType = 'bar';
+        let currentView = 'table';
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
@@ -400,6 +511,11 @@
             // Show selected tab
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
+            
+            // Update chart if visual tab is selected
+            if (tabName === 'visual') {
+                setTimeout(() => updateChart(), 100);
+            }
         }
 
         async function loadData() {
@@ -453,12 +569,31 @@
                 renderLatestTable();
                 renderDetailsTable();
                 updateWeekFilter();
+                updateChart();
+                renderVisualLeaderboard();
                 updateLastUpdateTime();
                 
             } catch (error) {
                 console.error('Error loading data:', error);
                 showError('Failed to load leaderboard data. Please try again later.');
             }
+        }
+
+        function getMedalSVG(position) {
+            const colors = {
+                0: '#FFD700',  // Gold
+                1: '#C0C0C0',  // Silver
+                2: '#CD7F32'   // Bronze
+            };
+            
+            if (position > 2) return '';
+            
+            return `
+                <svg class="medal" viewBox="0 0 24 24" fill="${colors[position]}" stroke="#51247A" stroke-width="1">
+                    <circle cx="12" cy="12" r="10"/>
+                    <text x="12" y="16" font-size="12" text-anchor="middle" fill="#fff" font-weight="bold">${position + 1}</text>
+                </svg>
+            `;
         }
 
         function updateStats() {
@@ -479,6 +614,19 @@
             document.getElementById('currentLeader').textContent = topScoreRow['Group Name'] || '-';
         }
 
+        function switchView(viewType, section) {
+            currentView = viewType;
+            
+            // Update button states
+            const buttons = event.target.parentElement.querySelectorAll('.view-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (section === 'overall') {
+                renderOverallTable();
+            }
+        }
+
         function renderOverallTable() {
             const container = document.getElementById('overallTable');
             
@@ -492,37 +640,202 @@
                 return;
             }
 
-            let html = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 80px;">Rank</th>
-                            <th>Group</th>
-                            <th>Total Points</th>
-                            <th>Average Score</th>
-                            <th>Presentations</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
+            if (currentView === 'cards') {
+                // Card view
+                let html = '<div class="leaderboard-cards">';
+                rankedData.forEach((row, index) => {
+                    const rank = index + 1;
+                    const medal = getMedalSVG(index);
+                    
+                    html += `
+                        <div class="leaderboard-item" style="--animation-order: ${index}">
+                            <div class="team-info">
+                                ${medal}
+                                <span class="rank-cell ${rank <= 3 ? `rank-${rank}` : ''}">#${rank}</span>
+                                <span class="group-name">${row['Group Name']}</span>
+                            </div>
+                            <div class="points">${parseFloat(row['Semester Total Points']).toFixed(1)} pts</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                container.innerHTML = html;
+            } else {
+                // Table view (default)
+                let html = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">Rank</th>
+                                <th>Group</th>
+                                <th>Total Points</th>
+                                <th>Average Score</th>
+                                <th>Presentations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
 
-            rankedData.forEach((row, index) => {
-                const rank = index + 1;
-                const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : '';
-                const rankClass = rank <= 3 ? `rank-${rank}` : '';
+                rankedData.forEach((row, index) => {
+                    const rank = index + 1;
+                    const medal = getMedalSVG(index);
+                    const rankClass = rank <= 3 ? `rank-${rank}` : '';
+                    
+                    html += `
+                        <tr>
+                            <td>
+                                <div class="rank-cell ${rankClass}">
+                                    ${medal}
+                                    <span>${rank}</span>
+                                </div>
+                            </td>
+                            <td class="group-name">${row['Group Name']}</td>
+                            <td><strong>${parseFloat(row['Semester Total Points']).toFixed(1)}</strong></td>
+                            <td>${getScoreBadge(parseFloat(row['Semester Average Score']))}</td>
+                            <td>${row['Number of Presentations']}</td>
+                        </tr>
+                    `;
+                });
+
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            }
+        }
+
+        function updateChart() {
+            const ctx = document.getElementById('scoreChart');
+            if (!ctx) return;
+            
+            const chartCtx = ctx.getContext('2d');
+            
+            // Get top 10 groups for chart
+            const chartData = leaderboardData
+                .filter(row => row['Semester Total Points'] && parseFloat(row['Semester Total Points']) > 0)
+                .sort((a, b) => parseFloat(b['Semester Total Points']) - parseFloat(a['Semester Total Points']))
+                .slice(0, 10);
+
+            const labels = chartData.map(row => row['Group Name']);
+            const scores = chartData.map(row => parseFloat(row['Semester Total Points']));
+            const averages = chartData.map(row => parseFloat(row['Semester Average Score']));
+
+            if (scoreChart) {
+                scoreChart.destroy();
+            }
+
+            const chartConfig = {
+                type: currentChartType,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Points',
+                        data: scores,
+                        backgroundColor: scores.map((_, index) => {
+                            if (index === 0) return 'rgba(255, 215, 0, 0.6)';  // Gold
+                            if (index === 1) return 'rgba(192, 192, 192, 0.6)'; // Silver
+                            if (index === 2) return 'rgba(205, 127, 50, 0.6)';  // Bronze
+                            return 'rgba(81, 36, 122, 0.6)'; // UQ Purple
+                        }),
+                        borderColor: scores.map((_, index) => {
+                            if (index === 0) return '#FFD700';
+                            if (index === 1) return '#C0C0C0';
+                            if (index === 2) return '#CD7F32';
+                            return '#51247A';
+                        }),
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    const index = context.dataIndex;
+                                    return `Average: ${averages[index].toFixed(1)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: currentChartType === 'radar' ? {} : {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(81, 36, 122, 0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            };
+
+            if (currentChartType === 'line') {
+                chartConfig.data.datasets[0].fill = true;
+                chartConfig.data.datasets[0].tension = 0.4;
+                chartConfig.data.datasets[0].backgroundColor = 'rgba(81, 36, 122, 0.1)';
+            }
+
+            if (currentChartType === 'radar') {
+                chartConfig.data.datasets[0].fill = true;
+                chartConfig.data.datasets[0].backgroundColor = 'rgba(81, 36, 122, 0.2)';
+                chartConfig.data.datasets[0].borderColor = '#51247A';
+                chartConfig.data.datasets[0].pointBackgroundColor = '#51247A';
+                chartConfig.data.datasets[0].pointBorderColor = '#fff';
+                chartConfig.data.datasets[0].pointHoverBackgroundColor = '#fff';
+                chartConfig.data.datasets[0].pointHoverBorderColor = '#51247A';
+            }
+
+            scoreChart = new Chart(chartCtx, chartConfig);
+        }
+
+        function switchChartType(type) {
+            currentChartType = type;
+            
+            // Update button states
+            const buttons = event.target.parentElement.querySelectorAll('.view-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            updateChart();
+        }
+
+        function renderVisualLeaderboard() {
+            const container = document.getElementById('visualLeaderboard');
+            if (!container) return;
+            
+            // Get top 5 for visual display
+            const topGroups = leaderboardData
+                .filter(row => row['Semester Total Points'] && parseFloat(row['Semester Total Points']) > 0)
+                .sort((a, b) => parseFloat(b['Semester Total Points']) - parseFloat(a['Semester Total Points']))
+                .slice(0, 5);
+
+            let html = '<h3 style="color: var(--uq-purple); margin: 30px 0 20px;">Top 5 Performers</h3>';
+            
+            topGroups.forEach((row, index) => {
+                const medal = getMedalSVG(index);
+                const score = parseFloat(row['Semester Total Points']);
                 
                 html += `
-                    <tr>
-                        <td class="rank-cell ${rankClass}">${rank}${medal}</td>
-                        <td class="group-name">${row['Group Name']}</td>
-                        <td><strong>${parseFloat(row['Semester Total Points']).toFixed(1)}</strong></td>
-                        <td>${getScoreBadge(parseFloat(row['Semester Average Score']))}</td>
-                        <td>${row['Number of Presentations']}</td>
-                    </tr>
+                    <div class="leaderboard-item" style="--animation-order: ${index}">
+                        <div class="team-info">
+                            ${medal}
+                            <span class="group-name">${row['Group Name']}</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            ${getScoreBadge(parseFloat(row['Semester Average Score']))}
+                            <span class="points">${score.toFixed(1)} pts</span>
+                        </div>
+                    </div>
                 `;
             });
-
-            html += '</tbody></table>';
+            
             container.innerHTML = html;
         }
 
