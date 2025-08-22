@@ -306,6 +306,17 @@
             margin-bottom: 10px;
         }
         
+        .debug-info {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
         /* Accessibility improvements */
         @media (prefers-reduced-motion: reduce) {
             * {
@@ -388,8 +399,8 @@
     
     <div class="container">
         <header class="header" role="banner">
-            <h1>Team Score Distributor</h1>
-            <p>MGTS7605 DINGUS - Automated Team Quiz Score Distribution</p>
+            <h1>Team Score Distributor KALAMAZOO</h1>
+            <p>MGTS7605 - Automated Team Quiz Score Distribution</p>
         </header>
         
         <main id="main" class="content" role="main">
@@ -438,7 +449,7 @@
                     </label>
                     <input type="file" id="gradescope-file" accept=".csv" aria-describedby="gradescope-desc">
                     <small id="gradescope-desc" style="color: var(--uq-dark-grey); display: block; margin-top: 5px;">
-                        File like: Week_X_Formative_Quiz_TEAM__student_responses.csv
+                        File like: Week_X_Quiz_TEAM__scores.csv
                     </small>
                     <div class="file-name" id="gradescope-filename" aria-live="polite"></div>
                 </div>
@@ -462,7 +473,7 @@
                     </label>
                     <input type="file" id="team-file" accept=".csv" aria-describedby="team-desc">
                     <small id="team-desc" style="color: var(--uq-dark-grey); display: block; margin-top: 5px;">
-                        File with "TEAM" in the column names (currently all zeros)
+                        File with "TEAM" in the column names (currently all zeros or empty)
                     </small>
                     <div class="file-name" id="team-filename" aria-live="polite"></div>
                 </div>
@@ -476,6 +487,8 @@
             </div>
             
             <div class="status" id="status" role="status" aria-live="polite"></div>
+            
+            <div class="debug-info" id="debug" style="display: none;"></div>
             
             <div class="results" id="results" role="region" aria-labelledby="results-heading">
                 <h3 id="results-heading">Processing Results</h3>
@@ -562,12 +575,15 @@
                 h.toLowerCase().includes('user') && h.toLowerCase().includes('name')
             ) || 'User Name';
             
+            console.log('Membership columns found:', { groupCol, userCol });
+            
             data.data.forEach(row => {
                 const groupCode = row[groupCol];
                 const userName = row[userCol];
                 
                 if (groupCode && userName) {
-                    // Clean up group name (e.g., "New_gc_Group_gc_1" -> "New Group 1")
+                    // Create both versions of the team name for matching
+                    // Version 1: Clean format (e.g., "New Group 1")
                     const cleanGroupName = groupCode.replace(/_gc_/g, ' ');
                     
                     if (!teamMemberships[cleanGroupName]) {
@@ -578,6 +594,8 @@
                     teamMemberships[cleanGroupName].push(userName.toLowerCase());
                 }
             });
+            
+            console.log('Teams loaded:', teamMemberships);
             
             // Display team summary
             const teamList = document.getElementById('team-list');
@@ -627,8 +645,11 @@
         
         function processScores() {
             const status = document.getElementById('status');
+            const debug = document.getElementById('debug');
             status.className = 'status processing show';
             status.textContent = 'Processing scores...';
+            debug.style.display = 'block';
+            debug.innerHTML = '<strong>Debug Information:</strong><br>';
             
             try {
                 // Verify team memberships loaded
@@ -644,6 +665,9 @@
                     h.toLowerCase().includes('team') && h.toLowerCase().includes('score')
                 );
                 
+                debug.innerHTML += `Individual column: ${individualScoreCol}<br>`;
+                debug.innerHTML += `Team column: ${teamScoreCol}<br>`;
+                
                 if (!individualScoreCol || !teamScoreCol) {
                     throw new Error('Could not find required score columns');
                 }
@@ -657,66 +681,95 @@
                     }
                 });
                 
-                // Get team scores from Gradescope - find the columns flexibly
+                debug.innerHTML += `Attendees found: ${attendees.size}<br>`;
+                
+                // Get team scores from Gradescope
+                // The file has "Sections" for team names and "Total Score" for scores
+                let teamScores = {};
+                let teamCount = 0;
+                
+                // Find the Sections column (contains team names)
                 const sectionsCol = gradescopeData.headers.find(h => 
                     h && h.toLowerCase().includes('section')
                 ) || 'Sections';
                 
+                // Find the Total Score column
                 const totalScoreCol = gradescopeData.headers.find(h => 
                     h && (h.toLowerCase().includes('total score') || 
                           (h.toLowerCase().includes('total') && h.toLowerCase().includes('score')))
                 ) || 'Total Score';
                 
-                console.log('Using Gradescope columns:', { sectionsCol, totalScoreCol });
-                console.log('Available Gradescope columns:', gradescopeData.headers);
+                debug.innerHTML += `<br>Gradescope columns: Sections="${sectionsCol}", Score="${totalScoreCol}"<br>`;
                 
-                const teamScores = {};
-                let teamCount = 0;
+                // Process each row to get team scores
                 gradescopeData.data.forEach(row => {
                     const team = row[sectionsCol];
-                    const score = parseFloat(row[totalScoreCol]) || 0;
+                    // Parse the score - handle decimal strings like "9.0"
+                    const scoreStr = row[totalScoreCol];
+                    const score = parseFloat(scoreStr);
+                    
                     if (team && !isNaN(score)) {
                         teamScores[team] = score;
                         teamCount++;
                     }
                 });
                 
-                console.log('Team scores loaded:', teamCount, 'teams');
-                console.log('Team scores:', teamScores);
+                debug.innerHTML += `<br><strong>Team scores from Gradescope:</strong><br>`;
+                Object.entries(teamScores).forEach(([team, score]) => {
+                    debug.innerHTML += `${team}: ${score}<br>`;
+                });
+                
+                debug.innerHTML += `<br><strong>Team memberships:</strong><br>`;
+                Object.entries(teamMemberships).forEach(([team, members]) => {
+                    debug.innerHTML += `${team}: ${members.length} members<br>`;
+                });
                 
                 // Distribute scores
                 let scoresAssigned = 0;
                 let absentSkipped = 0;
                 let noTeamFound = 0;
+                let debugMatches = [];
                 
                 const outputData = teamData.data.map(row => {
                     const newRow = { ...row };
                     const username = row['Username'].toLowerCase();
                     
                     if (!attendees.has(username)) {
-                        // Explicitly set as empty string for absent students
-                        newRow[teamScoreCol] = '';
+                        // Set as 0 for absent students (Blackboard expects 0, not empty)
+                        newRow[teamScoreCol] = '0';
                         absentSkipped++;
                     } else {
                         let assigned = false;
                         for (const [team, members] of Object.entries(teamMemberships)) {
-                            if (members.includes(username) && teamScores[team] !== undefined) {
-                                // Assign the numeric score
-                                newRow[teamScoreCol] = teamScores[team];
-                                scoresAssigned++;
-                                assigned = true;
-                                break;
+                            if (members.includes(username)) {
+                                // Found the student's team, now find the score
+                                if (teamScores[team] !== undefined) {
+                                    newRow[teamScoreCol] = teamScores[team].toString();
+                                    scoresAssigned++;
+                                    assigned = true;
+                                    debugMatches.push(`${username} -> ${team} -> ${teamScores[team]}`);
+                                    break;
+                                }
                             }
                         }
                         if (!assigned) {
-                            // Explicitly set as empty string if no team found
-                            newRow[teamScoreCol] = '';
+                            // Student attended but no team score found
+                            newRow[teamScoreCol] = '0';
                             noTeamFound++;
+                            debugMatches.push(`${username} -> NO TEAM FOUND`);
                         }
                     }
                     
                     return newRow;
                 });
+                
+                debug.innerHTML += `<br><strong>Score assignments:</strong><br>`;
+                debugMatches.slice(0, 10).forEach(match => {
+                    debug.innerHTML += `${match}<br>`;
+                });
+                if (debugMatches.length > 10) {
+                    debug.innerHTML += `... and ${debugMatches.length - 10} more<br>`;
+                }
                 
                 // Store result for download
                 window.processedData = {
@@ -736,15 +789,15 @@
                     </div>
                     <div class="stat-card">
                         <div class="number">${absentSkipped}</div>
-                        <div class="label">Absent Students</div>
+                        <div class="label">Absent Students (score = 0)</div>
                     </div>
                     <div class="stat-card">
                         <div class="number">${noTeamFound}</div>
-                        <div class="label">No Team Found</div>
+                        <div class="label">No Team Score Found</div>
                     </div>
                     <div class="stat-card">
                         <div class="number">${Object.keys(teamScores).length}</div>
-                        <div class="label">Teams Processed</div>
+                        <div class="label">Teams with Scores</div>
                     </div>
                 `;
                 
@@ -754,6 +807,7 @@
                 status.className = 'status error show';
                 status.textContent = '✗ Error: ' + error.message;
                 console.error(error);
+                debug.innerHTML += `<br><strong style="color: red;">Error: ${error.message}</strong>`;
             }
         }
         
@@ -770,7 +824,7 @@
                     let value = row[header];
                     
                     // Handle null, undefined, or empty values
-                    if (value === null || value === undefined) {
+                    if (value === null || value === undefined || value === '') {
                         return '';
                     }
                     
