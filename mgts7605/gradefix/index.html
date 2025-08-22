@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Score Distributor - MGTS7605/DINGUS</title>
+    <title>Team Score Distributor - MGTS7605</title>
     <style>
         * {
             margin: 0;
@@ -389,7 +389,7 @@
     <div class="container">
         <header class="header" role="banner">
             <h1>Team Score Distributor</h1>
-            <p>MGTS7605 - Automated Team Quiz Score Distribution</p>
+            <p>MGTS7605 DINGUS - Automated Team Quiz Score Distribution</p>
         </header>
         
         <main id="main" class="content" role="main">
@@ -668,15 +668,21 @@
                 ) || 'Total Score';
                 
                 console.log('Using Gradescope columns:', { sectionsCol, totalScoreCol });
+                console.log('Available Gradescope columns:', gradescopeData.headers);
                 
                 const teamScores = {};
+                let teamCount = 0;
                 gradescopeData.data.forEach(row => {
                     const team = row[sectionsCol];
                     const score = parseFloat(row[totalScoreCol]) || 0;
                     if (team && !isNaN(score)) {
                         teamScores[team] = score;
+                        teamCount++;
                     }
                 });
+                
+                console.log('Team scores loaded:', teamCount, 'teams');
+                console.log('Team scores:', teamScores);
                 
                 // Distribute scores
                 let scoresAssigned = 0;
@@ -688,12 +694,14 @@
                     const username = row['Username'].toLowerCase();
                     
                     if (!attendees.has(username)) {
+                        // Explicitly set as empty string for absent students
                         newRow[teamScoreCol] = '';
                         absentSkipped++;
                     } else {
                         let assigned = false;
                         for (const [team, members] of Object.entries(teamMemberships)) {
                             if (members.includes(username) && teamScores[team] !== undefined) {
+                                // Assign the numeric score
                                 newRow[teamScoreCol] = teamScores[team];
                                 scoresAssigned++;
                                 assigned = true;
@@ -701,6 +709,7 @@
                             }
                         }
                         if (!assigned) {
+                            // Explicitly set as empty string if no team found
                             newRow[teamScoreCol] = '';
                             noTeamFound++;
                         }
@@ -751,22 +760,36 @@
         document.getElementById('download-button').addEventListener('click', function() {
             if (!window.processedData) return;
             
-            // Create CSV content
+            // Create CSV content - handling nulls and numbers properly
             const headers = window.processedData.headers.map(h => 
-                h.includes(',') ? `"${h}"` : h
+                h.includes(',') || h.includes('"') ? `"${h.replace(/"/g, '""')}"` : h
             ).join(',');
             
             const rows = window.processedData.data.map(row => {
                 return window.processedData.headers.map(header => {
-                    const value = row[header] || '';
-                    return value.toString().includes(',') ? `"${value}"` : value;
+                    let value = row[header];
+                    
+                    // Handle null, undefined, or empty values
+                    if (value === null || value === undefined) {
+                        return '';
+                    }
+                    
+                    // Convert to string
+                    value = value.toString();
+                    
+                    // Quote if contains comma, quote, or newline
+                    if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+                        return `"${value.replace(/"/g, '""')}"`;
+                    }
+                    
+                    return value;
                 }).join(',');
             });
             
             const csv = [headers, ...rows].join('\n');
             
             // Download file
-            const blob = new Blob([csv], { type: 'text/csv' });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
