@@ -636,12 +636,12 @@
                     throw new Error('No team memberships found. Check the membership file format.');
                 }
                 
-                // Find column names
+                // Find column names - case insensitive
                 const individualScoreCol = individualData.headers.find(h => 
-                    h.includes('Individual') && h.includes('Score')
+                    h.toLowerCase().includes('individual') && h.toLowerCase().includes('score')
                 );
                 const teamScoreCol = teamData.headers.find(h => 
-                    h.includes('TEAM') && h.includes('Score')
+                    h.toLowerCase().includes('team') && h.toLowerCase().includes('score')
                 );
                 
                 if (!individualScoreCol || !teamScoreCol) {
@@ -657,11 +657,22 @@
                     }
                 });
                 
-                // Get team scores from Gradescope
+                // Get team scores from Gradescope - find the columns flexibly
+                const sectionsCol = gradescopeData.headers.find(h => 
+                    h && h.toLowerCase().includes('section')
+                ) || 'Sections';
+                
+                const totalScoreCol = gradescopeData.headers.find(h => 
+                    h && (h.toLowerCase().includes('total score') || 
+                          (h.toLowerCase().includes('total') && h.toLowerCase().includes('score')))
+                ) || 'Total Score';
+                
+                console.log('Using Gradescope columns:', { sectionsCol, totalScoreCol });
+                
                 const teamScores = {};
                 gradescopeData.data.forEach(row => {
-                    const team = row['Sections'];
-                    const score = parseFloat(row['Total Score']) || 0;
+                    const team = row[sectionsCol];
+                    const score = parseFloat(row[totalScoreCol]) || 0;
                     if (team && !isNaN(score)) {
                         teamScores[team] = score;
                     }
