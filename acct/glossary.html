@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UQ Accounting Glossary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --uq-purple: #51247A;
+            --uq-light-purple: #962A8B;
+            --uq-gold: #F7B500;
+            --uq-navy: #2B2B52;
+            --uq-light-grey: #F8F9FA;
+            --uq-dark-grey: #6C757D;
+            --uq-white: #FFFFFF;
+            --shadow: 0 4px 20px rgba(81, 36, 122, 0.1);
+            --shadow-hover: 0 8px 30px rgba(81, 36, 122, 0.15);
+        }
+
+        body {
+            font-family: 'Gotham', 'Helvetica Neue', 'Helvetica', 'Montserrat', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--uq-light-grey) 0%, #E8EAF6 100%);
+            color: var(--uq-navy);
+            line-height: 1.6;
+            min-height: 100vh;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .uq-banner {
+            background-color: var(--uq-purple);
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .uq-banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .uq-logo {
+            height: 40px;
+            width: auto;
+            color: white;
+            font-weight: bold;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--uq-purple) 0%, var(--uq-light-purple) 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-family: 'Gotham', 'Helvetica Neue', 'Helvetica', 'Montserrat', Arial, sans-serif;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+            font-family: 'Gotham', 'Helvetica Neue', 'Helvetica', 'Montserrat', Arial, sans-serif;
+        }
+
+        .search-container {
+            max-width: 1200px;
+            margin: -1.5rem auto 0;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .search-box {
+            background: white;
+            border-radius: 50px;
+            padding: 0.75rem 2rem;
+            box-shadow: var(--shadow);
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--uq-gold);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.1rem;
+            color: var(--uq-navy);
+            background: transparent;
+            font-family: 'Gotham', 'Helvetica Neue', 'Helvetica', 'Montserrat', Arial, sans-serif;
+            font-weight: 400;
+        }
+
+        .search-input::placeholder {
+            color: var(--uq-dark-grey);
+        }
+
+        .search-icon {
+            color: var(--uq-purple);
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .alphabet-nav {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .alphabet-nav button {
+            background: white;
+            border: 2px solid var(--uq-purple);
+            color: var(--uq-purple);
+            padding: 0.5rem 0.75rem;
+            margin: 0.25rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            min-width: 45px;
+            font-family: 'Gotham', 'Helvetica Neue', 'Helvetica', 'Montserrat', Arial, sans-serif;
+        }
+
+        .alphabet-nav button:hover,
+        .alphabet-nav button.active {
+            background: var(--uq-purple);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .stats {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--uq-dark-grey);
+            font-family: 'Gotham', 'Helvetica Neue', 'Helvetica', 'Montserrat', Arial, sans-serif;
+            font-weight: 400;
+        }
+
+        .glossary-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .term-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--uq-gold);
+            opacity: 0;
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .term-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .term-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--uq-purple);
+            margin-bottom: 0.75rem;
+            text-transform: capitalize;
+            font-family: 'Gotham', 'Helvetica Neue', 'Helvetica', 'Montserrat', Arial, sans-serif;
+            letter-spacing: -0.2px;
+        }
+
+        .term-definition {
+            color: var(--uq-navy);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            line-height: 1.7;
+            font-family: 'Gotham', 'Helvetica Neue', 'Helvetica', 'Montserrat', Arial, sans-serif;
+            font-weight: 400;
+        }
+
+        .term-source {
+            font-size: 0.85rem;
+            color: var(--uq-dark-grey);
+            font-style: italic;
+            padding-top: 0.5rem;
+            border-top: 1px solid #E9ECEF;
+            font-family: 'Gotham', 'Helvetica Neue', 'Helvetica', 'Montserrat', Arial, sans-serif;
+            font-weight: 300;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--uq-dark-grey);
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .no-results h3 {
+            color: var(--uq-purple);
+            margin-bottom: 0.5rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--uq-purple);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--uq-light-grey);
+            border-top: 3px solid var(--uq-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .uq-footer {
+            background: var(--uq-purple);
+            color: white;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .uq-footer__container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .uq-footer__info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .uq-footer__links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .uq-footer__link {
+            color: white;
+            text-decoration: none;
+        }
+
+        .uq-footer__link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .uq-banner-content {
+                padding: 0 1rem;
+            }
+
+            .uq-logo {
+                height: 35px;
+            }
+
+            .uq-footer__container {
+                padding: 0 1rem;
+            }
+
+            .uq-footer__info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .uq-footer__links {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .search-container {
+                padding: 0 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .alphabet-nav {
+                padding: 0 1rem;
+            }
+
+            .alphabet-nav button {
+                min-width: 35px;
+                padding: 0.4rem 0.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        .highlight {
+            background-color: var(--uq-gold);
+            padding: 0 2px;
+            border-radius: 3px;
+        }
+
+        .error-message {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+            color: #c62828;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .refresh-button {
+            background: var(--uq-purple);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-button:hover {
+            background: var(--uq-light-purple);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+    </style>
+</head>
+<body>
+    <!-- UQ Official Banner -->
+    <div class="uq-banner">
+        <div class="uq-banner-content">
+            <div class="uq-logo">UQ</div>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="header-content">
+            <h1>Accounting Glossary</h1>
+            <p>University of Queensland • Interactive Reference</p>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input 
+                type="text" 
+                class="search-input" 
+                placeholder="Search accounting terms..." 
+                id="searchInput"
+            >
+        </div>
+    </div>
+
+    <div class="alphabet-nav" id="alphabetNav">
+        <!-- Alphabet buttons will be generated by JavaScript -->
+    </div>
+
+    <main class="main-content">
+        <div class="stats" id="statsDisplay">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading glossary terms from Google Sheets...</p>
+            </div>
+        </div>
+        
+        <div class="glossary-grid" id="glossaryGrid">
+            <!-- Terms will be populated by JavaScript -->
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            <h3>No terms found</h3>
+            <p>Try adjusting your search or browse by letter above</p>
+        </div>
+    </main>
+
+    <footer class="uq-footer">
+        <div class="uq-footer__container">
+            <!-- Business Information -->
+            <div class="uq-footer__info">
+                <span>© The University of Queensland</span>
+                <span>ABN: 63 942 912 684</span>
+                <span>CRICOS: 00025B</span>
+                <span>TEQSA: PRV12080</span>
+            </div>
+            
+            <!-- Legal Links -->
+            <div class="uq-footer__links">
+                <a href="https://www.uq.edu.au/legal/copyright-privacy-disclaimer/" class="uq-footer__link">Copyright, privacy and disclaimer</a>
+                <a href="https://uq.edu.au/accessibility/" class="uq-footer__link">Accessibility</a>
+                <a href="https://governance-risk.uq.edu.au/rtip" class="uq-footer__link">Right to information</a>
+                <a href="https://my.uq.edu.au/feedback" class="uq-footer__link">Feedback</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Google Sheets CSV URL
+        const SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBuQnVt5-fzm6Ejowt4P-JWJPSYzl9XUvUvKDICFqf90sumUqng4fnWhMuUF0Vj-HSsXBghjL5J8s-/pub?gid=499026476&single=true&output=csv';
+        
+        let allTerms = [];
+        let filteredTerms = [];
+        let currentFilter = '';
+
+        // Load and parse CSV data from Google Sheets
+        async function loadGlossaryData() {
+            try {
+                console.log('Fetching data from Google Sheets...');
+                
+                // Use a CORS proxy if needed (for local development)
+                // In production, you might need to configure CORS properly
+                const response = await fetch(SHEETS_CSV_URL);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const csvText = await response.text();
+                console.log('CSV data received, parsing...');
+                
+                // Parse CSV data
+                const parsedData = parseCSV(csvText);
+                
+                if (parsedData.length === 0) {
+                    throw new Error('No data found in the spreadsheet');
+                }
+                
+                allTerms = parsedData;
+                
+                // Sort terms alphabetically
+                allTerms.sort((a, b) => a.term.toLowerCase().localeCompare(b.term.toLowerCase()));
+                filteredTerms = [...allTerms];
+                
+                console.log(`Loaded ${allTerms.length} terms successfully`);
+                
+                initializeInterface();
+                displayTerms();
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showErrorMessage(error.message);
+            }
+        }
+
+        // Parse CSV text into array of objects
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n').map(line => line.trim()).filter(line => line);
+            if (lines.length < 2) return [];
+            
+            const headers = parseCSVLine(lines[0]);
+            const data = [];
+            
+            // Find the indices of the columns we need
+            const termIndex = headers.findIndex(h => h.toLowerCase().includes('term'));
+            const definitionIndex = headers.findIndex(h => h.toLowerCase().includes('definition'));
+            const sourceIndex = headers.findIndex(h => h.toLowerCase().includes('source'));
+            
+            // If we can't find the columns by name, assume first three columns
+            const termCol = termIndex >= 0 ? termIndex : 0;
+            const defCol = definitionIndex >= 0 ? definitionIndex : 1;
+            const srcCol = sourceIndex >= 0 ? sourceIndex : 2;
+            
+            for (let i = 1; i < lines.length; i++) {
+                const fields = parseCSVLine(lines[i]);
+                
+                if (fields.length > Math.max(termCol, defCol, srcCol)) {
+                    const term = fields[termCol]?.trim() || '';
+                    const definition = fields[defCol]?.trim() || '';
+                    const source = fields[srcCol]?.trim() || '';
+                    
+                    // Only add if we have at least a term and definition
+                    if (term && definition) {
+                        data.push({
+                            term: term,
+                            definition: definition,
+                            source: source || 'No source provided'
+                        });
+                    }
+                }
+            }
+            
+            return data;
+        }
+
+        // Parse a single CSV line handling quoted fields
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                const nextChar = line[i + 1];
+                
+                if (char === '"') {
+                    if (inQuotes && nextChar === '"') {
+                        // Escaped quote
+                        current += '"';
+                        i++; // Skip next quote
+                    } else {
+                        // Toggle quote state
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            // Add the last field
+            result.push(current.trim());
+            
+            return result;
+        }
+
+        // Initialize the interface
+        function initializeInterface() {
+            createAlphabetNavigation();
+            updateStatsDisplay();
+            
+            // Set up search functionality
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', debounce(handleSearch, 300));
+        }
+
+        // Create alphabet navigation
+        function createAlphabetNavigation() {
+            const alphabetNav = document.getElementById('alphabetNav');
+            alphabetNav.innerHTML = ''; // Clear existing buttons
+            
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+            
+            // Add "All" button
+            const allBtn = document.createElement('button');
+            allBtn.textContent = 'All';
+            allBtn.classList.add('active');
+            allBtn.addEventListener('click', () => filterByLetter(''));
+            alphabetNav.appendChild(allBtn);
+            
+            // Add letter buttons
+            alphabet.forEach(letter => {
+                const btn = document.createElement('button');
+                btn.textContent = letter;
+                btn.addEventListener('click', () => filterByLetter(letter));
+                alphabetNav.appendChild(btn);
+            });
+        }
+
+        // Filter terms by letter
+        function filterByLetter(letter) {
+            currentFilter = letter;
+            
+            // Clear search input when using alphabet filter
+            document.getElementById('searchInput').value = '';
+            
+            // Update active button
+            document.querySelectorAll('.alphabet-nav button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const activeBtn = letter === '' ? 
+                document.querySelector('.alphabet-nav button') : 
+                Array.from(document.querySelectorAll('.alphabet-nav button')).find(btn => btn.textContent === letter);
+            
+            if (activeBtn) activeBtn.classList.add('active');
+            
+            // Apply filters
+            applyFilters();
+        }
+
+        // Handle search input
+        function handleSearch(event) {
+            const searchTerm = event.target.value.toLowerCase().trim();
+            
+            // Reset alphabet filter when searching
+            if (searchTerm) {
+                currentFilter = '';
+                document.querySelectorAll('.alphabet-nav button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector('.alphabet-nav button').classList.add('active');
+            }
+            
+            applyFilters(searchTerm);
+        }
+
+        // Apply all filters
+        function applyFilters(searchTerm = '') {
+            let filtered = [...allTerms];
+            
+            // Apply letter filter
+            if (currentFilter) {
+                filtered = filtered.filter(term => 
+                    term.term.toLowerCase().startsWith(currentFilter.toLowerCase())
+                );
+            }
+            
+            // Apply search filter
+            if (searchTerm) {
+                filtered = filtered.filter(term => 
+                    term.term.toLowerCase().includes(searchTerm) ||
+                    term.definition.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            filteredTerms = filtered;
+            displayTerms(searchTerm);
+            updateStatsDisplay();
+        }
+
+        // Display terms
+        function displayTerms(searchTerm = '') {
+            const grid = document.getElementById('glossaryGrid');
+            const noResults = document.getElementById('noResults');
+            
+            if (filteredTerms.length === 0) {
+                grid.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+            
+            grid.style.display = 'grid';
+            noResults.style.display = 'none';
+            
+            // Create term cards with staggered animation
+            grid.innerHTML = filteredTerms.map((term, index) => {
+                const highlightedTerm = highlightText(term.term, searchTerm);
+                const highlightedDefinition = highlightText(term.definition, searchTerm);
+                
+                return `
+                    <div class="term-card" style="animation-delay: ${Math.min(index * 0.05, 1)}s">
+                        <h3 class="term-title">${highlightedTerm}</h3>
+                        <p class="term-definition">${highlightedDefinition}</p>
+                        <div class="term-source">Source: ${escapeHtml(term.source)}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Highlight search terms
+        function highlightText(text, searchTerm) {
+            if (!searchTerm) return escapeHtml(text);
+            
+            const escapedText = escapeHtml(text);
+            const regex = new RegExp(`(${escapeRegExp(searchTerm)})`, 'gi');
+            return escapedText.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Escape regex special characters
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        // Update statistics display
+        function updateStatsDisplay() {
+            const stats = document.getElementById('statsDisplay');
+            const total = allTerms.length;
+            const showing = filteredTerms.length;
+            
+            if (total === 0) {
+                return; // Keep loading message if no data
+            }
+            
+            if (showing === total) {
+                stats.innerHTML = `<p>${total} accounting terms</p>`;
+            } else {
+                stats.innerHTML = `<p>Showing ${showing} of ${total} terms</p>`;
+            }
+        }
+
+        // Show error message
+        function showErrorMessage(errorDetails) {
+            const stats = document.getElementById('statsDisplay');
+            const grid = document.getElementById('glossaryGrid');
+            const noResults = document.getElementById('noResults');
+            
+            grid.style.display = 'none';
+            noResults.style.display = 'none';
+            
+            stats.innerHTML = `
+                <div class="error-message">
+                    <h3>Unable to load glossary data</h3>
+                    <p>There was an error loading data from Google Sheets: ${errorDetails}</p>
+                    <p>Please ensure the Google Sheet is published to the web as CSV and try again.</p>
+                    <button class="refresh-button" onclick="location.reload()">Refresh Page</button>
+                </div>
+            `;
+        }
+
+        // Debounce function for search
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Initialize the app when DOM is ready
+        document.addEventListener('DOMContentLoaded', loadGlossaryData);
+        
+        // Auto-refresh data every 5 minutes (optional)
+        setInterval(loadGlossaryData, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
