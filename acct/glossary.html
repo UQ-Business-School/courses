@@ -51,8 +51,6 @@
         .uq-logo {
             height: 40px;
             width: auto;
-            color: white;
-            font-weight: bold;
         }
 
         .header {
@@ -410,7 +408,7 @@
     <!-- UQ Official Banner -->
     <div class="uq-banner">
         <div class="uq-banner-content">
-            <div class="uq-logo">UQ</div>
+            <img src="https://uq-business-school.github.io/courses/acct/uq-logo.svg" alt="The University of Queensland" class="uq-logo">
         </div>
     </div>
 
@@ -599,6 +597,10 @@
         // Initialize the interface
         function initializeInterface() {
             createAlphabetNavigation();
+            
+            // Apply initial filter to 'A'
+            applyFilters();
+            
             updateStatsDisplay();
             
             // Set up search functionality
@@ -613,20 +615,26 @@
             
             const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
             
-            // Add "All" button
-            const allBtn = document.createElement('button');
-            allBtn.textContent = 'All';
-            allBtn.classList.add('active');
-            allBtn.addEventListener('click', () => filterByLetter(''));
-            alphabetNav.appendChild(allBtn);
-            
-            // Add letter buttons
+            // Add letter buttons first (A-Z)
             alphabet.forEach(letter => {
                 const btn = document.createElement('button');
                 btn.textContent = letter;
+                // Make 'A' active by default
+                if (letter === 'A') {
+                    btn.classList.add('active');
+                }
                 btn.addEventListener('click', () => filterByLetter(letter));
                 alphabetNav.appendChild(btn);
             });
+            
+            // Add "All" button at the end
+            const allBtn = document.createElement('button');
+            allBtn.textContent = 'All';
+            allBtn.addEventListener('click', () => filterByLetter(''));
+            alphabetNav.appendChild(allBtn);
+            
+            // Set initial filter to 'A'
+            currentFilter = 'A';
         }
 
         // Filter terms by letter
