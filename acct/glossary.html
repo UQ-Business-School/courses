@@ -523,10 +523,58 @@
 
         // Parse CSV text into array of objects
         function parseCSV(csvText) {
-            const lines = csvText.split('\n').map(line => line.trim()).filter(line => line);
-            if (lines.length < 2) return [];
+            // More robust CSV parsing that handles multi-line fields
+            const rows = [];
+            let currentRow = [];
+            let currentField = '';
+            let inQuotes = false;
             
-            const headers = parseCSVLine(lines[0]);
+            for (let i = 0; i < csvText.length; i++) {
+                const char = csvText[i];
+                const nextChar = csvText[i + 1];
+                
+                if (char === '"') {
+                    if (inQuotes && nextChar === '"') {
+                        // Escaped quote
+                        currentField += '"';
+                        i++; // Skip next quote
+                    } else {
+                        // Toggle quote state
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    // End of field
+                    currentRow.push(currentField.trim());
+                    currentField = '';
+                } else if ((char === '\n' || char === '\r') && !inQuotes) {
+                    // End of row
+                    if (char === '\r' && nextChar === '\n') {
+                        i++; // Skip \n in \r\n
+                    }
+                    if (currentField || currentRow.length > 0) {
+                        currentRow.push(currentField.trim());
+                        if (currentRow.some(field => field)) { // Only add non-empty rows
+                            rows.push(currentRow);
+                        }
+                        currentRow = [];
+                        currentField = '';
+                    }
+                } else {
+                    currentField += char;
+                }
+            }
+            
+            // Don't forget the last field/row
+            if (currentField || currentRow.length > 0) {
+                currentRow.push(currentField.trim());
+                if (currentRow.some(field => field)) {
+                    rows.push(currentRow);
+                }
+            }
+            
+            if (rows.length < 2) return [];
+            
+            const headers = rows[0];
             const data = [];
             
             // Find the indices of the columns we need
@@ -539,13 +587,14 @@
             const defCol = definitionIndex >= 0 ? definitionIndex : 1;
             const srcCol = sourceIndex >= 0 ? sourceIndex : 2;
             
-            for (let i = 1; i < lines.length; i++) {
-                const fields = parseCSVLine(lines[i]);
+            // Process data rows
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
                 
-                if (fields.length > Math.max(termCol, defCol, srcCol)) {
-                    const term = fields[termCol]?.trim() || '';
-                    const definition = fields[defCol]?.trim() || '';
-                    const source = fields[srcCol]?.trim() || '';
+                if (row.length > Math.max(termCol, defCol, srcCol)) {
+                    const term = row[termCol]?.trim() || '';
+                    const definition = row[defCol]?.trim() || '';
+                    const source = row[srcCol]?.trim() || '';
                     
                     // Only add if we have at least a term and definition
                     if (term && definition) {
