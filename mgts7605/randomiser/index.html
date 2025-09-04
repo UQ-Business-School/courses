@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Version Generator with Answer Key</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .input-section, .output-section {
+            margin: 20px 0;
+        }
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 10px 10px 0;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:active {
+            transform: translateY(1px);
+        }
+        #extractKeyBtn {
+            background-color: #9C27B0;
+        }
+        #extractKeyBtn:hover {
+            background-color: #7B1FA2;
+        }
+        #copyBtn, #copyKeyBtn {
+            background-color: #2196F3;
+        }
+        #copyBtn:hover, #copyKeyBtn:hover {
+            background-color: #1976D2;
+        }
+        #clearBtn {
+            background-color: #f44336;
+        }
+        #clearBtn:hover {
+            background-color: #da190b;
+        }
+        .instructions {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4CAF50;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #2e7d32;
+        }
+        .instructions ul {
+            margin: 10px 0;
+            padding-left: 25px;
+        }
+        .instructions li {
+            margin: 5px 0;
+        }
+        #output {
+            background-color: #f9f9f9;
+            border: 2px solid #4CAF50;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        #answerKey {
+            background-color: #f3e5f5;
+            border: 2px solid #9C27B0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            min-height: 250px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            display: none;
+        }
+        .status.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        .button-group {
+            margin: 20px 0;
+        }
+        .stats {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border: 1px solid #ffeeba;
+            display: none;
+        }
+        .stats.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Quiz Version Generator with Answer Key</h1>
+        
+        <div class="instructions">
+            <h3>How to use:</h3>
+            <ul>
+                <li>Paste your quiz with questions numbered 1-10</li>
+                <li>Each question should have options a, b, c, d</li>
+                <li>Mark correct answers with an asterisk (*) before the letter</li>
+                <li>Click "Generate 6 Versions" to create randomised versions</li>
+                <li>Click "Extract Answer Key" to generate the answer key table</li>
+                <li>Question order and answer order will be shuffled in each version</li>
+                <li>The correct answer will remain marked with * in its new position</li>
+            </ul>
+        </div>
+
+        <div class="input-section">
+            <h2>Input Quiz (Version A)</h2>
+            <textarea id="input" placeholder="Paste your quiz here...
+
+Example format:
+1. Which approach uses fixed weights to calculate overall performance scores?
+a. creative approach
+*b. mechanical approach
+c. methodological approach
+d. judgemental approach
+
+2. Which meeting explains how the performance system operates?
+*a. system inauguration
+b. self-appraisal
+c. development plan
+d. objective setting"></textarea>
+        </div>
+
+        <div class="button-group">
+            <button onclick="generateVersions()">🎲 Generate 6 Versions</button>
+            <button id="clearBtn" onclick="clearAll()">🗑️ Clear All</button>
+        </div>
+
+        <div id="status" class="status"></div>
+        <div id="stats" class="stats"></div>
+
+        <div class="output-section">
+            <h2>Output (All Versions)</h2>
+            <textarea id="output" readonly placeholder="Generated versions will appear here..."></textarea>
+            <button id="extractKeyBtn" onclick="extractAnswerKey()">📊 Extract Answer Key</button>
+            <button id="copyBtn" onclick="copyOutput()">📋 Copy All Versions</button>
+        </div>
+
+        <div class="output-section">
+            <h2>Answer Key</h2>
+            <textarea id="answerKey" readonly placeholder="Answer key will appear here after extracting..."></textarea>
+            <button id="copyKeyBtn" onclick="copyAnswerKey()">📋 Copy Answer Key</button>
+        </div>
+    </div>
+
+    <script>
+        function parseQuiz(text) {
+            // Split by question numbers (1., 2., etc.)
+            const questionPattern = /^\d+\.\s/gm;
+            const lines = text.trim().split('\n');
+            const questions = [];
+            let currentQuestion = null;
+            let currentOptions = [];
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                // Check if this is a new question
+                if (questionPattern.test(line)) {
+                    // Save previous question if exists
+                    if (currentQuestion) {
+                        questions.push({
+                            text: currentQuestion,
+                            options: currentOptions
+                        });
+                    }
+                    // Start new question
+                    currentQuestion = line.replace(questionPattern, '').trim();
+                    currentOptions = [];
+                } else if (/^[*]?[a-d]\./.test(line)) {
+                    // This is an answer option
+                    currentOptions.push(line);
+                } else if (currentQuestion) {
+                    // This is a continuation of the question text (like examples)
+                    currentQuestion += '\n' + line;
+                }
+            }
+            
+            // Don't forget the last question
+            if (currentQuestion) {
+                questions.push({
+                    text: currentQuestion,
+                    options: currentOptions
+                });
+            }
+            
+            return questions;
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function formatQuestion(questionObj, number) {
+            let result = `${number}. ${questionObj.text}\n`;
+            
+            // Shuffle options
+            const shuffledOptions = shuffleArray(questionObj.options);
+            
+            // Re-letter them a, b, c, d
+            const letters = ['a', 'b', 'c', 'd'];
+            shuffledOptions.forEach((option, index) => {
+                // Remove old letter and asterisk, keep the text
+                const optionText = option.replace(/^[*]?[a-d]\./, '').trim();
+                const isCorrect = option.startsWith('*');
+                
+                // Add new letter with asterisk if correct
+                if (isCorrect) {
+                    result += `*${letters[index]}. ${optionText}\n`;
+                } else {
+                    result += `${letters[index]}. ${optionText}\n`;
+                }
+            });
+            
+            return result;
+        }
+
+        function generateVersions() {
+            const input = document.getElementById('input').value;
+            const statusDiv = document.getElementById('status');
+            const statsDiv = document.getElementById('stats');
+            
+            if (!input.trim()) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Please paste a quiz first!';
+                return;
+            }
+            
+            try {
+                const questions = parseQuiz(input);
+                
+                if (questions.length === 0) {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = '❌ No questions found. Check your format!';
+                    return;
+                }
+                
+                let output = '';
+                const versionLabels = ['A', 'B', 'C', 'D', 'E', 'F'];
+                
+                for (let v = 0; v < 6; v++) {
+                    output += `${'='.repeat(50)}\n`;
+                    output += `VERSION ${versionLabels[v]}\n`;
+                    output += `${'='.repeat(50)}\n\n`;
+                    
+                    // Shuffle question order (except for Version A, keep original)
+                    const shuffledQuestions = v === 0 ? questions : shuffleArray(questions);
+                    
+                    shuffledQuestions.forEach((question, index) => {
+                        output += formatQuestion(question, index + 1);
+                        output += '\n';
+                    });
+                    
+                    output += '\n';
+                }
+                
+                document.getElementById('output').value = output;
+                
+                statusDiv.className = 'status success';
+                statusDiv.textContent = `✅ Successfully generated 6 versions!`;
+                
+                statsDiv.className = 'stats show';
+                statsDiv.innerHTML = `📊 <strong>Stats:</strong> ${questions.length} questions found | 6 versions created | ${questions.length * 6} total questions generated`;
+                
+                // Clear answer key when generating new versions
+                document.getElementById('answerKey').value = '';
+                
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = `❌ Error: ${error.message}`;
+            }
+        }
+
+        function extractAnswerKey() {
+            const input = document.getElementById('output').value;
+            const statusDiv = document.getElementById('status');
+            const outputArea = document.getElementById('answerKey');
+            
+            if (!input.trim()) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Please generate versions first!';
+                return;
+            }
+            
+            try {
+                const versionLabels = ['A', 'B', 'C', 'D', 'E', 'F'];
+                const answerKey = {};
+                
+                // Initialize for 10 questions
+                for (let q = 1; q <= 10; q++) {
+                    answerKey[q] = {};
+                }
+                
+                // Process each version
+                versionLabels.forEach(label => {
+                    // Find the version section
+                    const versionStart = input.indexOf(`VERSION ${label}`);
+                    if (versionStart === -1) {
+                        return;
+                    }
+                    
+                    // Find the end of this version (start of next version or end of input)
+                    let versionEnd = input.length;
+                    for (let nextLabel of versionLabels) {
+                        if (nextLabel !== label) {
+                            const nextStart = input.indexOf(`VERSION ${nextLabel}`, versionStart + 10);
+                            if (nextStart !== -1 && nextStart < versionEnd) {
+                                versionEnd = nextStart;
+                            }
+                        }
+                    }
+                    
+                    // Extract this version's content
+                    const versionContent = input.substring(versionStart, versionEnd);
+                    const lines = versionContent.split('\n');
+                    
+                    let currentQuestion = 0;
+                    
+                    // Go through each line
+                    for (let i = 0; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        
+                        // Is this a question number?
+                        if (line.match(/^(\d+)\./)) {
+                            const match = line.match(/^(\d+)\./);
+                            currentQuestion = parseInt(match[1]);
+                        }
+                        
+                        // Is this a correct answer (starts with *)?
+                        if (line.startsWith('*') && currentQuestion > 0) {
+                            // Extract just the letter after the asterisk
+                            const letterMatch = line.match(/^\*([a-d])\./i);
+                            if (letterMatch) {
+                                const answer = letterMatch[1].toLowerCase();
+                                answerKey[currentQuestion][label] = answer;
+                            }
+                        }
+                    }
+                });
+                
+                // Build the answer key table
+                let output = 'ANSWER KEY\n';
+                output += '='.repeat(60) + '\n\n';
+                output += 'Question | Ver A | Ver B | Ver C | Ver D | Ver E | Ver F\n';
+                output += '-'.repeat(60) + '\n';
+                
+                // Count how many answers we found
+                let totalFound = 0;
+                
+                for (let q = 1; q <= 10; q++) {
+                    let row = String(q).padEnd(8) + ' |';
+                    
+                    versionLabels.forEach(version => {
+                        const answer = answerKey[q][version];
+                        if (answer) {
+                            row += '   ' + answer.toUpperCase() + '   |';
+                            totalFound++;
+                        } else {
+                            row += '   ?   |';
+                        }
+                    });
+                    
+                    output += row + '\n';
+                }
+                
+                output += '\n' + '-'.repeat(60) + '\n';
+                output += `Answers found: ${totalFound} out of 60\n`;
+                
+                if (totalFound === 0) {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = '❌ No answers found. Check that correct answers are marked with *';
+                    return;
+                }
+                
+                outputArea.value = output;
+                
+                statusDiv.className = 'status success';
+                statusDiv.textContent = `✅ Answer key extracted! Found ${totalFound} answers.`;
+                
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = `❌ Error: ${error.message}`;
+                console.error('Error:', error);
+            }
+        }
+
+        function copyOutput() {
+            const output = document.getElementById('output');
+            output.select();
+            document.execCommand('copy');
+            
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = 'status success';
+            statusDiv.textContent = '✅ All versions copied to clipboard!';
+            
+            setTimeout(() => {
+                statusDiv.className = 'status';
+            }, 2000);
+        }
+
+        function copyAnswerKey() {
+            const answerKey = document.getElementById('answerKey');
+            answerKey.select();
+            document.execCommand('copy');
+            
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = 'status success';
+            statusDiv.textContent = '✅ Answer key copied to clipboard!';
+            
+            setTimeout(() => {
+                statusDiv.className = 'status';
+            }, 2000);
+        }
+
+        function clearAll() {
+            document.getElementById('input').value = '';
+            document.getElementById('output').value = '';
+            document.getElementById('answerKey').value = '';
+            document.getElementById('status').className = 'status';
+            document.getElementById('stats').className = 'stats';
+        }
+
+        // Allow Tab key in textareas
+        document.getElementById('input').addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                this.value = this.value.substring(0, start) + '\t' + this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 1;
+            }
+        });
+    </script>
+</body>
+</html>
