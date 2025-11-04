@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who's That Duck - Worksheet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink: #FFCBE1;
+            --pink-dark: #FF94C8;
+            --green: #D6E5BD;
+            --yellow: #F9E1A8;
+            --blue: #BCD8EC;
+            --blue-dark: #8BBFE6;
+            --purple: #DCCCEC;
+            --peach: #FFDAB4;
+            --dark: #2c3e50;
+            --light-gray: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: white;
+            color: var(--dark);
+            padding: 0;
+        }
+
+        /* Print settings */
+        @media print {
+            .page {
+                page-break-after: always;
+            }
+            
+            @page {
+                margin: 0.5in;
+                size: letter;
+            }
+        }
+
+        .page {
+            width: 8.5in;
+            min-height: 11in;
+            margin: 0 auto;
+            padding: 0.5in;
+            background: white;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--yellow);
+            padding-bottom: 15px;
+        }
+
+        .header-ducks {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .header-duck {
+            height: 60px;
+            width: auto;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .header-duck.left {
+            transform: rotate(-10deg);
+        }
+
+        .header-duck.right {
+            transform: rotate(10deg) scaleX(-1);
+        }
+
+        h1 {
+            font-size: 1.8em;
+            color: var(--dark);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-weight: 900;
+            margin: 0;
+            text-shadow: 2px 2px 0px var(--yellow), 4px 4px 0px var(--pink);
+        }
+
+        .subtitle {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            font-weight: 400;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 10px;
+        }
+
+        .section-header.ld {
+            background: linear-gradient(135deg, var(--pink) 0%, var(--pink-dark) 100%);
+        }
+
+        .section-header.ed {
+            background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            color: var(--dark);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .points-badge {
+            background: white;
+            color: var(--dark);
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .duck-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .duck-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid var(--light-gray);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .duck-item.ld {
+            border-color: var(--pink-dark);
+        }
+
+        .duck-item.ed {
+            border-color: var(--blue-dark);
+        }
+
+        .duck-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            background: white;
+        }
+
+        .duck-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .duck-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: #bdc3c7;
+            background: var(--light-gray);
+        }
+
+        .duck-number-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            min-width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .duck-item.ld .duck-number-badge {
+            background: var(--pink-dark);
+        }
+
+        .duck-item.ed .duck-number-badge {
+            background: var(--blue-dark);
+        }
+
+        .duck-details {
+            padding: 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .duck-item.ld .duck-details {
+            background: linear-gradient(to bottom, white 0%, var(--pink) 100%);
+        }
+
+        .duck-item.ed .duck-details {
+            background: linear-gradient(to bottom, white 0%, var(--blue) 100%);
+        }
+
+        .name-field {
+            margin-bottom: 8px;
+        }
+
+        .field-label {
+            font-size: 0.8em;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 3px;
+        }
+
+        .field-input {
+            width: 100%;
+            border: none;
+            border-bottom: 2px solid var(--dark);
+            padding: 4px 0;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85em;
+            background: transparent;
+        }
+
+        .learning-field {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .learning-lines {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            min-height: 60px;
+        }
+
+        .line {
+            border-bottom: 1px solid #666;
+            height: 18px;
+        }
+
+        .score-box {
+            background: var(--yellow);
+            border: 3px solid var(--dark);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .score-box p {
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .score-blank {
+            display: inline-block;
+            border-bottom: 2px solid var(--dark);
+            width: 60px;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- PAGE 1: EXTERNAL DUCKS -->
+    <div class="page">
+        <div class="header">
+            <div class="header-ducks">
+                <img src="Artboard_1.png" alt="Duck Silhouette" class="header-duck left">
+                <h1>Who's That Duck?</h1>
+                <img src="Artboard_1.png" alt="Duck Silhouette" class="header-duck right">
+            </div>
+            <p class="subtitle">A UQ Business School Learning Design Team Activity</p>
+        </div>
+
+        <!-- External Ducks Section -->
+        <div class="section-header ed">
+            <div class="section-title">External Ducks</div>
+            <div class="points-badge">1 Point Each</div>
+        </div>
+
+        <div class="duck-grid">
+            <!-- ED 1-10 -->
+            <div class="duck-item ed">
+                <div class="duck-image-wrapper">
+                    <img src="ed-1.png" alt="ED 1" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">ED 1</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ed">
+                <div class="duck-image-wrapper">
+                    <img src="ed-2.png" alt="ED 2" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">ED 2</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ed">
+                <div class="duck-image-wrapper">
+                    <img src="ed-3.png" alt="ED 3" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">ED 3</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ed">
+                <div class="duck-image-wrapper">
+                    <img src="ed-4.png" alt="ED 4" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">ED 4</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ed">
+                <div class="duck-image-wrapper">
+                    <img src="ed-5.png" alt="ED 5" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">ED 5</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ed">
+                <div class="duck-image-wrapper">
+                    <img src="ed-6.png" alt="ED 6" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">ED 6</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ed">
+                <div class="duck-image-wrapper">
+                    <img src="ed-7.png" alt="ED 7" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">ED 7</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ed">
+                <div class="duck-image-wrapper">
+                    <img src="ed-8.png" alt="ED 8" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">ED 8</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ed">
+                <div class="duck-image-wrapper">
+                    <img src="ed-9.png" alt="ED 9" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">ED 9</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ed">
+                <div class="duck-image-wrapper">
+                    <img src="ed-10.png" alt="ED 10" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">ED 10</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="score-box">
+            <p>
+                ED correct (×1): <span class="score-blank"></span> = 
+                <strong>Score so far:</strong> <span class="score-blank"></span>
+            </p>
+        </div>
+    </div>
+
+    <!-- PAGE 2: LD FLOCK (All 13 ducks) -->
+    <div class="page">
+        <div class="header">
+            <div class="header-ducks">
+                <img src="Artboard_1.png" alt="Duck Silhouette" class="header-duck left">
+                <h1>Who's That Duck?</h1>
+                <img src="Artboard_1.png" alt="Duck Silhouette" class="header-duck right">
+            </div>
+            <p class="subtitle">A UQ Business School Learning Design Team Activity</p>
+        </div>
+
+        <div class="section-header ld">
+            <div class="section-title">LD Flock</div>
+            <div class="points-badge">2 Points Each</div>
+        </div>
+
+        <div class="duck-grid">
+            <!-- LD 1-13 (continuing grid) -->
+            <div class="duck-item ld">
+                <div class="duck-image-wrapper">
+                    <img src="ld-1.png" alt="LD 1" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">LD 1</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                    <div class="learning-field">
+                        <div class="field-label">Something new I learned:</div>
+                        <div class="learning-lines">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ld">
+                <div class="duck-image-wrapper">
+                    <img src="ld-2.png" alt="LD 2" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">LD 2</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                    <div class="learning-field">
+                        <div class="field-label">Something new I learned:</div>
+                        <div class="learning-lines">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ld">
+                <div class="duck-image-wrapper">
+                    <img src="ld-3.png" alt="LD 3" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">LD 3</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                    <div class="learning-field">
+                        <div class="field-label">Something new I learned:</div>
+                        <div class="learning-lines">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ld">
+                <div class="duck-image-wrapper">
+                    <img src="ld-4.png" alt="LD 4" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">LD 4</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                    <div class="learning-field">
+                        <div class="field-label">Something new I learned:</div>
+                        <div class="learning-lines">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ld">
+                <div class="duck-image-wrapper">
+                    <img src="ld-5.png" alt="LD 5" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">LD 5</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                    <div class="learning-field">
+                        <div class="field-label">Something new I learned:</div>
+                        <div class="learning-lines">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ld">
+                <div class="duck-image-wrapper">
+                    <img src="ld-6.png" alt="LD 6" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">LD 6</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                    <div class="learning-field">
+                        <div class="field-label">Something new I learned:</div>
+                        <div class="learning-lines">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ld">
+                <div class="duck-image-wrapper">
+                    <img src="ld-7.png" alt="LD 7" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">LD 7</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                    <div class="learning-field">
+                        <div class="field-label">Something new I learned:</div>
+                        <div class="learning-lines">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ld">
+                <div class="duck-image-wrapper">
+                    <img src="ld-8.png" alt="LD 8" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">LD 8</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                    <div class="learning-field">
+                        <div class="field-label">Something new I learned:</div>
+                        <div class="learning-lines">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ld">
+                <div class="duck-image-wrapper">
+                    <img src="ld-9.png" alt="LD 9" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">LD 9</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                    <div class="learning-field">
+                        <div class="field-label">Something new I learned:</div>
+                        <div class="learning-lines">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ld">
+                <div class="duck-image-wrapper">
+                    <img src="ld-10.png" alt="LD 10" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">LD 10</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                    <div class="learning-field">
+                        <div class="field-label">Something new I learned:</div>
+                        <div class="learning-lines">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ld">
+                <div class="duck-image-wrapper">
+                    <img src="ld-11.png" alt="LD 11" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">LD 11</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                    <div class="learning-field">
+                        <div class="field-label">Something new I learned:</div>
+                        <div class="learning-lines">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ld">
+                <div class="duck-image-wrapper">
+                    <img src="ld-12.png" alt="LD 12" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">LD 12</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                    <div class="learning-field">
+                        <div class="field-label">Something new I learned:</div>
+                        <div class="learning-lines">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="duck-item ld">
+                <div class="duck-image-wrapper">
+                    <img src="ld-13.png" alt="LD 13" onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'duck-placeholder\'>🦆</div>';">
+                    <div class="duck-number-badge">LD 13</div>
+                </div>
+                <div class="duck-details">
+                    <div class="name-field">
+                        <div class="field-label">Name:</div>
+                        <input type="text" class="field-input">
+                    </div>
+                    <div class="learning-field">
+                        <div class="field-label">Something new I learned:</div>
+                        <div class="learning-lines">
+                            <div class="line"></div>
+                            <div class="line"></div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="score-box">
+            <p>
+                Score so far: <span class="score-blank"></span> + 
+                LD correct (×2): <span class="score-blank"></span> = 
+                <strong>Total:</strong> <span class="score-blank"></span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
