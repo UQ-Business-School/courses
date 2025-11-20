@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Practice Tools - UQ Business School</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            margin-bottom: 50px;
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .intro {
+            background: #fafafa;
+            border-left: 4px solid #1a1a1a;
+            padding: 20px 24px;
+            margin-bottom: 50px;
+            border-radius: 8px;
+        }
+        
+        .intro p {
+            margin-bottom: 12px;
+        }
+        
+        .intro p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .demo-notice {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 50px;
+            font-size: 14px;
+        }
+        
+        .demo-notice strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+        
+        .tool-grid {
+            display: grid;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .tool-card {
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+        
+        .tool-card:hover {
+            border-color: #999;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+        }
+        
+        .tool-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .tool-icon {
+            font-size: 32px;
+            margin-right: 16px;
+            line-height: 1;
+        }
+        
+        .tool-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        
+        .tool-subtitle {
+            font-size: 14px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .tool-description {
+            color: #444;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        
+        .tool-features {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+        
+        .tool-features ul {
+            list-style: none;
+            margin-bottom: 0;
+        }
+        
+        .tool-features li {
+            padding-left: 20px;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .tool-features li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .tool-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .tool-link {
+            display: inline-block;
+            background: #1a1a1a;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-size: 15px;
+        }
+        
+        .tool-link:hover {
+            background: #333;
+            transform: scale(1.02);
+        }
+        
+        .tips {
+            background: #e8f5e9;
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 40px;
+        }
+        
+        .tips h2 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: #2e7d32;
+        }
+        
+        .tips ul {
+            margin-left: 20px;
+        }
+        
+        .tips li {
+            margin-bottom: 8px;
+            color: #1b5e20;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            padding-top: 40px;
+            border-top: 1px solid #e5e5e5;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 30px 16px;
+            }
+            
+            h1 {
+                font-size: 26px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+            
+            .tool-card {
+                padding: 24px;
+            }
+            
+            .tool-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Interview Practice Tools</h1>
+            <p class="subtitle">AI-powered practice for communication skills</p>
+        </div>
+        
+        <div class="intro">
+            <p><strong>Welcome!</strong> These tools help you practice your interview and presentation skills in a low-pressure environment.</p>
+            <p>Use them as many times as you need to build confidence with English communication, interview responses, and slide design.</p>
+        </div>
+        
+        <div class="demo-notice">
+            <strong>⚠️ Demo Version</strong>
+            These tools have limited API credits available. If you see an error message, the credits may have run out.
+        </div>
+        
+        <div class="tool-grid">
+            <!-- Tool 1: OpenAI Realtime Voice -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">🎤</div>
+                    <div>
+                        <h2 class="tool-title">Voice Mode</h2>
+                        <p class="tool-subtitle">Real-time speaking practice</p>
+                    </div>
+                </div>
+                
+                <p class="tool-description">
+                    Practice speaking interview answers out loud using the A-C-R Method (Acknowledge-Content-Reflect) and PREP structure. Get instant voice feedback as you talk – like having a conversation with a coach.
+                </p>
+                
+                <div class="tool-features">
+                    <ul>
+                        <li>Real-time voice conversation</li>
+                        <li>Push-to-talk when you're ready to speak</li>
+                        <li>Step-by-step coaching through your answer</li>
+                        <li>Practice common interview questions</li>
+                    </ul>
+                </div>
+                
+                <a href="https://uq-openai-voice.fly.dev/voice-interview-coach-realtime.html" 
+                   class="tool-link" 
+                   target="_blank" 
+                   rel="noopener noreferrer">
+                    Try Voice Mode →
+                </a>
+            </div>
+            
+            <!-- Tool 2: Anthropic Voice via Text -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">🗣️</div>
+                    <div>
+                        <h2 class="tool-title">Voice via Text</h2>
+                        <p class="tool-subtitle">Budget-friendly voice practice</p>
+                    </div>
+                </div>
+                
+                <p class="tool-description">
+                    Same voice conversation experience as Voice Mode, but uses a different (cheaper) model setup. You'll notice a bit more delay between speaking and hearing responses, but it works the same way and has more available usage time.
+                </p>
+                
+                <div class="tool-features">
+                    <ul>
+                        <li>Voice conversation with coaching feedback</li>
+                        <li>A bit slower, but more practice time available</li>
+                        <li>Same A-C-R and PREP coaching approach</li>
+                        <li>Better for longer practice sessions</li>
+                    </ul>
+                </div>
+                
+                <a href="https://voice-interview-coach.fly.dev/voice-interview-coach.html" 
+                   class="tool-link" 
+                   target="_blank" 
+                   rel="noopener noreferrer">
+                    Try Voice via Text →
+                </a>
+            </div>
+            
+            <!-- Tool 3: Slide Analysis -->
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">📊</div>
+                    <div>
+                        <h2 class="tool-title">Slide Analysis</h2>
+                        <p class="tool-subtitle">Improve your presentations</p>
+                    </div>
+                </div>
+                
+                <p class="tool-description">
+                    Upload a presentation slide and get feedback on design principles: avoiding sentences, focusing your message, using size and contrast effectively, and keeping slides simple.
+                </p>
+                
+                <div class="tool-features">
+                    <ul>
+                        <li>Upload PNG or JPG slides</li>
+                        <li>Get feedback on 5 design principles</li>
+                        <li>Coaching questions to guide improvements</li>
+                        <li>Try different scenarios and revise</li>
+                    </ul>
+                </div>
+                
+                <a href="https://voice-interview-coach.fly.dev/slide-design-feedback.html" 
+                   class="tool-link" 
+                   target="_blank" 
+                   rel="noopener noreferrer">
+                    Try Slide Analysis →
+                </a>
+            </div>
+        </div>
+        
+        <div class="tips">
+            <h2>💡 Tips for Getting the Most Out of These Tools</h2>
+            <ul>
+                <li><strong>Practice regularly:</strong> Short practice sessions work better than cramming before an interview</li>
+                <li><strong>Start with Voice Mode for the best experience:</strong> It's faster and feels more natural, but has limited usage</li>
+                <li><strong>Use Voice via Text for longer practice:</strong> More available time, just expect slightly slower responses</li>
+                <li><strong>Don't aim for perfect:</strong> These tools help you improve, not be perfect from the start</li>
+                <li><strong>Revise your slides:</strong> Use the slide tool feedback to make changes, then upload again to see improvement</li>
+                <li><strong>It's okay to make mistakes:</strong> That's what practice is for!</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p><strong>UQ Business School</strong> | Master of Business Program</p>
+            <p style="margin-top: 8px;">For practice and skill development | Demo version with limited usage</p>
+        </div>
+    </div>
+</body>
+</html>
