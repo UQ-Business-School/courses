@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BISM1201 Practice Quiz</title>
+    <style>
+        :root {
+            --uq-purple: #51247A;
+            --uq-purple-light: #962A8B;
+            --uq-gold: #E6A522;
+            --correct-green: #2E7D32;
+            --incorrect-red: #C62828;
+            --bg-light: #F5F5F5;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html, body {
+            height: auto;
+            overflow: visible;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: transparent;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--uq-purple) 0%, var(--uq-purple-light) 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.125rem;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 0.875rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        /* Setup Screen */
+        .setup-screen {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .setup-screen h2 {
+            color: var(--uq-purple);
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            background: var(--bg-light);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .checkbox-item:hover {
+            background: #E8E8E8;
+        }
+        
+        .checkbox-item input {
+            margin-right: 0.5rem;
+        }
+        
+        .question-count {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .question-count input {
+            width: 80px;
+            padding: 0.5rem;
+            border: 2px solid #DDD;
+            border-radius: 6px;
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        .question-count input:focus {
+            outline: none;
+            border-color: var(--uq-purple);
+        }
+        
+        .available-count {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-primary {
+            background: var(--uq-purple);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #666;
+            color: white;
+        }
+        
+        .btn-success {
+            background: var(--correct-green);
+            color: white;
+        }
+        
+        /* Quiz Screen */
+        .quiz-screen {
+            display: none;
+        }
+        
+        .progress-bar {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .progress-track {
+            height: 8px;
+            background: #E0E0E0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--uq-purple), var(--uq-purple-light));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .question-meta {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .tag-topic {
+            background: #E3F2FD;
+            color: #1565C0;
+        }
+        
+        .tag-difficulty {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+        
+        .question-text {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option:hover:not(.disabled) {
+            border-color: var(--uq-purple);
+            background: #F9F5FC;
+        }
+        
+        .option.selected {
+            border-color: var(--uq-purple);
+            background: #F3E5F5;
+        }
+        
+        .option.correct {
+            border-color: var(--correct-green);
+            background: #E8F5E9;
+        }
+        
+        .option.incorrect {
+            border-color: var(--incorrect-red);
+            background: #FFEBEE;
+        }
+        
+        .option.disabled {
+            cursor: default;
+        }
+        
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #E0E0E0;
+            color: #666;
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .option.selected .option-letter {
+            background: var(--uq-purple);
+            color: white;
+        }
+        
+        .option.correct .option-letter {
+            background: var(--correct-green);
+            color: white;
+        }
+        
+        .option.incorrect .option-letter {
+            background: var(--incorrect-red);
+            color: white;
+        }
+        
+        .option-text {
+            flex: 1;
+        }
+        
+        .feedback {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .feedback.show {
+            display: block;
+        }
+        
+        .feedback.correct {
+            background: #E8F5E9;
+            border-left: 4px solid var(--correct-green);
+        }
+        
+        .feedback.incorrect {
+            background: #FFEBEE;
+            border-left: 4px solid var(--incorrect-red);
+        }
+        
+        .feedback-header {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feedback.correct .feedback-header {
+            color: var(--correct-green);
+        }
+        
+        .feedback.incorrect .feedback-header {
+            color: var(--incorrect-red);
+        }
+        
+        .quiz-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Results Screen */
+        .results-screen {
+            display: none;
+        }
+        
+        .results-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--uq-purple) 0%, var(--uq-purple-light) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+        }
+        
+        .score-number {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .results-message {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--uq-purple);
+            margin-bottom: 0.5rem;
+        }
+        
+        .results-detail {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        
+        .results-breakdown {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+        }
+        
+        .breakdown-item {
+            text-align: center;
+        }
+        
+        .breakdown-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .breakdown-number.correct {
+            color: var(--correct-green);
+        }
+        
+        .breakdown-number.incorrect {
+            color: var(--incorrect-red);
+        }
+        
+        .breakdown-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .results-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .question-card {
+                padding: 1.5rem;
+            }
+            
+            .checkbox-group {
+                flex-direction: column;
+            }
+            
+            .results-actions {
+                flex-direction: column;
+            }
+            
+            .results-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>BISM1201 Practice Quiz</h1>
+        <p>Weeks 6-7: ISD Methodologies & Excel VLOOKUP</p>
+    </div>
+    
+    <div class="container">
+        <!-- Setup Screen -->
+        <div class="setup-screen" id="setupScreen">
+            <h2>Configure Your Practice Quiz</h2>
+            
+            <div class="filter-group">
+                <label>Topics</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="topicWaterfall" checked>
+                        Waterfall/SDLC
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="topicScrum" checked>
+                        Agile/Scrum
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="topicVLOOKUP" checked>
+                        VLOOKUP
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="topicReferencing" checked>
+                        Cell Referencing
+                    </label>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <label>Difficulty Levels</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="diffRemember" checked>
+                        Remember
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="diffUnderstand" checked>
+                        Understand
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="diffApply" checked>
+                        Apply
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="diffAnalyse" checked>
+                        Analyse
+                    </label>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <label>Number of Questions</label>
+                <div class="question-count">
+                    <input type="number" id="questionCount" value="10" min="1" max="80">
+                    <span class="available-count" id="availableCount">80 questions available</span>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="startQuiz()">Start Practice Quiz</button>
+        </div>
+        
+        <!-- Quiz Screen -->
+        <div class="quiz-screen" id="quizScreen">
+            <div class="progress-bar">
+                <div class="progress-info">
+                    <span id="progressText">Question 1 of 10</span>
+                    <span id="scoreText">Score: 0/0</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="tag tag-topic" id="questionTopic">Topic</span>
+                    <span class="tag tag-difficulty" id="questionDifficulty">Difficulty</span>
+                </div>
+                
+                <div class="question-text" id="questionText">
+                    Question text goes here?
+                </div>
+                
+                <div class="options" id="optionsContainer">
+                    <!-- Options populated by JS -->
+                </div>
+                
+                <div class="feedback" id="feedback">
+                    <div class="feedback-header" id="feedbackHeader">Correct!</div>
+                    <div class="feedback-text" id="feedbackText">Feedback text here.</div>
+                </div>
+            </div>
+            
+            <div class="quiz-actions">
+                <button class="btn btn-secondary" onclick="quitQuiz()">Quit</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" style="display: none;">Next Question</button>
+            </div>
+        </div>
+        
+        <!-- Results Screen -->
+        <div class="results-screen" id="resultsScreen">
+            <div class="results-card">
+                <div class="score-circle">
+                    <div class="score-number" id="finalScore">80%</div>
+                    <div class="score-label">Score</div>
+                </div>
+                
+                <div class="results-message" id="resultsMessage">Great work!</div>
+                <div class="results-detail" id="resultsDetail">You answered 8 out of 10 questions correctly.</div>
+                
+                <div class="results-breakdown">
+                    <div class="breakdown-item">
+                        <div class="breakdown-number correct" id="correctCount">8</div>
+                        <div class="breakdown-label">Correct</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="breakdown-number incorrect" id="incorrectCount">2</div>
+                        <div class="breakdown-label">Incorrect</div>
+                    </div>
+                </div>
+                
+                <div class="results-actions">
+                    <button class="btn btn-primary" onclick="startQuiz()">Try Again (Same Settings)</button>
+                    <button class="btn btn-secondary" onclick="showSetup()">Change Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Question Bank Data (embedded from Excel)
+        const questionBank = [
+            // WATERFALL/SDLC - REMEMBER
+            {id:"W-R1",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Remember",type:"MC",question:"What does SDLC stand for?",options:["Software Development Life Cycle","Systems Development Life Cycle","System Design Logic Control","Software Design Lifecycle Coordination"],correct:"B",correctFeedback:"Correct! SDLC stands for Systems Development Life Cycle, which is the process organisations use to create and maintain information systems.",incorrectFeedback:"The correct answer is Systems Development Life Cycle. This is the standardised process organisations use to plan, create, test, and deploy information systems."},
+            {id:"W-R2",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Remember",type:"TF",question:"In Waterfall methodology, phases are completed sequentially with each phase finishing before the next begins.",options:["True","False"],correct:"A",correctFeedback:"Correct! Waterfall is characterised by its sequential flow where each phase must be completed and approved before the next phase can begin.",incorrectFeedback:"Actually, this statement is true. Waterfall methodology follows a strict sequential order - you cannot start design until requirements are complete, cannot start implementation until design is complete, and so on."},
+            {id:"W-R3",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Remember",type:"MC",question:"Which of the following is NOT a typical phase in the Waterfall SDLC?",options:["Requirements Analysis","System Maintenance","Sprint Planning","Implementation"],correct:"C",correctFeedback:"Correct! Sprint Planning is part of Scrum/Agile methodology, not Waterfall. Waterfall phases include Systems Definition, Requirements Analysis, Design/Development/Testing, Implementation, and Maintenance.",incorrectFeedback:"Sprint Planning is actually a Scrum/Agile term, not part of Waterfall. The typical Waterfall phases are: Systems Definition, Requirements Analysis, Design/Development/Testing, Implementation, and Maintenance."},
+            {id:"W-R4",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Remember",type:"MC",question:"Which phase of Waterfall is often described as the most expensive over the system's lifetime?",options:["Requirements Analysis","Design and Development","Implementation","Maintenance"],correct:"D",correctFeedback:"Correct! Maintenance is often the most expensive phase as it includes continuous support, bug fixing, feature updates, and system upkeep over the entire operational life of the system.",incorrectFeedback:"The Maintenance phase is typically the most expensive because it spans the entire operational life of the system and includes ongoing support, updates, and fixes."},
+            {id:"W-R5",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Remember",type:"TF",question:"The Waterfall methodology is sometimes referred to as the 'plan-driven' or 'traditional' methodology.",options:["True","False"],correct:"A",correctFeedback:"Correct! Waterfall has several alternative names including 'plan-driven', 'traditional', and 'classical' methodology, reflecting its emphasis on upfront planning and documentation.",incorrectFeedback:"This statement is true. Waterfall is known by several names - plan-driven, traditional, and classical - because it has been the dominant approach in business IS development for decades."},
+            
+            // WATERFALL/SDLC - UNDERSTAND
+            {id:"W-U1",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Understand",type:"MC",question:"Why are 'approval gates' important between phases in Waterfall methodology?",options:["They allow management to track progress and control the project","They speed up the development process","They eliminate the need for documentation","They allow developers to skip unnecessary phases"],correct:"A",correctFeedback:"Correct! Approval gates (or control points) between phases allow management to assess progress, review deliverables, and make informed decisions about whether to proceed to the next phase.",incorrectFeedback:"Approval gates serve as control mechanisms that allow project stakeholders to review deliverables, assess progress, and decide whether the project should proceed to the next phase."},
+            {id:"W-U2",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Understand",type:"MC",question:"Why does the cost of making changes increase as a Waterfall project progresses through its phases?",options:["Because developers become less skilled over time","Because later changes require revisiting and modifying work completed in earlier phases","Because hardware costs increase over time","Because management approval becomes harder to obtain"],correct:"B",correctFeedback:"Correct! Changes late in the project require revisiting completed phases - a design change during implementation may require re-doing requirements, design, AND implementation work.",incorrectFeedback:"Later changes are more expensive because work from earlier phases may need to be redone. For example, discovering a requirements error during testing means potentially revising the design, code, and tests."},
+            {id:"W-U3",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Understand",type:"MC",question:"Why is thorough documentation considered a benefit of Waterfall methodology?",options:["It makes the project take longer, which increases billable hours","It ensures requirements can be traced back to business needs and supports maintenance","It impresses clients with the volume of paperwork","It is required by law for all software projects"],correct:"B",correctFeedback:"Correct! Documentation provides traceability between business needs and system features, supports future maintenance, and helps new team members understand the system.",incorrectFeedback:"Documentation in Waterfall serves important purposes: it creates traceability from business needs to system features, supports the maintenance phase, and provides a reference for future changes."},
+            {id:"W-U4",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Understand",type:"TF",question:"The output of the Requirements Analysis phase is a detailed report that must be approved before the project advances to the Design phase.",options:["True","False"],correct:"A",correctFeedback:"Correct! The Requirements Analysis phase produces a detailed requirements document that stakeholders must review and approve before the project can proceed to Design.",incorrectFeedback:"This is true. The requirements phase produces a deliverable (requirements specification) that must be reviewed and approved at the phase gate before Design can begin."},
+            {id:"W-U5",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Understand",type:"MC",question:"Why might Waterfall be particularly suitable for projects in healthcare or government settings?",options:["Because these sectors have more money to spend","Because they prefer older methodologies","Because strict regulatory requirements demand comprehensive documentation and traceability","Because their staff are not trained in modern approaches"],correct:"C",correctFeedback:"Correct! Healthcare and government often have strict regulatory and compliance requirements that demand the comprehensive documentation and formal approval processes that Waterfall provides.",incorrectFeedback:"Regulated industries like healthcare and government often require thorough documentation, audit trails, and formal sign-offs that Waterfall naturally provides through its structured phases and approval gates."},
+            
+            // WATERFALL/SDLC - APPLY
+            {id:"W-A1",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Apply",type:"MC",question:"A bank needs to develop a new system to comply with new government regulations. The requirements are clearly defined in legislation and unlikely to change. Which methodology would be MOST appropriate?",options:["Scrum","Waterfall","Extreme Programming","No methodology needed"],correct:"B",correctFeedback:"Correct! Waterfall is ideal here because: (1) requirements are stable and well-defined, (2) regulatory compliance requires thorough documentation, and (3) the formal approval gates provide audit trails.",incorrectFeedback:"Waterfall would be most appropriate because the requirements are stable, regulatory compliance demands documentation, and the sequential approach with approval gates provides the audit trail needed."},
+            {id:"W-A2",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Apply",type:"MC",question:"A project team has just completed and gained approval for their requirements specification. According to Waterfall methodology, what should happen next?",options:["Begin coding the system immediately","Move to the Design phase","Return to Systems Definition to verify goals","Start user acceptance testing"],correct:"B",correctFeedback:"Correct! After Requirements Analysis is approved, the project proceeds sequentially to the Design phase, where requirements are converted into technical specifications.",incorrectFeedback:"In Waterfall, after requirements are approved, the project moves to the next sequential phase - Design. This is where the approved requirements are translated into technical specifications."},
+            {id:"W-A3",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Apply",type:"MC",question:"During the Implementation phase of a Waterfall project, a user requests a significant new feature. What is the typical response in Waterfall?",options:["Immediately add the feature to the current release","Document the request for a future project or maintenance phase","Cancel the current project and start over","Remove an existing feature to make room"],correct:"B",correctFeedback:"Correct! In Waterfall, requirements are frozen early. New feature requests during Implementation are typically documented for consideration in a future release or during the Maintenance phase.",incorrectFeedback:"Waterfall does not easily accommodate changes mid-project. New requests are usually documented for future consideration, either in a subsequent project or during the Maintenance phase."},
+            {id:"W-A4",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Apply",type:"MC",question:"A critical bug is discovered in a system that has been in production for two years. Which Waterfall phase handles this situation?",options:["Requirements Analysis","Design","Implementation","Maintenance"],correct:"D",correctFeedback:"Correct! The Maintenance phase covers all work on the system after implementation, including bug fixes, updates, and ongoing support throughout the system's operational life.",incorrectFeedback:"Bug fixes and ongoing support after deployment are handled in the Maintenance phase, which encompasses all work on the system following its initial implementation."},
+            {id:"W-A5",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Apply",type:"MC",question:"A project manager discovers that an error in the original requirements document has led to incorrect system design. The project is currently in the Testing phase. What does this scenario illustrate about Waterfall?",options:["That testing is unnecessary in Waterfall","That requirements errors discovered late are costly to fix","That the Design phase should be skipped","That Waterfall projects always fail"],correct:"B",correctFeedback:"Correct! This illustrates one of Waterfall's key risks - errors in early phases that aren't discovered until later phases become very expensive to fix because multiple phases of work may need to be redone.",incorrectFeedback:"This illustrates the 'cost of change' problem in Waterfall. Errors from early phases discovered late require reworking multiple phases (requirements, design, code, AND tests), making them expensive to fix."},
+            
+            // WATERFALL/SDLC - ANALYSE
+            {id:"W-AN1",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Analyse",type:"MC",question:"A startup wants to build a new mobile app but doesn't yet know exactly what features users will want. They have limited budget and need to release something quickly to test the market. Why might Waterfall be INAPPROPRIATE for this project?",options:["Waterfall requires expensive software tools","Waterfall's upfront planning and sequential approach don't suit uncertain, evolving requirements","Waterfall can only be used for large projects","Waterfall doesn't work with mobile applications"],correct:"B",correctFeedback:"Correct! Waterfall requires well-defined requirements upfront and doesn't easily accommodate change. For uncertain requirements and rapid iteration, Agile approaches are more suitable.",incorrectFeedback:"Waterfall is poorly suited here because: (1) requirements are uncertain, (2) the sequential approach doesn't allow for learning and pivoting, and (3) the emphasis on upfront planning delays time-to-market."},
+            {id:"W-AN2",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Analyse",type:"MC",question:"Despite criticisms, Waterfall remains widely used in industry. Which of the following is the MOST likely reason for its continued use?",options:["Most developers have experience with it and many projects have stable, well-understood requirements","It is the only methodology that works","Government regulations require all projects to use Waterfall","Agile methodologies have been proven to always fail"],correct:"A",correctFeedback:"Correct! Waterfall persists because many developers are familiar with it, and it works well for projects with stable requirements where documentation and control are important.",incorrectFeedback:"Waterfall remains popular because: (1) widespread familiarity among IS professionals, (2) its effectiveness for projects with stable requirements, and (3) situations requiring strong documentation and control."},
+            {id:"W-AN3",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Analyse",type:"MC",question:"A Waterfall project completed all phases on time and within budget, but users report the delivered system doesn't meet their actual needs. What is the MOST likely cause of this problem?",options:["The maintenance phase was skipped","Requirements were not accurately captured or validated with users early in the project","The system was tested too thoroughly","The documentation was too detailed"],correct:"B",correctFeedback:"Correct! This is a classic Waterfall risk - if requirements are incorrectly captured early on, the entire project will deliver the wrong system, even if it's delivered 'successfully' by other metrics.",incorrectFeedback:"This illustrates Waterfall's fundamental risk: if initial requirements don't reflect actual user needs, the entire project builds the wrong thing. Early requirements validation is critical."},
+            {id:"W-AN4",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Analyse",type:"TF",question:"The formal documentation and approval gates in Waterfall add overhead but provide value by reducing the risk of project failure due to miscommunication or scope creep.",options:["True","False"],correct:"A",correctFeedback:"Correct! While documentation and approvals add time, they create shared understanding, prevent scope creep, and catch problems early when they're cheaper to fix.",incorrectFeedback:"This is true. The overhead of documentation and approvals provides benefits: formal sign-offs ensure stakeholder agreement, documentation prevents miscommunication, and gates catch issues early."},
+            {id:"W-AN5",topic:"ISD",subtopic:"Waterfall/SDLC",difficulty:"Analyse",type:"MC",question:"Comparing Waterfall to Agile, which statement BEST describes the trade-off between the two approaches?",options:["Waterfall prioritises predictability and control while Agile prioritises flexibility and responsiveness","Waterfall is always better for large projects while Agile is always better for small projects","Waterfall produces higher quality systems while Agile produces faster systems","There is no real difference between the two approaches"],correct:"A",correctFeedback:"Correct! Waterfall emphasises planning, documentation, and control (predictability), while Agile emphasises adapting to change and delivering value quickly (flexibility). Each suits different project contexts.",incorrectFeedback:"The key trade-off is predictability vs flexibility. Waterfall provides more control and documentation but less adaptability. Agile provides more flexibility but requires different management approaches."},
+            
+            // AGILE/SCRUM - REMEMBER
+            {id:"S-R1",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Remember",type:"MC",question:"What is the typical duration of a Sprint in Scrum?",options:["1 day","2 to 4 weeks","3 to 6 months","1 year"],correct:"B",correctFeedback:"Correct! Sprints in Scrum are typically 2 to 4 weeks long, providing a balance between delivering working software quickly and allowing enough time to complete meaningful work.",incorrectFeedback:"Sprints typically last 2 to 4 weeks. This time-boxed period allows teams to deliver working software regularly while maintaining focus on a manageable set of features."},
+            {id:"S-R2",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Remember",type:"MC",question:"What is the Product Backlog in Scrum?",options:["A list of bugs found during testing","A prioritised list of features and requirements for the product","A record of completed sprints","A daily meeting agenda"],correct:"B",correctFeedback:"Correct! The Product Backlog is a prioritised list of all desired features and requirements, maintained by the Product Owner, from which items are selected for each Sprint.",incorrectFeedback:"The Product Backlog is a prioritised list of features and requirements. The Product Owner maintains this list and prioritises items based on business value."},
+            {id:"S-R3",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Remember",type:"TF",question:"In Scrum, the 'stand-up' meeting typically lasts about 15 minutes and focuses on quick updates rather than problem-solving.",options:["True","False"],correct:"A",correctFeedback:"Correct! Daily stand-up meetings are brief (about 15 minutes), with team members standing to encourage brevity. The focus is on quick status updates, not detailed problem-solving.",incorrectFeedback:"This is true. Stand-ups are intentionally kept short (around 15 minutes) and focus on three questions: What did you do yesterday? What will you do today? Any blockers? Detailed discussions happen elsewhere."},
+            {id:"S-R4",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Remember",type:"MC",question:"Who is responsible for prioritising the Product Backlog in Scrum?",options:["The Scrum Master","The Development Team","The Product Owner","The Project Manager"],correct:"C",correctFeedback:"Correct! The Product Owner is responsible for defining, prioritising, and managing the Product Backlog, ensuring the team works on the most valuable features first.",incorrectFeedback:"The Product Owner owns the Product Backlog and is responsible for prioritising items based on business value. They decide what gets built and in what order."},
+            {id:"S-R5",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Remember",type:"TF",question:"Scrum is exclusively used for software development projects.",options:["True","False"],correct:"B",correctFeedback:"Correct! While Scrum originated in software development, it is fundamentally a project management framework that can be applied to many types of projects beyond ISD.",incorrectFeedback:"False. While Scrum originated in software development, it is a general project management framework that has been successfully applied to various types of projects beyond IT."},
+            
+            // AGILE/SCRUM - UNDERSTAND
+            {id:"S-U1",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Understand",type:"MC",question:"Why is Scrum described as 'change-friendly'?",options:["Because it allows unlimited changes at any time","Because requirements can be reprioritised between sprints, but not during them","Because it has no formal requirements process","Because changes are always free of cost"],correct:"B",correctFeedback:"Correct! Scrum accommodates change by allowing the Product Owner to reprioritise the backlog between sprints. However, the Sprint Backlog is protected from change during the sprint itself.",incorrectFeedback:"Scrum is change-friendly because the Product Backlog can be reprioritised between sprints based on new information or changing business needs. The Sprint Backlog, however, is protected from changes during the sprint."},
+            {id:"S-U2",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Understand",type:"MC",question:"Why does Scrum deliver working software at the end of each Sprint?",options:["Because incomplete software is not allowed in Scrum","To provide early and continuous value to the business and get feedback","Because Sprints are too short to build anything complex","To avoid documentation requirements"],correct:"B",correctFeedback:"Correct! Delivering working software each sprint provides value to the business quickly, allows for early feedback, and reduces risk by demonstrating progress regularly.",incorrectFeedback:"Incremental delivery in Scrum provides multiple benefits: early delivery of business value, regular feedback opportunities, reduced risk, and the ability to change direction based on learning."},
+            {id:"S-U3",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Understand",type:"MC",question:"What is the purpose of the Sprint Backlog?",options:["To record all the features ever requested for the product","To list the specific items selected from the Product Backlog to be completed in the current Sprint","To track bugs found in production","To document the project's final requirements"],correct:"B",correctFeedback:"Correct! The Sprint Backlog contains the items selected from the Product Backlog that the team commits to completing during the current Sprint.",incorrectFeedback:"The Sprint Backlog is the subset of Product Backlog items that the team has committed to delivering in the current Sprint. It represents the team's work plan for that specific sprint."},
+            {id:"S-U4",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Understand",type:"TF",question:"In Scrum, requirements are defined in complete detail upfront before any development begins, just like in Waterfall.",options:["True","False"],correct:"B",correctFeedback:"Correct! Unlike Waterfall, Scrum uses 'lightweight' requirements that are defined at a high level initially and elaborated progressively as sprints progress.",incorrectFeedback:"False. Scrum uses a 'lightweight' approach to requirements. The Product Backlog starts with high-level, abstract items that are progressively elaborated as they move closer to implementation."},
+            {id:"S-U5",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Understand",type:"MC",question:"Why might Scrum projects have higher success rates than traditional Waterfall projects?",options:["Because Scrum projects are always smaller","Because Scrum's iterative approach allows for adaptation, early feedback, and delivering value quickly","Because Scrum eliminates the need for testing","Because Scrum teams work longer hours"],correct:"B",correctFeedback:"Correct! Scrum's iterative nature, early delivery of value, ability to incorporate feedback, and flexibility to change direction contribute to higher success rates.",incorrectFeedback:"Scrum projects often succeed because: (1) iterative delivery catches problems early, (2) regular feedback ensures the right product is built, (3) flexibility allows adaptation to change."},
+            
+            // AGILE/SCRUM - APPLY
+            {id:"S-A1",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Apply",type:"MC",question:"A company wants to develop a new customer-facing app but isn't sure what features customers will value most. They want to release an initial version quickly and refine it based on user feedback. Which approach is MOST suitable?",options:["Waterfall with comprehensive upfront planning","Scrum with iterative development and regular releases","No methodology - just start coding","Complete all testing before any release"],correct:"B",correctFeedback:"Correct! Scrum is ideal here because it allows for rapid iteration, early releases to gather feedback, and the flexibility to reprioritise features based on what users actually want.",incorrectFeedback:"Scrum suits this scenario because: uncertain requirements benefit from iteration, early releases enable feedback, and the Product Backlog can be reprioritised based on user responses."},
+            {id:"S-A2",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Apply",type:"MC",question:"Midway through a Sprint, a stakeholder requests an urgent new feature. According to Scrum principles, what should happen?",options:["Immediately add it to the current Sprint Backlog","Document it for the Product Owner to consider for the next Sprint","Cancel the current Sprint and start over","Ignore the request entirely"],correct:"B",correctFeedback:"Correct! The Sprint Backlog is protected from changes during the Sprint. New requests should go to the Product Owner for prioritisation in future sprints.",incorrectFeedback:"In Scrum, the Sprint Backlog is protected once the sprint begins. New requests go to the Product Owner to be added to the Product Backlog and considered for future sprints."},
+            {id:"S-A3",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Apply",type:"MC",question:"A Scrum team is planning their next Sprint. Which items should they select from the Product Backlog?",options:["All remaining items regardless of priority","The items at the top of the prioritised backlog that they can realistically complete","Only the easiest items to complete","Items chosen randomly to ensure variety"],correct:"B",correctFeedback:"Correct! Teams select items from the top of the prioritised Product Backlog (highest value items) and commit to what they can realistically deliver in the Sprint timeframe.",incorrectFeedback:"Sprint planning involves selecting the highest-priority items from the Product Backlog that the team can realistically complete within the sprint duration."},
+            {id:"S-A4",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Apply",type:"MC",question:"At a daily stand-up, a team member mentions they are blocked by a technical issue. What should happen?",options:["The entire team should stop and solve the problem immediately during the stand-up","The Scrum Master should note the blocker and arrange a separate session to address it","The team member should be removed from the project","The stand-up should be cancelled for the day"],correct:"B",correctFeedback:"Correct! Stand-ups identify blockers but don't solve them during the meeting. The Scrum Master helps remove impediments by arranging follow-up discussions with relevant people.",incorrectFeedback:"Stand-ups are for identifying blockers, not solving them. The Scrum Master notes the issue and facilitates its resolution outside the stand-up to keep the meeting short."},
+            {id:"S-A5",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Apply",type:"MC",question:"A Product Owner needs to decide whether a new social media integration feature should be built before or after an improved search function. What should guide this decision?",options:["Whichever feature is technically easiest to implement","Whichever feature delivers the greatest business value","The personal preference of the development team","Alphabetical order of feature names"],correct:"B",correctFeedback:"Correct! The Product Owner prioritises features based on business value, ensuring the team always works on what delivers the most value to the organisation.",incorrectFeedback:"The Product Owner prioritises based on business value. Features that deliver the most value should be built first, regardless of technical complexity."},
+            
+            // AGILE/SCRUM - ANALYSE
+            {id:"S-AN1",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Analyse",type:"MC",question:"A company using Scrum finds that stakeholders frequently demand changes during active Sprints, causing chaos. What is the MOST likely underlying problem?",options:["Scrum is the wrong methodology for this company","Stakeholders don't understand that the Sprint Backlog is protected, and change requests should go to the Product Backlog","The Sprints are too long","The team is not working hard enough"],correct:"B",correctFeedback:"Correct! This suggests stakeholders need education about Scrum's change management process: changes are welcome but go to the Product Backlog for future sprints, not into the current Sprint.",incorrectFeedback:"The issue is likely a misunderstanding of Scrum's change process. While Scrum welcomes change, it must be managed through the Product Backlog, not forced into active Sprints."},
+            {id:"S-AN2",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Analyse",type:"MC",question:"Comparing how Waterfall and Scrum handle uncertain requirements, which statement is MOST accurate?",options:["Neither methodology can handle uncertain requirements","Waterfall tries to eliminate uncertainty upfront while Scrum accepts uncertainty and adapts through iteration","Scrum requires more detailed upfront requirements than Waterfall","Both methodologies handle uncertainty in exactly the same way"],correct:"B",correctFeedback:"Correct! Waterfall attempts to fully define requirements before building. Scrum accepts that requirements will evolve and uses iterative delivery to learn and adapt.",incorrectFeedback:"The key difference: Waterfall tries to reduce uncertainty through comprehensive upfront planning. Scrum embraces uncertainty and uses iteration to discover and refine requirements over time."},
+            {id:"S-AN3",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Analyse",type:"TF",question:"Scrum's lighter documentation approach compared to Waterfall means that Scrum projects have no documentation at all.",options:["True","False"],correct:"B",correctFeedback:"Correct! Scrum has 'lighter' documentation than Waterfall, but still maintains essential documentation. The difference is focusing on necessary documentation rather than comprehensive documentation for its own sake.",incorrectFeedback:"False. Scrum has lighter documentation than Waterfall but still maintains necessary documentation. The focus is on 'just enough' documentation that provides value, not zero documentation."},
+            {id:"S-AN4",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Analyse",type:"MC",question:"When might Scrum be a POOR choice for an organisation?",options:["When the organisation wants to deliver value quickly","When requirements are likely to change","When the organisation cannot commit to regular stakeholder involvement and iterative delivery","When the project team is experienced with software development"],correct:"C",correctFeedback:"Correct! Scrum requires active stakeholder engagement (especially from the Product Owner) and commitment to iterative delivery. Organisations unable to support this will struggle with Scrum.",incorrectFeedback:"Scrum requires organisational commitment: active Product Owner involvement, stakeholder availability for feedback, and acceptance of iterative delivery. Without these, Scrum implementations often fail."},
+            {id:"S-AN5",topic:"ISD",subtopic:"Agile/Scrum",difficulty:"Analyse",type:"MC",question:"The Product Owner role in Scrum has significant responsibility. What problem might arise if this role is not properly empowered?",options:["The daily stand-ups will take too long","Prioritisation decisions will be delayed or made by people without business knowledge, reducing value delivery","The Sprints will automatically become longer","The team will have too much freedom"],correct:"B",correctFeedback:"Correct! Without an empowered Product Owner, prioritisation decisions stall or get made by people lacking business context, leading to lower-value features being built.",incorrectFeedback:"An under-empowered Product Owner creates problems: delayed decisions, features prioritised without proper business input, and ultimately systems that don't deliver maximum business value."},
+            
+            // VLOOKUP - REMEMBER
+            {id:"V-R1",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Remember",type:"MC",question:"What does VLOOKUP stand for?",options:["Value Lookup","Vertical Lookup","Variable Lookup","Vector Lookup"],correct:"B",correctFeedback:"Correct! VLOOKUP stands for Vertical Lookup because it searches for a value in the first column of a table arranged vertically.",incorrectFeedback:"VLOOKUP stands for Vertical Lookup. It searches for a value in the first (leftmost) column of a table and returns a value from a specified column in that same row."},
+            {id:"V-R2",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Remember",type:"MC",question:"In the VLOOKUP syntax =VLOOKUP(lookup_value, table_array, col_index_num, range_lookup), what does col_index_num specify?",options:["The column to search for the lookup value","The number of columns in the table","The column number from which to return a value","The maximum number of results to return"],correct:"C",correctFeedback:"Correct! col_index_num specifies which column in the table_array to return a value from. If col_index_num is 2, VLOOKUP returns the value from the second column of the table.",incorrectFeedback:"col_index_num specifies which column of the table_array to return a value from. A value of 1 returns the first column, 2 returns the second column, and so on."},
+            {id:"V-R3",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Remember",type:"TF",question:"VLOOKUP always searches in the first (leftmost) column of the specified table_array.",options:["True","False"],correct:"A",correctFeedback:"Correct! VLOOKUP always searches in the first column of the table_array. This is a key limitation of the function - you cannot search in a middle column.",incorrectFeedback:"True. VLOOKUP can only search the first column of the table_array. This is an important limitation to understand when designing your spreadsheets."},
+            {id:"V-R4",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Remember",type:"MC",question:"What value should you use for the range_lookup argument to find an EXACT match?",options:["TRUE","FALSE","1","EXACT"],correct:"B",correctFeedback:"Correct! FALSE (or 0) tells VLOOKUP to find only an exact match. If no exact match exists, it returns #N/A.",incorrectFeedback:"For exact matching, use FALSE (or 0). TRUE (or 1, or omitting the argument) enables approximate matching, which can return unexpected results if you need exact matches."},
+            {id:"V-R5",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Remember",type:"MC",question:"What error does VLOOKUP return when it cannot find a matching value?",options:["#VALUE!","#REF!","#N/A","#DIV/0!"],correct:"C",correctFeedback:"Correct! #N/A (Not Available) is returned when VLOOKUP cannot find the lookup_value in the first column of the table_array.",incorrectFeedback:"VLOOKUP returns #N/A (Not Available) when no match is found. This commonly occurs when the lookup value doesn't exist in the table or is below the minimum value in approximate match mode."},
+            
+            // VLOOKUP - UNDERSTAND
+            {id:"V-U1",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Understand",type:"MC",question:"Why must the first column of table_array be sorted in ascending order when using approximate match (range_lookup = TRUE)?",options:["Excel requires sorted data for all functions","Because VLOOKUP uses a binary search algorithm that depends on sorted data to find the correct approximate value","To make the spreadsheet look neat","It doesn't actually need to be sorted"],correct:"B",correctFeedback:"Correct! For approximate matching, VLOOKUP assumes data is sorted and stops searching when it finds a value larger than the lookup_value. Unsorted data may return incorrect results.",incorrectFeedback:"Approximate matching relies on the data being sorted in ascending order. VLOOKUP finds the largest value that is less than or equal to the lookup_value, which only works correctly with sorted data."},
+            {id:"V-U2",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Understand",type:"MC",question:"Why might you choose to use approximate match (TRUE) rather than exact match (FALSE) in VLOOKUP?",options:["Approximate match is faster","When looking up values that fall within ranges, such as grades or tax brackets","Approximate match works with text while exact match only works with numbers","There is never a good reason to use approximate match"],correct:"B",correctFeedback:"Correct! Approximate match is perfect for range-based lookups like grade tables (0-49=Fail, 50-64=Pass, etc.) or tax brackets where you need to find which range a value falls into.",incorrectFeedback:"Approximate match excels at range-based lookups: grade scales, tax brackets, commission tiers, temperature ranges - any situation where a value needs to be matched to a category based on thresholds."},
+            {id:"V-U3",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Understand",type:"TF",question:"If the lookup_value is smaller than the smallest value in the first column of the table_array when using approximate match, VLOOKUP will return the smallest value in the table.",options:["True","False"],correct:"B",correctFeedback:"Correct! If the lookup_value is smaller than the smallest value in the table, VLOOKUP returns #N/A because it cannot find an appropriate match.",incorrectFeedback:"False. When the lookup_value is below the minimum value in the table, VLOOKUP returns #N/A, not the minimum value. This is a common source of errors in range-based lookups."},
+            {id:"V-U4",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Understand",type:"MC",question:"What happens if the col_index_num is greater than the number of columns in the table_array?",options:["VLOOKUP returns 0","VLOOKUP returns the last column","VLOOKUP returns a #REF! error","VLOOKUP automatically extends the table"],correct:"C",correctFeedback:"Correct! If col_index_num exceeds the number of columns in the table_array, VLOOKUP returns #REF! (reference error).",incorrectFeedback:"A col_index_num larger than the table width causes a #REF! error. Always ensure your col_index_num doesn't exceed the number of columns in your table_array."},
+            {id:"V-U5",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Understand",type:"MC",question:"Why is the fourth argument (range_lookup) important to specify explicitly, even though it's optional?",options:["Because Excel charges extra for using default values","Because the default is TRUE (approximate match), which may return unexpected results if you need an exact match","Because omitting it causes an error","It has no practical importance"],correct:"B",correctFeedback:"Correct! The default is TRUE (approximate match). If you need an exact match but forget to specify FALSE, your formula may return incorrect results without any error message.",incorrectFeedback:"The default range_lookup is TRUE (approximate match). Forgetting to specify FALSE when you need exact matching is a common source of errors - the formula runs but returns wrong results."},
+            
+            // VLOOKUP - APPLY
+            {id:"V-A1",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Apply",type:"MC",question:"You have a grade table where column A contains mark thresholds (0, 50, 65, 75, 85) and column B contains grades (Fail, Pass, Credit, Distinction, High Distinction). To look up the grade for a mark of 72 in cell E1, which formula is correct?",options:["=VLOOKUP(E1, A:B, 2, FALSE)","=VLOOKUP(E1, A:B, 2, TRUE)","=VLOOKUP(E1, A:B, 1, TRUE)","=VLOOKUP(72, A:B, 2, FALSE)"],correct:"B",correctFeedback:"Correct! For a grade table with ranges, you need approximate match (TRUE). Column 2 returns the grade. The formula finds the largest threshold <= 72, which is 65, returning 'Credit'.",incorrectFeedback:"For range-based lookups like grades, use approximate match (TRUE). The formula finds the largest threshold that doesn't exceed the lookup value. 72 falls in the 65-74 range, so it returns the grade for 65."},
+            {id:"V-A2",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Apply",type:"MC",question:"You have a product list with Product IDs in column A and Product Names in column B. You want to find the exact name for Product ID 'P1023'. Which formula structure is correct?",options:["=VLOOKUP('P1023', A:B, 2, TRUE)","=VLOOKUP('P1023', A:B, 2, FALSE)","=VLOOKUP('P1023', A:B, 1, FALSE)","=VLOOKUP('P1023', B:A, 2, FALSE)"],correct:"B",correctFeedback:"Correct! For an exact product ID match, use FALSE. Column 2 returns the name. Note: VLOOKUP cannot search column B and return from column A - it only searches the first column.",incorrectFeedback:"For exact matching of specific IDs, use FALSE. The formula searches column A for exactly 'P1023' and returns the corresponding value from column B (column 2 of the range)."},
+            {id:"V-A3",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Apply",type:"MC",question:"A VLOOKUP formula returns #N/A for some values but works correctly for others. The formula uses exact match. What is the MOST likely cause?",options:["The table_array is too large","Some lookup values don't exist in the first column of the table","The col_index_num is wrong","Excel has run out of memory"],correct:"B",correctFeedback:"Correct! With exact match, #N/A means the lookup_value wasn't found. This often happens due to typos, extra spaces, or values that genuinely don't exist in the table.",incorrectFeedback:"With exact match (FALSE), #N/A indicates the lookup value doesn't exist in the table. Common causes include typos, leading/trailing spaces, or number/text mismatches."},
+            {id:"V-A4",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Apply",type:"MC",question:"You want to handle the case where VLOOKUP might return #N/A by displaying 'Not Found' instead. Which function should you combine with VLOOKUP?",options:["SUM","IF or IFERROR","COUNT","AVERAGE"],correct:"B",correctFeedback:"Correct! IFERROR wraps around VLOOKUP to catch errors: =IFERROR(VLOOKUP(...), 'Not Found'). Alternatively, IF with ISNA can check before lookup.",incorrectFeedback:"IFERROR is the modern approach: =IFERROR(VLOOKUP(...), 'Not Found'). This catches any error from VLOOKUP and displays your custom message instead."},
+            {id:"V-A5",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Apply",type:"MC",question:"You have a temperature lookup table where negative temperatures should return 'Below zero' but your VLOOKUP returns #N/A for -10. How can you fix this?",options:["Sort the table in descending order","Use IF to check for negative values before VLOOKUP: =IF(temp<0, 'Below zero', VLOOKUP(...))","Use approximate match instead of exact match","Change -10 to 10"],correct:"B",correctFeedback:"Correct! Combining IF with VLOOKUP allows you to handle edge cases. Check the condition first, and only run VLOOKUP if the value is within the table's range.",incorrectFeedback:"Combining IF with VLOOKUP handles edge cases: =IF(A1<0, 'Below zero', VLOOKUP(A1, table, col, TRUE)). The IF catches values outside the table range before VLOOKUP tries to process them."},
+            
+            // VLOOKUP - ANALYSE
+            {id:"V-AN1",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Analyse",type:"MC",question:"A colleague's VLOOKUP returns 'Credit' for a mark of 92, but it should return 'High Distinction'. The table has thresholds at 0, 50, 65, 75, 85 with corresponding grades. What is the MOST likely problem?",options:["The formula is using exact match instead of approximate match","The table is not sorted in ascending order","The col_index_num is wrong","VLOOKUP cannot handle numbers above 90"],correct:"B",correctFeedback:"Correct! With approximate match, unsorted data causes incorrect results. If the table has 85 before 75 in the column, VLOOKUP might stop at the wrong row.",incorrectFeedback:"For approximate match to work correctly, the first column must be sorted in ascending order. If the thresholds are out of order, VLOOKUP's binary search returns incorrect results."},
+            {id:"V-AN2",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Analyse",type:"MC",question:"A formula =VLOOKUP(A1, $D$1:$F$10, 3, FALSE) works correctly in row 1. When copied to row 2, it still works. What does this tell you about the cell referencing used?",options:["The formula will break if copied further","The absolute references on the table_array ensure it doesn't shift when copied, maintaining correct results","The formula is using relative references","Nothing - it's just coincidence"],correct:"B",correctFeedback:"Correct! The $ symbols create absolute references for the table_array. When the formula is copied, $D$1:$F$10 stays fixed while A1 adjusts to A2, A3, etc. - exactly what's needed.",incorrectFeedback:"The absolute references ($D$1:$F$10) keep the table_array fixed when copying. The lookup_value (A1) is relative, so it adjusts correctly. This is the standard pattern for VLOOKUP formulas."},
+            {id:"V-AN3",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Analyse",type:"MC",question:"You need to look up a value based on a column that is NOT the first column in your data range. What is the limitation of VLOOKUP in this scenario?",options:["VLOOKUP can handle this with the right settings","VLOOKUP can only search the first column, so you would need to rearrange your data or use a different function like INDEX/MATCH or XLOOKUP","You need to use approximate match","You need to increase the col_index_num"],correct:"B",correctFeedback:"Correct! VLOOKUP can only search the leftmost column of the table_array. For more flexible lookups, consider INDEX/MATCH or the newer XLOOKUP function.",incorrectFeedback:"This is a fundamental limitation of VLOOKUP - it can only search the first column. Solutions include rearranging your data, using helper columns, or switching to INDEX/MATCH or XLOOKUP."},
+            {id:"V-AN4",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Analyse",type:"TF",question:"If you copy a VLOOKUP formula and the table_array reference uses relative addressing (no $ symbols), the table_array will shift, potentially causing incorrect results or errors.",options:["True","False"],correct:"A",correctFeedback:"Correct! Without absolute references, the table_array shifts when the formula is copied, causing it to reference wrong cells or cells outside the table, leading to errors or incorrect values.",incorrectFeedback:"True. Relative references in the table_array shift when copied, which almost always causes problems. Use absolute references ($D$1:$F$10) or Named Ranges for the table_array."},
+            {id:"V-AN5",topic:"Excel",subtopic:"VLOOKUP",difficulty:"Analyse",type:"MC",question:"Comparing VLOOKUP with Named Ranges versus absolute cell references, why might Named Ranges be considered 'more professional'?",options:["Named Ranges make formulas run faster","Named Ranges are easier to read, maintain, and less prone to errors when editing the spreadsheet","Named Ranges are required for VLOOKUP to work correctly","There is no real difference"],correct:"B",correctFeedback:"Correct! =VLOOKUP(A1, Grade_Table, 2, TRUE) is clearer than =VLOOKUP(A1, $D$1:$F$10, 2, TRUE). Named Ranges also don't break if you insert rows/columns.",incorrectFeedback:"Named Ranges improve readability (Grade_Table vs $D$1:$F$10), are self-documenting, and more robust when spreadsheet structure changes. They're a best practice for professional spreadsheets."},
+            
+            // CELL REFERENCING - REMEMBER
+            {id:"R-R1",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Remember",type:"MC",question:"Which symbol makes a cell reference absolute in Excel?",options:["#","$","@","&"],correct:"B",correctFeedback:"Correct! The dollar sign ($) is used to make cell references absolute. $A$1 is fully absolute, while $A1 and A$1 are mixed references.",incorrectFeedback:"The dollar sign ($) creates absolute references in Excel. Place it before the column letter to lock the column, before the row number to lock the row, or both for a fully absolute reference."},
+            {id:"R-R2",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Remember",type:"MC",question:"What type of reference is $A$1?",options:["Relative reference","Absolute reference","Mixed reference","External reference"],correct:"B",correctFeedback:"Correct! $A$1 is an absolute reference because both the column (A) and row (1) are locked with $ symbols and will not change when the formula is copied.",incorrectFeedback:"$A$1 is an absolute reference. Both the column and row are fixed with $ symbols, so this reference will not change regardless of where you copy the formula."},
+            {id:"R-R3",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Remember",type:"TF",question:"By default, when you type a cell reference like A1 in a formula, Excel treats it as a relative reference.",options:["True","False"],correct:"A",correctFeedback:"Correct! Cell references without $ symbols are relative by default. They will adjust automatically when the formula is copied to another cell.",incorrectFeedback:"True. Without explicit $ symbols, Excel treats all references as relative. This means A1 will become B1 if copied one column right, or A2 if copied one row down."},
+            {id:"R-R4",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Remember",type:"MC",question:"What type of reference is $A1 (dollar sign before column only)?",options:["Fully absolute","Fully relative","Mixed - absolute column, relative row","Mixed - relative column, absolute row"],correct:"C",correctFeedback:"Correct! $A1 is a mixed reference with an absolute column (A will not change) and a relative row (1 will adjust when copied up or down).",incorrectFeedback:"$A1 is a mixed reference. The $ before A locks the column, but the row (1) is relative and will change when the formula is copied vertically."},
+            {id:"R-R5",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Remember",type:"MC",question:"What type of reference is A$1 (dollar sign before row only)?",options:["Fully absolute","Fully relative","Mixed - absolute column, relative row","Mixed - relative column, absolute row"],correct:"D",correctFeedback:"Correct! A$1 is a mixed reference with a relative column (A will adjust when copied left/right) and an absolute row (1 will not change).",incorrectFeedback:"A$1 is a mixed reference. The column (A) is relative and will change when copied horizontally. The $ before 1 locks the row, keeping it fixed."},
+            
+            // CELL REFERENCING - UNDERSTAND
+            {id:"R-U1",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Understand",type:"MC",question:"Why are absolute references important when creating VLOOKUP formulas that will be copied to multiple cells?",options:["They make the formula run faster","They prevent the table_array reference from shifting when the formula is copied","They are required by Excel syntax","They reduce file size"],correct:"B",correctFeedback:"Correct! Without absolute references on the table_array, copying the formula would shift the table reference, likely causing errors or incorrect lookups.",incorrectFeedback:"The table_array in VLOOKUP should use absolute references so it stays fixed when the formula is copied. Otherwise, each copied formula would reference a different (wrong) table range."},
+            {id:"R-U2",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Understand",type:"MC",question:"When would you use a mixed reference like $A1 instead of a fully absolute reference like $A$1?",options:["When you want the column to stay fixed but the row to adjust when copying down","When you want both column and row to adjust","Mixed references don't actually exist in Excel","When referencing cells on other worksheets"],correct:"A",correctFeedback:"Correct! $A1 keeps the column fixed while allowing the row to adjust. This is useful in formulas that need to reference the same column across different rows.",incorrectFeedback:"Mixed references give you flexibility: $A1 keeps referencing column A but adjusts the row when copied down. This is perfect for referencing a fixed column of data across multiple rows."},
+            {id:"R-U3",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Understand",type:"TF",question:"If you copy the formula =A1+B1 from cell C1 to cell C2, the formula in C2 will become =A2+B2.",options:["True","False"],correct:"A",correctFeedback:"Correct! With relative references, moving down one row changes all row numbers by one. A1 becomes A2, B1 becomes B2.",incorrectFeedback:"True. Relative references adjust based on the direction and distance of the copy. Moving down one row increases all row numbers by one."},
+            {id:"R-U4",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Understand",type:"MC",question:"What is the main advantage of using Named Ranges instead of absolute cell references?",options:["Named Ranges use less memory","Named Ranges make formulas more readable and easier to maintain","Named Ranges are faster to calculate","There is no advantage"],correct:"B",correctFeedback:"Correct! =VLOOKUP(A1, GradeTable, 2, TRUE) is much clearer than =VLOOKUP(A1, $B$2:$D$10, 2, TRUE). Named Ranges are self-documenting and easier to update.",incorrectFeedback:"Named Ranges improve formula readability and maintainability. 'GradeTable' is more meaningful than '$B$2:$D$10', and if the range changes, you only update the Name definition once."},
+            {id:"R-U5",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Understand",type:"MC",question:"Why might a formula that works perfectly in one cell produce errors or wrong results when copied to other cells?",options:["Because Excel has a limit on formula copies","Because relative references shifted to point to unintended cells","Because formulas can only exist in one cell","Because the original formula was too long"],correct:"B",correctFeedback:"Correct! When relative references shift during copying, they may point to empty cells, cells with wrong data types, or cells outside the intended range, causing unexpected results.",incorrectFeedback:"Relative references adjust when copied, which can cause them to point to wrong cells - empty cells (causing errors), cells with different data types, or cells outside your data range."},
+            
+            // CELL REFERENCING - APPLY
+            {id:"R-A1",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Apply",type:"MC",question:"The formula =A1*B1 is in cell C1. If you copy this formula to cell D1 (one column right), what will the formula become?",options:["=A1*B1","=B1*C1","=A2*B2","=B2*C2"],correct:"B",correctFeedback:"Correct! Copying one column right shifts all column letters by one. A becomes B, B becomes C. The row numbers stay the same because you didn't move vertically.",incorrectFeedback:"When copying horizontally, column letters adjust. Moving one column right: A→B and B→C. The formula becomes =B1*C1."},
+            {id:"R-A2",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Apply",type:"MC",question:"The formula =$A1*B$1 is in cell C1. If you copy this formula to cell C2 (one row down), what will the formula become?",options:["=$A1*B$1","=$A2*B$1","=$A2*B$2","=$A1*B$2"],correct:"B",correctFeedback:"Correct! $A1 has absolute column but relative row, so A stays but 1 becomes 2. B$1 has relative column but absolute row, so B stays and 1 stays. Result: =$A2*B$1.",incorrectFeedback:"Analyse each reference: $A1 (column locked, row relative) → $A2. B$1 (column relative, row locked) → B$1. Combined: =$A2*B$1."},
+            {id:"R-A3",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Apply",type:"MC",question:"You need to create a multiplication table where row 1 contains numbers 1-5 and column A contains numbers 1-5. The formula in B2 should multiply A2 by B1 and be copyable to fill the entire table. Which formula is correct?",options:["=A2*B1","=$A2*B$1","=$A$2*$B$1","=A$2*$B1"],correct:"B",correctFeedback:"Correct! $A2 locks the column (always column A for row values) but allows the row to change. B$1 locks the row (always row 1 for column values) but allows the column to change.",incorrectFeedback:"=$A2*B$1 uses mixed references correctly: $A locks to column A (row multipliers), $1 locks to row 1 (column multipliers). When copied, each cell correctly multiplies its row and column headers."},
+            {id:"R-A4",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Apply",type:"MC",question:"Your VLOOKUP formula =VLOOKUP(A5, D1:F10, 3, FALSE) works in row 5 but returns wrong results when copied to row 6. What change would fix this?",options:["Change D1:F10 to $D$1:$F$10","Change A5 to $A$5","Change the col_index_num to 2","Change FALSE to TRUE"],correct:"A",correctFeedback:"Correct! The table_array D1:F10 shifts to D2:F11 when copied down, referencing the wrong cells. Using $D$1:$F$10 keeps the table reference fixed.",incorrectFeedback:"The table_array needs absolute references to stay fixed when copying. $D$1:$F$10 ensures every copy of the formula references the same lookup table."},
+            {id:"R-A5",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Apply",type:"MC",question:"You want to apply a discount percentage stored in cell E1 to prices in column B (B2:B100). The formula =B2*E1 is in C2. What should E1 be changed to before copying the formula down?",options:["E1 (no change needed)","$E$1","E$1","$E1"],correct:"B",correctFeedback:"Correct! The discount in E1 must be absolute so it doesn't shift when copying down. B2 should stay relative so it adjusts to B3, B4, etc.",incorrectFeedback:"E1 should be $E$1 so all rows reference the same discount cell. B2 remains relative so each row calculates using its own price. Formula: =B2*$E$1."},
+            
+            // CELL REFERENCING - ANALYSE
+            {id:"R-AN1",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Analyse",type:"MC",question:"A student creates the formula =B2/$B$10 to calculate percentages, where B10 contains the total. The formula works in row 2 but shows 0% for all other rows when copied down. What is the MOST likely problem?",options:["The $ symbols are in the wrong position","B2 should also be absolute","B10 doesn't actually contain a total","The data in column B is empty below row 2"],correct:"D",correctFeedback:"Correct! The formula logic is sound (relative numerator, absolute denominator). If all results are 0%, the numerator cells (B3, B4, etc.) are likely empty or contain zero.",incorrectFeedback:"The referencing is correct: B2 (relative) / $B$10 (absolute). If results are 0%, the issue is the data - cells B3, B4, etc. are probably empty or contain zeros."},
+            {id:"R-AN2",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Analyse",type:"MC",question:"Comparing these two approaches for a VLOOKUP table reference: (1) $D$1:$F$20 and (2) a Named Range called 'ProductTable'. Which statement is MOST accurate?",options:["Approach 1 is always better because it's more explicit","Approach 2 is better for readability and maintenance, especially if the table might be moved or resized","Both approaches are equally good in all situations","Approach 2 will cause errors"],correct:"B",correctFeedback:"Correct! Named Ranges are more readable, self-documenting, and more robust. If you insert rows in the table, the Named Range can adjust automatically; absolute references cannot.",incorrectFeedback:"Named Ranges are generally superior: 'ProductTable' is self-documenting, and the range can be updated in one place if the table changes. Absolute references work but are harder to maintain."},
+            {id:"R-AN3",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Analyse",type:"TF",question:"When you copy a formula containing =$C$5 to any other cell in the spreadsheet, the reference will always point to cell C5.",options:["True","False"],correct:"A",correctFeedback:"Correct! A fully absolute reference ($C$5) never changes regardless of where you copy the formula. Both the column and row are locked.",incorrectFeedback:"True. $C$5 is fully absolute - both column and row are locked with $ symbols. No matter where you copy the formula, this reference will always point to cell C5."},
+            {id:"R-AN4",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Analyse",type:"MC",question:"A formula uses mixed references incorrectly, causing values from the wrong row to be used. The formula is =A1*$B1. If this is copied from C1 to C2, what reference error occurs?",options:["A1 incorrectly stays as A1","B1 incorrectly changes to B2","$B1 incorrectly stays as $B1 when it should become $B2","No error occurs"],correct:"C",correctFeedback:"Correct! $B1 has the column locked but the row is relative, so it becomes $B2 when copied down. If row 1 contains multipliers that should stay fixed, the reference should be B$1 instead.",incorrectFeedback:"The issue: $B1 locks the column but not the row, so it becomes $B2 when copied down. If B1 contains a constant that should apply to all rows, use B$1 (locked row) instead."},
+            {id:"R-AN5",topic:"Excel",subtopic:"Cell Referencing",difficulty:"Analyse",type:"MC",question:"You're auditing a spreadsheet and find a formula =VLOOKUP(A1, Sheet2!B:D, 3, FALSE). When copied down, the lookup_value adjusts correctly, but there's no absolute reference on the table. Why might this still work correctly?",options:["The formula will definitely produce errors","The entire columns B:D are referenced, so shifting doesn't change which columns are included","VLOOKUP ignores referencing rules","External sheet references are always absolute"],correct:"B",correctFeedback:"Correct! When referencing entire columns (B:D), there's no specific starting row to shift. The reference always includes all of columns B through D regardless of where the formula is.",incorrectFeedback:"Full column references (B:D) don't shift meaningfully because they already include all rows. This approach works but can be slower than precise ranges for large datasets."}
+        ];
+        
+        // Quiz state
+        let filteredQuestions = [];
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let answered = false;
+        
+        // Update available count when filters change
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', updateAvailableCount);
+        });
+        
+        function updateAvailableCount() {
+            const filtered = getFilteredQuestions();
+            document.getElementById('availableCount').textContent = `${filtered.length} questions available`;
+            document.getElementById('questionCount').max = filtered.length;
+        }
+        
+        function getFilteredQuestions() {
+            const topics = [];
+            if (document.getElementById('topicWaterfall').checked) topics.push('Waterfall/SDLC');
+            if (document.getElementById('topicScrum').checked) topics.push('Agile/Scrum');
+            if (document.getElementById('topicVLOOKUP').checked) topics.push('VLOOKUP');
+            if (document.getElementById('topicReferencing').checked) topics.push('Cell Referencing');
+            
+            const difficulties = [];
+            if (document.getElementById('diffRemember').checked) difficulties.push('Remember');
+            if (document.getElementById('diffUnderstand').checked) difficulties.push('Understand');
+            if (document.getElementById('diffApply').checked) difficulties.push('Apply');
+            if (document.getElementById('diffAnalyse').checked) difficulties.push('Analyse');
+            
+            return questionBank.filter(q => 
+                topics.includes(q.subtopic) && difficulties.includes(q.difficulty)
+            );
+        }
+        
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+        
+        function startQuiz() {
+            filteredQuestions = getFilteredQuestions();
+            const count = Math.min(
+                parseInt(document.getElementById('questionCount').value) || 10,
+                filteredQuestions.length
+            );
+            
+            if (count === 0) {
+                alert('Please select at least one topic and difficulty level.');
+                return;
+            }
+            
+            currentQuestions = shuffleArray(filteredQuestions).slice(0, count);
+            currentIndex = 0;
+            score = 0;
+            
+            document.getElementById('setupScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'block';
+            
+            showQuestion();
+        }
+        
+        function showQuestion() {
+            answered = false;
+            const q = currentQuestions[currentIndex];
+            
+            // Update progress
+            document.getElementById('progressText').textContent = 
+                `Question ${currentIndex + 1} of ${currentQuestions.length}`;
+            document.getElementById('scoreText').textContent = 
+                `Score: ${score}/${currentIndex}`;
+            document.getElementById('progressFill').style.width = 
+                `${((currentIndex) / currentQuestions.length) * 100}%`;
+            
+            // Update question
+            document.getElementById('questionTopic').textContent = q.subtopic;
+            document.getElementById('questionDifficulty').textContent = q.difficulty;
+            document.getElementById('questionText').textContent = q.question;
+            
+            // Update options
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            const letters = ['A', 'B', 'C', 'D'];
+            q.options.forEach((option, index) => {
+                if (option) {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'option';
+                    optionDiv.onclick = () => selectOption(letters[index]);
+                    optionDiv.innerHTML = `
+                        <span class="option-letter">${letters[index]}</span>
+                        <span class="option-text">${option}</span>
+                    `;
+                    optionsContainer.appendChild(optionDiv);
+                }
+            });
+            
+            // Hide feedback and next button
+            document.getElementById('feedback').classList.remove('show', 'correct', 'incorrect');
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+        
+        function selectOption(selected) {
+            if (answered) return;
+            answered = true;
+            
+            const q = currentQuestions[currentIndex];
+            const isCorrect = selected === q.correct;
+            
+            if (isCorrect) score++;
+            
+            // Update UI
+            const options = document.querySelectorAll('.option');
+            const letters = ['A', 'B', 'C', 'D'];
+            
+            options.forEach((opt, index) => {
+                opt.classList.add('disabled');
+                if (letters[index] === selected) {
+                    opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+                if (letters[index] === q.correct && !isCorrect) {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            // Show feedback
+            const feedback = document.getElementById('feedback');
+            feedback.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+            document.getElementById('feedbackHeader').textContent = 
+                isCorrect ? '✓ Correct!' : '✗ Incorrect';
+            document.getElementById('feedbackText').textContent = 
+                isCorrect ? q.correctFeedback : q.incorrectFeedback;
+            
+            // Show next button
+            document.getElementById('nextBtn').style.display = 'inline-block';
+            document.getElementById('nextBtn').textContent = 
+                currentIndex === currentQuestions.length - 1 ? 'See Results' : 'Next Question';
+        }
+        
+        function nextQuestion() {
+            currentIndex++;
+            
+            if (currentIndex >= currentQuestions.length) {
+                showResults();
+            } else {
+                showQuestion();
+            }
+        }
+        
+        function showResults() {
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'block';
+            
+            const percentage = Math.round((score / currentQuestions.length) * 100);
+            
+            document.getElementById('finalScore').textContent = `${percentage}%`;
+            document.getElementById('correctCount').textContent = score;
+            document.getElementById('incorrectCount').textContent = currentQuestions.length - score;
+            document.getElementById('resultsDetail').textContent = 
+                `You answered ${score} out of ${currentQuestions.length} questions correctly.`;
+            
+            let message = '';
+            if (percentage >= 90) message = 'Excellent work! 🌟';
+            else if (percentage >= 70) message = 'Great job! 👏';
+            else if (percentage >= 50) message = 'Good effort! Keep practicing.';
+            else message = 'Keep studying - you\'ll get there!';
+            
+            document.getElementById('resultsMessage').textContent = message;
+        }
+        
+        function showSetup() {
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('setupScreen').style.display = 'block';
+        }
+        
+        function quitQuiz() {
+            if (confirm('Are you sure you want to quit? Your progress will be lost.')) {
+                showSetup();
+            }
+        }
+        
+        // Initialize
+        updateAvailableCount();
+    </script>
+</body>
+</html>
