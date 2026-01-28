@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BISM1201 Weeks 6-7 Knowledge Base</title>
+    <title>BISM1201 Weeks 6-7 Comprehensive Knowledge Base</title>
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; color: #333; }
         h1 { color: #51247A; border-bottom: 3px solid #51247A; padding-bottom: 10px; }
-        h2 { color: #51247A; border-bottom: 1px solid #51247A; padding-bottom: 5px; margin-top: 40px; }
-        h3 { color: #962A8B; margin-top: 25px; }
-        h4 { color: #333; margin-top: 20px; }
+        h2 { color: #51247A; border-bottom: 2px solid #51247A; padding-bottom: 5px; margin-top: 50px; }
+        h3 { color: #962A8B; margin-top: 30px; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+        h4 { color: #333; margin-top: 25px; }
+        h5 { color: #555; margin-top: 20px; font-size: 1em; }
         table { border-collapse: collapse; width: 100%; margin: 15px 0; }
         th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
         th { background-color: #51247A; color: white; }
@@ -20,480 +21,1405 @@
         .correct { background-color: #d4edda; border-left: 4px solid #28a745; padding: 10px 15px; margin: 15px 0; }
         .incorrect { background-color: #f8d7da; border-left: 4px solid #dc3545; padding: 10px 15px; margin: 15px 0; }
         .example { background-color: #e7f3ff; border-left: 4px solid #007bff; padding: 10px 15px; margin: 15px 0; }
+        .misconception { background-color: #f8d7da; border-left: 4px solid #dc3545; padding: 10px 15px; margin: 15px 0; }
+        .tip { background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 10px 15px; margin: 15px 0; }
+        .quiz { background-color: #e2e3e5; border-left: 4px solid #6c757d; padding: 10px 15px; margin: 15px 0; }
         ul, ol { margin: 10px 0; padding-left: 25px; }
         li { margin: 5px 0; }
+        .difficulty-easy { color: #28a745; font-weight: bold; }
+        .difficulty-medium { color: #ffc107; font-weight: bold; }
+        .difficulty-hard { color: #dc3545; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<h1>BISM1201 Weeks 6-7 Knowledge Base</h1>
-<p>This document contains authoritative reference material for the BISM1201 Practice Quiz Bot covering Weeks 6 and 7 content.</p>
+<h1>BISM1201 Weeks 6-7 Comprehensive Knowledge Base</h1>
+<p><strong>Course:</strong> BISM1201 Transforming Business with Information Systems<br>
+<strong>Institution:</strong> The University of Queensland Business School<br>
+<strong>Coverage:</strong> Week 6 (Teaching Week 6) and Week 7 (Teaching Week 7) content</p>
 
-<!-- ============================================ -->
-<h2>Part A: Information Systems Theory</h2>
-<!-- ============================================ -->
+<p>This document contains authoritative reference material for generating quiz questions and providing accurate feedback to students.</p>
 
-<h3>A1: The Systems Development Life Cycle (SDLC)</h3>
+<!-- ============================================================ -->
+<!-- PART A: INFORMATION SYSTEMS DEVELOPMENT THEORY -->
+<!-- ============================================================ -->
 
-<p>The <strong>Systems Development Life Cycle (SDLC)</strong> is a structured framework for planning, creating, testing, and deploying information systems. The <strong>Waterfall methodology</strong> is one approach to implementing the SDLC.</p>
+<h2>Part A: Information Systems Development (ISD) Theory</h2>
 
-<h4>Key Characteristics of Waterfall</h4>
+<h3>A1: Introduction to Systems Development</h3>
+
+<h4>What is Information Systems Development?</h4>
+<p>Information Systems Development (ISD) refers to the process of creating, maintaining, and improving information systems within organisations. It encompasses all activities from initial planning through to ongoing maintenance of operational systems.</p>
+
+<h4>Why is ISD Important for Business?</h4>
 <ul>
-    <li><strong>Highly sequenced:</strong> Phases flow downward like a waterfall</li>
-    <li><strong>Sequential:</strong> Each phase must be completed before the next begins</li>
-    <li><strong>Gate-controlled:</strong> Project control through approval stages or "gates"</li>
-    <li><strong>Documentation-heavy:</strong> Comprehensive documentation at each phase</li>
-    <li><strong>Change-resistant:</strong> Changes become more expensive the later they occur</li>
+    <li><strong>Competitive advantage:</strong> Well-developed IS can differentiate a business from competitors</li>
+    <li><strong>Operational efficiency:</strong> Automates processes and reduces manual work</li>
+    <li><strong>Better decision-making:</strong> Provides accurate, timely information to managers</li>
+    <li><strong>Customer satisfaction:</strong> Improves service delivery and customer experience</li>
+    <li><strong>Cost management:</strong> Proper development reduces long-term maintenance costs</li>
 </ul>
 
-<h4>The 5 Phases of Waterfall</h4>
+<h4>Key Questions Managers Must Answer</h4>
+<ol>
+    <li>How should managers build a business case for the acquisition and development of a new information system?</li>
+    <li>What are the core problem-solving steps for developing a new information system?</li>
+    <li>What are the alternative methods for building information systems?</li>
+</ol>
 
-<h4>Phase 1: Systems Definition</h4>
-<ul>
-    <li>Senior management defines broad goals and scope</li>
-    <li>Assess feasibility (technical, economic, operational)</li>
-    <li>Form a project team</li>
-    <li>Create initial project plan</li>
-    <li><strong>Deliverable:</strong> Project plan with defined scope</li>
-    <li><strong>Gate:</strong> Senior management approval</li>
-</ul>
+<!-- ============================================================ -->
+<h3>A2: The Systems Development Life Cycle (SDLC)</h3>
 
-<h4>Phase 2: Requirements Analysis</h4>
-<ul>
-    <li>Gather detailed requirements from users and stakeholders</li>
-    <li>Document all user needs in a detailed report</li>
-    <li><strong>Critical phase:</strong> Incorrect requirements lead to flawed systems</li>
-    <li><strong>Deliverable:</strong> Approved user requirements document</li>
-    <li><strong>Gate:</strong> Stakeholder sign-off</li>
-</ul>
+<h4>Definition</h4>
+<p>The <strong>Systems Development Life Cycle (SDLC)</strong> is a conceptual framework that describes the stages involved in an information system development project, from initial feasibility study through to system maintenance. It provides a structured approach to planning, creating, testing, and deploying information systems.</p>
 
-<h4>Phase 3: Design, Development, and Testing</h4>
+<h4>Purpose of the SDLC</h4>
 <ul>
-    <li>Convert requirements into design specifications</li>
-    <li>Build/develop the system</li>
-    <li>Conduct rigorous testing</li>
-    <li>Very complex phase</li>
-    <li><strong>Deliverable:</strong> System design documentation, tested software/hardware</li>
-</ul>
-
-<h4>Phase 4: Implementation</h4>
-<ul>
-    <li>Deploy the system for use</li>
-    <li>Train users</li>
-    <li>System goes "live"</li>
-    <li><strong>Deliverable:</strong> Operational system</li>
-</ul>
-
-<h4>Phase 5: Maintenance</h4>
-<ul>
-    <li>All work after implementation</li>
-    <li>Bug fixes, updates, support</li>
-    <li><strong>Often the MOST EXPENSIVE phase</strong></li>
-    <li>Often neglected in planning</li>
-    <li>May initiate a new SDLC cycle</li>
+    <li>Provides a framework for planning and controlling IS projects</li>
+    <li>Ensures systematic progression through development stages</li>
+    <li>Facilitates communication between stakeholders</li>
+    <li>Helps manage risk by identifying problems early</li>
+    <li>Creates documentation for future reference and maintenance</li>
 </ul>
 
 <div class="important">
-    <strong>Key Concept: Cost of Changes Over Time</strong><br>
-    The later errors or changes are discovered in the SDLC, the more expensive they become to fix. A requirements error caught in maintenance costs far more than one caught during requirements analysis.
+    <strong>Key Understanding:</strong> The SDLC is a conceptual model that can be implemented using different methodologies. Waterfall is one methodology for implementing the SDLC; Agile/Scrum is another. The SDLC itself is not a methodology—it's a framework that methodologies follow.
+</div>
+
+<!-- ============================================================ -->
+<h3>A3: Waterfall Methodology — Detailed Analysis</h3>
+
+<h4>Overview</h4>
+<p>The <strong>Waterfall methodology</strong> is a traditional, sequential approach to systems development where each phase must be completed before the next phase begins. It gets its name because progress flows steadily downward through the phases, like a waterfall.</p>
+
+<h4>Key Characteristics</h4>
+<table>
+    <tr><th>Characteristic</th><th>Description</th></tr>
+    <tr><td>Sequential</td><td>Phases are completed one after another in a fixed order</td></tr>
+    <tr><td>Document-driven</td><td>Each phase produces detailed documentation as deliverables</td></tr>
+    <tr><td>Gate-controlled</td><td>Progress requires formal approval at each phase boundary</td></tr>
+    <tr><td>Plan-driven</td><td>Extensive upfront planning before development begins</td></tr>
+    <tr><td>Change-resistant</td><td>Changes after a phase is complete are costly and difficult</td></tr>
+</table>
+
+<h4>The Five Phases in Detail</h4>
+
+<h5>Phase 1: Systems Definition</h5>
+<p><strong>Purpose:</strong> Establish what the system should accomplish at a high level and determine whether the project is feasible and worthwhile.</p>
+
+<p><strong>Key Activities:</strong></p>
+<ul>
+    <li><strong>Define System Goals:</strong> Establish clear, high-level objectives (e.g., enhance decision-making, align with competitive strategy)</li>
+    <li><strong>Determine System Scope:</strong> Set boundaries for what the system will and will not include (e.g., system may include sales processes but exclude HR functionalities)</li>
+    <li><strong>Assess Feasibility:</strong> Evaluate technical, economic, and operational viability
+        <ul>
+            <li><em>Technical feasibility:</em> Can we build it with available technology?</li>
+            <li><em>Economic feasibility:</em> Is it financially worthwhile?</li>
+            <li><em>Operational feasibility:</em> Will users accept and use it?</li>
+        </ul>
+    </li>
+    <li><strong>Form a Team:</strong> Assemble a skilled team for development and implementation</li>
+    <li><strong>Plan the Project:</strong> Create a detailed project plan covering timelines, resources, and deliverables</li>
+</ul>
+
+<p><strong>Deliverable:</strong> Project plan with defined scope and feasibility assessment</p>
+<p><strong>Gate:</strong> Senior management approval to proceed</p>
+
+<div class="example">
+    <strong>Example:</strong> A retail company wants a new inventory management system. In the Systems Definition phase, they would define goals (reduce stockouts by 30%), scope (covers warehouse and store inventory, excludes supplier management), assess whether they have budget and technical capability, and create an initial project plan.
+</div>
+
+<h5>Phase 2: Requirements Analysis</h5>
+<p><strong>Purpose:</strong> Gather and document detailed requirements from users and stakeholders to understand exactly what the system must do.</p>
+
+<p><strong>Key Activities:</strong></p>
+<ul>
+    <li>Interview users and stakeholders</li>
+    <li>Observe current business processes</li>
+    <li>Document functional requirements (what the system must do)</li>
+    <li>Document non-functional requirements (performance, security, usability)</li>
+    <li>Create detailed requirements specification document</li>
+    <li>Review requirements with stakeholders for approval</li>
+</ul>
+
+<p><strong>Deliverable:</strong> Approved user requirements document</p>
+<p><strong>Gate:</strong> Stakeholder sign-off on requirements</p>
+
+<div class="important">
+    <strong>Critical Point:</strong> This is the most critical phase for project success. If initial requirements are incorrect, the resulting system will be flawed, leading to costly corrections later. Studies show that requirements errors are the leading cause of project failure.
+</div>
+
+<div class="misconception">
+    <strong>Common Misconception:</strong> "We can fix requirements later." This is dangerous thinking in Waterfall. Changes to requirements after this phase become exponentially more expensive. A requirement error caught in maintenance can cost 100 times more to fix than one caught during requirements analysis.
+</div>
+
+<h5>Phase 3: Design, Development, and Testing</h5>
+<p><strong>Purpose:</strong> Transform requirements into a working system through design, coding, and rigorous testing.</p>
+
+<p><strong>Key Activities:</strong></p>
+<ul>
+    <li><strong>System Design:</strong> Create technical architecture and detailed design specifications</li>
+    <li><strong>Component Design:</strong> Design individual modules and interfaces</li>
+    <li><strong>Development:</strong> Write code, configure software, build database structures</li>
+    <li><strong>Unit Testing:</strong> Test individual components in isolation</li>
+    <li><strong>Integration Testing:</strong> Test how components work together</li>
+    <li><strong>System Testing:</strong> Test the complete system against requirements</li>
+    <li><strong>User Acceptance Testing (UAT):</strong> Users verify the system meets their needs</li>
+</ul>
+
+<p><strong>Deliverable:</strong> System design documentation, tested software and hardware</p>
+
+<div class="tip">
+    <strong>Note:</strong> This is typically the most complex and time-consuming phase. It requires coordination between business analysts, designers, developers, and testers.
+</div>
+
+<h5>Phase 4: Implementation</h5>
+<p><strong>Purpose:</strong> Deploy the system into the production environment and transition users to the new system.</p>
+
+<p><strong>Key Activities:</strong></p>
+<ul>
+    <li>Install hardware and software in production environment</li>
+    <li>Migrate data from old systems</li>
+    <li>Train users on the new system</li>
+    <li>Create user documentation and help resources</li>
+    <li>Execute cutover strategy (parallel running, phased rollout, or direct cutover)</li>
+    <li>Provide go-live support</li>
+</ul>
+
+<p><strong>Deliverable:</strong> Operational system in production</p>
+
+<div class="example">
+    <strong>Implementation Strategies:</strong>
+    <ul>
+        <li><strong>Direct cutover:</strong> Old system switched off, new system switched on (risky but fast)</li>
+        <li><strong>Parallel running:</strong> Both systems run simultaneously until new system is proven (safe but expensive)</li>
+        <li><strong>Phased rollout:</strong> New system deployed to one department/location at a time (balanced approach)</li>
+        <li><strong>Pilot:</strong> New system tested with small user group first (good for validating)</li>
+    </ul>
+</div>
+
+<h5>Phase 5: Maintenance</h5>
+<p><strong>Purpose:</strong> Keep the system operational, fix problems, and make improvements throughout the system's lifetime.</p>
+
+<p><strong>Key Activities:</strong></p>
+<ul>
+    <li><strong>Corrective maintenance:</strong> Fixing bugs and errors discovered after deployment</li>
+    <li><strong>Adaptive maintenance:</strong> Modifying system to accommodate changes in environment (new regulations, new hardware)</li>
+    <li><strong>Perfective maintenance:</strong> Enhancing system based on user feedback and new requirements</li>
+    <li><strong>Preventive maintenance:</strong> Updates to prevent future problems</li>
+</ul>
+
+<div class="important">
+    <strong>Critical Understanding — Often the MOST EXPENSIVE Phase:</strong>
+    <ul>
+        <li>Maintenance typically consumes 60-80% of total system lifecycle costs</li>
+        <li>This phase lasts as long as the system is in use (potentially many years)</li>
+        <li>Often neglected in initial project planning and budgeting</li>
+        <li>May eventually trigger a new SDLC cycle when the system needs replacement</li>
+    </ul>
+</div>
+
+<h4>The Cost-Time Relationship in Waterfall</h4>
+
+<p>One of the most important concepts in Waterfall is understanding how the cost of changes increases dramatically as the project progresses.</p>
+
+<table>
+    <tr><th>Phase Where Error Discovered</th><th>Relative Cost to Fix</th><th>Explanation</th></tr>
+    <tr><td>Systems Definition</td><td>1x</td><td>Just update the plan document</td></tr>
+    <tr><td>Requirements Analysis</td><td>5x</td><td>Revise requirements documentation</td></tr>
+    <tr><td>Design/Development</td><td>10x</td><td>Redesign and recode affected components</td></tr>
+    <tr><td>Implementation</td><td>20x</td><td>Fix deployed system, retrain users</td></tr>
+    <tr><td>Maintenance</td><td>100x+</td><td>Unpick years of built-up dependencies, retrain, redeploy</td></tr>
+</table>
+
+<div class="example">
+    <strong>Real-World Illustration:</strong> Imagine discovering during maintenance that the system should have tracked customer purchase history, but this requirement was missed. To add this now requires: redesigning the database, modifying multiple application modules, migrating years of data, retraining all users, updating all documentation. If caught during requirements analysis, it would simply be added to the specification document.
 </div>
 
 <h4>Strengths of Waterfall</h4>
 <ul>
-    <li>Clear structure and milestones</li>
-    <li>Comprehensive documentation</li>
-    <li>Works well for projects with stable, well-understood requirements</li>
-    <li>Easier to manage and track progress</li>
+    <li><strong>Clear structure:</strong> Easy to understand and manage with defined phases and milestones</li>
+    <li><strong>Comprehensive documentation:</strong> Creates detailed records for future reference</li>
+    <li><strong>Predictable:</strong> Timelines and budgets can be estimated upfront (if requirements are stable)</li>
+    <li><strong>Quality gates:</strong> Formal reviews ensure quality before proceeding</li>
+    <li><strong>Works well when:</strong> Requirements are stable, well-understood, and unlikely to change</li>
+    <li><strong>Regulatory compliance:</strong> Documentation-heavy approach suits regulated industries</li>
 </ul>
 
 <h4>Limitations of Waterfall</h4>
 <ul>
-    <li>Inflexible to changing requirements</li>
-    <li>Users don't see the product until late in the process</li>
-    <li>Long time between project start and delivery</li>
-    <li>High risk if requirements are wrong</li>
+    <li><strong>Inflexible:</strong> Difficult and expensive to accommodate changes once a phase is complete</li>
+    <li><strong>Late visibility:</strong> Users don't see working software until late in the project</li>
+    <li><strong>Long delivery time:</strong> Months or years between project start and usable system</li>
+    <li><strong>High risk:</strong> If requirements are wrong, entire project may fail</li>
+    <li><strong>Assumes predictability:</strong> Real-world projects often have changing requirements</li>
+    <li><strong>Front-loaded effort:</strong> Requires extensive upfront analysis that may prove wrong</li>
 </ul>
 
-<!-- ============================================ -->
-<h3>A2: Agile and Scrum Methodology</h3>
-
-<p><strong>Agile</strong> is an iterative approach to software development that emphasises flexibility, collaboration, and rapid delivery. <strong>Scrum</strong> is a specific framework within Agile.</p>
-
-<h4>Key Characteristics of Scrum</h4>
-<ul>
-    <li><strong>Sprints:</strong> Short development cycles (typically 2-4 weeks)</li>
-    <li><strong>Cross-functional teams:</strong> Teams work together collaboratively</li>
-    <li><strong>Frequent delivery:</strong> Working software delivered regularly</li>
-    <li><strong>Continuous feedback:</strong> From customers/stakeholders throughout</li>
-    <li><strong>Adaptable:</strong> Can respond to changing requirements</li>
-</ul>
-
-<div class="important">
-    <strong>Key Concept: Minimum Viable Product (MVP)</strong><br>
-    The goal is to deliver a potentially shippable product at the end of each sprint that can be shown to the customer for feedback. This feedback influences the next sprint.
+<h4>When to Use Waterfall</h4>
+<div class="tip">
+    <strong>Waterfall is appropriate when:</strong>
+    <ul>
+        <li>Requirements are clear, fixed, and well-documented</li>
+        <li>Technology is well-understood and stable</li>
+        <li>Project is relatively short and simple</li>
+        <li>Regulatory requirements mandate extensive documentation</li>
+        <li>Organisation values predictability over flexibility</li>
+        <li>Resources with required skills are available throughout</li>
+    </ul>
 </div>
 
-<h4>Benefits of Scrum over Waterfall</h4>
+<!-- ============================================================ -->
+<h3>A4: Agile and Scrum Methodology — Detailed Analysis</h3>
+
+<h4>Overview</h4>
+<p><strong>Agile</strong> is a philosophy and set of principles for software development that emphasises flexibility, collaboration, customer involvement, and rapid delivery of working software. <strong>Scrum</strong> is one specific framework for implementing Agile principles.</p>
+
+<h4>The Agile Philosophy</h4>
+<p>Agile emerged from the recognition that traditional Waterfall approaches often failed because:</p>
 <ul>
-    <li>Higher success rate for IS projects</li>
-    <li>Faster delivery (no months-long wait)</li>
-    <li>More flexibility to adapt to changes</li>
-    <li>Customer sees working product early and often</li>
-    <li>Continuous improvement based on feedback</li>
+    <li>Requirements change over time</li>
+    <li>Users often don't know what they want until they see it</li>
+    <li>Long projects lose relevance by the time they're complete</li>
+    <li>Documentation alone doesn't ensure successful systems</li>
 </ul>
 
-<h4>Potential Downsides of Scrum</h4>
-<ul>
-    <li>Often not implemented correctly</li>
-    <li>Mixing Waterfall and Scrum approaches doesn't work well</li>
-    <li>"Product owners" may lack authority to drive business decisions</li>
-    <li>Resistance from employees who prefer individual recognition over team collaboration</li>
-    <li>Potential for burnout due to intensity of sprints</li>
-    <li>Less comprehensive documentation</li>
-</ul>
-
-<h4>Comparing Waterfall and Scrum</h4>
+<h4>Agile Values (from the Agile Manifesto)</h4>
 <table>
-    <tr><th>Aspect</th><th>Waterfall</th><th>Scrum</th></tr>
-    <tr><td>Approach</td><td>Sequential phases</td><td>Iterative sprints</td></tr>
-    <tr><td>Flexibility</td><td>Rigid, hard to change</td><td>Adaptable to change</td></tr>
-    <tr><td>Customer involvement</td><td>End of project</td><td>Throughout project</td></tr>
-    <tr><td>Delivery</td><td>Single delivery at end</td><td>Frequent incremental deliveries</td></tr>
-    <tr><td>Documentation</td><td>Heavy</td><td>Lighter</td></tr>
-    <tr><td>Best for</td><td>Stable requirements</td><td>Evolving requirements</td></tr>
-    <tr><td>Risk</td><td>High if requirements wrong</td><td>Lower due to frequent feedback</td></tr>
+    <tr><th>Value More</th><th>Over</th></tr>
+    <tr><td>Individuals and interactions</td><td>Processes and tools</td></tr>
+    <tr><td>Working software</td><td>Comprehensive documentation</td></tr>
+    <tr><td>Customer collaboration</td><td>Contract negotiation</td></tr>
+    <tr><td>Responding to change</td><td>Following a plan</td></tr>
 </table>
 
-<!-- ============================================ -->
-<h2>Part B: Excel Functions</h2>
-<!-- ============================================ -->
+<h4>Scrum Framework</h4>
 
-<h3>B1: VLOOKUP Function</h3>
+<h5>Key Concepts</h5>
+
+<p><strong>Sprint:</strong> A fixed time period (typically 2-4 weeks) during which a specific set of work must be completed. Each sprint produces a potentially shippable product increment.</p>
+
+<p><strong>Product Backlog:</strong> A prioritised list of all features, functions, and requirements for the product. Continuously refined and reprioritised.</p>
+
+<p><strong>Sprint Backlog:</strong> The subset of product backlog items selected for the current sprint, plus the team's plan for delivering them.</p>
+
+<p><strong>Daily Standup (Daily Scrum):</strong> A brief (15-minute) daily meeting where team members share progress, plans, and obstacles.</p>
+
+<p><strong>Sprint Review:</strong> Meeting at the end of each sprint where the team demonstrates completed work to stakeholders and gathers feedback.</p>
+
+<p><strong>Sprint Retrospective:</strong> Meeting where the team reflects on the sprint and identifies improvements for the next sprint.</p>
+
+<div class="important">
+    <strong>Minimum Viable Product (MVP):</strong><br>
+    A core Agile concept. The MVP is the simplest version of a product that can be released to users to gather feedback. Rather than building a complete system before release, teams build the minimum necessary features, release them, learn from user feedback, and iterate. The goal is to deliver a potentially shippable product at the end of each sprint.
+</div>
+
+<h5>Scrum Roles</h5>
+<table>
+    <tr><th>Role</th><th>Responsibilities</th></tr>
+    <tr><td><strong>Product Owner</strong></td><td>Represents the customer/stakeholders, prioritises backlog, defines features, accepts completed work</td></tr>
+    <tr><td><strong>Scrum Master</strong></td><td>Facilitates the process, removes obstacles, coaches the team, protects team from distractions</td></tr>
+    <tr><td><strong>Development Team</strong></td><td>Cross-functional team that designs, builds, and tests the product (typically 5-9 people)</td></tr>
+</table>
+
+<h5>The Sprint Cycle</h5>
+<ol>
+    <li><strong>Sprint Planning:</strong> Team selects items from product backlog for the sprint</li>
+    <li><strong>Daily Work:</strong> Team works on sprint backlog items, holding daily standups</li>
+    <li><strong>Sprint Review:</strong> Team demonstrates completed work, stakeholders provide feedback</li>
+    <li><strong>Sprint Retrospective:</strong> Team identifies improvements for next sprint</li>
+    <li><strong>Repeat:</strong> Next sprint begins immediately</li>
+</ol>
+
+<h4>Benefits of Scrum over Waterfall</h4>
+
+<table>
+    <tr><th>Benefit</th><th>Explanation</th></tr>
+    <tr><td><strong>Higher success rate</strong></td><td>Studies show Agile/Scrum projects have significantly higher success rates than Waterfall projects</td></tr>
+    <tr><td><strong>Faster time to value</strong></td><td>Working software delivered in weeks, not months or years</td></tr>
+    <tr><td><strong>Flexibility</strong></td><td>Can adapt to changing requirements without derailing the project</td></tr>
+    <tr><td><strong>Early feedback</strong></td><td>Customers see and use the product early, can course-correct quickly</td></tr>
+    <tr><td><strong>Reduced risk</strong></td><td>Problems discovered early when they're cheaper to fix</td></tr>
+    <tr><td><strong>Better alignment</strong></td><td>Continuous customer involvement ensures the product meets actual needs</td></tr>
+    <tr><td><strong>Team morale</strong></td><td>Teams see results quickly, feel ownership of the product</td></tr>
+</table>
+
+<h4>Potential Downsides and Challenges of Scrum</h4>
+
+<div class="misconception">
+    <strong>Challenge 1: Often Not Implemented Correctly</strong><br>
+    Many organisations claim to "do Agile" but don't follow the principles. They may adopt some terminology without the underlying practices, leading to poor results.
+</div>
+
+<div class="misconception">
+    <strong>Challenge 2: Mixing Waterfall and Scrum</strong><br>
+    When organisations move to Scrum, "product owners" are often reconstituted business analysts who used to write lengthy requirements documents. They may lack the credibility and authority to make quick business decisions that Scrum requires.
+</div>
+
+<div class="misconception">
+    <strong>Challenge 3: Employee Resistance</strong><br>
+    Some employees resist Scrum because they prefer individual recognition over team collaboration. As one practitioner noted: "We have pockets of resistance. Some don't like to collaborate. They like to be the stars." Scrum's team focus leaves less room for individual heroics and rewards.
+</div>
+
+<div class="misconception">
+    <strong>Challenge 4: Burnout Risk</strong><br>
+    The intensity of sprints—delivering working software every 2-4 weeks—can lead to burnout if not managed carefully. Sustainable pace is an Agile principle, but it's often violated under deadline pressure.
+</div>
+
+<div class="misconception">
+    <strong>Challenge 5: Less Documentation</strong><br>
+    While Agile values working software over comprehensive documentation, some documentation is still necessary. Teams sometimes use Agile as an excuse to skip important documentation, causing problems later.
+</div>
+
+<h4>When to Use Scrum</h4>
+<div class="tip">
+    <strong>Scrum is appropriate when:</strong>
+    <ul>
+        <li>Requirements are expected to change or are not fully known</li>
+        <li>Customer/user feedback is valuable and obtainable</li>
+        <li>Speed to market is important</li>
+        <li>The organisation supports collaborative, cross-functional teams</li>
+        <li>Leadership is willing to trust teams with decision-making</li>
+        <li>The problem is complex and benefits from iterative discovery</li>
+    </ul>
+</div>
+
+<!-- ============================================================ -->
+<h3>A5: Comparing Waterfall and Scrum</h3>
+
+<h4>Comprehensive Comparison Table</h4>
+<table>
+    <tr><th>Aspect</th><th>Waterfall</th><th>Scrum/Agile</th></tr>
+    <tr><td><strong>Philosophy</strong></td><td>Plan-driven, predictive</td><td>Value-driven, adaptive</td></tr>
+    <tr><td><strong>Approach</strong></td><td>Sequential phases</td><td>Iterative sprints</td></tr>
+    <tr><td><strong>Planning</strong></td><td>Extensive upfront planning</td><td>Just enough planning, continuously refined</td></tr>
+    <tr><td><strong>Requirements</strong></td><td>Fixed at start</td><td>Evolve throughout project</td></tr>
+    <tr><td><strong>Change response</strong></td><td>Formal change control, expensive</td><td>Welcome change, built into process</td></tr>
+    <tr><td><strong>Customer involvement</strong></td><td>Beginning and end</td><td>Throughout, every sprint</td></tr>
+    <tr><td><strong>Delivery</strong></td><td>Single delivery at end</td><td>Frequent incremental deliveries</td></tr>
+    <tr><td><strong>Time to first release</strong></td><td>Months to years</td><td>Weeks</td></tr>
+    <tr><td><strong>Documentation</strong></td><td>Heavy, comprehensive</td><td>Lighter, just enough</td></tr>
+    <tr><td><strong>Testing</strong></td><td>Phase at end of development</td><td>Continuous throughout</td></tr>
+    <tr><td><strong>Team structure</strong></td><td>Specialised roles, handoffs</td><td>Cross-functional, collaborative</td></tr>
+    <tr><td><strong>Risk management</strong></td><td>Identify upfront, mitigate through planning</td><td>Continuous, early detection through iterations</td></tr>
+    <tr><td><strong>Success measure</strong></td><td>Delivered to specification, on time, on budget</td><td>Delivered value, customer satisfaction</td></tr>
+    <tr><td><strong>Best suited for</strong></td><td>Stable requirements, regulated industries</td><td>Evolving requirements, innovative products</td></tr>
+</table>
+
+<div class="example">
+    <strong>Analogy — Building a House vs. Creating Art:</strong><br>
+    <strong>Waterfall</strong> is like building a house: you need complete blueprints before construction, changes after the foundation is poured are expensive, and you don't move in until everything is complete.<br><br>
+    <strong>Agile/Scrum</strong> is like creating a sculpture: you start with a rough form, step back to assess, refine based on how it looks, and continuously improve. The final result may differ from the initial vision, but it's shaped by ongoing feedback.
+</div>
+
+<!-- ============================================================ -->
+<!-- PART B: EXCEL FUNCTIONS -->
+<!-- ============================================================ -->
+
+<h2>Part B: Excel Functions</h2>
+
+<h3>B1: VLOOKUP Function — Complete Guide</h3>
+
+<h4>What is VLOOKUP?</h4>
+<p>VLOOKUP stands for "Vertical Lookup." It searches for a value in the first column of a table and returns a corresponding value from another column in the same row. The "V" indicates it searches vertically (down a column).</p>
 
 <h4>Syntax</h4>
 <pre>=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])</pre>
 
-<h4>Arguments Explained</h4>
+<h4>Arguments — Detailed Explanation</h4>
 
-<p><strong>1. lookup_value</strong> (required)</p>
+<h5>1. lookup_value (Required)</h5>
+<p>The value you want to find in the first column of the table.</p>
 <ul>
-    <li>The value to search for in the FIRST column of the table</li>
-    <li>Can be a value, cell reference, or text</li>
-    <li>If lookup_value is smaller than the smallest value in the first column, returns #N/A error</li>
+    <li>Can be a cell reference (e.g., A1), a value (e.g., 75), or text (e.g., "Marketing")</li>
+    <li>Text lookups are NOT case-sensitive ("SALES" matches "sales" matches "Sales")</li>
+    <li>If the lookup_value is smaller than the smallest value in the first column (when using approximate match), VLOOKUP returns #N/A</li>
 </ul>
 
-<p><strong>2. table_array</strong> (required)</p>
-<ul>
-    <li>The range of cells containing the data</li>
-    <li>Can be a range reference (e.g., A2:D8) or a named range</li>
-    <li>The FIRST column of this range is always searched</li>
-    <li>Should use absolute referencing ($) when copying formulas</li>
-</ul>
-
-<p><strong>3. col_index_num</strong> (required)</p>
-<ul>
-    <li>The column number in the table from which to return a value</li>
-    <li>1 = first column, 2 = second column, etc.</li>
-    <li>If less than 1: returns #VALUE! error</li>
-    <li>If greater than number of columns: returns #REF! error</li>
-</ul>
-
-<p><strong>4. range_lookup</strong> (optional but important)</p>
-<table>
-    <tr><th>Value</th><th>Match Type</th><th>Data Requirement</th></tr>
-    <tr><td>TRUE or 1 or omitted</td><td>Approximate match</td><td>Data MUST be sorted ascending</td></tr>
-    <tr><td>FALSE or 0</td><td>Exact match</td><td>Data does not need to be sorted</td></tr>
-</table>
-
-<div class="important">
-    <strong>Critical Points:</strong>
+<div class="example">
+    <strong>Examples of lookup_value:</strong>
     <ul>
-        <li>VLOOKUP can only look RIGHT (returns values from columns to the right of the lookup column)</li>
-        <li>First column of table_array is ALWAYS the lookup column</li>
-        <li>TRUE vs FALSE fundamentally changes how the function works</li>
-        <li>Approximate match (TRUE) requires sorted data in ascending order</li>
+        <li><code>=VLOOKUP(A1, ...)</code> — looks up whatever value is in cell A1</li>
+        <li><code>=VLOOKUP(85, ...)</code> — looks up the number 85</li>
+        <li><code>=VLOOKUP("Smith", ...)</code> — looks up the text "Smith"</li>
     </ul>
 </div>
 
-<h4>Example Formulas from Course</h4>
-<div class="example">
-    <strong>Grade lookup (approximate match):</strong><br>
-    <code>=VLOOKUP(E13,$A$3:$B$9,2,TRUE)</code><br>
-    Looks up the mark in E13, finds the grade from a grade boundary table.
+<h5>2. table_array (Required)</h5>
+<p>The range of cells containing the data table. This must include:</p>
+<ul>
+    <li>The column to search (must be the FIRST column of the range)</li>
+    <li>The column containing the value to return</li>
+    <li>Any columns in between</li>
+</ul>
+
+<div class="important">
+    <strong>Critical Rules for table_array:</strong>
+    <ul>
+        <li>The lookup column MUST be the FIRST (leftmost) column of the range</li>
+        <li>Use ABSOLUTE references ($) when you plan to copy the formula</li>
+        <li>Can use a Named Range instead of cell references</li>
+    </ul>
+</div>
+
+<div class="correct">
+    <strong>Correct:</strong> <code>=VLOOKUP(A1, $D$1:$F$10, 2, FALSE)</code><br>
+    The $ signs lock the table reference so it doesn't change when copied.
+</div>
+
+<div class="incorrect">
+    <strong>Incorrect:</strong> <code>=VLOOKUP(A1, D1:F10, 2, FALSE)</code><br>
+    Without $ signs, copying this formula down will shift the table range, causing errors.
+</div>
+
+<h5>3. col_index_num (Required)</h5>
+<p>The column number in the table_array from which to return a value.</p>
+<ul>
+    <li>1 = first column of the table_array</li>
+    <li>2 = second column of the table_array</li>
+    <li>And so on...</li>
+</ul>
+
+<div class="important">
+    <strong>Common Errors with col_index_num:</strong>
+    <ul>
+        <li>If col_index_num is less than 1 → #VALUE! error</li>
+        <li>If col_index_num is greater than the number of columns in table_array → #REF! error</li>
+    </ul>
 </div>
 
 <div class="example">
-    <strong>Temperature description (approximate match):</strong><br>
-    <code>=VLOOKUP(A8,$D$7:$F$12,3,TRUE)</code><br>
-    Looks up temperature, returns description (e.g., "Hot", "Cold").
+    <strong>Example:</strong> If your table_array is D1:F10 (3 columns: D, E, F)
+    <ul>
+        <li>col_index_num = 1 returns values from column D</li>
+        <li>col_index_num = 2 returns values from column E</li>
+        <li>col_index_num = 3 returns values from column F</li>
+        <li>col_index_num = 4 would cause #REF! error (only 3 columns exist)</li>
+    </ul>
 </div>
 
+<h5>4. range_lookup (Optional but Important)</h5>
+<p>Specifies whether to find an exact match or an approximate match.</p>
+
+<table>
+    <tr><th>Value</th><th>Type</th><th>Behaviour</th><th>Data Requirement</th></tr>
+    <tr><td><strong>FALSE</strong> or <strong>0</strong></td><td>Exact match</td><td>Finds only an exact match. Returns #N/A if not found.</td><td>Data does NOT need to be sorted</td></tr>
+    <tr><td><strong>TRUE</strong> or <strong>1</strong> or <strong>omitted</strong></td><td>Approximate match</td><td>Finds exact match OR the largest value less than or equal to lookup_value</td><td>Data MUST be sorted in ASCENDING order</td></tr>
+</table>
+
+<div class="important">
+    <strong>When to Use Each:</strong>
+    <ul>
+        <li><strong>Use FALSE (exact match) when:</strong> Looking up specific items like product codes, employee IDs, names, categories</li>
+        <li><strong>Use TRUE (approximate match) when:</strong> Finding which range a value falls into, like grade boundaries, tax brackets, commission tiers, temperature ranges</li>
+    </ul>
+</div>
+
+<div class="misconception">
+    <strong>Common Mistake:</strong> Using TRUE (approximate match) when you need an exact match. If your data isn't sorted ascending, approximate match will return wrong results WITHOUT showing an error. This is a silent failure that's hard to detect.
+</div>
+
+<h4>VLOOKUP Examples from Course Materials</h4>
+
+<h5>Example 1: Grade Lookup (Approximate Match)</h5>
 <div class="example">
-    <strong>Type of day lookup (exact match):</strong><br>
-    <code>=VLOOKUP(A18,$D$18:$E$23,2,FALSE)</code><br>
-    Looks up exact day type, returns corresponding value.
+    <strong>Scenario:</strong> Convert a student's mark to a grade using a grade boundary table.<br><br>
+    <strong>Grade Table (cells A3:B9):</strong>
+    <table>
+        <tr><th>Mark Range</th><th>Grade</th></tr>
+        <tr><td>0</td><td>1</td></tr>
+        <tr><td>30</td><td>2</td></tr>
+        <tr><td>47</td><td>3</td></tr>
+        <tr><td>50</td><td>4</td></tr>
+        <tr><td>65</td><td>5</td></tr>
+        <tr><td>75</td><td>6</td></tr>
+        <tr><td>85</td><td>7</td></tr>
+    </table>
+    <strong>Formula:</strong> <code>=VLOOKUP(E13,$A$3:$B$9,2,TRUE)</code><br><br>
+    <strong>How it works:</strong> If E13 contains 80, VLOOKUP finds 75 (the largest value ≤ 80) and returns grade 6.
 </div>
 
-<!-- ============================================ -->
+<h5>Example 2: Temperature Description (Approximate Match)</h5>
+<div class="example">
+    <strong>Scenario:</strong> Describe the type of day based on temperature.<br><br>
+    <strong>Formula:</strong> <code>=VLOOKUP(A8,$D$7:$F$12,3,TRUE)</code><br><br>
+    <strong>How it works:</strong> Looks up the temperature in A8, finds which range it falls into, returns the description (e.g., "Hot", "Cold", "Mild").
+</div>
+
+<h5>Example 3: Type of Day Lookup (Exact Match)</h5>
+<div class="example">
+    <strong>Scenario:</strong> Look up a specific day type to find its corresponding value.<br><br>
+    <strong>Formula:</strong> <code>=VLOOKUP(A18,$D$18:$E$23,2,FALSE)</code><br><br>
+    <strong>How it works:</strong> Finds an exact match for the day type in A18, returns the corresponding value. Returns #N/A if no exact match found.
+</div>
+
+<h4>VLOOKUP Limitations</h4>
+<ul>
+    <li><strong>Can only look RIGHT:</strong> The lookup column must be the leftmost column; cannot return values from columns to the left</li>
+    <li><strong>Column index is hardcoded:</strong> If you insert columns, the col_index_num doesn't automatically adjust</li>
+    <li><strong>Only returns first match:</strong> If there are duplicate values in the lookup column, only the first one is found</li>
+    <li><strong>Approximate match requires sorted data:</strong> And doesn't warn you if data isn't sorted</li>
+</ul>
+
+<!-- ============================================================ -->
 <h3>B2: Combining IF with VLOOKUP</h3>
 
-<p><strong>Why combine them?</strong> VLOOKUP returns #N/A when the lookup_value is outside the table range. Wrapping VLOOKUP in an IF function handles these edge cases.</p>
+<h4>Why Combine IF and VLOOKUP?</h4>
+<p>VLOOKUP has limitations when dealing with values outside the table range. Combining IF with VLOOKUP allows you to:</p>
+<ul>
+    <li>Handle edge cases (values below the minimum in the table)</li>
+    <li>Provide custom error messages instead of #N/A</li>
+    <li>Create more robust formulas that work for ALL possible inputs</li>
+</ul>
 
 <h4>Pattern</h4>
 <pre>=IF(condition, value_if_true, VLOOKUP(...))</pre>
 
-<h4>Example from Course</h4>
+<h4>Detailed Example from Course</h4>
 <div class="example">
-    <code>=IF(A13&lt;0,"Below zero",VLOOKUP(A13,$D$7:$F$12,3,TRUE))</code><br><br>
-    This formula:
+    <strong>Problem:</strong> The temperature lookup table starts at 0 degrees. If someone enters a negative temperature (e.g., -10), VLOOKUP returns #N/A because there's no matching range.<br><br>
+    
+    <strong>Solution:</strong> Wrap VLOOKUP in an IF function to handle negative temperatures.<br><br>
+    
+    <strong>Formula:</strong> <code>=IF(A13&lt;0,"Below zero",VLOOKUP(A13,$D$7:$F$12,3,TRUE))</code><br><br>
+    
+    <strong>How it works:</strong>
     <ol>
-        <li>First checks if temperature is below zero</li>
-        <li>If yes: returns "Below zero"</li>
-        <li>If no: performs the VLOOKUP</li>
+        <li>IF first checks: Is A13 less than 0?</li>
+        <li>If YES (true): Return "Below zero"</li>
+        <li>If NO (false): Perform the VLOOKUP as normal</li>
     </ol>
+    
+    <strong>Logic flow:</strong><br>
+    <code>IF(A13&lt;0, "Below zero", VLOOKUP(...))</code><br>
+    <code>   ↓           ↓              ↓</code><br>
+    <code>condition  if true      if false</code>
 </div>
 
 <div class="important">
-    <strong>Key Principle:</strong> This technique ensures formulas work for ALL possible input values, not just those within the lookup table range.
+    <strong>Key Principle:</strong> This technique ensures formulas work for ALL possible input values, not just those within the lookup table range. Professional Excel formulas should handle edge cases gracefully.
 </div>
 
-<!-- ============================================ -->
-<h3>B3: XLOOKUP Function</h3>
+<h4>Other Use Cases for IF + VLOOKUP</h4>
+<ul>
+    <li>Checking if a cell is empty before looking up</li>
+    <li>Providing different messages for different types of errors</li>
+    <li>Applying different logic based on categories</li>
+</ul>
+
+<div class="example">
+    <strong>Handle empty cells:</strong><br>
+    <code>=IF(A1="","Please enter a value",VLOOKUP(A1,$D$1:$E$10,2,FALSE))</code>
+</div>
+
+<!-- ============================================================ -->
+<h3>B3: XLOOKUP Function — Complete Guide</h3>
+
+<h4>What is XLOOKUP?</h4>
+<p>XLOOKUP is a newer, more powerful lookup function that addresses many limitations of VLOOKUP. The "X" suggests its extended capabilities—it can look in any direction and offers more flexibility.</p>
 
 <h4>Syntax</h4>
 <pre>=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode])</pre>
 
-<h4>Arguments Explained</h4>
+<h4>Arguments — Detailed Explanation</h4>
 
-<p><strong>1. lookup_value</strong> (required) - The value to search for</p>
+<h5>1. lookup_value (Required)</h5>
+<p>The value to search for. Same as VLOOKUP.</p>
 
-<p><strong>2. lookup_array</strong> (required) - The range to search (single column or row)</p>
+<h5>2. lookup_array (Required)</h5>
+<p>The range to search. Unlike VLOOKUP, this is ONLY the column (or row) you're searching—not the entire table.</p>
 
-<p><strong>3. return_array</strong> (required) - The range from which to return values. Can be multiple columns.</p>
-
-<p><strong>4. if_not_found</strong> (optional) - Text to display if no match found. Avoids #N/A errors.</p>
-
-<p><strong>5. match_mode</strong> (optional)</p>
-<table>
-    <tr><th>Value</th><th>Meaning</th></tr>
-    <tr><td>0</td><td>Exact match (default)</td></tr>
-    <tr><td>-1</td><td>Exact match or next smaller</td></tr>
-    <tr><td>1</td><td>Exact match or next larger</td></tr>
-    <tr><td>2</td><td>Wildcard match (* and ?)</td></tr>
-</table>
-
-<p><strong>6. search_mode</strong> (optional)</p>
-<table>
-    <tr><th>Value</th><th>Meaning</th></tr>
-    <tr><td>1</td><td>Search first to last (default)</td></tr>
-    <tr><td>-1</td><td>Search last to first (bottom to top)</td></tr>
-    <tr><td>2</td><td>Binary search ascending</td></tr>
-    <tr><td>-2</td><td>Binary search descending</td></tr>
-</table>
-
-<h4>Advantages of XLOOKUP over VLOOKUP</h4>
-<ul>
-    <li>Can look LEFT or RIGHT (not limited to looking right)</li>
-    <li>Separate lookup_array and return_array (more flexible)</li>
-    <li>Built-in error handling with if_not_found</li>
-    <li>Supports wildcards for partial matches</li>
-    <li>Can search from bottom to top</li>
-    <li>Can return multiple columns at once</li>
-</ul>
-
-<h4>XLOOKUP Scenarios from Course</h4>
-<table>
-    <tr><th>Task</th><th>Key Feature Used</th></tr>
-    <tr><td>Find which school James is studying in</td><td>Basic lookup_array and return_array</td></tr>
-    <tr><td>Find school for "Mars" (doesn't exist)</td><td>if_not_found parameter</td></tr>
-    <tr><td>Find student ID for Keith</td><td>Looking LEFT (return column before lookup column)</td></tr>
-    <tr><td>Find course using first 2 letters "Da"</td><td>Wildcard match_mode with "Da*"</td></tr>
-    <tr><td>Return both school AND course for Daniel</td><td>Multiple return values</td></tr>
-    <tr><td>Find student born in 1998, searching bottom to top</td><td>search_mode = -1</td></tr>
-</table>
-
-<!-- ============================================ -->
-<h3>B4: Named Ranges</h3>
-
-<p><strong>What are named ranges?</strong> Named ranges assign a meaningful name to a cell or range of cells, making formulas easier to read and maintain.</p>
-
-<h4>How to Create</h4>
-<ol>
-    <li>Go to Formulas tab</li>
-    <li>Click Name Manager</li>
-    <li>Click New</li>
-    <li>Enter name and select range</li>
-    <li>Click OK</li>
-</ol>
-
-<h4>Naming Rules</h4>
-<ul>
-    <li>No spaces allowed (use underscores: Temperature_Range_Table)</li>
-    <li>Must follow Excel naming conventions</li>
-    <li>Cannot start with a number</li>
-    <li>Cannot use cell references as names</li>
-</ul>
-
-<h4>Benefits</h4>
-<ul>
-    <li>More readable formulas: <code>=VLOOKUP(A1,Temperature_Range_Table,2,TRUE)</code></li>
-    <li>Easier to maintain than absolute references</li>
-    <li>Self-documenting</li>
-    <li>Professional practice</li>
-</ul>
-
-<div class="example">
-    <strong>Example named ranges from course:</strong><br>
-    <code>Temperature_Range_Table</code><br>
-    <code>Type_of_Day_Table</code>
+<div class="correct">
+    <strong>XLOOKUP advantage:</strong> You specify exactly which column to search, giving you more control.
 </div>
 
-<!-- ============================================ -->
-<h3>B5: Cell Referencing</h3>
+<h5>3. return_array (Required)</h5>
+<p>The range from which to return values. This is separate from the lookup_array.</p>
 
-<h4>Types of References</h4>
+<div class="important">
+    <strong>Key Advantage:</strong> Because lookup_array and return_array are separate, XLOOKUP can:
+    <ul>
+        <li>Look LEFT (return column can be to the left of lookup column)</li>
+        <li>Return multiple columns at once (specify a multi-column return_array)</li>
+    </ul>
+</div>
+
+<h5>4. if_not_found (Optional)</h5>
+<p>What to return if no match is found. If omitted, returns #N/A.</p>
+
+<div class="example">
+    <strong>Examples:</strong>
+    <ul>
+        <li><code>=XLOOKUP(A1,B:B,C:C,"Not found")</code> — returns "Not found" instead of #N/A</li>
+        <li><code>=XLOOKUP(A1,B:B,C:C,0)</code> — returns 0 instead of #N/A</li>
+        <li><code>=XLOOKUP(A1,B:B,C:C,"")</code> — returns empty string instead of #N/A</li>
+    </ul>
+</div>
+
+<h5>5. match_mode (Optional)</h5>
 <table>
-    <tr><th>Type</th><th>Example</th><th>Behaviour When Copied</th></tr>
-    <tr><td>Relative</td><td>A1</td><td>Changes based on new position</td></tr>
-    <tr><td>Absolute</td><td>$A$1</td><td>Does NOT change</td></tr>
-    <tr><td>Mixed (column locked)</td><td>$A1</td><td>Column stays, row changes</td></tr>
-    <tr><td>Mixed (row locked)</td><td>A$1</td><td>Column changes, row stays</td></tr>
+    <tr><th>Value</th><th>Meaning</th><th>Use Case</th></tr>
+    <tr><td>0 (default)</td><td>Exact match</td><td>Looking up specific items</td></tr>
+    <tr><td>-1</td><td>Exact match or next smaller</td><td>Finding price tiers, grade boundaries</td></tr>
+    <tr><td>1</td><td>Exact match or next larger</td><td>Finding minimum thresholds</td></tr>
+    <tr><td>2</td><td>Wildcard match</td><td>Partial text matching with * and ?</td></tr>
 </table>
+
+<h5>6. search_mode (Optional)</h5>
+<table>
+    <tr><th>Value</th><th>Meaning</th><th>Use Case</th></tr>
+    <tr><td>1 (default)</td><td>Search first to last</td><td>Normal top-to-bottom search</td></tr>
+    <tr><td>-1</td><td>Search last to first</td><td>Find most recent entry when there are duplicates</td></tr>
+    <tr><td>2</td><td>Binary search (ascending)</td><td>Faster search on sorted data</td></tr>
+    <tr><td>-2</td><td>Binary search (descending)</td><td>Faster search on reverse-sorted data</td></tr>
+</table>
+
+<h4>XLOOKUP Advantages Over VLOOKUP</h4>
+
+<table>
+    <tr><th>Feature</th><th>VLOOKUP</th><th>XLOOKUP</th></tr>
+    <tr><td>Look direction</td><td>Right only</td><td>Any direction (left, right)</td></tr>
+    <tr><td>Error handling</td><td>Requires IFERROR wrapper</td><td>Built-in if_not_found parameter</td></tr>
+    <tr><td>Column reference</td><td>Hardcoded number</td><td>Separate return_array (more flexible)</td></tr>
+    <tr><td>Multiple returns</td><td>No</td><td>Yes (specify multi-column return_array)</td></tr>
+    <tr><td>Wildcards</td><td>Limited</td><td>Full support with match_mode=2</td></tr>
+    <tr><td>Search direction</td><td>Top to bottom only</td><td>Top-to-bottom or bottom-to-top</td></tr>
+    <tr><td>Default match</td><td>Approximate (often wrong)</td><td>Exact (usually what you want)</td></tr>
+</table>
+
+<h4>XLOOKUP Examples from Course Exercises</h4>
+
+<h5>Example 1: Basic Lookup (Find James's School)</h5>
+<div class="example">
+    <strong>Task:</strong> Find which school James is studying in.<br><br>
+    <strong>Data:</strong> Names in column B, Schools in column G<br><br>
+    <strong>Formula:</strong> <code>=XLOOKUP("James",B:B,G:G)</code><br><br>
+    <strong>Result:</strong> Returns "Law department"
+</div>
+
+<h5>Example 2: Using if_not_found (Search for Non-existent "Mars")</h5>
+<div class="example">
+    <strong>Task:</strong> Find which school Mars is studying in (but Mars doesn't exist).<br><br>
+    <strong>Formula:</strong> <code>=XLOOKUP("Mars",B:B,G:G,"No match is found")</code><br><br>
+    <strong>Result:</strong> Returns "No match is found" instead of #N/A
+</div>
+
+<h5>Example 3: Looking LEFT (Find Keith's Student ID)</h5>
+<div class="example">
+    <strong>Task:</strong> Find the Student ID for Keith (ID is to the LEFT of name).<br><br>
+    <strong>Data:</strong> Student IDs in column A, Names in column B<br><br>
+    <strong>Formula:</strong> <code>=XLOOKUP("Keith",B:B,A:A)</code><br><br>
+    <strong>Result:</strong> Returns "S10"<br><br>
+    <strong>Note:</strong> This is IMPOSSIBLE with VLOOKUP because it can only look right!
+</div>
+
+<h5>Example 4: Wildcard Search (Find by First Two Letters)</h5>
+<div class="example">
+    <strong>Task:</strong> Find the course name for a student whose name starts with "Da".<br><br>
+    <strong>Formula:</strong> <code>=XLOOKUP("Da*",B:B,F:F,,-2)</code><br><br>
+    <strong>Explanation:</strong>
+    <ul>
+        <li>"Da*" — the * wildcard matches any characters after "Da"</li>
+        <li>The -2 in match_mode enables wildcard matching</li>
+    </ul>
+    <strong>Result:</strong> Returns "Human behaviour" (Daniel's course)
+</div>
+
+<h5>Example 5: Multiple Return Values (Find Daniel's School AND Course)</h5>
+<div class="example">
+    <strong>Task:</strong> Return both the school and course for Daniel in one formula.<br><br>
+    <strong>Formula:</strong> <code>=XLOOKUP("Daniel",B:B,F:G)</code><br><br>
+    <strong>Explanation:</strong> F:G is a two-column range, so XLOOKUP returns values from both columns.<br><br>
+    <strong>Result:</strong> Returns "Human behaviour" and "Business management department" (spills into two cells)
+</div>
+
+<h5>Example 6: Search Bottom to Top (Find Last Student Born in 1998)</h5>
+<div class="example">
+    <strong>Task:</strong> Multiple students were born in 1998. Find the name of the LAST one (bottom-most in the list).<br><br>
+    <strong>Formula:</strong> <code>=XLOOKUP(1998,C:C,B:B,,0,-1)</code><br><br>
+    <strong>Explanation:</strong>
+    <ul>
+        <li>The -1 in search_mode searches from bottom to top</li>
+        <li>This finds James (the second 1998 entry) instead of Jack (the first)</li>
+    </ul>
+</div>
+
+<!-- ============================================================ -->
+<h3>B4: Named Ranges — Complete Guide</h3>
+
+<h4>What are Named Ranges?</h4>
+<p>Named ranges allow you to assign a meaningful, descriptive name to a cell or range of cells. Instead of referring to cells by their addresses (like D7:F12), you can use a name like "Temperature_Range_Table".</p>
+
+<h4>Benefits of Named Ranges</h4>
+<ul>
+    <li><strong>Readability:</strong> <code>=VLOOKUP(A1,Temperature_Range_Table,2,TRUE)</code> is clearer than <code>=VLOOKUP(A1,$D$7:$F$12,2,TRUE)</code></li>
+    <li><strong>Maintainability:</strong> If the range changes, update the named range definition once instead of every formula</li>
+    <li><strong>Self-documenting:</strong> Names describe what the range contains</li>
+    <li><strong>Error reduction:</strong> Harder to make mistakes with meaningful names</li>
+    <li><strong>Professional practice:</strong> Industry standard for well-built spreadsheets</li>
+</ul>
+
+<h4>How to Create Named Ranges</h4>
+<ol>
+    <li>Select the cells you want to name</li>
+    <li>Go to the <strong>Formulas</strong> tab</li>
+    <li>Click <strong>Name Manager</strong></li>
+    <li>Click <strong>New</strong></li>
+    <li>Enter the name (e.g., "Temperature_Range_Table")</li>
+    <li>Verify the range is correct in "Refers to"</li>
+    <li>Click <strong>OK</strong></li>
+</ol>
+
+<div class="tip">
+    <strong>Quick Method:</strong> Select cells, then type the name directly into the Name Box (the box showing the cell address, left of the formula bar) and press Enter.
+</div>
+
+<h4>Naming Rules</h4>
+<table>
+    <tr><th>Rule</th><th>Correct Example</th><th>Incorrect Example</th></tr>
+    <tr><td>No spaces allowed</td><td>Temperature_Range_Table</td><td>Temperature Range Table</td></tr>
+    <tr><td>Cannot start with a number</td><td>Table2024</td><td>2024Table</td></tr>
+    <tr><td>Cannot look like a cell reference</td><td>DataRange</td><td>A1 (looks like cell A1)</td></tr>
+    <tr><td>Use underscores for readability</td><td>Grade_Boundaries</td><td>GradeBoundaries</td></tr>
+    <tr><td>Maximum 255 characters</td><td>—</td><td>—</td></tr>
+</table>
+
+<h4>Named Ranges in VLOOKUP</h4>
+<div class="example">
+    <strong>Without Named Range:</strong><br>
+    <code>=VLOOKUP(A8,$D$7:$F$12,3,TRUE)</code><br><br>
+    <strong>With Named Range:</strong><br>
+    <code>=VLOOKUP(A8,Temperature_Range_Table,3,TRUE)</code><br><br>
+    <strong>Benefit:</strong> The second formula is immediately understandable. Anyone reading it knows it's looking up values in a temperature range table.
+</div>
+
+<h4>Managing Named Ranges</h4>
+<p>Use the <strong>Name Manager</strong> (Formulas tab) to:</p>
+<ul>
+    <li><strong>New:</strong> Create new named ranges</li>
+    <li><strong>Edit:</strong> Modify existing named ranges (change the name or the range it refers to)</li>
+    <li><strong>Delete:</strong> Remove named ranges no longer needed</li>
+</ul>
+
+<div class="tip">
+    <strong>Viewing Named Ranges:</strong> Click the Name Box dropdown (left of formula bar) to see a list of all named ranges. Clicking a name will select that range in the worksheet.
+</div>
+
+<!-- ============================================================ -->
+<h3>B5: Cell Referencing — Complete Guide</h3>
+
+<h4>Why Understanding References Matters</h4>
+<p>When you copy formulas in Excel, cell references change based on their reference type. Understanding this is ESSENTIAL for building formulas that work correctly when copied across multiple cells.</p>
+
+<h4>The Three Types of References</h4>
+
+<h5>1. Relative References (Default): A1</h5>
+<p>References that change when the formula is copied, adjusting relative to the new location.</p>
+
+<div class="example">
+    <strong>Example:</strong> In cell C1, the formula <code>=A1+B1</code><br>
+    <ul>
+        <li>Copied to C2 becomes: <code>=A2+B2</code></li>
+        <li>Copied to D1 becomes: <code>=B1+C1</code></li>
+        <li>Copied to D2 becomes: <code>=B2+C2</code></li>
+    </ul>
+    <strong>Use when:</strong> You want the formula to adjust to each row/column (e.g., summing each row's values)
+</div>
+
+<h5>2. Absolute References: $A$1</h5>
+<p>References that do NOT change when the formula is copied. The $ sign "locks" the column and/or row.</p>
+
+<div class="example">
+    <strong>Example:</strong> In cell C1, the formula <code>=$A$1+B1</code><br>
+    <ul>
+        <li>Copied to C2 becomes: <code>=$A$1+B2</code> (A1 stays locked, B1 becomes B2)</li>
+        <li>Copied to D1 becomes: <code>=$A$1+C1</code> (A1 stays locked, B1 becomes C1)</li>
+    </ul>
+    <strong>Use when:</strong> Referring to a fixed value like a tax rate, exchange rate, or lookup table
+</div>
+
+<h5>3. Mixed References: $A1 or A$1</h5>
+<p>References where either the column OR the row is locked, but not both.</p>
+
+<table>
+    <tr><th>Reference</th><th>Column</th><th>Row</th><th>Behaviour When Copied</th></tr>
+    <tr><td>$A1</td><td>Locked (A)</td><td>Relative</td><td>Column stays A; row changes</td></tr>
+    <tr><td>A$1</td><td>Relative</td><td>Locked (1)</td><td>Column changes; row stays 1</td></tr>
+</table>
+
+<div class="example">
+    <strong>Mixed Reference Example from Course:</strong><br><br>
+    <strong>Scenario:</strong> Calculate discounted prices for different products at different discount rates.<br><br>
+    <table>
+        <tr><th></th><th>E</th><th>F</th><th>G</th></tr>
+        <tr><td>4</td><td>10%</td><td>15%</td><td>20%</td></tr>
+        <tr><td>5</td><td>$90</td><td>$85</td><td>$80</td></tr>
+        <tr><td>6</td><td>$180</td><td>$170</td><td>$160</td></tr>
+        <tr><td>7</td><td>$270</td><td>$255</td><td>$240</td></tr>
+    </table>
+    <p>Original prices are in column C ($100, $200, $300)</p>
+    <strong>Formula in E5:</strong> <code>=$C5*(1-E$4)</code><br><br>
+    <strong>How it works:</strong>
+    <ul>
+        <li><code>$C5</code>: Column C is locked (always get price from column C), row is relative (changes to 6, 7 when copied down)</li>
+        <li><code>E$4</code>: Row 4 is locked (always get discount from row 4), column is relative (changes to F, G when copied right)</li>
+    </ul>
+    <strong>Result:</strong> One formula can be copied across the entire grid to calculate all discounted prices correctly!
+</div>
 
 <h4>How References Change When Copied</h4>
 <p>If you copy a formula one column right and one row down:</p>
 <table>
-    <tr><th>Original</th><th>After Copy</th></tr>
-    <tr><td>A1</td><td>B2</td></tr>
-    <tr><td>$A$1</td><td>$A$1</td></tr>
-    <tr><td>$A1</td><td>$A2</td></tr>
-    <tr><td>A$1</td><td>B$1</td></tr>
+    <tr><th>Original Reference</th><th>After Copying</th><th>Explanation</th></tr>
+    <tr><td>A1</td><td>B2</td><td>Both column and row adjust</td></tr>
+    <tr><td>$A$1</td><td>$A$1</td><td>Nothing changes (fully locked)</td></tr>
+    <tr><td>$A1</td><td>$A2</td><td>Column locked, row adjusts</td></tr>
+    <tr><td>A$1</td><td>B$1</td><td>Column adjusts, row locked</td></tr>
 </table>
 
-<h4>Why This Matters for VLOOKUP</h4>
-<p>The table_array argument should use absolute references so that when the formula is copied down, the table reference stays the same.</p>
-
-<div class="example">
-    <strong>Example:</strong> <code>=VLOOKUP(A8,$D$7:$F$12,3,TRUE)</code><br>
-    <ul>
-        <li>A8 is relative (changes to A9, A10, etc. when copied down)</li>
-        <li>$D$7:$F$12 is absolute (stays the same when copied)</li>
-    </ul>
+<h4>Why Absolute References Matter for VLOOKUP</h4>
+<div class="important">
+    <strong>Critical Understanding:</strong> The table_array in VLOOKUP should almost ALWAYS use absolute references. If you copy a VLOOKUP formula without absolute references, the table range shifts, causing errors or wrong results.
 </div>
 
-<h4>Mixed Reference Example</h4>
-<div class="example">
-    <strong>Formula:</strong> <code>=$C5*(1-E$4)</code><br>
-    <ul>
-        <li>$C5: Column C is locked, row is relative</li>
-        <li>E$4: Column is relative, row 4 is locked</li>
-        <li>This allows one formula to be copied across and down a grid to calculate different discount percentages for different prices</li>
-    </ul>
+<div class="correct">
+    <strong>Correct:</strong> <code>=VLOOKUP(A8,$D$7:$F$12,3,TRUE)</code><br>
+    When copied from row 8 to row 9, becomes: <code>=VLOOKUP(A9,$D$7:$F$12,3,TRUE)</code><br>
+    The lookup value changes (good), but the table stays fixed (also good).
 </div>
 
-<!-- ============================================ -->
-<h2>Part C: Common Errors and Troubleshooting</h2>
-<!-- ============================================ -->
+<div class="incorrect">
+    <strong>Incorrect:</strong> <code>=VLOOKUP(A8,D7:F12,3,TRUE)</code><br>
+    When copied from row 8 to row 9, becomes: <code>=VLOOKUP(A9,D8:F13,3,TRUE)</code><br>
+    The table range shifted down, now pointing to wrong cells!
+</div>
 
-<h3>#N/A Error</h3>
-<p><strong>Cause:</strong> VLOOKUP/XLOOKUP cannot find the lookup value</p>
-<p><strong>Solutions:</strong></p>
+<h4>Keyboard Shortcut: F4 Key</h4>
+<p>Press F4 while editing a cell reference to cycle through reference types:</p>
+<ol>
+    <li>A1 → $A$1 (absolute)</li>
+    <li>$A$1 → A$1 (mixed: row locked)</li>
+    <li>A$1 → $A1 (mixed: column locked)</li>
+    <li>$A1 → A1 (relative)</li>
+</ol>
+
+<!-- ============================================================ -->
+<h3>B6: Common Errors and Troubleshooting</h3>
+
+<h4>#N/A Error</h4>
+<p><strong>Meaning:</strong> "Not Available" — the lookup value was not found.</p>
+
+<p><strong>Causes:</strong></p>
 <ul>
-    <li>Check spelling of lookup value</li>
-    <li>For VLOOKUP with TRUE: ensure lookup_value isn't smaller than smallest table value</li>
-    <li>Use IF wrapper or XLOOKUP's if_not_found parameter</li>
+    <li>The lookup value doesn't exist in the lookup column</li>
+    <li>Spelling mismatch (check for extra spaces, different cases)</li>
+    <li>Using approximate match (TRUE) when lookup_value is smaller than smallest table value</li>
+    <li>Data type mismatch (looking for number but column contains text, or vice versa)</li>
 </ul>
 
-<h3>#REF! Error</h3>
-<p><strong>Cause:</strong> col_index_num exceeds columns in table_array</p>
-<p><strong>Solution:</strong> Check that col_index_num doesn't exceed the number of columns</p>
+<p><strong>Solutions:</strong></p>
+<ul>
+    <li>Verify the lookup value exists in the table</li>
+    <li>Use TRIM() to remove extra spaces: <code>=VLOOKUP(TRIM(A1),...)</code></li>
+    <li>Use IF wrapper for values below minimum: <code>=IF(A1&lt;min,"Too low",VLOOKUP(...))</code></li>
+    <li>Use XLOOKUP with if_not_found parameter</li>
+    <li>Wrap in IFERROR: <code>=IFERROR(VLOOKUP(...),"Not found")</code></li>
+</ul>
 
-<h3>#VALUE! Error</h3>
-<p><strong>Cause:</strong> col_index_num is less than 1, or wrong data type</p>
-<p><strong>Solution:</strong> Ensure col_index_num is at least 1</p>
+<h4>#REF! Error</h4>
+<p><strong>Meaning:</strong> Invalid cell reference.</p>
 
-<h3>Wrong Results (No Error Shown)</h3>
-<p><strong>Cause:</strong> Using approximate match (TRUE) with unsorted data</p>
-<p><strong>Solution:</strong> Sort data ascending OR use exact match (FALSE)</p>
+<p><strong>Causes in VLOOKUP:</strong></p>
+<ul>
+    <li>col_index_num is greater than the number of columns in table_array</li>
+    <li>A column or row referenced in the formula has been deleted</li>
+</ul>
 
-<h3>Formula Returns Same Value When Copied</h3>
-<p><strong>Cause:</strong> Used relative reference where absolute was needed</p>
-<p><strong>Solution:</strong> Add $ signs to lock the table_array reference</p>
+<p><strong>Solutions:</strong></p>
+<ul>
+    <li>Check col_index_num doesn't exceed table width</li>
+    <li>If table_array is D1:F10 (3 columns), col_index_num must be 1, 2, or 3</li>
+    <li>Use Undo (Ctrl+Z) if you accidentally deleted needed cells</li>
+</ul>
 
-<!-- ============================================ -->
-<h2>Part D: Sample Quiz Questions</h2>
-<!-- ============================================ -->
+<div class="example">
+    <strong>Example:</strong> <code>=VLOOKUP(A1,D1:E10,3,FALSE)</code> causes #REF!<br>
+    <strong>Why:</strong> D1:E10 has only 2 columns, but col_index_num is 3.<br>
+    <strong>Fix:</strong> Change to col_index_num=2, or expand range to include a third column.
+</div>
 
-<h3>Information Systems Theory Questions</h3>
+<h4>#VALUE! Error</h4>
+<p><strong>Meaning:</strong> Wrong type of argument or operand.</p>
+
+<p><strong>Causes in VLOOKUP:</strong></p>
+<ul>
+    <li>col_index_num is less than 1</li>
+    <li>col_index_num is text instead of a number</li>
+    <li>lookup_value is more than 255 characters</li>
+</ul>
+
+<p><strong>Solutions:</strong></p>
+<ul>
+    <li>Ensure col_index_num is a positive integer ≥1</li>
+    <li>Check for formula errors in col_index_num argument</li>
+</ul>
+
+<h4>Wrong Results (No Error Shown)</h4>
+<p><strong>This is the most dangerous situation</strong> — Excel returns a value, but it's incorrect.</p>
+
+<p><strong>Causes:</strong></p>
+<ul>
+    <li>Using TRUE (approximate match) with unsorted data</li>
+    <li>Using TRUE when you needed FALSE (exact match)</li>
+    <li>Relative references shifted the table_array when formula was copied</li>
+    <li>Looking up in wrong column</li>
+</ul>
+
+<p><strong>Prevention:</strong></p>
+<ul>
+    <li>Always explicitly specify TRUE or FALSE (don't rely on default)</li>
+    <li>If using TRUE, verify data is sorted ascending</li>
+    <li>Always use absolute references for table_array</li>
+    <li>Test formulas with known values before relying on them</li>
+</ul>
+
+<h4>Troubleshooting Checklist</h4>
+<ol>
+    <li>✓ Is the lookup value in the first column of table_array?</li>
+    <li>✓ Is col_index_num within the table width?</li>
+    <li>✓ For approximate match: Is data sorted ascending?</li>
+    <li>✓ For exact match: Does the value actually exist?</li>
+    <li>✓ Are you using absolute references for table_array?</li>
+    <li>✓ Are there extra spaces in the lookup value?</li>
+    <li>✓ Are data types consistent (text vs. numbers)?</li>
+</ol>
+
+<!-- ============================================================ -->
+<!-- PART C: QUIZ QUESTIONS -->
+<!-- ============================================================ -->
+
+<h2>Part C: Practice Quiz Questions</h2>
+
+<p>Questions are organised by topic and difficulty level:</p>
+<ul>
+    <li><span class="difficulty-easy">EASY</span> — Basic recall and recognition</li>
+    <li><span class="difficulty-medium">MEDIUM</span> — Application and understanding</li>
+    <li><span class="difficulty-hard">HARD</span> — Analysis, evaluation, and complex scenarios</li>
+</ul>
+
+<!-- ============================================================ -->
+<h3>C1: SDLC and Waterfall Questions</h3>
 
 <h4>Multiple Choice</h4>
-<ol>
-    <li>Which phase of the Waterfall methodology is typically the most expensive?
-        <br>A) Requirements Analysis B) Implementation C) Maintenance D) Systems Definition
-        <br><em>Answer: C) Maintenance</em></li>
-    <li>What does MVP stand for in Agile/Scrum?
-        <br>A) Most Valuable Process B) Minimum Viable Product C) Maximum Value Performance D) Managed Version Plan
-        <br><em>Answer: B) Minimum Viable Product</em></li>
-    <li>Which methodology uses "sprints"?
-        <br>A) Waterfall B) SDLC C) Scrum D) Systems Definition
-        <br><em>Answer: C) Scrum</em></li>
-</ol>
+
+<div class="quiz">
+    <span class="difficulty-easy">EASY</span><br>
+    <strong>Q1:</strong> What does SDLC stand for?<br>
+    A) Software Development Life Cycle<br>
+    B) Systems Development Life Cycle<br>
+    C) Systems Design Life Cycle<br>
+    D) Software Design Learning Cycle<br><br>
+    <strong>Answer:</strong> B) Systems Development Life Cycle
+</div>
+
+<div class="quiz">
+    <span class="difficulty-easy">EASY</span><br>
+    <strong>Q2:</strong> How many phases are in the Waterfall methodology?<br>
+    A) 3<br>
+    B) 4<br>
+    C) 5<br>
+    D) 6<br><br>
+    <strong>Answer:</strong> C) 5
+</div>
+
+<div class="quiz">
+    <span class="difficulty-easy">EASY</span><br>
+    <strong>Q3:</strong> Which phase of Waterfall is typically the most expensive?<br>
+    A) Systems Definition<br>
+    B) Requirements Analysis<br>
+    C) Implementation<br>
+    D) Maintenance<br><br>
+    <strong>Answer:</strong> D) Maintenance — It includes all ongoing work after deployment and can last for many years.
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q4:</strong> Why are errors discovered later in the SDLC more expensive to fix?<br>
+    A) Developers charge more per hour later in the project<br>
+    B) More work has been built on the flawed foundation and needs to be redone<br>
+    C) Documentation requirements increase over time<br>
+    D) Testing equipment becomes more expensive<br><br>
+    <strong>Answer:</strong> B) More work has been built on the flawed foundation and needs to be redone
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q5:</strong> Which of these is NOT a type of feasibility assessed in the Systems Definition phase?<br>
+    A) Technical feasibility<br>
+    B) Economic feasibility<br>
+    C) Operational feasibility<br>
+    D) Competitive feasibility<br><br>
+    <strong>Answer:</strong> D) Competitive feasibility — The three main types are technical, economic, and operational.
+</div>
+
+<div class="quiz">
+    <span class="difficulty-hard">HARD</span><br>
+    <strong>Q6:</strong> A project is in the Implementation phase when users discover that a key report they need was never specified in the requirements. What does this illustrate about Waterfall?<br>
+    A) The importance of the Maintenance phase<br>
+    B) The risk of fixing requirements errors late in the project<br>
+    C) The need for better testing procedures<br>
+    D) The advantage of sequential development<br><br>
+    <strong>Answer:</strong> B) The risk of fixing requirements errors late in the project — Requirements errors caught this late are extremely expensive to fix.
+</div>
 
 <h4>Short Answer</h4>
-<ol>
-    <li>Explain why errors discovered late in the SDLC cost more to fix than those discovered early.
-        <br><em>Answer: Later discovery means more work has been built on flawed foundations. Fixing requires reworking design, code, testing, and potentially retraining users — all adding cost.</em></li>
-    <li>List the 5 phases of the Waterfall methodology in order.
-        <br><em>Answer: 1) Systems Definition, 2) Requirements Analysis, 3) Design/Development/Testing, 4) Implementation, 5) Maintenance</em></li>
-    <li>Give two reasons why Scrum projects might have higher success rates than Waterfall projects.
-        <br><em>Answer: Frequent feedback allows early correction; customers see working product regularly; teams can adapt to changing requirements; problems identified early.</em></li>
-</ol>
+
+<div class="quiz">
+    <span class="difficulty-easy">EASY</span><br>
+    <strong>Q7:</strong> List the 5 phases of the Waterfall methodology in order.<br><br>
+    <strong>Answer:</strong> 1) Systems Definition, 2) Requirements Analysis, 3) Design/Development/Testing, 4) Implementation, 5) Maintenance
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q8:</strong> Explain what a "gate" is in Waterfall and why it's important.<br><br>
+    <strong>Answer:</strong> A gate is a formal approval point between phases where stakeholders review deliverables and approve moving to the next phase. Gates are important because they ensure quality control, provide decision points, and create accountability before committing resources to the next phase.
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q9:</strong> What is the main deliverable of the Requirements Analysis phase, and why is this phase considered critical?<br><br>
+    <strong>Answer:</strong> The main deliverable is the Approved User Requirements Document. This phase is critical because incorrect requirements lead to a flawed system, and errors discovered later become exponentially more expensive to fix.
+</div>
+
+<div class="quiz">
+    <span class="difficulty-hard">HARD</span><br>
+    <strong>Q10:</strong> A government agency is building a new tax processing system. Requirements are defined by legislation, unlikely to change, and extensive documentation is required for auditing purposes. Explain why Waterfall might be appropriate for this project.<br><br>
+    <strong>Answer:</strong> Waterfall is appropriate because: 1) Requirements are stable and well-defined by legislation, 2) Changes are unlikely during development, 3) The documentation-heavy nature of Waterfall meets audit requirements, 4) The structured approach with gates supports government procurement and oversight processes.
+</div>
+
+<!-- ============================================================ -->
+<h3>C2: Agile and Scrum Questions</h3>
+
+<h4>Multiple Choice</h4>
+
+<div class="quiz">
+    <span class="difficulty-easy">EASY</span><br>
+    <strong>Q11:</strong> What is a "sprint" in Scrum?<br>
+    A) A type of documentation<br>
+    B) A fixed time period (typically 2-4 weeks) for completing work<br>
+    C) A meeting with stakeholders<br>
+    D) A testing phase<br><br>
+    <strong>Answer:</strong> B) A fixed time period (typically 2-4 weeks) for completing work
+</div>
+
+<div class="quiz">
+    <span class="difficulty-easy">EASY</span><br>
+    <strong>Q12:</strong> What does MVP stand for in Agile?<br>
+    A) Most Valuable Player<br>
+    B) Minimum Viable Product<br>
+    C) Maximum Value Performance<br>
+    D) Managed Version Plan<br><br>
+    <strong>Answer:</strong> B) Minimum Viable Product
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q13:</strong> Which Scrum role is responsible for prioritising the product backlog?<br>
+    A) Scrum Master<br>
+    B) Development Team<br>
+    C) Product Owner<br>
+    D) Project Manager<br><br>
+    <strong>Answer:</strong> C) Product Owner
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q14:</strong> What is a potential downside of Scrum mentioned in the course materials?<br>
+    A) It's too expensive<br>
+    B) Burnout from the intensity of sprints<br>
+    C) It requires too much documentation<br>
+    D) Customers aren't involved enough<br><br>
+    <strong>Answer:</strong> B) Burnout from the intensity of sprints
+</div>
+
+<div class="quiz">
+    <span class="difficulty-hard">HARD</span><br>
+    <strong>Q15:</strong> According to the course materials, why do some organisations fail when transitioning from Waterfall to Scrum?<br>
+    A) Scrum is too complicated<br>
+    B) They mix bits of both methodologies, and "product owners" may lack authority<br>
+    C) Scrum requires more developers<br>
+    D) The technology stack is incompatible<br><br>
+    <strong>Answer:</strong> B) They mix bits of both methodologies, and "product owners" may lack authority
+</div>
+
+<h4>Short Answer</h4>
+
+<div class="quiz">
+    <span class="difficulty-easy">EASY</span><br>
+    <strong>Q16:</strong> Explain the concept of Minimum Viable Product (MVP).<br><br>
+    <strong>Answer:</strong> An MVP is the simplest version of a product that can be released to users to gather feedback. Instead of building a complete system, teams build minimum necessary features, release them, learn from feedback, and iterate. The goal is to deliver something usable quickly and improve based on real user input.
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q17:</strong> Give two reasons why Scrum projects typically have higher success rates than Waterfall projects.<br><br>
+    <strong>Answer:</strong> Any two of: 1) Frequent feedback allows early course correction, 2) Customers see working product regularly and can provide input, 3) Teams can adapt to changing requirements, 4) Problems are identified early when cheaper to fix, 5) Continuous delivery means value is delivered throughout the project.
+</div>
+
+<div class="quiz">
+    <span class="difficulty-hard">HARD</span><br>
+    <strong>Q18:</strong> An employee says: "I don't like Scrum because I prefer to be recognized for my individual work rather than team achievements." Based on course materials, explain why this attitude might be a challenge for Scrum adoption.<br><br>
+    <strong>Answer:</strong> This reflects resistance mentioned in course materials where some employees "don't like to collaborate" and "like to be the stars." Scrum emphasises team collaboration and collective ownership, leaving less room for individual heroics and rewards. This cultural resistance can undermine Scrum adoption because the methodology depends on cross-functional teamwork.
+</div>
 
 <h4>Scenario-Based</h4>
-<ol>
-    <li>A company is developing a new payroll system. The requirements are well-understood, unlikely to change, and senior management wants detailed documentation at each stage. Would you recommend Waterfall or Agile? Explain.
-        <br><em>Answer: Waterfall would be appropriate because requirements are stable and well-understood, documentation is valued, and the sequential approach suits projects with low uncertainty.</em></li>
-    <li>A startup is building a new mobile app. They're not sure exactly what features users want and expect to make many changes based on user feedback. Which methodology would you recommend and why?
-        <br><em>Answer: Agile/Scrum because it allows for changing requirements, frequent delivery for user feedback, and iterative improvement based on real user responses.</em></li>
-</ol>
 
-<h3>Excel Function Questions</h3>
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q19:</strong> A startup is developing a new mobile app. They're unsure exactly what features users want and expect to make many changes based on user feedback. Would you recommend Waterfall or Agile/Scrum? Explain your reasoning.<br><br>
+    <strong>Answer:</strong> Agile/Scrum would be more appropriate because: 1) Requirements are uncertain and expected to change, 2) User feedback is essential and can be gathered after each sprint, 3) Iterative development allows the product to evolve based on learning, 4) Speed to market is typically important for startups.
+</div>
+
+<div class="quiz">
+    <span class="difficulty-hard">HARD</span><br>
+    <strong>Q20:</strong> Compare how Waterfall and Scrum handle changing requirements. Which approach is better suited to a project where requirements are likely to evolve?<br><br>
+    <strong>Answer:</strong> Waterfall handles changes through formal change control processes, which are expensive and time-consuming since work may need to be redone. Scrum expects and welcomes change—the backlog is continuously refined and priorities adjusted each sprint. Scrum is better suited to evolving requirements because change is built into the process rather than treated as an exception.
+</div>
+
+<!-- ============================================================ -->
+<h3>C3: VLOOKUP Questions</h3>
+
+<h4>Multiple Choice</h4>
+
+<div class="quiz">
+    <span class="difficulty-easy">EASY</span><br>
+    <strong>Q21:</strong> In VLOOKUP, which column of the table_array is searched?<br>
+    A) The rightmost column<br>
+    B) The column specified by col_index_num<br>
+    C) The first (leftmost) column<br>
+    D) Any column you specify<br><br>
+    <strong>Answer:</strong> C) The first (leftmost) column
+</div>
+
+<div class="quiz">
+    <span class="difficulty-easy">EASY</span><br>
+    <strong>Q22:</strong> What value should the fourth argument of VLOOKUP be for an exact match?<br>
+    A) TRUE or 1<br>
+    B) FALSE or 0<br>
+    C) EXACT<br>
+    D) MATCH<br><br>
+    <strong>Answer:</strong> B) FALSE or 0
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q23:</strong> When using VLOOKUP with TRUE (approximate match), what must be true about the first column of the table?<br>
+    A) It must contain only numbers<br>
+    B) It must be sorted in ascending order<br>
+    C) It must contain no duplicates<br>
+    D) It must be sorted in descending order<br><br>
+    <strong>Answer:</strong> B) It must be sorted in ascending order
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q24:</strong> A VLOOKUP formula returns #REF!. What is the most likely cause?<br>
+    A) The lookup value wasn't found<br>
+    B) The col_index_num exceeds the number of columns in the table<br>
+    C) The table data isn't sorted<br>
+    D) The lookup value contains a space<br><br>
+    <strong>Answer:</strong> B) The col_index_num exceeds the number of columns in the table
+</div>
+
+<div class="quiz">
+    <span class="difficulty-hard">HARD</span><br>
+    <strong>Q25:</strong> A VLOOKUP formula with TRUE (approximate match) returns a value, but it's wrong. The lookup value exists in the table. What is the most likely cause?<br>
+    A) The col_index_num is too large<br>
+    B) The data in the first column is not sorted in ascending order<br>
+    C) There are extra spaces in the lookup value<br>
+    D) The formula is missing the fourth argument<br><br>
+    <strong>Answer:</strong> B) The data in the first column is not sorted in ascending order — This causes silent wrong results (no error displayed).
+</div>
 
 <h4>Formula Writing</h4>
-<ol>
-    <li>Write a VLOOKUP formula that looks up the value in cell A2 in the range D1:F10, returns the value from the third column, and finds an exact match.
-        <br><em>Answer: =VLOOKUP(A2,$D$1:$F$10,3,FALSE) or =VLOOKUP(A2,$D$1:$F$10,3,0)</em></li>
-    <li>Write an XLOOKUP formula that looks up "Smith" in column A, returns the value from column C, and displays "Not found" if there's no match.
-        <br><em>Answer: =XLOOKUP("Smith",A:A,C:C,"Not found")</em></li>
-    <li>Write a formula that uses IF and VLOOKUP to return "Invalid" if the value in A1 is less than 0, otherwise performs a VLOOKUP in the range D1:E10.
-        <br><em>Answer: =IF(A1&lt;0,"Invalid",VLOOKUP(A1,$D$1:$E$10,2,TRUE))</em></li>
-</ol>
+
+<div class="quiz">
+    <span class="difficulty-easy">EASY</span><br>
+    <strong>Q26:</strong> Write a VLOOKUP formula that looks up the value in cell A2 in the range D1:F10, returns the value from the second column, and finds an exact match.<br><br>
+    <strong>Answer:</strong> <code>=VLOOKUP(A2,$D$1:$F$10,2,FALSE)</code> or <code>=VLOOKUP(A2,$D$1:$F$10,2,0)</code>
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q27:</strong> Write a formula using IF and VLOOKUP that returns "Invalid" if A1 is less than 0, otherwise looks up A1 in the range B1:C10 (returning column 2, approximate match).<br><br>
+    <strong>Answer:</strong> <code>=IF(A1&lt;0,"Invalid",VLOOKUP(A1,$B$1:$C$10,2,TRUE))</code>
+</div>
+
+<div class="quiz">
+    <span class="difficulty-hard">HARD</span><br>
+    <strong>Q28:</strong> A grade table in A1:B7 has mark boundaries (0, 30, 47, 50, 65, 75, 85) in column A and grades (1-7) in column B. Write a formula that looks up the mark in E5 and returns the grade, but returns "Invalid mark" if E5 is negative.<br><br>
+    <strong>Answer:</strong> <code>=IF(E5&lt;0,"Invalid mark",VLOOKUP(E5,$A$1:$B$7,2,TRUE))</code>
+</div>
 
 <h4>Error Diagnosis</h4>
-<ol>
-    <li>A student's formula returns #N/A: <code>=VLOOKUP("Marketing",A2:C10,2,TRUE)</code>. The value "Marketing" exists in column A. What might be causing the error?
-        <br><em>Answer: Using TRUE (approximate match) with text data that may not be sorted alphabetically. Should use FALSE for exact match with text lookups.</em></li>
-    <li>A formula returns #REF!: <code>=VLOOKUP(A1,D1:E10,3,FALSE)</code>. What's wrong?
-        <br><em>Answer: col_index_num is 3, but the table_array (D1:E10) only has 2 columns. Change to 2 or expand the range.</em></li>
-</ol>
 
-<h4>Fill-in-the-Blank</h4>
-<ol>
-    <li>In VLOOKUP, when the fourth argument is set to ______, the data in the first column must be sorted in ascending order.
-        <br><em>Answer: TRUE (or 1)</em></li>
-    <li>To lock both the column and row when copying a formula, use ______ referencing.
-        <br><em>Answer: absolute (e.g., $A$1)</em></li>
-    <li>XLOOKUP can search from bottom to top by setting the search_mode parameter to ______.
-        <br><em>Answer: -1</em></li>
-</ol>
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q29:</strong> This formula returns #N/A: <code>=VLOOKUP("Marketing",A2:C10,2,TRUE)</code>. The value "Marketing" exists in column A. What might be causing the error?<br><br>
+    <strong>Answer:</strong> Using TRUE (approximate match) with text data that likely isn't sorted alphabetically. For text lookups, you typically need FALSE (exact match).
+</div>
 
-<h4>Conceptual</h4>
-<ol>
-    <li>What is the main advantage of using named ranges instead of absolute cell references?
-        <br><em>Answer: Named ranges make formulas more readable and self-documenting, easier to maintain, and less prone to errors when ranges change.</em></li>
-    <li>Why should you use absolute references for the table_array in VLOOKUP when you plan to copy the formula?
-        <br><em>Answer: Without absolute references, the table_array range shifts when copied, causing the formula to reference wrong cells or return errors.</em></li>
-</ol>
+<div class="quiz">
+    <span class="difficulty-hard">HARD</span><br>
+    <strong>Q30:</strong> This formula worked in row 5 but gives wrong results when copied to row 6: <code>=VLOOKUP(A5,D5:F10,2,FALSE)</code>. What went wrong and how would you fix it?<br><br>
+    <strong>Answer:</strong> The table_array (D5:F10) uses relative references, so when copied to row 6 it becomes D6:F11, shifting the table down. Fix by using absolute references: <code>=VLOOKUP(A5,$D$5:$F$10,2,FALSE)</code>
+</div>
+
+<!-- ============================================================ -->
+<h3>C4: XLOOKUP Questions</h3>
+
+<h4>Multiple Choice</h4>
+
+<div class="quiz">
+    <span class="difficulty-easy">EASY</span><br>
+    <strong>Q31:</strong> What is one major advantage of XLOOKUP over VLOOKUP?<br>
+    A) It's faster<br>
+    B) It can look to the left (return values from columns before the lookup column)<br>
+    C) It doesn't require a table<br>
+    D) It only works with numbers<br><br>
+    <strong>Answer:</strong> B) It can look to the left
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q32:</strong> In XLOOKUP, what does the if_not_found parameter do?<br>
+    A) Specifies which column to search<br>
+    B) Determines the match type (exact or approximate)<br>
+    C) Specifies what to return if no match is found (instead of #N/A)<br>
+    D) Sets the search direction<br><br>
+    <strong>Answer:</strong> C) Specifies what to return if no match is found (instead of #N/A)
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q33:</strong> In XLOOKUP, what match_mode value enables wildcard matching?<br>
+    A) 0<br>
+    B) 1<br>
+    C) 2<br>
+    D) -1<br><br>
+    <strong>Answer:</strong> C) 2
+</div>
+
+<div class="quiz">
+    <span class="difficulty-hard">HARD</span><br>
+    <strong>Q34:</strong> In XLOOKUP, what does search_mode = -1 do?<br>
+    A) Searches for values less than the lookup value<br>
+    B) Searches from the last row to the first (bottom to top)<br>
+    C) Returns the last column instead of the first<br>
+    D) Enables descending sort search<br><br>
+    <strong>Answer:</strong> B) Searches from the last row to the first (bottom to top) — useful for finding the most recent entry when there are duplicates.
+</div>
+
+<h4>Formula Writing</h4>
+
+<div class="quiz">
+    <span class="difficulty-easy">EASY</span><br>
+    <strong>Q35:</strong> Write an XLOOKUP formula that looks up "Smith" in column A and returns the corresponding value from column C. If not found, return "Not found".<br><br>
+    <strong>Answer:</strong> <code>=XLOOKUP("Smith",A:A,C:C,"Not found")</code>
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q36:</strong> Using XLOOKUP, write a formula to find a student's ID (column A) by looking up their name (column B). The name to search is in cell E1.<br><br>
+    <strong>Answer:</strong> <code>=XLOOKUP(E1,B:B,A:A)</code> — Note: This looks LEFT, which VLOOKUP cannot do.
+</div>
+
+<div class="quiz">
+    <span class="difficulty-hard">HARD</span><br>
+    <strong>Q37:</strong> Write an XLOOKUP formula that finds a student whose name starts with "Mar" using wildcards. Names are in column B, and you want to return their course from column F.<br><br>
+    <strong>Answer:</strong> <code>=XLOOKUP("Mar*",B:B,F:F,,2)</code> — The 2 in match_mode enables wildcard matching.
+</div>
+
+<!-- ============================================================ -->
+<h3>C5: Cell Referencing Questions</h3>
+
+<h4>Multiple Choice</h4>
+
+<div class="quiz">
+    <span class="difficulty-easy">EASY</span><br>
+    <strong>Q38:</strong> Which reference type does NOT change when a formula is copied?<br>
+    A) Relative (A1)<br>
+    B) Absolute ($A$1)<br>
+    C) Mixed ($A1)<br>
+    D) Mixed (A$1)<br><br>
+    <strong>Answer:</strong> B) Absolute ($A$1)
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q39:</strong> If the formula =A1+$B$1 is in cell C1 and copied to cell C2, what will it become?<br>
+    A) =A1+$B$1<br>
+    B) =A2+$B$1<br>
+    C) =A2+$B$2<br>
+    D) =A1+$B$2<br><br>
+    <strong>Answer:</strong> B) =A2+$B$1 — A1 is relative (changes to A2), $B$1 is absolute (stays the same).
+</div>
+
+<div class="quiz">
+    <span class="difficulty-hard">HARD</span><br>
+    <strong>Q40:</strong> You need a formula that always references column C but changes rows when copied down, and always references row 1 but changes columns when copied across. Which reference type(s) do you need?<br>
+    A) $C$1<br>
+    B) $C1 for the first part, A$1 for the second part<br>
+    C) C$1<br>
+    D) $C1<br><br>
+    <strong>Answer:</strong> B) $C1 locks the column, A$1 locks the row
+</div>
+
+<h4>Short Answer</h4>
+
+<div class="quiz">
+    <span class="difficulty-easy">EASY</span><br>
+    <strong>Q41:</strong> What keyboard shortcut cycles through reference types in Excel?<br><br>
+    <strong>Answer:</strong> F4 — Press F4 while editing a cell reference to cycle: A1 → $A$1 → A$1 → $A1 → A1
+</div>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q42:</strong> Explain why you should use absolute references for the table_array argument in VLOOKUP.<br><br>
+    <strong>Answer:</strong> When you copy a VLOOKUP formula to other cells, relative references cause the table_array to shift, pointing to wrong cells and causing errors or incorrect results. Absolute references ($) keep the table range fixed regardless of where the formula is copied.
+</div>
+
+<div class="quiz">
+    <span class="difficulty-hard">HARD</span><br>
+    <strong>Q43:</strong> You have prices in column C (rows 5-7) and discount percentages in row 4 (columns E-G). You want ONE formula in E5 that can be copied across to G5 and down to G7 to calculate all discounted prices. What references would you use?<br><br>
+    <strong>Answer:</strong> <code>=$C5*(1-E$4)</code>
+    <ul>
+        <li>$C5: Column C locked (always get price from C), row relative (changes when copied down)</li>
+        <li>E$4: Column relative (changes when copied across), row 4 locked (always get discount from row 4)</li>
+    </ul>
+</div>
+
+<!-- ============================================================ -->
+<h3>C6: Mixed Topic Questions</h3>
+
+<div class="quiz">
+    <span class="difficulty-medium">MEDIUM</span><br>
+    <strong>Q44:</strong> Compare how Waterfall and Agile handle the situation where users realise they need an additional feature after development has started.<br><br>
+    <strong>Answer:</strong> <strong>Waterfall:</strong> Requires formal change control process, expensive because work may need to be redone, can delay the entire project. <strong>Agile:</strong> New feature is added to the backlog, prioritised by the Product Owner, and can be included in an upcoming sprint. Change is expected and welcomed.
+</div>
+
+<div class="quiz">
+    <span class="difficulty-hard">HARD</span><br>
+    <strong>Q45:</strong> A student's VLOOKUP returns wrong grades. The formula is correct, but they're using TRUE for approximate match. When you check the grade boundary table, the marks are listed as: 85, 75, 65, 50, 47, 30, 0. Explain the problem and solution.<br><br>
+    <strong>Answer:</strong> The data is sorted in descending order (highest to lowest), but approximate match (TRUE) requires ascending order (lowest to highest). The solution is to either: 1) Sort the table in ascending order (0, 30, 47, 50, 65, 75, 85), or 2) Use XLOOKUP with match_mode -1 which handles descending data.
+</div>
+
+<div class="quiz">
+    <span class="difficulty-hard">HARD</span><br>
+    <strong>Q46:</strong> You're advising a company choosing between Waterfall and Agile for two projects: (A) A regulatory compliance system where requirements are defined by law, and (B) A customer-facing app where user preferences are still being researched. What would you recommend for each and why?<br><br>
+    <strong>Answer:</strong> <strong>Project A (Compliance):</strong> Waterfall is appropriate because requirements are fixed by regulation, unlikely to change, and extensive documentation is needed for auditing. <strong>Project B (Customer app):</strong> Agile/Scrum is appropriate because requirements are uncertain, user feedback is valuable, and the product needs to evolve based on research findings.
+</div>
 
 </body>
 </html>
