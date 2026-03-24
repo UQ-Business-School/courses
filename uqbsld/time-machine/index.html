@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bbTimeMachine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f8f8f8;
+            padding: 0;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            color: #51247a;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .preview-container {
+            margin-top: 30px;
+            border: 2px dotted #ddd;
+            padding: 0px;
+            max-width: 1200px;
+            min-height: 500px;
+        }
+        .subtitle {
+            font-size: 0.8em;
+            color: #999490;
+            margin-top: 0px;
+        }
+        .pagetitle {
+            max-width: 1200px;
+            margin: 10px auto;
+            width: 100%;
+            padding: 5px 15px;
+            box-sizing: border-box;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+        .step1 {
+            max-width: 1200px;
+            margin: 10px auto;
+            width: 100%;
+            padding: 5px 15px;
+            box-sizing: border-box;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding-bottom: 20px;
+            padding-top: 10px;
+        }
+        .copyright-notice {
+            padding-top: 15px;
+            color: #D7D1CC;
+            font-size: 0.7em;
+        }
+        h1, h2 {
+            color: #51247a;
+        }
+        #iframePreview {
+            width: 100%;
+            min-height: 600px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+        #preview-frame {
+            width: 100%;
+            min-height: 600px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="pagetitle">
+        <iframe title="Blackboard Time Machine" aria-label="Heading titled Blackboard Time Machine" height="150px" width="100%" src="https://uqgblaze.github.io/UQ-Swoosh/live/flex-query.html?title=BB%20Time%20Machine" frameborder="0" scrolling="no" style="max-width:1200px; max-height: 150px!important"></iframe>
+        <p>This page will allow you to view any Blackboard Ultra course in Original mode. This can be used for debugging issues in Ultra, e.g. a Content Market extension is unavailable for some reason. Using this tool allows you to go "under the hood" of Ultra and modify certain aspects under the <code>ROOT</code> portion of the course.</p> <p><b>This tool should only be used by Learning Designers and Learning Officers within the UQ Business School.</b> This tool is not supported by anyone.</p>
+    </div>
+    <div class="step1">
+        <h2>Copy & Paste the Ultra Course URL below</h2>
+        <p>In your browser navigation window, copy and paste in the URL for the Ultra course into the field below.</p>
+        <form id="generator-OriginalURL">
+            <p><label for="title">Paste in Ultra Course URL:</label>
+            <input type="text" id="ultra-URL" placeholder="Paste the full Ultra URL here"></p>
+            <button type="button" id="generate-original">Generate URL</button>
+        </form>
+        <div id="preview-container" style="margin-top: 20px; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9;">
+            <strong>Preview URL:</strong>
+            <code><p id="preview-box" style="color: #000; word-wrap: break-word; margin-top: 10px;">The generated URL will appear here.</p></code>
+        </div>
+    </div>
+
+<script>
+    document.getElementById('generate-original').addEventListener('click', function () {
+        const ultraURL = document.getElementById('ultra-URL').value;
+        const courseIdMatch = ultraURL.match(/_\d+_\d+/);
+
+        if (courseIdMatch) {
+            const courseId = courseIdMatch[0];
+            let originalURL;
+            let buttonText;
+
+            if (ultraURL.startsWith('https://learn.uq.edu.au/')) {
+                originalURL = `https://learn.uq.edu.au/webapps/blackboard/execute/announcement?method=search&context=course&course_id=${courseId}&handle=cp_announcements&mode=cpview`;
+                buttonText = "Open in Original View (Learn.UQ) (new window)";
+            } else if (ultraURL.startsWith('https://saas-stage.learn.uq.edu.au/')) {
+                originalURL = `https://saas-stage.learn.uq.edu.au/webapps/blackboard/execute/announcement?method=search&context=course&course_id=${courseId}&handle=cp_announcements&mode=cpview`;
+                buttonText = "Open in Original View (SAAS-Stage) (new window)";
+            } else {
+                alert('Invalid URL. Please ensure it is from the Learn.UQ or SAAS-Stage domain.');
+                return;
+            }
+
+            document.getElementById('preview-box').textContent = originalURL;
+            const button = document.getElementById('generate-original');
+            button.textContent = buttonText;
+            button.addEventListener('click', function () {
+                window.open(originalURL, '_blank');
+            });
+        } else {
+            alert('Invalid Ultra URL. Please ensure it follows the correct format.');
+        }
+    });
+
+    const inputField = document.getElementById('ultra-URL');
+    inputField.addEventListener('focus', function () {
+        inputField.value = '';
+    });
+</script>
+
+    <div class="copyright-notice" align="center">© The University of Queensland, 2025. CC BY 4.0 International.</div>
+</body>
+</html>
