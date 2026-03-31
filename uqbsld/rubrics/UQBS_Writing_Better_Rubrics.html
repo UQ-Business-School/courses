@@ -263,10 +263,100 @@
             color: #5cb85c;
         }
 
+        /* Word highlighting */
+        .hl-bad {
+            background: rgba(217, 83, 79, 0.2);
+            color: #d9534f;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .hl-good {
+            background: rgba(92, 184, 92, 0.15);
+            color: #2d8a2d;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
         .example-box p {
             font-size: 14px;
             margin-bottom: 12px;
             margin-top: 0;
+        }
+
+        /* Comparison cards */
+        .comparison-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .comparison-card {
+            border: 1px solid #e4dfd9;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .comparison-grade {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 8px 16px;
+            background: #f7f5f3;
+            color: #51247A;
+            border-bottom: 1px solid #e4dfd9;
+        }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .comparison-cell {
+            padding: 14px 16px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #1a1714;
+        }
+
+        .comparison-cell.before {
+            background: #fff;
+            border-right: 1px solid #e4dfd9;
+        }
+
+        .comparison-cell.after {
+            background: #fafff9;
+        }
+
+        .comparison-label {
+            display: block;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 6px;
+        }
+
+        .comparison-label.before {
+            color: #d9534f;
+        }
+
+        .comparison-label.after {
+            color: #2d8a2d;
+        }
+
+        @media (max-width: 580px) {
+            .comparison-row {
+                grid-template-columns: 1fr;
+            }
+            .comparison-cell.before {
+                border-right: none;
+                border-bottom: 1px solid #e4dfd9;
+            }
         }
 
         /* Tables */
@@ -597,57 +687,69 @@
 
                 <h3>Before and After: Critical Analysis in a Case Study Report</h3>
 
-                <!-- Before Example -->
-                <div class="example-box">
-                    <span class="example-label before">Before — Adverb Scaling</span>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width: 25%"></th>
-                                <th>HD 85–100%</th>
-                                <th>D 75–84%</th>
-                                <th>C 65–74%</th>
-                                <th>P 50–64%</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Critical Analysis</strong></td>
-                                <td>Demonstrates excellent critical analysis of the case with outstanding depth</td>
-                                <td>Demonstrates very good critical analysis of the case with considerable depth</td>
-                                <td>Demonstrates good critical analysis of the case with adequate depth</td>
-                                <td>Demonstrates satisfactory critical analysis of the case with basic depth</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="problem-note">The problem: the only thing that changes is the adverb. A student reading this cannot identify what to do to move from a Pass to a Distinction.</div>
+                <div class="comparison-stack">
+                    <!-- HD -->
+                    <div class="comparison-card">
+                        <div class="comparison-grade">HD (7) · 85–100%</div>
+                        <div class="comparison-row">
+                            <div class="comparison-cell before">
+                                <span class="comparison-label before">Before</span>
+                                Demonstrates <span class="hl-bad">excellent</span> critical analysis of the case with <span class="hl-bad">outstanding</span> depth
+                            </div>
+                            <div class="comparison-cell after">
+                                <span class="comparison-label after">After</span>
+                                <span class="hl-good">Integrates theory to explain why</span> issues occur; <span class="hl-good">connects factors to show how they reinforce each other;</span> identifies limitations in the theory applied
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- D -->
+                    <div class="comparison-card">
+                        <div class="comparison-grade">D (6) · 75–84%</div>
+                        <div class="comparison-row">
+                            <div class="comparison-cell before">
+                                <span class="comparison-label before">Before</span>
+                                Demonstrates <span class="hl-bad">very good</span> critical analysis of the case with <span class="hl-bad">considerable</span> depth
+                            </div>
+                            <div class="comparison-cell after">
+                                <span class="comparison-label after">After</span>
+                                <span class="hl-good">Applies theory to explain</span> issues; <span class="hl-good">identifies relationships</span> between factors; analysis is coherent and well-structured
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- C -->
+                    <div class="comparison-card">
+                        <div class="comparison-grade">C (5) · 65–74%</div>
+                        <div class="comparison-row">
+                            <div class="comparison-cell before">
+                                <span class="comparison-label before">Before</span>
+                                Demonstrates <span class="hl-bad">good</span> critical analysis of the case with <span class="hl-bad">adequate</span> depth
+                            </div>
+                            <div class="comparison-cell after">
+                                <span class="comparison-label after">After</span>
+                                <span class="hl-good">Applies relevant theory</span> to the case; addresses multiple factors but <span class="hl-good">treats them somewhat independently</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- P -->
+                    <div class="comparison-card">
+                        <div class="comparison-grade">P (4) · 50–64%</div>
+                        <div class="comparison-row">
+                            <div class="comparison-cell before">
+                                <span class="comparison-label before">Before</span>
+                                Demonstrates <span class="hl-bad">satisfactory</span> critical analysis of the case with <span class="hl-bad">basic</span> depth
+                            </div>
+                            <div class="comparison-cell after">
+                                <span class="comparison-label after">After</span>
+                                <span class="hl-good">Links case to theory</span> but connections are surface-level; <span class="hl-good">factors listed rather than analysed</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- After Example -->
-                <div class="example-box">
-                    <span class="example-label after">After — Observable Descriptors</span>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width: 25%"></th>
-                                <th>HD 85–100%</th>
-                                <th>D 75–84%</th>
-                                <th>C 65–74%</th>
-                                <th>P 50–64%</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Critical Analysis</strong></td>
-                                <td>Integrates theory to explain why issues occur; connects factors to show how they reinforce each other; identifies limitations in the theory applied</td>
-                                <td>Applies theory to explain issues; identifies relationships between factors; analysis is coherent and well-structured</td>
-                                <td>Applies relevant theory to the case; addresses multiple factors but treats them somewhat independently</td>
-                                <td>Links case to theory but connections are surface-level; factors listed rather than analysed</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="problem-note">Now each grade describes a qualitatively different action. At Pass, the student lists factors. At Credit, they address them but independently. At Distinction, they identify relationships. At HD, they explain causal mechanisms and critique the theory itself. A student can read this and know exactly what to do to improve.</div>
-                </div>
+                <div class="problem-note">The "before" descriptors change only the adverb — a student can't tell what to do differently. The "after" descriptors describe qualitatively different actions at each level: listing factors → treating them independently → identifying relationships → explaining causal mechanisms. A student can read this and know exactly how to improve.</div>
             </div>
         </section>
 

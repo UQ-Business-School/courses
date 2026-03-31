@@ -212,6 +212,15 @@ table td{
   word-wrap:break-word;overflow-wrap:break-word;
 }
 table tr.hl td{color:var(--text);background:rgba(81,36,122,0.04)}
+/* Adverb highlighting — red for bad, green for good */
+table td em.hl-bad{
+  font-style:normal;background:rgba(217,83,79,0.18);color:#c9302c;
+  padding:1px 4px;border-radius:3px;font-weight:500;
+}
+table td em.hl-good, table td span.hl-good{
+  font-style:normal;background:rgba(92,184,92,0.14);color:#2d8a2d;
+  padding:1px 4px;border-radius:3px;font-weight:500;
+}
 table td:first-child{font-weight:400}
 
 /* CMP table first col */
@@ -324,26 +333,26 @@ table td:first-child{font-weight:400}
 
 /* CUBE BLOCK */
 .pblock{
-  padding:20px 16px 18px;border-bottom:1.5px solid var(--border);flex-shrink:0;
-  display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;
+  padding:16px 16px 14px;border-bottom:1.5px solid var(--border);flex-shrink:0;
+  display:flex;flex-direction:row;align-items:center;gap:16px;text-align:left;
 }
-.cube-wrap{flex-shrink:0}
-.pblock-right{width:100%}
+.cube-wrap{flex-shrink:0;order:2}
+.pblock-right{flex:1;min-width:0;order:1}
 .pblock-lbl{
   font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:5px;
+  color:var(--muted);margin-bottom:3px;
 }
 .cube-st{
   font-size:11px;color:var(--muted);line-height:1.4;
   transition:color .4s;font-weight:400;
 }
 .cube-pct{
-  font-size:26px;font-weight:700;font-family:Arial,Helvetica,sans-serif;
+  font-size:22px;font-weight:700;font-family:Arial,Helvetica,sans-serif;
   color:var(--uq-purple);margin-bottom:2px;
 }
 
 /* 3D CUBE */
-.cube-scene{perspective:380px;width:190px;height:190px;display:flex;align-items:center;justify-content:center}
+.cube-scene{perspective:320px;width:140px;height:140px;display:flex;align-items:center;justify-content:center}
 .cube{
   width:120px;height:120px;position:relative;transform-style:preserve-3d;
   transform:rotateX(-28deg) rotateY(38deg);
@@ -529,10 +538,10 @@ mark.access{background:rgba(26,122,110,0.12);color:inherit;padding:1px 3px;borde
         <tbody>
           <tr>
             <td style="color:var(--c1);font-weight:500;white-space:nowrap">Critical Analysis</td>
-            <td>Demonstrates <em>excellent</em> critical analysis with <em>outstanding</em> depth</td>
-            <td>Demonstrates <em>very good</em> critical analysis with <em>considerable</em> depth</td>
-            <td>Demonstrates <em>good</em> critical analysis with <em>adequate</em> depth</td>
-            <td>Demonstrates <em>satisfactory</em> critical analysis with <em>basic</em> depth</td>
+            <td>Demonstrates <em class="hl-bad">excellent</em> critical analysis with <em class="hl-bad">outstanding</em> depth</td>
+            <td>Demonstrates <em class="hl-bad">very good</em> critical analysis with <em class="hl-bad">considerable</em> depth</td>
+            <td>Demonstrates <em class="hl-bad">good</em> critical analysis with <em class="hl-bad">adequate</em> depth</td>
+            <td>Demonstrates <em class="hl-bad">satisfactory</em> critical analysis with <em class="hl-bad">basic</em> depth</td>
           </tr>
         </tbody>
       </table>
@@ -548,10 +557,10 @@ mark.access{background:rgba(26,122,110,0.12);color:inherit;padding:1px 3px;borde
         <tbody>
           <tr class="hl">
             <td style="font-weight:500;white-space:nowrap">Critical Analysis</td>
-            <td>Integrates theory to explain <em>why</em> issues occur; connects factors to show how they reinforce each other; identifies limitations in the theory applied</td>
-            <td>Applies theory to explain issues; identifies relationships between factors; analysis is coherent and well-structured</td>
-            <td>Applies relevant theory to the case; addresses multiple factors but treats them somewhat independently</td>
-            <td>Links case to theory but connections are surface-level; factors listed rather than analysed</td>
+            <td><span class="hl-good">Integrates theory to explain why</span> issues occur; <span class="hl-good">connects factors to show how they reinforce each other;</span> identifies limitations in the theory applied</td>
+            <td><span class="hl-good">Applies theory to explain</span> issues; <span class="hl-good">identifies relationships</span> between factors; analysis is coherent and well-structured</td>
+            <td><span class="hl-good">Applies relevant theory</span> to the case; addresses multiple factors but treats them somewhat independently</td>
+            <td><span class="hl-good">Links case to theory</span> but connections are surface-level; <span class="hl-good">factors listed rather than analysed</span></td>
           </tr>
         </tbody>
       </table>
@@ -679,8 +688,8 @@ mark.access{background:rgba(26,122,110,0.12);color:inherit;padding:1px 3px;borde
         <colgroup><col style="width:52px"><col><col><col><col></colgroup>
         <thead><tr><th></th><th>HD</th><th>D</th><th>C</th><th>P</th></tr></thead>
         <tbody>
-          <tr class="hl"><td style="font-weight:500">After</td><td>Engages with current debates and contested positions; identifies where scholars disagree and evaluates the strength of competing arguments</td><td>Draws on a range of perspectives including recent scholarship; explains how different theoretical positions relate to one another</td><td>Accurately represents key concepts and theoretical positions; coverage adequate but relies on foundational texts</td><td>Identifies relevant theories but understanding is surface-level; may rely heavily on a narrow range of sources</td></tr>
-          <tr style="opacity:.55"><td style="font-weight:500">Before</td><td>Demonstrates <em>excellent</em> depth of knowledge</td><td>Demonstrates <em>very good</em> depth of knowledge</td><td>Demonstrates <em>good</em> depth of knowledge</td><td>Demonstrates <em>satisfactory</em> depth of knowledge</td></tr>
+          <tr class="hl"><td style="font-weight:500">After</td><td><span class="hl-good">Engages with current debates and contested positions;</span> identifies where scholars disagree and evaluates the strength of competing arguments</td><td><span class="hl-good">Draws on a range of perspectives</span> including recent scholarship; explains how different theoretical positions relate to one another</td><td><span class="hl-good">Accurately represents key concepts</span> and theoretical positions; coverage adequate but relies on foundational texts</td><td><span class="hl-good">Identifies relevant theories</span> but understanding is surface-level; may rely heavily on a narrow range of sources</td></tr>
+          <tr style="opacity:.55"><td style="font-weight:500">Before</td><td>Demonstrates <em class="hl-bad">excellent</em> depth of knowledge</td><td>Demonstrates <em class="hl-bad">very good</em> depth of knowledge</td><td>Demonstrates <em class="hl-bad">good</em> depth of knowledge</td><td>Demonstrates <em class="hl-bad">satisfactory</em> depth of knowledge</td></tr>
         </tbody>
       </table>
       <p style="font-size:11.5px">VoI values in play: depth (engaging with complexity), breadth (range of perspectives), accuracy (faithful representation), significance (contested positions rather than settled knowledge).</p>
@@ -692,8 +701,8 @@ mark.access{background:rgba(26,122,110,0.12);color:inherit;padding:1px 3px;borde
         <colgroup><col style="width:52px"><col><col><col><col></colgroup>
         <thead><tr><th></th><th>HD</th><th>D</th><th>C</th><th>P</th></tr></thead>
         <tbody>
-          <tr class="hl"><td style="font-weight:500">After</td><td>Key messages immediately apparent; visual aids reinforce rather than duplicate spoken content; delivery adapted to audience reactions; transitions between speakers seamless</td><td>Structure guides audience through a logical progression; visual aids support the argument; language appropriate to the audience; speakers build on each other's points</td><td>Content clearly structured; visual aids present and relevant; language generally appropriate though occasionally too technical</td><td>Content presented in a recognisable structure; visual aids present but may be text-heavy or disconnected from spoken content; delivery read from notes</td></tr>
-          <tr style="opacity:.55"><td style="font-weight:500">Before</td><td>Outstanding presentation skills with <em>excellent</em> engagement</td><td>Very good presentation skills with <em>strong</em> engagement</td><td>Good presentation skills with <em>adequate</em> engagement</td><td>Satisfactory presentation skills with <em>basic</em> engagement</td></tr>
+          <tr class="hl"><td style="font-weight:500">After</td><td><span class="hl-good">Key messages immediately apparent;</span> visual aids reinforce rather than duplicate spoken content; <span class="hl-good">delivery adapted to audience reactions;</span> transitions between speakers seamless</td><td><span class="hl-good">Structure guides audience through a logical progression;</span> visual aids support the argument; language appropriate to the audience; speakers build on each other's points</td><td><span class="hl-good">Content clearly structured;</span> visual aids present and relevant; language generally appropriate though occasionally too technical</td><td><span class="hl-good">Content presented in a recognisable structure;</span> visual aids present but may be text-heavy or disconnected from spoken content; delivery read from notes</td></tr>
+          <tr style="opacity:.55"><td style="font-weight:500">Before</td><td>Outstanding presentation skills with <em class="hl-bad">excellent</em> engagement</td><td>Very good presentation skills with <em class="hl-bad">strong</em> engagement</td><td>Good presentation skills with <em class="hl-bad">adequate</em> engagement</td><td>Satisfactory presentation skills with <em class="hl-bad">basic</em> engagement</td></tr>
         </tbody>
       </table>
       <p style="font-size:11.5px">VoI values in play: clarity (audience can follow the argument), coherence (logical progression), relevance (visual aids serve the argument), precision (language appropriate to audience).</p>
