@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core Principles — Rubric Design Fundamentals | UQ Business School</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, Helvetica, sans-serif;
+            color: #1a1714;
+            background-color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e4dfd9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header-school {
+            font-size: 11px;
+            font-weight: 400;
+            color: #6b6460;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1714;
+        }
+
+        .header-right a {
+            font-size: 14px;
+            font-weight: 500;
+            color: #51247A;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .header-right a:hover {
+            color: #962A8B;
+        }
+
+        /* Main content */
+        main {
+            margin-top: 56px;
+            width: 100%;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: #51247A;
+            color: #ffffff;
+            padding: 72px 32px 64px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .hero-tag {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: rgba(255,255,255,0.55);
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 44px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.1;
+        }
+
+        .hero .subtitle {
+            font-size: 16px;
+            font-weight: 300;
+            margin-bottom: 16px;
+            line-height: 1.75;
+            color: rgba(255,255,255,0.85);
+            max-width: 580px;
+        }
+
+        .hero .intro-para {
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 1.75;
+            color: rgba(255,255,255,0.85);
+            max-width: 580px;
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 24px;
+        }
+
+        section:nth-child(even) {
+            background-color: #f7f5f3;
+        }
+
+        section:nth-child(odd):not(.hero) {
+            background-color: #ffffff;
+        }
+
+        /* Emphasis box */
+        .emphasis-box {
+            background: #f7f5f3;
+            border-left: 4px solid #51247A;
+            padding: 40px 24px;
+        }
+
+        .emphasis-inner {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .emphasis-inner p {
+            font-size: 17px;
+            font-weight: 400;
+            line-height: 1.7;
+            color: #1a1714;
+            font-style: italic;
+        }
+
+        .section-container {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .section-tag {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-tag::before {
+            content: '';
+            display: inline-block;
+            width: 18px;
+            height: 1.5px;
+            background-color: currentColor;
+        }
+
+        section:nth-child(3) .section-tag {
+            color: #4085C6;
+        }
+
+        section:nth-child(4) .section-tag {
+            color: #51247A;
+        }
+
+        section:nth-child(5) .section-tag {
+            color: #962A8B;
+        }
+
+        section:nth-child(6) .section-tag {
+            color: #962A8B;
+        }
+
+        section:nth-child(7) .section-tag {
+            color: #962A8B;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.3;
+            color: #1a1714;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 32px 0 16px 0;
+            color: #1a1714;
+        }
+
+        p {
+            font-size: 15px;
+            margin-bottom: 16px;
+            line-height: 1.7;
+            color: #1a1714;
+        }
+
+        /* Example Boxes */
+        .example-box {
+            border: 1px solid #e4dfd9;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 24px 0;
+            background-color: #ffffff;
+        }
+
+        section:nth-child(even) .example-box {
+            background-color: #eeebe8;
+        }
+
+        .example-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6b6460;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .example-label.before {
+            color: #d9534f;
+        }
+
+        .example-label.after {
+            color: #5cb85c;
+        }
+
+        .example-box p {
+            font-size: 14px;
+            margin-bottom: 12px;
+            margin-top: 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+
+        thead {
+            background-color: #f7f5f3;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #e4dfd9;
+            color: #1a1714;
+        }
+
+        td {
+            padding: 12px;
+            border: 1px solid #e4dfd9;
+            color: #1a1714;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #fafaf8;
+        }
+
+        .problem-note {
+            font-size: 13px;
+            color: #6b6460;
+            font-style: italic;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #d0c9c2;
+        }
+
+        /* Spine Visual */
+        .spine-visual {
+            margin: 24px 0;
+        }
+
+        .spine-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            align-items: flex-start;
+        }
+
+        .spine-grade {
+            min-width: 45px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #6b6460;
+            padding-top: 4px;
+        }
+
+        .spine-text {
+            flex: 1;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .spine {
+            font-weight: 600;
+            background-color: rgba(81, 36, 122, 0.08);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #51247A;
+        }
+
+        .distinguisher {
+            color: #6b6460;
+        }
+
+        .spine-note {
+            font-size: 13px;
+            color: #6b6460;
+            font-style: italic;
+            margin-top: 16px;
+            padding: 12px;
+            background-color: #f7f5f3;
+            border-left: 3px solid #51247A;
+            border-radius: 4px;
+        }
+
+        /* Checklist */
+        .checklist {
+            margin: 24px 0;
+        }
+
+        .checklist-intro {
+            font-size: 15px;
+            margin-bottom: 24px;
+            color: #1a1714;
+        }
+
+        .checklist-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            align-items: flex-start;
+        }
+
+        .checklist-number {
+            min-width: 21px;
+            width: 21px;
+            height: 21px;
+            border: 1.5px solid #51247A;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #51247A;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .checklist-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #1a1714;
+            padding-top: 2px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #51247A 0%, #962A8B 100%);
+            color: #ffffff;
+            padding: 60px 24px;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .cta-section p {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 28px;
+            line-height: 1.7;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid #ffffff;
+        }
+
+        .cta-button.primary {
+            background-color: #ffffff;
+            color: #51247A;
+        }
+
+        .cta-button.primary:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .cta-button.secondary {
+            background-color: transparent;
+            color: #ffffff;
+        }
+
+        .cta-button.secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .cta-credit {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 24px;
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(14px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 0 16px;
+            }
+
+            .header-left {
+                min-width: 0;
+            }
+
+            .header-title {
+                font-size: 14px;
+            }
+
+            .header-right a {
+                font-size: 12px;
+            }
+
+            .container,
+            section {
+                padding: 0 16px;
+            }
+
+            section {
+                padding-top: 60px;
+                padding-bottom: 60px;
+            }
+
+            .hero {
+                padding: 80px 16px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero .subtitle,
+            .hero .intro-para {
+                font-size: 14px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            h3 {
+                font-size: 16px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .cta-button {
+                width: 100%;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th,
+            td {
+                padding: 10px 8px;
+            }
+
+            .spine-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .spine-grade {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <div class="header-school">UQ Business School</div>
+            <div class="header-title">Core Principles</div>
+        </div>
+        <div class="header-right">
+            <a href="index.html">← Rubric Design Fundamentals</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-tag">Rubric Design Fundamentals · Quick Guide</div>
+                <h1>Core Principles</h1>
+                <p class="subtitle">Three principles that make the biggest difference to rubric quality. They apply to any assessment type — essays, presentations, group work, or professional artefacts.</p>
+            </div>
+        </section>
+
+        <!-- Emphasis box -->
+        <div class="emphasis-box">
+            <div class="emphasis-inner">
+                <p>A good rubric does two things: it helps students understand what they're aiming for before they submit, and it helps markers reach consistent grades independently. If your rubric can't do both, it's not doing its job.</p>
+            </div>
+        </div>
+
+        <!-- Section 1: Replace Adverb Scaling -->
+        <section class="reveal">
+            <div class="section-container">
+                <div class="section-tag" style="color: #4085C6;">Principle One</div>
+                <h2>Replace Adverb Scaling with Observable Descriptors</h2>
+                <p>The most common rubric problem is what we call adverb scaling — differentiating grades by swapping adjectives (excellent → very good → good → satisfactory) rather than describing what the student actually does differently at each level. The assessment literature calls this 'vague descriptors' or 'evaluative language' — and it creates rubrics where markers disagree and students can't improve.</p>
+
+                <h3>Before and After: Critical Analysis in a Case Study Report</h3>
+
+                <!-- Before Example -->
+                <div class="example-box">
+                    <span class="example-label before">Before — Adverb Scaling</span>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 25%"></th>
+                                <th>HD 85–100%</th>
+                                <th>D 75–84%</th>
+                                <th>C 65–74%</th>
+                                <th>P 50–64%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Critical Analysis</strong></td>
+                                <td>Demonstrates excellent critical analysis of the case with outstanding depth</td>
+                                <td>Demonstrates very good critical analysis of the case with considerable depth</td>
+                                <td>Demonstrates good critical analysis of the case with adequate depth</td>
+                                <td>Demonstrates satisfactory critical analysis of the case with basic depth</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="problem-note">The problem: the only thing that changes is the adverb. A student reading this cannot identify what to do to move from a Pass to a Distinction.</div>
+                </div>
+
+                <!-- After Example -->
+                <div class="example-box">
+                    <span class="example-label after">After — Observable Descriptors</span>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 25%"></th>
+                                <th>HD 85–100%</th>
+                                <th>D 75–84%</th>
+                                <th>C 65–74%</th>
+                                <th>P 50–64%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Critical Analysis</strong></td>
+                                <td>Integrates theory to explain why issues occur; connects factors to show how they reinforce each other; identifies limitations in the theory applied</td>
+                                <td>Applies theory to explain issues; identifies relationships between factors; analysis is coherent and well-structured</td>
+                                <td>Applies relevant theory to the case; addresses multiple factors but treats them somewhat independently</td>
+                                <td>Links case to theory but connections are surface-level; factors listed rather than analysed</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="problem-note">Now each grade describes a qualitatively different action. At Pass, the student lists factors. At Credit, they address them but independently. At Distinction, they identify relationships. At HD, they explain causal mechanisms and critique the theory itself. A student can read this and know exactly what to do to improve.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Spine and Distinguisher -->
+        <section class="reveal">
+            <div class="section-container">
+                <div class="section-tag" style="color: #51247A;">Principle Two</div>
+                <h2>Use a Spine-and-Distinguisher Structure</h2>
+                <p>Strong descriptors share a spine — a common sentence structure that stays consistent across grade levels — with distinguishers that change to indicate the qualitative shift. (You may know this as 'parallel construction' — we find the spine-and-distinguisher label makes the technique easier to apply.) This makes differences immediately visible to both markers and students.</p>
+
+                <div class="spine-visual">
+                    <div class="spine-row">
+                        <div class="spine-grade">HD</div>
+                        <div class="spine-text"><span class="spine">Identifies issues</span> <span class="distinguisher">at multiple levels; distinguishes symptoms from root causes; prioritises by impact</span></div>
+                    </div>
+                    <div class="spine-row">
+                        <div class="spine-grade">D</div>
+                        <div class="spine-text"><span class="spine">Identifies issues</span> <span class="distinguisher">accurately and connects them to the broader organisational context</span></div>
+                    </div>
+                    <div class="spine-row">
+                        <div class="spine-grade">C</div>
+                        <div class="spine-text"><span class="spine">Identifies issues</span> <span class="distinguisher">stated in the case within the relevant context</span></div>
+                    </div>
+                    <div class="spine-row">
+                        <div class="spine-grade">P</div>
+                        <div class="spine-text"><span class="spine">Identifies issues</span> <span class="distinguisher">stated in the case, though without contextualisation</span></div>
+                    </div>
+                </div>
+
+                <div class="spine-note">The spine ('Identifies issues') anchors the reader. The distinguishers show what changes: scope (case only vs. multiple levels), depth (listing vs. distinguishing symptoms from causes), and sophistication (accepting context vs. prioritising by impact).</div>
+            </div>
+        </section>
+
+        <!-- Section 3: Design Around Capabilities -->
+        <section class="reveal">
+            <div class="section-container">
+                <div class="section-tag" style="color: #962A8B;">Principle Three</div>
+                <h2>Design Criteria Around Capabilities, Not Sections</h2>
+                <p>A common structural issue is organising rubric rows by sections of the assessment (e.g., Introduction, Literature Review, Analysis, Conclusion) rather than by capabilities the student is demonstrating (e.g., Critical Analysis, Application to Practice, Academic Communication).</p>
+                <p>Section-based criteria create problems: the same capability (like critical analysis) gets assessed in multiple rows, making it hard to maintain consistent standards. They also anchor students to a rigid structure rather than rewarding the quality of their thinking.</p>
+                <p>Capability-based criteria ask: what can the student do? Each row assesses a distinct skill, weighted by importance. This makes rubrics more versatile across different assessment formats and easier to align with program-level learning outcomes.</p>
+            </div>
+        </section>
+
+        <!-- Section 4: Self-Check -->
+        <section class="reveal">
+            <div class="section-container">
+                <div class="section-tag" style="color: #962A8B;">Self-Check</div>
+                <h2>Quick Self-Check</h2>
+                <p class="checklist-intro">Hold your rubric against these five questions. If you answer 'no' to two or more, it's worth revisiting.</p>
+
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <div class="checklist-number">1</div>
+                        <div class="checklist-text">Could a student use this rubric to improve their work before submission? If your descriptors say "excellent" and "satisfactory," the student has no concrete guidance.</div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-number">2</div>
+                        <div class="checklist-text">Would two markers independently reach the same grade using this rubric? If the descriptors rely on subjective terms, markers will interpret them differently.</div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-number">3</div>
+                        <div class="checklist-text">Does each grade level describe a qualitatively different action? Moving from "good" to "very good" is not a qualitative shift. Moving from "lists factors" to "explains how factors interact" is.</div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-number">4</div>
+                        <div class="checklist-text">Are your rubric rows organised by capability rather than by section? If rows mirror assessment headings (Introduction, Body, Conclusion), consider restructuring around what students demonstrate.</div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-number">5</div>
+                        <div class="checklist-text">Can you read across a row and see a clear progression? Use the spine-and-distinguisher test: if you underline the common structure, the parts that change should tell a coherent story of increasing sophistication.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Fail Grades -->
+        <section class="reveal">
+            <div class="section-container">
+                <div class="section-tag" style="color: #962A8B;">Grade Distributions</div>
+                <h2>Don't Forget Fail Grades and Grade Distributions</h2>
+                <p>Rubrics should include differentiated fail descriptors. Under UQ's Assessment Procedures, students receiving a grade 3 (45–49%) are eligible for supplementary assessment; those with a 1 or 2 are not. A single 'Fail' column cannot make this distinction. Separately, if your grade profile sits outside UQ expectations (no more than 35% at 6–7; majority at 4–5; no more than 20% failing), review both the rubric and the task.</p>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section reveal">
+            <div class="cta-content">
+                <p>Want to go deeper? <em>Build a Better Rubric</em> covers the Values of Inquiry framework, SOLO Taxonomy, worked examples across assessment types, and a step-by-step process for writing descriptors.</p>
+                <div class="cta-buttons">
+                    <a href="UQBS_Rubric%20Design%20Fundamentals_FINAL.html" class="cta-button primary">Build a Better Rubric →</a>
+                    <a href="https://uq.sharepoint.com/:b:/t/bs3u7kls/IQAlScwR7sxoSbW0fOJQu3iXAWVDml-efYLwDhYOFEeQwJU?e=bJMvaH" class="cta-button secondary">↓ Core Principles PDF</a>
+                    <a href="https://uq.sharepoint.com/:b:/t/bs3u7kls/IQD8u5RHvYi4SqIgvadC_AlyAZNeETgYIbKpIy4XEmiUahQ?e=oX57RG" class="cta-button secondary">↓ Full Guide PDF</a>
+                    <a href="index.html" class="cta-button secondary">← Rubric Design Fundamentals</a>
+                </div>
+                <div class="cta-credit">Prepared by UQ Business School Learning Design · 2026</div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // IntersectionObserver for reveal-on-scroll animations
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        revealElements.forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Rubric Is Broken</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --bg-card: #13131a;
+    --bg-card-hover: #1a1a24;
+    --text: #e8e6e3;
+    --text-dim: #8a8690;
+    --text-bright: #ffffff;
+    --accent: #ff6b35;
+    --accent-glow: rgba(255, 107, 53, 0.3);
+    --accent2: #00d4aa;
+    --accent2-glow: rgba(0, 212, 170, 0.2);
+    --accent3: #7c6aef;
+    --accent3-glow: rgba(124, 106, 239, 0.2);
+    --danger: #ff4757;
+    --success: #2ed573;
+    --warning: #ffa502;
+    --border: rgba(255,255,255,0.06);
+    --border-accent: rgba(255, 107, 53, 0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  /* ========== PROGRESS BAR ========== */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+    z-index: 1000;
+    transition: width 0.1s linear;
+    width: 0%;
+  }
+
+  /* ========== NAV ========== */
+  nav {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  nav a {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: block;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  nav a.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 12px var(--accent-glow);
+    transform: scale(1.3);
+  }
+
+  nav a .tooltip {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    color: var(--text-dim);
+  }
+
+  nav a:hover .tooltip { opacity: 1; }
+
+  /* ========== SECTIONS ========== */
+  section {
+    min-height: 100vh;
+    padding: 120px 0;
+    position: relative;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .wide-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ========== HERO ========== */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 50% 50%, rgba(255,107,53,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(124,106,239,0.04) 0%, transparent 40%);
+    animation: drift 20s ease-in-out infinite;
+  }
+
+  @keyframes drift {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(30px, -30px) rotate(1deg); }
+    66% { transform: translate(-20px, 20px) rotate(-1deg); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  h1 {
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text-bright);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  h1 .highlight {
+    background: linear-gradient(135deg, var(--accent), #ff8f65);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: var(--text-dim);
+    max-width: 560px;
+    margin: 0 auto 48px;
+    font-style: italic;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .scroll-cue {
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .scroll-cue span {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+
+  .scroll-arrow {
+    width: 20px;
+    height: 20px;
+    border-right: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    transform: rotate(45deg);
+    margin: 0 auto;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: rotate(45deg) translateY(0); }
+    40% { transform: rotate(45deg) translateY(8px); }
+    60% { transform: rotate(45deg) translateY(4px); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ========== REVEAL ANIMATION ========== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ========== CHAPTER HEADERS ========== */
+  .chapter-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .chapter-num::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    max-width: 120px;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text-bright);
+    margin-bottom: 20px;
+  }
+
+  .chapter-intro {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1.25rem;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-bottom: 48px;
+    max-width: 640px;
+  }
+
+  h3 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin: 48px 0 16px;
+  }
+
+  p {
+    margin-bottom: 20px;
+    color: var(--text);
+    font-size: 1.05rem;
+  }
+
+  /* ========== RUBRIC COMPARISON (BEFORE/AFTER) ========== */
+  .rubric-compare {
+    margin: 40px 0;
+    position: relative;
+  }
+
+  .rubric-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+
+  .rubric-label.bad {
+    background: rgba(255,71,87,0.15);
+    color: var(--danger);
+    border: 1px solid rgba(255,71,87,0.3);
+  }
+
+  .rubric-label.good {
+    background: rgba(46,213,115,0.15);
+    color: var(--success);
+    border: 1px solid rgba(46,213,115,0.3);
+  }
+
+  .rubric-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .rubric-table th {
+    background: rgba(255,255,255,0.03);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-bright);
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+    letter-spacing: 0.5px;
+  }
+
+  .rubric-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--text);
+  }
+
+  .rubric-table tr:last-child td { border-bottom: none; }
+
+  .rubric-table .criterion-label {
+    font-weight: 600;
+    color: var(--text-bright);
+    min-width: 100px;
+    background: rgba(255,255,255,0.02);
+  }
+
+  .adverb-highlight {
+    background: rgba(255,71,87,0.2);
+    color: var(--danger);
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+
+  .good-highlight {
+    background: rgba(46,213,115,0.15);
+    color: var(--success);
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+
+  /* ========== FLIPPER (CLICK TO REVEAL) ========== */
+  .flipper {
+    perspective: 1200px;
+    margin: 40px 0;
+    cursor: pointer;
+  }
+
+  .flipper-inner {
+    position: relative;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flipper.flipped .flipper-inner {
+    transform: rotateX(180deg);
+  }
+
+  .flipper-front, .flipper-back {
+    backface-visibility: hidden;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .flipper-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transform: rotateX(180deg);
+  }
+
+  .flip-prompt {
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-top: 12px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  /* ========== VOI CARDS ========== */
+  .voi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 40px 0;
+  }
+
+  .voi-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .voi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--card-accent, var(--accent));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .voi-card:hover, .voi-card.expanded {
+    border-color: var(--card-accent, var(--accent));
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+  }
+
+  .voi-card:hover::before, .voi-card.expanded::before { opacity: 1; }
+
+  .voi-card .voi-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-bright);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .voi-card .voi-icon {
+    font-size: 1.3rem;
+  }
+
+  .voi-card .voi-short {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .voi-card .voi-detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, margin 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+    margin-top: 0;
+  }
+
+  .voi-card.expanded .voi-detail {
+    max-height: 300px;
+    opacity: 1;
+    margin-top: 16px;
+  }
+
+  .voi-card .voi-detail p {
+    font-size: 0.88rem;
+    color: var(--text);
+    margin-bottom: 8px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .voi-card .voi-detail .voi-question {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 0.95rem;
+  }
+
+  /* ========== SOLO STAIRCASE ========== */
+  .solo-staircase {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 40px 0;
+    position: relative;
+  }
+
+  .solo-step {
+    display: flex;
+    align-items: stretch;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .solo-step-bar {
+    width: var(--bar-width, 20%);
+    min-height: 80px;
+    background: var(--step-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 8px 0 0 8px;
+  }
+
+  .solo-step-bar .step-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+    text-align: center;
+    writing-mode: horizontal-tb;
+    font-weight: 700;
+  }
+
+  .solo-step-content {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: none;
+    padding: 20px 24px;
+    border-radius: 0 8px 8px 0;
+    transition: all 0.3s ease;
+  }
+
+  .solo-step:hover .solo-step-content {
+    background: var(--bg-card-hover);
+  }
+
+  .solo-step .solo-title {
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+    font-size: 1rem;
+  }
+
+  .solo-step .solo-grade {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .solo-step .solo-desc {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  .solo-step .solo-example {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .solo-step.expanded .solo-example {
+    max-height: 200px;
+    opacity: 1;
+  }
+
+  .solo-step .solo-example p {
+    font-size: 0.85rem;
+    color: var(--accent2);
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-style: italic;
+  }
+
+  /* ========== PROCESS STEPS ========== */
+  .process-steps {
+    margin: 40px 0;
+    position: relative;
+  }
+
+  .process-step {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 0;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+
+  .process-step:last-child { border-bottom: none; }
+
+  .step-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: 0.3;
+    min-width: 48px;
+    line-height: 1;
+    padding-top: 4px;
+  }
+
+  .step-content h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 8px;
+  }
+
+  .step-content p {
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 0;
+  }
+
+  /* ========== COMPARISON LAYOUT ========== */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 40px 0;
+  }
+
+  .comparison-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+  }
+
+  .comparison-box h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .comparison-box.bad h4 { color: var(--danger); }
+  .comparison-box.good h4 { color: var(--success); }
+
+  .comparison-box ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .comparison-box li {
+    font-size: 0.9rem;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .comparison-box li:last-child { border-bottom: none; }
+
+  .comparison-box li .icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ========== CALLOUT BOX ========== */
+  .callout {
+    background: var(--bg-card);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 24px 28px;
+    margin: 32px 0;
+  }
+
+  .callout.green { border-left-color: var(--accent2); }
+  .callout.purple { border-left-color: var(--accent3); }
+
+  .callout p {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1.15rem;
+    color: var(--text);
+    margin-bottom: 0;
+    font-style: italic;
+  }
+
+  /* ========== WORKED EXAMPLES (TABS) ========== */
+  .example-tabs {
+    margin: 40px 0;
+  }
+
+  .tab-buttons {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 0;
+    background: var(--bg-card);
+    border-radius: 12px 12px 0 0;
+    padding: 8px 8px 0;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 8px 8px 0 0;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .tab-btn.active {
+    background: rgba(255,107,53,0.1);
+    color: var(--accent);
+  }
+
+  .tab-btn:hover:not(.active) {
+    color: var(--text);
+  }
+
+  .tab-panel {
+    display: none;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 0 0 12px 12px;
+    padding: 28px;
+  }
+
+  .tab-panel.active { display: block; }
+
+  .tab-panel .voi-in-play {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  /* ========== GUIDELINES (ACCESSIBILITY) ========== */
+  .guideline-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 40px 0;
+  }
+
+  .guideline-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .guideline-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    background: rgba(255,107,53,0.1);
+    flex-shrink: 0;
+  }
+
+  .guideline-card h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 6px;
+  }
+
+  .guideline-card p {
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 0;
+  }
+
+  .guideline-card .before-after {
+    margin-top: 12px;
+    font-size: 0.85rem;
+  }
+
+  .guideline-card .before-after .before {
+    color: var(--danger);
+    text-decoration: line-through;
+    opacity: 0.7;
+  }
+
+  .guideline-card .before-after .after {
+    color: var(--success);
+    display: block;
+    margin-top: 4px;
+  }
+
+  /* ========== GRADE DISTRIBUTION BARS ========== */
+  .dist-chart {
+    margin: 40px 0;
+  }
+
+  .dist-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .dist-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    min-width: 90px;
+    color: var(--text-dim);
+    text-align: right;
+  }
+
+  .dist-bar-wrap {
+    flex: 1;
+    height: 32px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .dist-bar {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.9);
+    font-weight: 700;
+  }
+
+  .dist-bar.animated { width: var(--target-width); }
+
+  .dist-bar.hd { background: linear-gradient(90deg, #7c6aef, #9b8cf4); }
+  .dist-bar.d { background: linear-gradient(90deg, #00d4aa, #33e0be); }
+  .dist-bar.c { background: linear-gradient(90deg, #ff6b35, #ff8f65); }
+  .dist-bar.p { background: linear-gradient(90deg, #ffa502, #ffbe42); }
+  .dist-bar.f { background: linear-gradient(90deg, #ff4757, #ff6b81); }
+
+  .dist-note {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    min-width: 60px;
+    text-align: left;
+  }
+
+  /* ========== HEALTH CHECK ========== */
+  .health-check {
+    margin: 40px 0;
+  }
+
+  .hc-question {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+  }
+
+  .hc-question:hover {
+    border-color: rgba(255,255,255,0.12);
+    background: var(--bg-card-hover);
+  }
+
+  .hc-check {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s;
+    margin-top: 2px;
+  }
+
+  .hc-question.checked .hc-check {
+    background: var(--success);
+    border-color: var(--success);
+  }
+
+  .hc-question.unchecked .hc-check {
+    background: var(--danger);
+    border-color: var(--danger);
+  }
+
+  .hc-check svg {
+    width: 16px;
+    height: 16px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .hc-question.checked .hc-check svg.check-icon,
+  .hc-question.unchecked .hc-check svg.x-icon { opacity: 1; }
+
+  .hc-text {
+    flex: 1;
+  }
+
+  .hc-text .hc-q {
+    font-weight: 600;
+    color: var(--text-bright);
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+
+  .hc-text .hc-hint {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .hc-result {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    margin-top: 24px;
+    transition: all 0.5s;
+  }
+
+  .hc-result .score-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 8px;
+    transition: color 0.5s;
+  }
+
+  .hc-result .score-label {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  .hc-result .score-msg {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--text);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ========== FOOTER ========== */
+  footer {
+    text-align: center;
+    padding: 80px 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  footer p {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* ========== SEPARATOR ========== */
+  .section-sep {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    margin: 48px 0;
+    border-radius: 2px;
+  }
+
+  /* ========== SPINE DEMO ========== */
+  .spine-demo {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin: 32px 0;
+  }
+
+  .spine-demo .desc-line {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.92rem;
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+  }
+
+  .spine-demo .desc-line:last-child { border-bottom: none; }
+
+  .spine-demo .grade-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 32px;
+    flex-shrink: 0;
+  }
+
+  .spine-demo .spine-text { color: var(--text-dim); }
+  .spine-demo .dist-text {
+    color: var(--accent2);
+    font-weight: 500;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+    nav { display: none; }
+    .comparison { grid-template-columns: 1fr; }
+    .voi-grid { grid-template-columns: 1fr; }
+    .rubric-table { font-size: 0.78rem; }
+    .rubric-table th, .rubric-table td { padding: 10px 12px; }
+    section { padding: 80px 0; }
+    .container, .wide-container { padding: 0 20px; }
+    .solo-step-bar { min-height: 60px; }
+    .solo-step-bar .step-label { font-size: 9px; }
+    .tab-buttons { flex-wrap: nowrap; }
+    .guideline-card { grid-template-columns: 1fr; }
+  }
+
+  /* ========== MISC ========== */
+  strong { color: var(--text-bright); font-weight: 600; }
+
+  a { color: var(--accent); text-decoration: none; transition: color 0.2s; }
+  a:hover { color: var(--accent2); }
+
+  .tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: rgba(255,107,53,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(255,107,53,0.2);
+  }
+
+  .inline-code {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.88em;
+    background: rgba(255,255,255,0.05);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--accent2);
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 80px 0;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav id="nav-dots">
+  <a href="#hero"><span class="tooltip">Start</span></a>
+  <a href="#ch1"><span class="tooltip">The Crime Scene</span></a>
+  <a href="#ch2"><span class="tooltip">Values of Inquiry</span></a>
+  <a href="#ch3"><span class="tooltip">SOLO Taxonomy</span></a>
+  <a href="#ch4"><span class="tooltip">Writing Descriptors</span></a>
+  <a href="#ch5"><span class="tooltip">Structure</span></a>
+  <a href="#ch6"><span class="tooltip">Accessibility</span></a>
+  <a href="#ch7"><span class="tooltip">Grade Distributions</span></a>
+  <a href="#ch8"><span class="tooltip">Health Check</span></a>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-label">A guide for academics who've inherited terrible rubrics</div>
+    <h1>Your Rubric<br>Is <span class="highlight">Broken</span></h1>
+    <p class="hero-sub">And it's not your fault. But now you're going to fix it.</p>
+    <div class="scroll-cue">
+      <span>Scroll to begin</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CHAPTER 1: THE CRIME SCENE ==================== -->
+<section id="ch1">
+  <div class="container">
+    <div class="reveal">
+      <div class="chapter-num">Chapter 01</div>
+      <h2>The Crime Scene</h2>
+      <p class="chapter-intro">The single most common problem in rubric design has a name. Once you see it, you can't unsee it.</p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <p>It's called <strong>adverb scaling</strong>, and it works like this: you write a beautiful descriptor for your top grade. Then, to create the lower grades, you just&hellip; soften the adjectives.</p>
+      <p><em>Excellent</em> becomes <em>very good</em> becomes <em>good</em> becomes <em>satisfactory</em>.</p>
+      <p>It's quick. It's easy. And it's almost completely useless.</p>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <h3>Exhibit A: The Adverb Rubric</h3>
+      <p>Here's a real pattern from a case study report. See if you can spot what changes between grades.</p>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <div class="rubric-label bad">&#x26A0; Before &mdash; Adverb Scaling</div>
+      <table class="rubric-table">
+        <tr>
+          <th></th>
+          <th>HD (7)</th>
+          <th>D (6)</th>
+          <th>C (5)</th>
+          <th>P (4)</th>
+        </tr>
+        <tr>
+          <td class="criterion-label">Critical Analysis</td>
+          <td>Demonstrates <span class="adverb-highlight">excellent</span> critical analysis of the case with <span class="adverb-highlight">outstanding</span> depth</td>
+          <td>Demonstrates <span class="adverb-highlight">very good</span> critical analysis of the case with <span class="adverb-highlight">considerable</span> depth</td>
+          <td>Demonstrates <span class="adverb-highlight">good</span> critical analysis of the case with <span class="adverb-highlight">adequate</span> depth</td>
+          <td>Demonstrates <span class="adverb-highlight">satisfactory</span> critical analysis of the case with <span class="adverb-highlight">basic</span> depth</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="reveal reveal-delay-3">
+      <div class="callout" style="margin-top: 32px;">
+        <p>The only things changing are the highlighted adverbs. A student reading this has no concrete guidance on what to do to move from a Pass to a Distinction. A marker has no observable criteria to distinguish between grades.</p>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top: 48px;">
+      <h3>The Fix: Observable Descriptors</h3>
+      <p>Now look at the same criterion rewritten so that each grade describes a <strong>qualitatively different action</strong>.</p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <div class="rubric-label good">&#x2713; After &mdash; Observable Descriptors</div>
+      <table class="rubric-table">
+        <tr>
+          <th></th>
+          <th>HD (7)</th>
+          <th>D (6)</th>
+          <th>C (5)</th>
+          <th>P (4)</th>
+        </tr>
+        <tr>
+          <td class="criterion-label">Critical Analysis</td>
+          <td><span class="good-highlight">Integrates theory to explain why</span> issues occur; <span class="good-highlight">connects factors to show how</span> they reinforce each other; analysis extends beyond the case</td>
+          <td><span class="good-highlight">Applies theory to explain</span> issues; <span class="good-highlight">identifies relationships</span> between factors; analysis addresses complexity</td>
+          <td><span class="good-highlight">Applies relevant theory</span> to the case; addresses multiple factors but <span class="good-highlight">treats them independently</span></td>
+          <td><span class="good-highlight">Links case to theory</span> but connections are surface-level; <span class="good-highlight">factors listed rather than analysed</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <p style="margin-top: 24px;">Each grade now describes a qualitatively different action. At Pass, the student <strong>lists</strong> factors. At Credit, they address multiple factors but <strong>independently</strong>. At Distinction, they identify <strong>relationships</strong>. At HD, they <strong>integrate and extend</strong> beyond the case.</p>
+    </div>
+
+    <div class="reveal reveal-delay-3">
+      <div class="callout green">
+        <p>The reliability test: Could a student use this rubric to improve their work before submission? Would two markers independently reach the same grade? If both answers are "yes," the rubric is working.</p>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <p>So how do you systematically write descriptors like this? You need two frameworks. Let's meet them.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CHAPTER 2: VALUES OF INQUIRY ==================== -->
+<section id="ch2">
+  <div class="container">
+    <div class="reveal">
+      <div class="chapter-num">Chapter 02</div>
+      <h2>The Values of Inquiry</h2>
+      <p class="chapter-intro">A language for evaluating the quality of thinking &mdash; not just whether thinking happened.</p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <p>The Values of Inquiry (VoI) framework, developed by Dr Peter Ellerton at the UQ Critical Thinking Project, identifies eight values that describe what makes thinking <em>good</em>. A student may be performing the cognitive skill of analysis &mdash; but that doesn't mean they're doing it <em>well</em>.</p>
+      <p>VoI gives you the vocabulary to describe the difference. Instead of scaling adverbs, you describe which values are present and to what degree.</p>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <h3>The Eight Values</h3>
+      <p style="color: var(--text-dim); font-size: 0.92rem;">Click any card to explore the guiding questions.</p>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <div class="voi-grid">
+        <div class="voi-card" style="--card-accent: #ff6b35;" onclick="this.classList.toggle('expanded')">
+          <div class="voi-name"><span class="voi-icon">&#x1F50D;</span> Clarity</div>
+          <div class="voi-short">Making points as clear as possible for the audience.</div>
+          <div class="voi-detail">
+            <p class="voi-question">Is the argument structure clear? Are words well-defined and unambiguous? Are examples used effectively?</p>
+          </div>
+        </div>
+
+        <div class="voi-card" style="--card-accent: #00d4aa;" onclick="this.classList.toggle('expanded')">
+          <div class="voi-name"><span class="voi-icon">&#x2714;</span> Accuracy</div>
+          <div class="voi-short">Representing all information correctly and faithfully.</div>
+          <div class="voi-detail">
+            <p class="voi-question">Are claims justified? Is what you are saying true? Have you represented ideas faithfully?</p>
+          </div>
+        </div>
+
+        <div class="voi-card" style="--card-accent: #7c6aef;" onclick="this.classList.toggle('expanded')">
+          <div class="voi-name"><span class="voi-icon">&#x1F3AF;</span> Precision</div>
+          <div class="voi-short">Being specific and intentional with language and terminology.</div>
+          <div class="voi-detail">
+            <p class="voi-question">Have you used technical terms appropriately? Have you quantified where appropriate? Could you be more specific?</p>
+          </div>
+        </div>
+
+        <div class="voi-card" style="--card-accent: #ff4757;" onclick="this.classList.toggle('expanded')">
+          <div class="voi-name"><span class="voi-icon">&#x26CF;</span> Depth</div>
+          <div class="voi-short">Providing detailed information to thoroughly develop points.</div>
+          <div class="voi-detail">
+            <p class="voi-question">Are complexities sufficiently described? Have problematic aspects been identified? Is there engagement with underlying causes?</p>
+          </div>
+        </div>
+
+        <div class="voi-card" style="--card-accent: #ffa502;" onclick="this.classList.toggle('expanded')">
+          <div class="voi-name"><span class="voi-icon">&#x1F310;</span> Breadth</div>
+          <div class="voi-short">Covering a diverse range of directly relevant content.</div>
+          <div class="voi-detail">
+            <p class="voi-question">Have you considered alternative perspectives? Why have you preferred one perspective over another?</p>
+          </div>
+        </div>
+
+        <div class="voi-card" style="--card-accent: #2ed573;" onclick="this.classList.toggle('expanded')">
+          <div class="voi-name"><span class="voi-icon">&#x27A1;</span> Relevance</div>
+          <div class="voi-short">Choosing information that relates directly to the point being made.</div>
+          <div class="voi-detail">
+            <p class="voi-question">Have you focused on the point at issue? Is distracting or unhelpful information included?</p>
+          </div>
+        </div>
+
+        <div class="voi-card" style="--card-accent: #ff6348;" onclick="this.classList.toggle('expanded')">
+          <div class="voi-name"><span class="voi-icon">&#x2B50;</span> Significance</div>
+          <div class="voi-short">Discussing the most important information related to the topic.</div>
+          <div class="voi-detail">
+            <p class="voi-question">Have you avoided superficial issues? Have you identified and developed your core points?</p>
+          </div>
+        </div>
+
+        <div class="voi-card" style="--card-accent: #1e90ff;" onclick="this.classList.toggle('expanded')">
+          <div class="voi-name"><span class="voi-icon">&#x1F517;</span> Coherence</div>
+          <div class="voi-short">Structuring arguments so each point builds logically on the last.</div>
+          <div class="voi-detail">
+            <p class="voi-question">Are ideas developed logically? Do all premises support your conclusions? Are logical fallacies avoided?</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top: 40px;">
+      <h3>Why This Changes Everything</h3>
+      <p>VoI translates directly to rubric descriptors. Instead of saying a student's analysis is "excellent" or "satisfactory," you describe <em>which values</em> are present and to what degree.</p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <div class="callout purple">
+        <p>The values overlap and interact. Precision contributes to clarity. Depth benefits from coherence. Breadth without relevance produces unfocused work. This means your rubric criteria should foreground different combinations of values depending on what the assessment demands.</p>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <p>For a quantitative analysis task, you might foreground <strong>precision</strong> and <strong>accuracy</strong>. For a stakeholder analysis, <strong>breadth</strong> and <strong>significance</strong>. For a literature review, <strong>depth</strong>, <strong>coherence</strong>, and <strong>relevance</strong>. VoI doesn't prescribe &mdash; it gives you a vocabulary to make deliberate choices about what quality looks like in your context.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CHAPTER 3: SOLO TAXONOMY ==================== -->
+<section id="ch3">
+  <div class="container">
+    <div class="reveal">
+      <div class="chapter-num">Chapter 03</div>
+      <h2>SOLO Taxonomy</h2>
+      <p class="chapter-intro">If VoI describes the quality of thinking, SOLO describes its structural complexity &mdash; and maps directly to the UQ grading scale.</p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <p>The Structure of the Observed Learning Outcome (SOLO) Taxonomy, developed by Biggs and Collis (1982), describes five levels of increasing structural complexity. SOLO is useful for rubric design because it describes a natural progression in how students handle complexity.</p>
+      <p style="color: var(--text-dim); font-size: 0.92rem;">Click any level to see a worked example for a case study.</p>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <div class="solo-staircase">
+        <div class="solo-step" style="--bar-width: 100%; --step-color: #7c6aef;" onclick="this.classList.toggle('expanded')">
+          <div class="solo-step-bar"><span class="step-label">Extended Abstract</span></div>
+          <div class="solo-step-content">
+            <div class="solo-title">Goes beyond the given</div>
+            <div class="solo-grade">Distinction &ndash; HD &bull; 75&ndash;100%</div>
+            <div class="solo-desc">The student generalises, hypothesises, or critically evaluates &mdash; transferring understanding to new contexts. Connections are made to broader principles.</div>
+            <div class="solo-example"><p><strong>Problem Identification:</strong> "Identifies issues at multiple levels; draws on theory from outside the case to explain why these issues interact; proposes original framing."</p></div>
+          </div>
+        </div>
+
+        <div class="solo-step" style="--bar-width: 80%; --step-color: #00d4aa;" onclick="this.classList.toggle('expanded')">
+          <div class="solo-step-bar"><span class="step-label">Relational</span></div>
+          <div class="solo-step-content">
+            <div class="solo-title">Integrates into a coherent whole</div>
+            <div class="solo-grade">Credit &ndash; Distinction &bull; 65&ndash;84%</div>
+            <div class="solo-desc">The student integrates aspects into a coherent whole. Relationships, causes, and effects are explained. Understanding is structured.</div>
+            <div class="solo-example"><p><strong>Problem Identification:</strong> "Identifies relationships between issues; explains how operational problems create downstream financial risk."</p></div>
+          </div>
+        </div>
+
+        <div class="solo-step" style="--bar-width: 60%; --step-color: #ff6b35;" onclick="this.classList.toggle('expanded')">
+          <div class="solo-step-bar"><span class="step-label">Multi-Structural</span></div>
+          <div class="solo-step-content">
+            <div class="solo-title">Several relevant aspects, independently</div>
+            <div class="solo-grade">Pass &ndash; Credit &bull; 50&ndash;74%</div>
+            <div class="solo-desc">The student identifies several relevant aspects but treats them independently. The response is a list rather than an integrated argument.</div>
+            <div class="solo-example"><p><strong>Problem Identification:</strong> "Identifies several issues from the case &mdash; leadership, financial, operational &mdash; but discusses each in isolation."</p></div>
+          </div>
+        </div>
+
+        <div class="solo-step" style="--bar-width: 40%; --step-color: #ffa502;" onclick="this.classList.toggle('expanded')">
+          <div class="solo-step-bar"><span class="step-label">Uni-Structural</span></div>
+          <div class="solo-step-content">
+            <div class="solo-title">One relevant aspect</div>
+            <div class="solo-grade">Pass &bull; 50&ndash;64%</div>
+            <div class="solo-desc">The student focuses on one relevant aspect. The response addresses the task but is limited and surface-level.</div>
+            <div class="solo-example"><p><strong>Problem Identification:</strong> "Identifies the key issue stated in the case but does not explore contributing factors."</p></div>
+          </div>
+        </div>
+
+        <div class="solo-step" style="--bar-width: 20%; --step-color: #ff4757;" onclick="this.classList.toggle('expanded')">
+          <div class="solo-step-bar"><span class="step-label">Pre-Structural</span></div>
+          <div class="solo-step-content">
+            <div class="solo-title">Misses the point</div>
+            <div class="solo-grade">Fail &bull; 0&ndash;49%</div>
+            <div class="solo-desc">The student misses the point or uses irrelevant information. The response does not address the task in a meaningful way.</div>
+            <div class="solo-example"><p><strong>Problem Identification:</strong> "Restates case facts without identifying any issues, or identifies issues unrelated to the case."</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top: 40px;">
+      <h3>VoI + SOLO: The Complete Toolkit</h3>
+      <p>These two frameworks are complementary, not competing. In practice:</p>
+      <p><strong>SOLO</strong> establishes the grade-level architecture &mdash; it tells you what <em>kind</em> of cognitive operation to describe at each level (listing, connecting, critiquing).</p>
+      <p><strong>VoI</strong> provides the descriptor language &mdash; it tells you what <em>qualities</em> to look for within that operation (depth, breadth, precision, coherence).</p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <div class="callout">
+        <p>A descriptor using both frameworks might read: "Integrates theory to explain why issues occur [relational/extended abstract]; connects factors to show how they reinforce each other [coherence]; identifies implications that go beyond the immediate case [significance]."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CHAPTER 4: WRITING DESCRIPTORS ==================== -->
+<section id="ch4">
+  <div class="wide-container">
+    <div class="reveal">
+      <div class="chapter-num">Chapter 04</div>
+      <h2>Writing Observable Descriptors</h2>
+      <p class="chapter-intro">The spine-and-distinguisher structure &mdash; a practical method for translating VoI and SOLO into rubric cells.</p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <p>Strong descriptor sets share a <strong>spine</strong> &mdash; a common sentence structure or opening that stays consistent across grade levels &mdash; with <strong>distinguishers</strong> that change to indicate the qualitative shift.</p>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <h3>The Spine in Action</h3>
+      <div class="spine-demo">
+        <div class="desc-line">
+          <span class="grade-tag" style="color: var(--accent3);">HD</span>
+          <span><span class="spine-text">Identifies issues</span> <span class="dist-text">at multiple levels; draws on theory from outside the case to explain why these issues interact; proposes original framing.</span></span>
+        </div>
+        <div class="desc-line">
+          <span class="grade-tag" style="color: var(--accent2);">D</span>
+          <span><span class="spine-text">Identifies issues</span> <span class="dist-text">and explains relationships between them; analysis connects operational, financial, and strategic dimensions.</span></span>
+        </div>
+        <div class="desc-line">
+          <span class="grade-tag" style="color: var(--accent);">C</span>
+          <span><span class="spine-text">Identifies issues</span> <span class="dist-text">across several categories (e.g., leadership, financial, operational) but discusses each in isolation.</span></span>
+        </div>
+        <div class="desc-line">
+          <span class="grade-tag" style="color: var(--warning);">P</span>
+          <span><span class="spine-text">Identifies issues</span> <span class="dist-text">that are explicitly stated in the case but does not explore contributing factors or underlying causes.</span></span>
+        </div>
+      </div>
+      <p style="font-size: 0.92rem; color: var(--text-dim);">The <span style="color: var(--text-dim);">grey text</span> is the spine. The <span style="color: var(--accent2);">green text</span> is the distinguisher &mdash; what changes at each grade level.</p>
+    </div>
+
+    <div class="reveal">
+      <h3>The 6-Step Process</h3>
+      <div class="process-steps">
+        <div class="process-step">
+          <span class="step-num">01</span>
+          <div class="step-content">
+            <h4>Name the capability</h4>
+            <p>What cognitive skill is this criterion asking the student to demonstrate? Analysis? Application? Evaluation? Communication?</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">02</span>
+          <div class="step-content">
+            <h4>Describe "excellent" in observable terms</h4>
+            <p>Write the HD descriptor first. What would you actually <em>see</em> in the student's work? Use VoI to identify which values are fully present.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">03</span>
+          <div class="step-content">
+            <h4>Describe "minimally acceptable"</h4>
+            <p>Write the Pass descriptor. What is the threshold? Which VoI values are present but limited? What SOLO level is the student operating at?</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">04</span>
+          <div class="step-content">
+            <h4>Fill in the middle grades</h4>
+            <p>Use SOLO progression to structure the journey from Pass to HD. Map the qualitative shifts: listing &rarr; connecting &rarr; integrating &rarr; critiquing.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">05</span>
+          <div class="step-content">
+            <h4>Check the spine</h4>
+            <p>Read across the row. Is there a consistent structure that makes the progression visible? If you underline the common elements, do the distinguishers tell a coherent story?</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">06</span>
+          <div class="step-content">
+            <h4>Check for adverb creep</h4>
+            <p>Review each descriptor. If the only difference between two adjacent grades is an adjective or adverb, rewrite to describe an observable difference in the work.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top: 48px;">
+      <h3>Worked Examples</h3>
+      <p>Three assessment types, each transformed from adverb scaling to observable descriptors.</p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <div class="example-tabs">
+        <div class="tab-buttons">
+          <button class="tab-btn active" onclick="switchTab(event, 'ex1')">Research Essay</button>
+          <button class="tab-btn" onclick="switchTab(event, 'ex2')">Group Presentation</button>
+          <button class="tab-btn" onclick="switchTab(event, 'ex3')">Professional Practice</button>
+        </div>
+
+        <div id="ex1" class="tab-panel active">
+          <div class="voi-in-play">VoI in play: depth &bull; breadth &bull; accuracy &bull; significance</div>
+          <table class="rubric-table" style="margin-bottom: 20px;">
+            <tr>
+              <th></th><th>HD (7)</th><th>D (6)</th><th>C (5)</th><th>P (4)</th>
+            </tr>
+            <tr>
+              <td class="criterion-label">Before</td>
+              <td>Demonstrates <span class="adverb-highlight">excellent</span> depth of knowledge</td>
+              <td>Demonstrates <span class="adverb-highlight">very good</span> depth of knowledge</td>
+              <td>Demonstrates <span class="adverb-highlight">good</span> depth of knowledge</td>
+              <td>Demonstrates <span class="adverb-highlight">satisfactory</span> depth of knowledge</td>
+            </tr>
+            <tr>
+              <td class="criterion-label">After</td>
+              <td><span class="good-highlight">Engages with current debates and contested positions;</span> identifies gaps or limitations in the literature; draws on recent and foundational scholarship</td>
+              <td><span class="good-highlight">Draws on a range of perspectives</span> including recent scholarship; explains how different positions relate to each other</td>
+              <td><span class="good-highlight">Accurately represents key concepts</span> and theoretical positions from the literature; range is adequate but not comprehensive</td>
+              <td><span class="good-highlight">Identifies relevant theories</span> but understanding is surface-level; may contain inaccuracies in representation of key concepts</td>
+            </tr>
+          </table>
+        </div>
+
+        <div id="ex2" class="tab-panel">
+          <div class="voi-in-play">VoI in play: clarity &bull; coherence &bull; relevance &bull; precision</div>
+          <table class="rubric-table" style="margin-bottom: 20px;">
+            <tr>
+              <th></th><th>HD (7)</th><th>D (6)</th><th>C (5)</th><th>P (4)</th>
+            </tr>
+            <tr>
+              <td class="criterion-label">Before</td>
+              <td><span class="adverb-highlight">Outstanding</span> presentation skills with <span class="adverb-highlight">excellent</span> engagement</td>
+              <td><span class="adverb-highlight">Very good</span> presentation skills with <span class="adverb-highlight">strong</span> engagement</td>
+              <td><span class="adverb-highlight">Good</span> presentation skills with <span class="adverb-highlight">adequate</span> engagement</td>
+              <td><span class="adverb-highlight">Satisfactory</span> presentation skills with <span class="adverb-highlight">basic</span> engagement</td>
+            </tr>
+            <tr>
+              <td class="criterion-label">After</td>
+              <td><span class="good-highlight">Key messages are immediately apparent;</span> visual aids reinforce rather than duplicate the spoken content; language is precise and adjusted for the audience</td>
+              <td><span class="good-highlight">Structure guides the audience</span> through a logical progression; visual aids support the argument; language is clear and professional</td>
+              <td><span class="good-highlight">Content is clearly structured;</span> visual aids are present and relevant; language is appropriate but may rely on reading from slides</td>
+              <td><span class="good-highlight">Content is presented in a recognisable structure;</span> visual aids are present but may distract or confuse; heavy reliance on notes or slides</td>
+            </tr>
+          </table>
+        </div>
+
+        <div id="ex3" class="tab-panel">
+          <div class="voi-in-play">VoI in play: coherence &bull; accuracy &bull; depth &bull; significance</div>
+          <table class="rubric-table" style="margin-bottom: 20px;">
+            <tr>
+              <th></th><th>HD (7)</th><th>D (6)</th><th>C (5)</th><th>P (4)</th>
+            </tr>
+            <tr>
+              <td class="criterion-label">Before</td>
+              <td><span class="adverb-highlight">Excellent</span> application of theory to professional practice</td>
+              <td><span class="adverb-highlight">Very good</span> application of theory to professional practice</td>
+              <td><span class="adverb-highlight">Good</span> application of theory to practice</td>
+              <td><span class="adverb-highlight">Satisfactory</span> application of theory to practice</td>
+            </tr>
+            <tr>
+              <td class="criterion-label">After</td>
+              <td><span class="good-highlight">Recommendations follow logically</span> from the analysis; each is justified with evidence; implementation considers real-world constraints specific to the case context</td>
+              <td><span class="good-highlight">Recommendations are grounded</span> in the analysis and supported by evidence; practical considerations are addressed</td>
+              <td><span class="good-highlight">Recommendations are relevant</span> to the case and linked to theoretical concepts; practical feasibility is acknowledged but not fully developed</td>
+              <td><span class="good-highlight">Recommendations are stated</span> but connection to theory or analysis is unclear; may be generic rather than tailored to the case</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CHAPTER 5: STRUCTURE ==================== -->
+<section id="ch5">
+  <div class="container">
+    <div class="reveal">
+      <div class="chapter-num">Chapter 05</div>
+      <h2>Capabilities, Not Sections</h2>
+      <p class="chapter-intro">Your rubric rows shouldn't mirror your assignment template. They should assess what students can do.</p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <p>A common structural problem: organising rubric rows by <strong>sections of the assessment</strong> (Introduction, Literature Review, Analysis, Conclusion) rather than by the <strong>capabilities</strong> being assessed.</p>
+      <p>This creates real issues. The same capability often gets assessed in multiple rows &mdash; critical analysis might appear in "Literature Review," "Analysis," and "Discussion." Students are anchored to rigid structures rather than rewarded for the quality of their thinking.</p>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <div class="comparison">
+        <div class="comparison-box bad">
+          <h4><span style="font-size:1.2rem">&#x2717;</span> Section-Based</h4>
+          <ul>
+            <li><span class="icon" style="color:var(--danger)">&#x25CF;</span> Row 1: Introduction (10%)</li>
+            <li><span class="icon" style="color:var(--danger)">&#x25CF;</span> Row 2: Literature Review (20%)</li>
+            <li><span class="icon" style="color:var(--danger)">&#x25CF;</span> Row 3: Analysis (30%)</li>
+            <li><span class="icon" style="color:var(--danger)">&#x25CF;</span> Row 4: Discussion (20%)</li>
+            <li><span class="icon" style="color:var(--danger)">&#x25CF;</span> Row 5: Conclusion (10%)</li>
+            <li><span class="icon" style="color:var(--danger)">&#x25CF;</span> Row 6: Formatting (10%)</li>
+          </ul>
+          <p style="font-size: 0.82rem; color: var(--text-dim); margin-top: 12px; margin-bottom: 0;">6 rows mirroring document structure. Critical analysis assessed in rows 2, 3, and 4 with different language each time.</p>
+        </div>
+
+        <div class="comparison-box good">
+          <h4><span style="font-size:1.2rem">&#x2713;</span> Capability-Based</h4>
+          <ul>
+            <li><span class="icon" style="color:var(--success)">&#x25CF;</span> Row 1: Problem Identification (20%)</li>
+            <li><span class="icon" style="color:var(--success)">&#x25CF;</span> Row 2: Critical Analysis (35%)</li>
+            <li><span class="icon" style="color:var(--success)">&#x25CF;</span> Row 3: Application to Practice (25%)</li>
+            <li><span class="icon" style="color:var(--success)">&#x25CF;</span> Row 4: Communication (20%)</li>
+          </ul>
+          <p style="font-size: 0.82rem; color: var(--text-dim); margin-top: 12px; margin-bottom: 0;">4 rows assessing distinct capabilities. Each row has a clear, differentiable progression.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-3">
+      <p>The capability-based version is more efficient <em>and</em> each row is genuinely assessable with observable descriptors. It's difficult to write meaningfully different HD and Distinction descriptors for "Introduction" &mdash; but straightforward for "Problem Identification."</p>
+    </div>
+
+    <div class="reveal">
+      <div class="callout green">
+        <p>Capability-based criteria also map naturally to program-level learning outcomes and graduate attributes, supporting institutional reporting and AACSB Assurance of Learning requirements.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CHAPTER 6: ACCESSIBILITY ==================== -->
+<section id="ch6">
+  <div class="container">
+    <div class="reveal">
+      <div class="chapter-num">Chapter 06</div>
+      <h2>Writing for Everyone</h2>
+      <p class="chapter-intro">UQ's student body is culturally and linguistically diverse. Your rubric language should be too &mdash; which means making it simpler, not more complicated.</p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <p>Rubric language that is idiomatic, culturally specific, or unnecessarily complex creates a comprehension barrier that disadvantages students from culturally and linguistically diverse (CALD) backgrounds &mdash; regardless of their actual capability.</p>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <div class="guideline-cards">
+        <div class="guideline-card">
+          <div class="guideline-icon">&#x1F4AC;</div>
+          <div>
+            <h4>Use plain, direct language</h4>
+            <p>Avoid inflated academic prose in your descriptors. The rubric is a communication tool, not a showcase.</p>
+            <div class="before-after">
+              <span class="before">"Cogently proposes innovative solutions"</span>
+              <span class="after">"Solutions follow logically from the analysis; each recommendation is justified with evidence."</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="guideline-card">
+          <div class="guideline-icon">&#x1F6AB;</div>
+          <div>
+            <h4>Avoid idiomatic expressions</h4>
+            <p>Phrases like "hits the mark," "scrapes by," or "leaves much to be desired" are culturally loaded and imprecise. Describe what the student produces, not how it makes you feel.</p>
+          </div>
+        </div>
+
+        <div class="guideline-card">
+          <div class="guideline-icon">&#x1F4D6;</div>
+          <div>
+            <h4>Define technical terms</h4>
+            <p>If your rubric uses discipline-specific terminology (e.g., "stakeholder analysis," "sensitivity testing"), ensure the assessment description or a supporting resource defines these terms.</p>
+          </div>
+        </div>
+
+        <div class="guideline-card">
+          <div class="guideline-icon">&#x1F522;</div>
+          <div>
+            <h4>Be specific about quantity</h4>
+            <p>If you expect a minimum number of sources, state it.</p>
+            <div class="before-after">
+              <span class="before">"Extensive use of the literature"</span>
+              <span class="after">"Draws on at least 12 peer-reviewed sources published within the last 10 years."</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="guideline-card">
+          <div class="guideline-icon">&#x1F4CB;</div>
+          <div>
+            <h4>Each cell must stand alone</h4>
+            <p>A student should be able to read a single cell (e.g., Distinction for Critical Analysis) and understand what's expected without needing to cross-reference other cells or grade levels.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CHAPTER 7: GRADE DISTRIBUTIONS ==================== -->
+<section id="ch7">
+  <div class="container">
+    <div class="reveal">
+      <div class="chapter-num">Chapter 07</div>
+      <h2>What Your Grades Are Telling You</h2>
+      <p class="chapter-intro">Rubric design and grade distributions are connected. If your grades are clustered, the rubric is a productive place to start asking why.</p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <h3>UQ Expected Distribution</h3>
+      <p>UQ doesn't impose a forced distribution, but provides strong guidance. Courses outside these ranges will be flagged for review.</p>
+    </div>
+
+    <div class="reveal reveal-delay-2" id="dist-section">
+      <div class="dist-chart">
+        <div class="dist-row">
+          <span class="dist-label">HD &amp; D</span>
+          <div class="dist-bar-wrap">
+            <div class="dist-bar hd" style="--target-width: 35%;">&#8804; 35%</div>
+          </div>
+          <span class="dist-note">max</span>
+        </div>
+        <div class="dist-row">
+          <span class="dist-label">Credit</span>
+          <div class="dist-bar-wrap">
+            <div class="dist-bar c" style="--target-width: 45%;">Majority</div>
+          </div>
+          <span class="dist-note">bulk</span>
+        </div>
+        <div class="dist-row">
+          <span class="dist-label">Pass</span>
+          <div class="dist-bar-wrap">
+            <div class="dist-bar p" style="--target-width: 40%;">Majority</div>
+          </div>
+          <span class="dist-note">bulk</span>
+        </div>
+        <div class="dist-row">
+          <span class="dist-label">Fail</span>
+          <div class="dist-bar-wrap">
+            <div class="dist-bar f" style="--target-width: 20%;">&#8804; 20%</div>
+          </div>
+          <span class="dist-note">max</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top: 32px;">
+      <h3>Diagnostic Guide</h3>
+      <p>Each pattern in your grade distribution points to a specific rubric issue.</p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <div class="guideline-cards">
+        <div class="guideline-card">
+          <div class="guideline-icon" style="background: rgba(124,106,239,0.15);">&#x2B06;</div>
+          <div>
+            <h4>Too many high grades (&gt;35% at 6&ndash;7)</h4>
+            <p>Check whether your descriptors genuinely differentiate between Credit, Distinction, and HD. If the HD descriptor is essentially "Distinction but more so," the rubric isn't doing its job. Use SOLO extended abstract features to separate HD from D.</p>
+          </div>
+        </div>
+
+        <div class="guideline-card">
+          <div class="guideline-icon" style="background: rgba(255,71,87,0.15);">&#x2B07;</div>
+          <div>
+            <h4>Too many failures (&gt;20%)</h4>
+            <p>Review the Pass threshold. Is it clearly described? Could a student read the Pass descriptor and know what "good enough" looks like? Also check whether the assessment task allows students to demonstrate the required capabilities.</p>
+          </div>
+        </div>
+
+        <div class="guideline-card">
+          <div class="guideline-icon" style="background: rgba(255,165,2,0.15);">&#x2194;</div>
+          <div>
+            <h4>Grades clustered at one level</h4>
+            <p>The rubric may lack sufficient differentiation. Use VoI values and SOLO levels to create observable qualitative shifts between adjacent grades.</p>
+          </div>
+        </div>
+
+        <div class="guideline-card">
+          <div class="guideline-icon" style="background: rgba(0,212,170,0.15);">&#x1F6AB;</div>
+          <div>
+            <h4>No students reaching HD</h4>
+            <p>Are your HD descriptors describing genuinely outstanding work, or an impossible standard? HD should represent the top of what is achievable within the task constraints, not perfection.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CHAPTER 8: HEALTH CHECK ==================== -->
+<section id="ch8">
+  <div class="container">
+    <div class="reveal">
+      <div class="chapter-num">Chapter 08</div>
+      <h2>The Rubric Health Check</h2>
+      <p class="chapter-intro">Nine questions. Be honest. Click each one to mark it as a "yes" or a "no" for your current rubric.</p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <p style="color: var(--text-dim); font-size: 0.92rem; margin-bottom: 24px;">Click once for <span style="color: var(--success);">yes</span>. Click again for <span style="color: var(--danger);">no</span>. Click a third time to reset. If you answer "no" to three or more, your rubric would benefit from revision.</p>
+
+      <div class="health-check" id="healthCheck">
+        <div class="hc-question" onclick="toggleHC(this)">
+          <div class="hc-check">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+          <div class="hc-text">
+            <div class="hc-q">Could a student use this rubric to improve their work before submission?</div>
+            <div class="hc-hint">If your descriptors say "excellent" and "satisfactory," the answer is probably no.</div>
+          </div>
+        </div>
+
+        <div class="hc-question" onclick="toggleHC(this)">
+          <div class="hc-check">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+          <div class="hc-text">
+            <div class="hc-q">Would two markers independently reach the same grade?</div>
+            <div class="hc-hint">If descriptors rely on subjective judgments like "very good" versus "good," marker agreement will be low.</div>
+          </div>
+        </div>
+
+        <div class="hc-question" onclick="toggleHC(this)">
+          <div class="hc-check">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+          <div class="hc-text">
+            <div class="hc-q">Does each grade level describe a qualitatively different action?</div>
+            <div class="hc-hint">Moving from "good" to "very good" is an adverb shift. Moving from "lists factors" to "connects factors" is a qualitative shift.</div>
+          </div>
+        </div>
+
+        <div class="hc-question" onclick="toggleHC(this)">
+          <div class="hc-check">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+          <div class="hc-text">
+            <div class="hc-q">Are your rubric rows organised by capability rather than by section?</div>
+            <div class="hc-hint">If rows mirror the document structure (Introduction, Literature Review, Analysis&hellip;), critical analysis may be fragmented across multiple rows.</div>
+          </div>
+        </div>
+
+        <div class="hc-question" onclick="toggleHC(this)">
+          <div class="hc-check">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+          <div class="hc-text">
+            <div class="hc-q">Can you read across a row and see a clear SOLO progression?</div>
+            <div class="hc-hint">Use the spine-and-distinguisher structure. The spine stays constant; the distinguishers show qualitative shifts.</div>
+          </div>
+        </div>
+
+        <div class="hc-question" onclick="toggleHC(this)">
+          <div class="hc-check">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+          <div class="hc-text">
+            <div class="hc-q">Could you identify which VoI values each descriptor addresses?</div>
+            <div class="hc-hint">If you can't name the values at play (clarity, depth, coherence&hellip;), the descriptor may be too vague to be useful.</div>
+          </div>
+        </div>
+
+        <div class="hc-question" onclick="toggleHC(this)">
+          <div class="hc-check">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+          <div class="hc-text">
+            <div class="hc-q">Would a CALD student understand every descriptor without cultural assumptions?</div>
+            <div class="hc-hint">Check for idioms, culturally specific references, and unnecessarily complex language.</div>
+          </div>
+        </div>
+
+        <div class="hc-question" onclick="toggleHC(this)">
+          <div class="hc-check">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+          <div class="hc-text">
+            <div class="hc-q">Does your rubric include differentiated fail descriptors?</div>
+            <div class="hc-hint">A single "Fail" column isn't sufficient. UQ's 7-point scale includes three fail grades (1, 2, 3) with distinct implications for supplementary assessment.</div>
+          </div>
+        </div>
+
+        <div class="hc-question" onclick="toggleHC(this)">
+          <div class="hc-check">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+          <div class="hc-text">
+            <div class="hc-q">Is your grade distribution within UQ expectations?</div>
+            <div class="hc-hint">No more than 35% at 6&ndash;7; majority at 4&ndash;5; no more than 20% failing. If not, the rubric is the first place to investigate.</div>
+          </div>
+        </div>
+
+        <div class="hc-result" id="hcResult">
+          <div class="score-num" id="hcScore">&mdash;</div>
+          <div class="score-label">out of 9</div>
+          <div class="score-msg" id="hcMsg">Click the questions above to audit your rubric.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <p style="margin-bottom: 8px;"><strong>Your Rubric Is Broken</strong> &mdash; Rubric Design Fundamentals</p>
+  <p>UQ Business School Learning Design &bull; 2026</p>
+  <p style="margin-top: 16px; font-size: 0.8rem;">Based on the Values of Inquiry framework (Dr Peter Ellerton, UQ Critical Thinking Project),<br>SOLO Taxonomy (Biggs &amp; Collis, 1982), and UQ assessment policy.</p>
+</footer>
+
+<script>
+// ========== PROGRESS BAR ==========
+const progressBar = document.getElementById('progress-bar');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / docHeight) * 100;
+  progressBar.style.width = progress + '%';
+});
+
+// ========== SCROLL REVEAL ==========
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+// ========== NAV DOTS ==========
+const navLinks = document.querySelectorAll('#nav-dots a');
+const sections = document.querySelectorAll('section');
+
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(link => link.classList.remove('active'));
+      const id = entry.target.id;
+      const activeLink = document.querySelector(`#nav-dots a[href="#${id}"]`);
+      if (activeLink) activeLink.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+
+sections.forEach(s => navObserver.observe(s));
+
+// ========== TABS ==========
+function switchTab(e, tabId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+// ========== DISTRIBUTION BARS ANIMATION ==========
+const distBars = document.querySelectorAll('.dist-bar');
+const distObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      distBars.forEach(bar => bar.classList.add('animated'));
+    }
+  });
+}, { threshold: 0.3 });
+
+const distSection = document.getElementById('dist-section');
+if (distSection) distObserver.observe(distSection);
+
+// ========== HEALTH CHECK ==========
+function toggleHC(el) {
+  if (el.classList.contains('checked')) {
+    el.classList.remove('checked');
+    el.classList.add('unchecked');
+  } else if (el.classList.contains('unchecked')) {
+    el.classList.remove('unchecked');
+  } else {
+    el.classList.add('checked');
+  }
+  updateScore();
+}
+
+function updateScore() {
+  const questions = document.querySelectorAll('.hc-question');
+  let yes = 0, no = 0, total = 0;
+  questions.forEach(q => {
+    if (q.classList.contains('checked')) { yes++; total++; }
+    if (q.classList.contains('unchecked')) { no++; total++; }
+  });
+
+  const scoreEl = document.getElementById('hcScore');
+  const msgEl = document.getElementById('hcMsg');
+  const resultEl = document.getElementById('hcResult');
+
+  if (total === 0) {
+    scoreEl.textContent = '—';
+    scoreEl.style.color = 'var(--text-dim)';
+    resultEl.style.borderColor = 'var(--border)';
+    msgEl.textContent = 'Click the questions above to audit your rubric.';
+    return;
+  }
+
+  scoreEl.textContent = yes + '/' + (yes + no);
+
+  if (no >= 3) {
+    scoreEl.style.color = 'var(--danger)';
+    resultEl.style.borderColor = 'var(--danger)';
+    msgEl.textContent = 'Your rubric would benefit from revision. Start with the "no" answers — each one points to a specific issue you can address using the frameworks in this guide.';
+  } else if (no >= 1) {
+    scoreEl.style.color = 'var(--warning)';
+    resultEl.style.borderColor = 'var(--warning)';
+    msgEl.textContent = 'Getting there. A few areas to tighten up — focus on turning those "no" answers into "yes" using VoI values and SOLO progression.';
+  } else if (yes > 0) {
+    scoreEl.style.color = 'var(--success)';
+    resultEl.style.borderColor = 'var(--success)';
+    msgEl.textContent = 'Looking strong! Your rubric is transparent, observable, and well-structured. Keep it up and revisit each semester.';
+  }
+}
+</script>
+
+</body>
+</html>

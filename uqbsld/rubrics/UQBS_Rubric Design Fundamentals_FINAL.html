@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build a Better Rubric — Rubric Design Fundamentals | UQ Business School</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --uq-purple:#51247A;
+  --uq-mag:#962A8B;
+  --uq-sand:#D7D1CC;
+  --uq-blue:#4085C6;
+  --bg:#ffffff;
+  --surface:#f7f5f3;
+  --surface2:#eeebe8;
+  --border:#e4dfd9;
+  --border2:#d0c9c2;
+  --text:#1a1714;
+  --muted:#6b6460;
+  --sidebar-w:175px;
+  --panel-w:clamp(580px, calc(100vw - 175px - 560px), 1060px);
+  --c1:#51247A;
+  --c2:#4085C6;
+  --c3:#962A8B;
+  --c4:#9A6C00;
+  --c5:#8a7e78;
+  --c6:#E62645;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  font-weight:400;
+  line-height:1.8;
+  overflow-x:hidden;
+}
+
+/* PROGRESS */
+#pgBar{
+  position:fixed;top:0;
+  left:var(--sidebar-w);right:var(--panel-w);
+  height:3px;background:var(--border);z-index:300;
+}
+#pgFill{
+  height:100%;
+  background:linear-gradient(90deg,var(--c1),var(--c3),var(--c2),var(--c4),var(--c5),var(--c6));
+  width:0%;transition:width .5s;
+}
+
+/* LAYOUT */
+.layout{display:flex;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  position:sticky;top:0;height:100vh;
+  background:var(--uq-purple);
+  display:flex;flex-direction:column;
+  z-index:100;overflow-y:auto;
+}
+.sb-brand{
+  padding:24px 20px 20px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.sb-eyebrow{
+  font-size:8.5px;font-weight:500;letter-spacing:.17em;text-transform:uppercase;
+  color:rgba(255,255,255,0.45);margin-bottom:10px;
+}
+.sb-logo{display:flex;align-items:center;gap:9px;margin-bottom:4px}
+.sb-logo-mark{
+  width:26px;height:26px;background:var(--uq-mag);
+  border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.sb-title{
+  font-family:Arial,Helvetica,sans-serif;font-size:13.5px;font-weight:700;
+  line-height:1.25;color:#fff;
+}
+
+.topic-nav{list-style:none;padding:14px 0;flex:1}
+.topic-item a{
+  display:flex;align-items:flex-start;gap:11px;
+  padding:9px 20px;text-decoration:none;
+  color:rgba(255,255,255,0.45);
+  transition:color .2s,background .2s;position:relative;
+}
+.topic-item a::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2.5px;
+  background:var(--uq-sand);transform:scaleX(0);transform-origin:left;
+  transition:transform .25s cubic-bezier(.4,0,.2,1);
+}
+.topic-item.active a::before{transform:scaleX(1)}
+.topic-item.active a,.topic-item a:hover{
+  color:#fff;background:rgba(255,255,255,0.13);
+}
+.topic-item.active .t-name{font-weight:700}
+.topic-item.active .t-num{color:var(--uq-sand)}
+.t-dot{
+  width:6px;height:6px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,0.25);
+  flex-shrink:0;margin-top:5px;
+  transition:all .4s cubic-bezier(.4,0,.2,1);
+}
+.topic-item.active .t-dot{
+  border-color:var(--uq-sand);background:var(--uq-sand);
+}
+.topic-item.done .t-dot{
+  border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.5);
+}
+.t-text{flex:1;min-width:0}
+.t-num{font-size:8.5px;color:rgba(255,255,255,0.35);font-weight:500;margin-bottom:2px}
+.t-name{font-size:11px;line-height:1.35;font-weight:400}
+
+.sb-footer{
+  padding:14px 20px;border-top:1px solid rgba(255,255,255,0.1);
+  font-size:9px;color:rgba(255,255,255,0.35);line-height:1.6;
+}
+
+/* ── MAIN CONTENT ── */
+.content{flex:1;min-width:0}
+
+.section{
+  padding:64px 52px 56px;
+  border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+
+/* alternating section backgrounds */
+.section:nth-child(even){background:var(--surface)}
+
+.sec-ghost{
+  position:absolute;right:-8px;top:-16px;
+  font-family:'Fraunces',serif;font-size:180px;font-weight:700;
+  color:rgba(0,0,0,0.025);line-height:1;
+  user-select:none;pointer-events:none;
+}
+
+.sec-tag{
+  display:flex;align-items:center;gap:10px;
+  font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--sc,var(--muted));margin-bottom:14px;
+}
+.sec-tag::before{
+  content:'';display:block;width:18px;height:1.5px;
+  background:var(--sc,var(--border2));flex-shrink:0;
+}
+
+h1{
+  font-family:Arial,Helvetica,sans-serif;font-size:42px;font-weight:700;
+  line-height:1.1;margin-bottom:18px;
+}
+h2{
+  font-family:Arial,Helvetica,sans-serif;font-size:28px;font-weight:700;
+  line-height:1.2;margin-bottom:16px;
+}
+h3{
+  font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:700;
+  line-height:1.3;margin-bottom:10px;color:var(--sc,var(--text));
+  margin-top:28px;
+}
+h3:first-of-type{margin-top:20px}
+
+.body{
+  font-size:14.5px;color:var(--muted);
+  max-width:600px;margin-bottom:16px;line-height:1.85;
+}
+.body strong{font-weight:500;color:var(--sc,var(--text))}
+
+.pull{
+  border-left:3px solid var(--sc,var(--border2));
+  padding:14px 22px;margin:24px 0;
+  background:var(--surface);border-radius:0 8px 8px 0;
+  max-width:560px;
+}
+.section:nth-child(even) .pull{background:var(--bg)}
+.pull p{
+  font-family:Arial,Helvetica,sans-serif;font-size:15.5px;font-style:italic;
+  font-weight:400;color:var(--text);line-height:1.55;
+}
+
+/* EXAMPLE BOX */
+.exbox{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:10px;padding:16px 20px;max-width:600px;margin:18px 0;
+}
+.section:nth-child(even) .exbox{background:var(--surface2)}
+.exlabel{
+  font-size:8.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--sc,var(--muted));margin-bottom:10px;
+}
+.exbox p{font-size:13px;color:var(--text);line-height:1.7;margin-bottom:8px}
+.exbox p:last-child{margin-bottom:0}
+.exbox strong{font-weight:500;color:var(--sc,var(--text))}
+
+/* TABLES — all tables get word-wrap */
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:12.5px;
+  table-layout:fixed;word-wrap:break-word;overflow-wrap:break-word;}
+table th{
+  padding:7px 10px;text-align:left;
+  font-size:8.5px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--muted);border-bottom:1.5px solid var(--border);
+  background:var(--surface);
+}
+table td{
+  padding:8px 10px;border-bottom:1px solid var(--border);
+  color:var(--muted);line-height:1.55;vertical-align:top;
+  word-wrap:break-word;overflow-wrap:break-word;
+}
+table tr.hl td{color:var(--text);background:rgba(81,36,122,0.04)}
+table td:first-child{font-weight:400}
+
+/* CMP table first col */
+.cmp-table td:first-child{
+  color:var(--sc,var(--text));font-weight:500;width:68px;
+}
+/* SOLO first col no-wrap */
+.solo-table td:first-child{white-space:nowrap;width:130px}
+.solo-grade{font-weight:500;white-space:nowrap}
+
+/* VALUES GRID */
+.voi-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:8px;
+  max-width:600px;margin:16px 0;
+}
+.voi-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:8px;padding:12px 15px;
+  border-left:2.5px solid var(--uq-blue);
+}
+.section:nth-child(even) .voi-card{background:var(--surface2)}
+.voi-name{font-size:12px;font-weight:500;color:var(--text);margin-bottom:3px}
+.voi-def{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* SPINE VISUAL */
+.spine-vis{max-width:580px;margin:18px 0}
+.spine-row{
+  display:flex;align-items:baseline;
+  padding:6px 0;border-bottom:1px solid var(--border);
+  font-size:13px;line-height:1.6;
+}
+.spine-grade{
+  width:34px;flex-shrink:0;font-size:9.5px;font-weight:500;
+  color:var(--sc,var(--muted));text-transform:uppercase;padding-top:2px;
+}
+.spine-common{
+  color:var(--sc,var(--uq-purple));font-weight:700;
+  background:rgba(81,36,122,0.07);border-radius:3px;padding:0 4px;
+  flex-shrink:0;
+}
+.spine-dist{color:var(--muted);flex:1}
+
+/* CHECKLIST */
+.checklist{max-width:580px;margin:16px 0}
+.chk-item{
+  display:flex;gap:13px;align-items:flex-start;
+  padding:11px 0;border-bottom:1px solid var(--border);
+}
+.chk-num{
+  width:21px;height:21px;border-radius:50%;border:1.5px solid var(--border2);
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:9.5px;font-weight:500;color:var(--muted);
+}
+.chk-text{font-size:13px;color:var(--muted);line-height:1.65}
+.chk-text strong{font-weight:500;color:var(--text)}
+
+/* DIST BARS */
+.dist-vis{max-width:480px;margin:20px 0}
+.dist-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.dist-label{font-size:10px;color:var(--muted);width:60px;text-align:right;flex-shrink:0;line-height:1.3}
+.dist-bar-wrap{
+  flex:1;background:var(--surface2);border-radius:30px;height:13px;overflow:hidden;
+}
+.dist-bar{height:100%;border-radius:30px;transition:width 1.2s cubic-bezier(.4,0,.2,1);width:0}
+.dist-pct{font-size:10px;color:var(--muted);width:32px;text-align:right;flex-shrink:0}
+.dist-note{font-size:11px;color:var(--muted);margin-top:8px;font-style:italic}
+
+/* HERO */
+.hero-sub{
+  font-size:16.5px;color:var(--muted);max-width:520px;
+  line-height:1.8;margin-bottom:36px;
+}
+.hero-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:36px;max-width:520px}
+.hero-tag{
+  padding:5px 13px;border:1px solid var(--border2);border-radius:30px;
+  font-size:11px;color:var(--muted);background:var(--surface);
+}
+.cta{
+  display:inline-flex;align-items:center;gap:9px;padding:12px 24px;
+  border:1.5px solid var(--uq-purple);border-radius:40px;
+  color:var(--uq-purple);text-decoration:none;font-size:13px;font-weight:500;
+  background:transparent;cursor:pointer;transition:background .2s,color .2s;
+}
+.cta:hover{background:var(--uq-purple);color:#fff}
+.cta-arr{transition:transform .2s}
+.cta:hover .cta-arr{transform:translateY(3px)}
+
+/* GRID 2-col */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:600px;margin:18px 0}
+.grid2 .card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:8px;padding:14px 16px;
+}
+.section:nth-child(even) .grid2 .card{background:var(--surface2)}
+.card-title{font-size:11.5px;font-weight:500;color:var(--text);margin-bottom:6px}
+.card-body{font-size:11px;color:var(--muted);line-height:1.65}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.reveal.v{opacity:1;transform:translateY(0)}
+
+/* ── PANEL ── */
+.panel{
+  width:var(--panel-w);flex-shrink:0;
+  position:sticky;top:0;height:100vh;
+  background:var(--surface);
+  border-left:1.5px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+
+/* CUBE BLOCK */
+.pblock{
+  padding:20px 16px 18px;border-bottom:1.5px solid var(--border);flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;
+}
+.cube-wrap{flex-shrink:0}
+.pblock-right{width:100%}
+.pblock-lbl{
+  font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:5px;
+}
+.cube-st{
+  font-size:11px;color:var(--muted);line-height:1.4;
+  transition:color .4s;font-weight:400;
+}
+.cube-pct{
+  font-size:26px;font-weight:700;font-family:Arial,Helvetica,sans-serif;
+  color:var(--uq-purple);margin-bottom:2px;
+}
+
+/* 3D CUBE */
+.cube-scene{perspective:380px;width:190px;height:190px;display:flex;align-items:center;justify-content:center}
+.cube{
+  width:120px;height:120px;position:relative;transform-style:preserve-3d;
+  transform:rotateX(-28deg) rotateY(38deg);
+  animation:spin 36s linear infinite;
+}
+@keyframes spin{
+  from{transform:rotateX(-28deg) rotateY(38deg)}
+  to{transform:rotateX(-28deg) rotateY(398deg)}
+}
+.face{
+  position:absolute;width:120px;height:120px;
+  display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);
+  gap:3px;padding:3px;background:#fff;
+}
+.face.front {transform:translateZ(60px)}
+.face.back  {transform:translateZ(-60px) rotateY(180deg)}
+.face.left  {transform:translateX(-60px) rotateY(-90deg)}
+.face.right {transform:translateX(60px) rotateY(90deg)}
+.face.top   {transform:translateY(-60px) rotateX(90deg)}
+.face.bottom{transform:translateY(60px) rotateX(-90deg)}
+.cell{border-radius:2px;transition:background-color .8s cubic-bezier(.4,0,.2,1)}
+
+/* RUBRIC AREA */
+.rub-area{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.rub-area-hdr{
+  padding:10px 14px 8px;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.rub-area-lbl{
+  font-size:8px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:4px;
+}
+.rub-task{font-size:10.5px;color:var(--text);font-style:italic;font-weight:400}
+
+.rub-scroll{flex:1;overflow:auto;padding:10px 14px 14px}
+
+/* RUBRIC TABLE — fills panel, horizontal scroll if needed */
+.rub-tbl-wrap{overflow-x:auto;min-width:0}
+.rub-tbl{
+  border-collapse:collapse;width:100%;min-width:560px;
+  font-size:12px;table-layout:fixed;
+  word-wrap:break-word;overflow-wrap:break-word;
+}
+.rub-tbl th{
+  padding:7px 8px;font-size:8.5px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);
+  background:var(--surface2);border:1px solid var(--border);
+  text-align:center;white-space:nowrap;
+}
+.rub-tbl th:first-child{text-align:left;width:11%;white-space:normal}
+.rub-tbl th:not(:first-child){width:12.7%}
+.rub-tbl td{
+  border:1px solid var(--border);padding:8px 9px;
+  font-size:12px;color:var(--muted);vertical-align:top;
+  line-height:1.5;word-wrap:break-word;overflow-wrap:break-word;
+  transition:opacity .3s ease;
+}
+.rub-tbl td.crit{
+  color:var(--text);font-weight:700;background:var(--surface2);
+  font-size:11.5px;transition:background .4s ease, color .4s ease;
+}
+.crit-weight{display:block;font-size:9.5px;font-weight:400;color:var(--muted);margin-top:3px}
+.crit-highlight{background:rgba(177,94,24,0.1) !important;color:#7a3d00 !important}
+.rub-row{opacity:0;transform:translateY(5px);transition:opacity .5s,transform .5s}
+.rub-row.show{opacity:1;transform:translateY(0)}
+.rub-tbl td.fading{opacity:0.15}
+
+/* Step 2 — VoI highlights */
+mark.voi{background:rgba(64,133,198,0.18);color:var(--text);padding:1px 3px;border-radius:3px;
+  border-bottom:2px solid #4085C6;font-style:normal;}
+
+/* Step 3 — SOLO badges */
+.solo-badge{display:block;font-size:7.5px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;background:rgba(150,42,139,0.1);color:#962A8B;
+  padding:2px 7px;border-radius:10px;margin-bottom:5px;width:fit-content;}
+
+/* Step 4 — Spine/distinguisher */
+.spine-hl{background:rgba(81,36,122,0.1);color:var(--uq-purple);font-weight:700;
+  padding:1px 2px;border-radius:2px;}
+.dist-hl{color:var(--muted);}
+
+/* Step 6 — Accessible language */
+mark.access{background:rgba(26,122,110,0.12);color:inherit;padding:1px 3px;border-radius:3px;
+  border-bottom:2px solid #1a7a6e;font-style:normal;}
+
+/* PANEL LEGEND */
+.step-legend{
+  margin:8px 0 2px;padding:8px 10px;border-radius:6px;
+  font-size:10.5px;line-height:1.5;
+  border:1px solid var(--border);background:var(--bg);
+  min-height:32px;transition:opacity .3s;
+}
+.step-legend-label{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.step-legend-text{color:var(--text);font-size:10.5px}
+
+/* PANEL FOOTER */
+.pfooter{
+  padding:9px 14px;border-top:1.5px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;flex-shrink:0;
+  background:var(--bg);
+}
+.pft{font-size:9px;color:var(--muted)}
+.pfp{font-size:10.5px;font-weight:500;color:var(--uq-purple)}
+
+</style>
+</head>
+<body>
+
+<div id="pgBar"><div id="pgFill"></div></div>
+
+<div class="layout">
+
+<!-- ── SIDEBAR ── -->
+<nav class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-eyebrow">UQ Business School</div>
+    <div class="sb-logo">
+      <div class="sb-logo-mark">R</div>
+      <div class="sb-title">Build a Better Rubric</div>
+    </div>
+  </div>
+
+  <ul class="topic-nav" id="topicNav">
+    <li class="topic-item" data-i="1">
+      <a href="#s1"><div class="t-dot"></div><div class="t-text"><div class="t-num">01</div><div class="t-name">The Core Problem</div></div></a>
+    </li>
+    <li class="topic-item" data-i="2">
+      <a href="#s2"><div class="t-dot"></div><div class="t-text"><div class="t-num">02</div><div class="t-name">Values of Inquiry</div></div></a>
+    </li>
+    <li class="topic-item" data-i="3">
+      <a href="#s3"><div class="t-dot"></div><div class="t-text"><div class="t-num">03</div><div class="t-name">SOLO Taxonomy</div></div></a>
+    </li>
+    <li class="topic-item" data-i="4">
+      <a href="#s4"><div class="t-dot"></div><div class="t-text"><div class="t-num">04</div><div class="t-name">Writing Descriptors</div></div></a>
+    </li>
+    <li class="topic-item" data-i="5">
+      <a href="#s5"><div class="t-dot"></div><div class="t-text"><div class="t-num">05</div><div class="t-name">Structural Design</div></div></a>
+    </li>
+    <li class="topic-item" data-i="6">
+      <a href="#s6"><div class="t-dot"></div><div class="t-text"><div class="t-num">06</div><div class="t-name">Accessibility</div></div></a>
+    </li>
+    <li class="topic-item" style="opacity:.6">
+      <a href="#s7"><div class="t-dot" style="border-style:dashed"></div><div class="t-text"><div class="t-num">↓</div><div class="t-name">Grade Distributions</div></div></a>
+    </li>
+  </ul>
+
+  <div class="sb-footer">
+    Whether writing from scratch or reviewing a rubric you've used for years — these principles apply to any assessment type.
+    <div style="margin-top:12px;display:flex;flex-direction:column;gap:6px">
+      <a href="https://uq.sharepoint.com/:b:/t/bs3u7kls/IQD8u5RHvYi4SqIgvadC_AlyAZNeETgYIbKpIy4XEmiUahQ?e=oX57RG" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:10px;font-weight:500" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">↓ Download PDF</a>
+      <a href="index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:10px;font-weight:500" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">← Rubric Design Fundamentals</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<main class="content">
+
+  <!-- HERO -->
+  <section class="section" id="s0">
+    <div class="sec-ghost">RD</div>
+    <div class="sec-tag">A six-part guide · Learning Design 2026</div>
+    <h1>Build a better rubric.</h1>
+    <p class="hero-sub">A rubric is only as useful as its ability to do two things: help students understand what they're aiming for before they submit, and help markers reach consistent grades independently. This guide shows you how.</p>
+    <a class="cta" href="#s1">Start building <span class="cta-arr">↓</span></a>
+  </section>
+
+  <!-- S1: CORE PROBLEM -->
+  <section class="section" id="s1" data-idx="1" style="--sc:var(--c1)">
+    <div class="sec-ghost">01</div>
+    <div class="sec-tag reveal">The Core Problem</div>
+    <h2 class="reveal">Why most rubrics fail before they start</h2>
+    <p class="body reveal">The single most common issue in rubric design is <strong>adverb scaling</strong> — differentiating grades by swapping adjectives (<em>excellent → very good → good → satisfactory</em>) rather than describing what the student actually does differently at each level.</p>
+    <div class="pull reveal">
+      <p>"Adverb scaling is so prevalent because it's easy to write. But this convenience produces rubrics that are subjective for markers and opaque for students."</p>
+    </div>
+
+    <h3 class="reveal">What adverb scaling looks like</h3>
+    <div class="exbox reveal">
+      <div class="exlabel">A criterion written with adverb scaling ↓</div>
+      <table class="cmp-table" style="table-layout:fixed">
+        <colgroup><col style="width:110px"><col><col><col><col></colgroup>
+        <thead><tr><th></th><th>HD (7)</th><th>D (6)</th><th>C (5)</th><th>P (4)</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--c1);font-weight:500;white-space:nowrap">Critical Analysis</td>
+            <td>Demonstrates <em>excellent</em> critical analysis with <em>outstanding</em> depth</td>
+            <td>Demonstrates <em>very good</em> critical analysis with <em>considerable</em> depth</td>
+            <td>Demonstrates <em>good</em> critical analysis with <em>adequate</em> depth</td>
+            <td>Demonstrates <em>satisfactory</em> critical analysis with <em>basic</em> depth</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>The only things changing are the adverbs. A student has no concrete guidance on what to do to improve. A marker has no observable criteria to anchor their judgement.</p>
+    </div>
+
+    <h3 class="reveal">What observable descriptors look like</h3>
+    <div class="exbox reveal">
+      <div class="exlabel">The same criterion rewritten with observable descriptors ↓</div>
+      <table class="cmp-table" style="table-layout:fixed">
+        <colgroup><col style="width:110px"><col><col><col><col></colgroup>
+        <thead><tr><th></th><th>HD (7)</th><th>D (6)</th><th>C (5)</th><th>P (4)</th></tr></thead>
+        <tbody>
+          <tr class="hl">
+            <td style="font-weight:500;white-space:nowrap">Critical Analysis</td>
+            <td>Integrates theory to explain <em>why</em> issues occur; connects factors to show how they reinforce each other; identifies limitations in the theory applied</td>
+            <td>Applies theory to explain issues; identifies relationships between factors; analysis is coherent and well-structured</td>
+            <td>Applies relevant theory to the case; addresses multiple factors but treats them somewhat independently</td>
+            <td>Links case to theory but connections are surface-level; factors listed rather than analysed</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Each grade now describes a qualitatively different action. A student can read this and know exactly what to do to improve — and two markers can independently reach the same grade.</p>
+    </div>
+
+    <h3 class="reveal">The reliability test</h3>
+    <p class="body reveal">Ask two questions of any rubric. First: <strong>could a student use this to improve their work before submission?</strong> Second: <strong>would two markers independently reach the same grade?</strong> If your descriptors rely on adverbs, both answers are no.</p>
+  </section>
+
+  <!-- S2: VALUES OF INQUIRY -->
+  <section class="section" id="s2" data-idx="2" style="--sc:var(--c2)">
+    <div class="sec-ghost">02</div>
+    <div class="sec-tag reveal">Values of Inquiry</div>
+    <h2 class="reveal">A language for evaluating thinking quality</h2>
+    <p class="body reveal">The Values of Inquiry (VoI) framework, developed by Dr Peter Ellerton at the UQ Critical Thinking Project, provides a language for evaluating the <em>quality</em> of thinking. It identifies eight values — things we value in the act of inquiry — that generate precise, actionable rubric descriptors.</p>
+    <p class="body reveal">Ellerton deliberately uses <strong>values</strong> rather than <em>standards</em> because values are general, overlapping, and contextually applied. Like a graphic equaliser, different types of inquiry foreground different values — a quantitative analysis foregrounds precision and accuracy; a literature review foregrounds depth and coherence.</p>
+
+    <div class="voi-grid reveal">
+      <div class="voi-card"><div class="voi-name">Clarity</div><div class="voi-def">Making points as clear as possible; ensuring the audience can understand what we mean</div></div>
+      <div class="voi-card"><div class="voi-name">Accuracy</div><div class="voi-def">Representing all information correctly and closely aligned with its original meaning</div></div>
+      <div class="voi-card"><div class="voi-name">Precision</div><div class="voi-def">Being specific and intentional with language to remove potential for misunderstanding</div></div>
+      <div class="voi-card"><div class="voi-name">Depth</div><div class="voi-def">Providing detailed information to thoroughly develop points; addressing complexities</div></div>
+      <div class="voi-card"><div class="voi-name">Breadth</div><div class="voi-def">Covering a diverse range of directly relevant content and considerations</div></div>
+      <div class="voi-card"><div class="voi-name">Relevance</div><div class="voi-def">Choosing information that relates directly to the points being developed</div></div>
+      <div class="voi-card"><div class="voi-name">Significance</div><div class="voi-def">Discussing the most important information; focusing on key ideas, not superficial detail</div></div>
+      <div class="voi-card"><div class="voi-name">Coherence</div><div class="voi-def">Structuring arguments logically so each point builds towards intended meaning</div></div>
+    </div>
+
+    <h3 class="reveal">VoI replacing adverbs — worked example</h3>
+    <div class="exbox reveal">
+      <div class="exlabel">Evidence use in a research essay — differentiated by VoI values</div>
+      <table style="table-layout:fixed">
+        <colgroup><col style="width:46px"><col></colgroup>
+        <thead><tr><th>Grade</th><th>Descriptor</th></tr></thead>
+        <tbody>
+          <tr class="hl"><td style="font-weight:500;color:var(--c4)">HD</td><td>Sources selected for their <em>significance</em> to the argument; evidence integrated with <em>precision</em>; counter-evidence addressed with <em>breadth</em> and <em>depth</em></td></tr>
+          <tr><td style="font-weight:500">D</td><td>Sources relevant and accurately represented (<em>accuracy</em>); evidence supports claims with <em>clarity</em>; some counter-evidence acknowledged</td></tr>
+          <tr><td style="font-weight:500">C</td><td>Sources relevant but used descriptively rather than analytically; evidence–claim connections lack <em>precision</em></td></tr>
+          <tr><td style="font-weight:500">P</td><td>Sources present but selection lacks <em>relevance</em> or <em>significance</em>; evidence listed rather than integrated</td></tr>
+        </tbody>
+      </table>
+      <p>Each grade is differentiated by which VoI values are present, absent, or developing — not by adverbs. The vocabulary does the work that "excellent/good/satisfactory" was trying to do, but with specificity both students and markers can act on.</p>
+    </div>
+
+    <div class="pull reveal">
+      <p>"The goal is to internalise these values so your descriptors naturally describe observable, qualitatively different actions at each grade level."</p>
+    </div>
+  </section>
+
+  <!-- S3: SOLO -->
+  <section class="section" id="s3" data-idx="3" style="--sc:var(--c3)">
+    <div class="sec-ghost">03</div>
+    <div class="sec-tag reveal">SOLO Taxonomy</div>
+    <h2 class="reveal">Mapping structural complexity across the grade scale</h2>
+    <p class="body reveal">SOLO (Structure of Observed Learning Outcomes, Biggs &amp; Collis 1982) describes five levels of increasing structural complexity. Where VoI provides a language for the <em>quality</em> of thinking, SOLO describes the <em>structure</em> — how students organise and connect ideas. Together they are complementary lenses, not competing frameworks.</p>
+
+    <table class="solo-table reveal">
+      <colgroup><col style="width:130px"><col style="width:100px"><col></colgroup>
+      <thead>
+        <tr><th>SOLO Level</th><th>UQ Grade</th><th>What the student does</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Extended abstract</td><td class="solo-grade" style="color:var(--c4)">D–HD (6–7)</td><td>Goes beyond the given; generalises, hypothesises, or critiques; connects to broader principles; identifies limitations</td></tr>
+        <tr class="hl"><td>Relational</td><td class="solo-grade" style="color:var(--c2)">C–D (5–6)</td><td>Integrates multiple aspects into a coherent whole; relationships, causes, and effects are identified</td></tr>
+        <tr><td>Multi-structural</td><td class="solo-grade">P–C (4–5)</td><td>Identifies several relevant aspects but treats them independently; lists or catalogues without connecting</td></tr>
+        <tr><td>Uni-structural</td><td class="solo-grade">P (4)</td><td>Focuses on one relevant aspect; addresses the task from a single perspective</td></tr>
+        <tr><td>Pre-structural</td><td class="solo-grade" style="color:var(--c1)">F (1–3)</td><td>Misses the point or uses irrelevant information; the response does not address the task</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="reveal">SOLO in rubric descriptors</h3>
+    <div class="exbox reveal">
+      <div class="exlabel">Problem Identification — SOLO progression for a case study report</div>
+      <table style="table-layout:fixed">
+        <colgroup><col style="width:56px"><col></colgroup>
+        <thead><tr><th>Grade</th><th>Descriptor</th></tr></thead>
+        <tbody>
+          <tr class="hl"><td style="font-weight:500;color:var(--c4)">HD</td><td><em>Extended abstract:</em> Identifies issues not explicitly stated in the case; connects them to broader organisational and contextual factors; distinguishes symptoms from root causes and prioritises by impact</td></tr>
+          <tr><td style="font-weight:500">D</td><td><em>Relational:</em> Identifies key issues accurately and connects them to the broader organisational context; explains how issues relate to one another</td></tr>
+          <tr><td style="font-weight:500">C</td><td><em>Multi-structural:</em> Identifies key issues within the relevant context; addresses multiple issues but treats them somewhat independently</td></tr>
+          <tr><td style="font-weight:500">P</td><td><em>Uni-structural:</em> Identifies issues stated in the case; addresses the task from a single perspective without contextualisation</td></tr>
+          <tr><td style="font-weight:500;color:var(--c1)">F–3</td><td><em>Pre-structural:</em> Attempts to identify issues but misinterprets the case or focuses on peripheral details; the core problem is not addressed</td></tr>
+          <tr><td style="font-weight:500;color:var(--c1)">F–1/2</td><td><em>Pre-structural:</em> Does not identify relevant issues; the response does not engage with the case or is entirely off-topic</td></tr>
+        </tbody>
+      </table>
+      <p>The SOLO progression is visible: at Pass the student works with what's explicitly given; at Credit they catalogue multiple issues; at Distinction they connect them; at HD they go beyond the given material to identify implicit issues and prioritise. This is a qualitative shift in cognitive operation, not just "more."</p>
+    </div>
+
+    <div class="pull reveal">
+      <p>"SOLO tells you not just <em>how much</em> a student knows, but what they can <em>do</em> with what they know."</p>
+    </div>
+
+    <p class="body reveal"><strong>Important — differentiated fail descriptors:</strong> Under UQ's Assessment Procedures, students who receive a grade 3 (45–49%) are eligible for supplementary assessment. Students who receive a 1 or 2 are not. A single "Fail" column cannot make this distinction — rubrics must describe these separately.</p>
+  </section>
+
+  <!-- S4: WRITING DESCRIPTORS -->
+  <section class="section" id="s4" data-idx="4" style="--sc:var(--c4)">
+    <div class="sec-ghost">04</div>
+    <div class="sec-tag reveal">Writing Descriptors</div>
+    <h2 class="reveal">The spine-and-distinguisher structure</h2>
+    <p class="body reveal">Strong descriptor sets share a <strong>spine</strong> — a common sentence structure that stays consistent across grade levels — with <strong>distinguishers</strong> that change to indicate the qualitative shift. The spine anchors the reader. The distinguishers show what changes across grades.</p>
+
+    <div class="spine-vis reveal">
+      <div style="font-size:8.5px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding-bottom:8px;border-bottom:1.5px solid var(--border)">Spine (highlighted) + distinguishers</div>
+      <div class="spine-row"><span class="spine-grade">HD</span><span class="spine-common">Identifies issues</span>&nbsp;<span class="spine-dist">at multiple levels; distinguishes symptoms from root causes; prioritises by impact</span></div>
+      <div class="spine-row"><span class="spine-grade">D</span><span class="spine-common">Identifies issues</span>&nbsp;<span class="spine-dist">accurately and connects them to the broader organisational context</span></div>
+      <div class="spine-row"><span class="spine-grade">C</span><span class="spine-common">Identifies issues</span>&nbsp;<span class="spine-dist">stated in the case within the relevant context</span></div>
+      <div class="spine-row"><span class="spine-grade">P</span><span class="spine-common">Identifies issues</span>&nbsp;<span class="spine-dist">stated in the case, though without contextualisation</span></div>
+    </div>
+
+    <h3 class="reveal">A process for writing descriptors</h3>
+    <div class="checklist reveal">
+      <div class="chk-item"><div class="chk-num">1</div><div class="chk-text"><strong>Name the capability.</strong> What cognitive skill is this criterion asking the student to demonstrate? Analysis? Application? Evaluation? Communication?</div></div>
+      <div class="chk-item"><div class="chk-num">2</div><div class="chk-text"><strong>Describe "excellent" in observable terms.</strong> What would you actually see in the student's work? Use VoI to guide you — which values are fully present at HD?</div></div>
+      <div class="chk-item"><div class="chk-num">3</div><div class="chk-text"><strong>Describe "minimally acceptable."</strong> What is the Pass threshold? Which VoI values are present but limited? What SOLO level is the student operating at?</div></div>
+      <div class="chk-item"><div class="chk-num">4</div><div class="chk-text"><strong>Fill in the middle grades.</strong> Use SOLO progression: listing → connecting → integrating → critiquing.</div></div>
+      <div class="chk-item"><div class="chk-num">5</div><div class="chk-text"><strong>Check for adverb creep.</strong> If the only difference between two adjacent grades is an adjective or adverb, rewrite to describe an observable difference in what the student produces.</div></div>
+    </div>
+
+    <h3 class="reveal">Worked examples across assessment types</h3>
+    <div class="exbox reveal">
+      <div class="exlabel">Example 1: Depth of knowledge — research essay</div>
+      <table style="table-layout:fixed">
+        <colgroup><col style="width:52px"><col><col><col><col></colgroup>
+        <thead><tr><th></th><th>HD</th><th>D</th><th>C</th><th>P</th></tr></thead>
+        <tbody>
+          <tr class="hl"><td style="font-weight:500">After</td><td>Engages with current debates and contested positions; identifies where scholars disagree and evaluates the strength of competing arguments</td><td>Draws on a range of perspectives including recent scholarship; explains how different theoretical positions relate to one another</td><td>Accurately represents key concepts and theoretical positions; coverage adequate but relies on foundational texts</td><td>Identifies relevant theories but understanding is surface-level; may rely heavily on a narrow range of sources</td></tr>
+          <tr style="opacity:.55"><td style="font-weight:500">Before</td><td>Demonstrates <em>excellent</em> depth of knowledge</td><td>Demonstrates <em>very good</em> depth of knowledge</td><td>Demonstrates <em>good</em> depth of knowledge</td><td>Demonstrates <em>satisfactory</em> depth of knowledge</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:11.5px">VoI values in play: depth (engaging with complexity), breadth (range of perspectives), accuracy (faithful representation), significance (contested positions rather than settled knowledge).</p>
+    </div>
+
+    <div class="exbox reveal">
+      <div class="exlabel">Example 2: Communication effectiveness — group presentation</div>
+      <table style="table-layout:fixed">
+        <colgroup><col style="width:52px"><col><col><col><col></colgroup>
+        <thead><tr><th></th><th>HD</th><th>D</th><th>C</th><th>P</th></tr></thead>
+        <tbody>
+          <tr class="hl"><td style="font-weight:500">After</td><td>Key messages immediately apparent; visual aids reinforce rather than duplicate spoken content; delivery adapted to audience reactions; transitions between speakers seamless</td><td>Structure guides audience through a logical progression; visual aids support the argument; language appropriate to the audience; speakers build on each other's points</td><td>Content clearly structured; visual aids present and relevant; language generally appropriate though occasionally too technical</td><td>Content presented in a recognisable structure; visual aids present but may be text-heavy or disconnected from spoken content; delivery read from notes</td></tr>
+          <tr style="opacity:.55"><td style="font-weight:500">Before</td><td>Outstanding presentation skills with <em>excellent</em> engagement</td><td>Very good presentation skills with <em>strong</em> engagement</td><td>Good presentation skills with <em>adequate</em> engagement</td><td>Satisfactory presentation skills with <em>basic</em> engagement</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:11.5px">VoI values in play: clarity (audience can follow the argument), coherence (logical progression), relevance (visual aids serve the argument), precision (language appropriate to audience).</p>
+    </div>
+  </section>
+
+  <!-- S5: STRUCTURAL DESIGN -->
+  <section class="section" id="s5" data-idx="5" style="--sc:var(--c5)">
+    <div class="sec-ghost">05</div>
+    <div class="sec-tag reveal">Structural Design</div>
+    <h2 class="reveal">Criteria that describe capability, not sections</h2>
+    <p class="body reveal">A common issue is organising rubric rows by <em>sections</em> of the assessment — Introduction, Literature Review, Analysis, Conclusion — rather than by <em>capabilities</em> the student is demonstrating. Section-based criteria create several problems: the same capability gets assessed in multiple rows, students are penalised for organising their work thoughtfully, and descriptors are difficult to differentiate across grade levels.</p>
+
+    <div class="grid2 reveal">
+      <div class="card">
+        <div class="card-title" style="color:var(--c1)">Section-based (before)</div>
+        <div class="card-body">Row 1: Introduction (10%)<br>Row 2: Literature Review (20%)<br>Row 3: Analysis (30%)<br>Row 4: Recommendations (20%)<br>Row 5: Conclusion (10%)<br>Row 6: Referencing (10%)</div>
+        <div class="card-body" style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;font-size:10.5px;color:var(--muted)">6 rows mirroring document structure. Critical analysis assessed in Rows 2, 3, and arguably 4. Introduction and Conclusion rows hard to differentiate across grades.</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--c5)">Capability-based (after)</div>
+        <div class="card-body">Row 1: Problem Identification (20%)<br>Row 2: Critical Analysis (35%)<br>Row 3: Application to Practice (25%)<br>Row 4: Academic Communication (20%)</div>
+        <div class="card-body" style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;font-size:10.5px;color:var(--muted)">4 rows assessing distinct capabilities. Each row has a clear, differentiable progression. Weightings reflect importance to learning outcomes.</div>
+      </div>
+    </div>
+
+    <div class="pull reveal"><p>"If your rubric can be gamed by a student who has neither read deeply nor thought carefully, rewrite it."</p></div>
+  </section>
+
+  <!-- S6: ACCESSIBILITY -->
+  <section class="section" id="s6" data-idx="6" style="--sc:#1a7a6e">
+    <div class="sec-ghost">06</div>
+    <div class="sec-tag reveal">Accessibility</div>
+    <h2 class="reveal">Writing for diverse student populations</h2>
+    <p class="body reveal">UQ's student body includes a significant proportion of students from culturally and linguistically diverse (CALD) backgrounds. Rubric language that is idiomatic, culturally specific, or unnecessarily complex creates barriers unrelated to capability.</p>
+    <div class="exbox reveal">
+      <div class="exlabel">Practical guidelines</div>
+      <div class="chk-item" style="padding:8px 0;border-bottom:1px solid var(--border)"><div class="chk-text" style="font-size:13px"><strong>Use plain, direct language.</strong> Replace "cogently proposes innovative solutions" with "solutions follow logically from the analysis; each recommendation is justified with evidence."</div></div>
+      <div class="chk-item" style="padding:8px 0;border-bottom:1px solid var(--border)"><div class="chk-text" style="font-size:13px"><strong>Avoid idiomatic expressions.</strong> Phrases like "hits the mark" or "leaves much to be desired" are culturally loaded and imprecise. Describe what the student produces, not how it makes you feel.</div></div>
+      <div class="chk-item" style="padding:8px 0;border-bottom:1px solid var(--border)"><div class="chk-text" style="font-size:13px"><strong>Be specific about quantity where it matters.</strong> "Extensive use of the literature" is subjective; "Draws on at least 12 peer-reviewed sources" is concrete. Use count anchors at the Pass threshold.</div></div>
+      <div class="chk-item" style="padding:8px 0"><div class="chk-text" style="font-size:13px"><strong>Ensure each cell can stand alone.</strong> A student should be able to read a single cell and understand what's expected without cross-referencing other cells. Avoid "better than Credit-level work."</div></div>
+    </div>
+    <div class="pull reveal"><p>"Rubric language that is idiomatic or culturally specific creates barriers that have nothing to do with the student's capability in the assessed skill."</p></div>
+  </section>
+
+  <!-- S7: GRADE DISTRIBUTIONS — final check, no cube face, no rubric row -->
+  <section class="section" id="s7" style="--sc:#4085C6">
+    <div class="sec-ghost">07</div>
+    <div class="sec-tag reveal">Final check</div>
+    <h2 class="reveal">What your grade profile tells you</h2>
+    <p class="body reveal">Rubric design and grade distributions are connected. If an assessment consistently produces grades clustered at one end of the scale, the rubric and assessment task should be reviewed — the issue is almost certainly with design, not students.</p>
+
+    <h3 class="reveal">UQ grade distribution expectations</h3>
+    <div class="dist-vis reveal" id="distVis">
+      <div class="dist-row">
+        <div class="dist-label">≤35%<br><span style="font-size:8px">Grades 6–7</span></div>
+        <div class="dist-bar-wrap"><div class="dist-bar" style="background:#4085C6" data-pct="25" id="db1"></div></div>
+        <div class="dist-pct">25%</div>
+      </div>
+      <div class="dist-row">
+        <div class="dist-label">Majority<br><span style="font-size:8px">Grades 4–5</span></div>
+        <div class="dist-bar-wrap"><div class="dist-bar" style="background:#51247A" data-pct="55" id="db2"></div></div>
+        <div class="dist-pct">55%</div>
+      </div>
+      <div class="dist-row">
+        <div class="dist-label">≤20%<br><span style="font-size:8px">Failing</span></div>
+        <div class="dist-bar-wrap"><div class="dist-bar" style="background:#962A8B" data-pct="20" id="db3"></div></div>
+        <div class="dist-pct">20%</div>
+      </div>
+      <p class="dist-note">A well-calibrated assessment centres its cohort at Pass–Credit. The rubric's Pass and Credit descriptors carry the most weight.</p>
+    </div>
+
+    <h3 class="reveal">Reading your distribution</h3>
+    <div class="exbox reveal">
+      <div class="exlabel">Diagnostic guide</div>
+      <div class="chk-item" style="padding:9px 0;border-bottom:1px solid var(--border)"><div class="chk-text" style="font-size:13px"><strong>Too many high grades (&gt;35% at 6–7):</strong> Check whether your descriptors genuinely differentiate Credit, Distinction, and HD. If the HD descriptor is essentially "Distinction but more so," the rubric may be collapsing those grades together.</div></div>
+      <div class="chk-item" style="padding:9px 0;border-bottom:1px solid var(--border)"><div class="chk-text" style="font-size:13px"><strong>Too many failures (&gt;20%):</strong> Review the Pass threshold. Could a student read the Pass descriptor and know what "good enough" looks like? Check whether the assessment aligns with what was actually taught.</div></div>
+      <div class="chk-item" style="padding:9px 0;border-bottom:1px solid var(--border)"><div class="chk-text" style="font-size:13px"><strong>Grades clustered at one level:</strong> Use VoI values and SOLO levels to create observable qualitative shifts between adjacent grades.</div></div>
+      <div class="chk-item" style="padding:9px 0"><div class="chk-text" style="font-size:13px"><strong>No students reaching HD:</strong> HD should represent the top of what is achievable within the task — not a theoretical ideal no student could reach.</div></div>
+    </div>
+
+    <div class="pull reveal"><p>"The rubric is the theory. The distribution is the data. When they conflict, trust the data."</p></div>
+
+    <h3 class="reveal">Quick self-check — 9 audit questions</h3>
+    <div class="checklist reveal">
+      <div class="chk-item"><div class="chk-num">1</div><div class="chk-text">Could a student use this rubric to improve their work before submission?</div></div>
+      <div class="chk-item"><div class="chk-num">2</div><div class="chk-text">Would two markers independently reach the same grade?</div></div>
+      <div class="chk-item"><div class="chk-num">3</div><div class="chk-text">Does each grade level describe a qualitatively different action?</div></div>
+      <div class="chk-item"><div class="chk-num">4</div><div class="chk-text">Are your rubric rows organised by capability rather than by section?</div></div>
+      <div class="chk-item"><div class="chk-num">5</div><div class="chk-text">Can you read across a row and see a clear SOLO progression?</div></div>
+      <div class="chk-item"><div class="chk-num">6</div><div class="chk-text">Could you identify which VoI values each descriptor addresses?</div></div>
+      <div class="chk-item"><div class="chk-num">7</div><div class="chk-text">Would a CALD student understand every descriptor without cultural assumptions?</div></div>
+      <div class="chk-item"><div class="chk-num">8</div><div class="chk-text">Does your rubric include differentiated fail descriptors distinguishing grade 3 from grades 1–2?</div></div>
+      <div class="chk-item" style="border-bottom:none"><div class="chk-num">9</div><div class="chk-text">Is your grade distribution within UQ expectations?</div></div>
+    </div>
+    <p class="body reveal" style="font-size:13px;margin-top:12px;font-style:italic">If you answer "no" to three or more, the rubric would benefit from revision. Contact the UQ Business School Learning Design team to arrange a Rubric Surgery workshop.</p>
+  </section>
+
+</main>
+
+<!-- ── PANEL ── -->
+<aside class="panel">
+
+  <!-- CUBE + STATUS -->
+  <div class="pblock">
+    <div class="cube-wrap">
+      <div class="cube-scene">
+        <div class="cube" id="cube">
+          <div class="face front"  data-face="front"></div>
+          <div class="face back"   data-face="back"></div>
+          <div class="face left"   data-face="left"></div>
+          <div class="face right"  data-face="right"></div>
+          <div class="face top"    data-face="top"></div>
+          <div class="face bottom" data-face="bottom"></div>
+        </div>
+      </div>
+    </div>
+    <div class="pblock-right">
+      <div class="pblock-lbl">Unscrambling the rubric</div>
+      <div class="cube-st" id="cubeStatus">Scrambled — scroll down to fix</div>
+      <div class="cube-pct" id="cubePct">0%</div>
+      <div class="step-legend" id="stepLegend" style="display:none">
+        <div class="step-legend-label" id="legendLabel"></div>
+        <div class="step-legend-text" id="legendText"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RUBRIC -->
+  <div class="rub-area">
+    <div class="rub-area-hdr">
+      <div class="rub-area-lbl">Unscrambling</div>
+      <div class="rub-task">Case study report — scroll to transform this rubric</div>
+    </div>
+    <div class="rub-scroll">
+      <div class="rub-tbl-wrap">
+        <table class="rub-tbl" id="rubricTable">
+          <thead>
+            <tr>
+              <th>Criterion</th>
+              <th>HD (7)</th><th>D (6)</th><th>C (5)</th><th>P (4)</th>
+              <th>F–3 Marginal fail</th>
+              <th>F–2 Fail</th>
+              <th>F–1 Low fail</th>
+            </tr>
+          </thead>
+          <tbody id="rubricBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="pfooter">
+    <span class="pft" id="footerTxt">0 of 6 principles applied</span>
+    <span class="pfp" id="footerPct">Scroll to build ↓</span>
+  </div>
+
+</aside>
+
+</div>
+
+<script>
+const SEC_COLORS = {1:'#51247A',2:'#4085C6',3:'#962A8B',4:'#FBB800',5:'#D7D1CC',6:'#E62645'};
+const FACE_MAP   = {1:'front',2:'right',3:'top',4:'left',5:'back',6:'bottom'};
+const SCRAMBLE_COLS = ['#51247A','#962A8B','#D7D1CC','#4085C6','#FBB800','#E62645'];
+
+// SOLO labels for each grade column (HD→F-1)
+const SOLO_LABELS = ['Extended abstract','Relational','Multi-structural','Uni-structural','Pre-structural','Pre-structural','Pre-structural'];
+
+// Legend shown per step
+const STEP_LEGEND = {
+  1:{color:'#51247A', text:'Adverb scaling replaced — every cell now describes a specific, observable student action'},
+  2:{color:'#4085C6', text:'Phrases invoking VoI values (depth, breadth, precision, coherence…) underlined in blue'},
+  3:{color:'#962A8B', text:'SOLO level badge added to each grade — showing the qualitative structural shift'},
+  4:{color:'#51247A', text:'Shared spine highlighted purple — the distinguisher (what changes per grade) follows'},
+  5:{color:'#b05e18', text:'Section-based headings replaced with capability-based criteria + weightings'},
+  6:{color:'#1a7a6e', text:'Plain, non-idiomatic language highlighted green — replacing vague or jargon-heavy originals'}
+};
+
+const CUBE_STATUS = {
+  0:'Scrambled — scroll down to fix',
+  1:'Step 1: observable descriptors applied',
+  2:'Step 2: VoI terms highlighted',
+  3:'Step 3: SOLO levels annotated',
+  4:'Step 4: spine + distinguisher visible',
+  5:'Step 5: capability criteria applied',
+  6:'Step 6: accessible language — complete ✓'
+};
+
+// ── RUBRIC DATA ──────────────────────────────────────────────────────────────
+// 4 rows × 7 cells (HD, D, C, P, F3, F2, F1)
+// badCrit = section-based heading; goodCrit = capability-based heading
+// Each cell: bad (adverb text), good (observable text),
+//            voi (terms to highlight), accessible (terms to highlight)
+const RUBRIC = [
+  {
+    idx:1,
+    badCrit:'Introduction &amp; Problem Setup',
+    goodCrit:'Problem Identification',
+    weight:'20%',
+    cells:[
+      {bad:'Identifies problems with outstanding insight and excellent analytical depth',
+       good:'Identifies issues not explicitly stated in the case; distinguishes symptoms from root causes; prioritises by impact',
+       voi:['not explicitly stated','root causes','prioritises by impact'],
+       accessible:['not explicitly stated in the case','distinguishes symptoms from root causes','prioritises by impact']},
+      {bad:'Identifies problems very well with considerable insight',
+       good:'Identifies key issues accurately and connects them to the broader organisational context; explains how issues relate to one another',
+       voi:['broader organisational context','how issues relate to one another'],
+       accessible:['accurately and connects them','broader organisational context']},
+      {bad:'Identifies problems adequately with reasonable depth',
+       good:'Identifies key issues within the relevant context; addresses multiple issues but treats them somewhat independently',
+       voi:['somewhat independently'],
+       accessible:['addresses multiple issues','somewhat independently']},
+      {bad:'Identifies problems satisfactorily at a basic level',
+       good:'Identifies issues stated in the case; addresses the task from a single perspective without contextualisation',
+       voi:['single perspective','without contextualisation'],
+       accessible:['stated in the case','single perspective']},
+      {bad:'Identifies problems poorly; does not meet minimum requirements',
+       good:'Attempts to identify issues but misinterprets the case or focuses on peripheral details; narrowly misses pass threshold',
+       voi:['peripheral details'],
+       accessible:['narrowly misses pass threshold']},
+      {bad:'Very poor problem identification; substantially below expectations',
+       good:'Identifies peripheral issues only; core problem not addressed; response attempts task but falls substantially short',
+       voi:['peripheral issues only'],
+       accessible:['falls substantially short']},
+      {bad:'No meaningful attempt at problem identification',
+       good:'Does not identify relevant issues; no engagement with the case or entirely off-topic',
+       voi:[],
+       accessible:['no engagement with the case','entirely off-topic']}
+    ]
+  },
+  {
+    idx:2,
+    badCrit:'Literature Review &amp; Theory',
+    goodCrit:'Critical Analysis',
+    weight:'35%',
+    cells:[
+      {bad:'Demonstrates excellent critical analysis with outstanding depth and insight',
+       good:'Integrates theory to explain why issues occur; connects factors to show how they reinforce each other; identifies limitations in the theory applied',
+       voi:['why issues occur','reinforce each other','limitations in the theory applied'],
+       accessible:['explain why issues occur','how they reinforce each other','limitations in the theory applied']},
+      {bad:'Demonstrates very good critical analysis with considerable depth',
+       good:'Applies theory to explain issues; identifies relationships between factors; analysis is coherent and well-structured',
+       voi:['relationships between factors','coherent and well-structured'],
+       accessible:['relationships between factors','coherent and well-structured']},
+      {bad:'Demonstrates good critical analysis with adequate depth',
+       good:'Applies relevant theory to the case; addresses multiple factors but treats them somewhat independently',
+       voi:['somewhat independently'],
+       accessible:['relevant theory','somewhat independently']},
+      {bad:'Demonstrates satisfactory critical analysis with basic depth',
+       good:'Links case to theory but connections are surface-level; factors listed rather than analysed',
+       voi:['surface-level','listed rather than analysed'],
+       accessible:['surface-level','listed rather than analysed']},
+      {bad:'Demonstrates poor critical analysis; does not meet minimum requirements',
+       good:'Attempts to apply theory but connections are inaccurate or superficial; narrowly misses pass threshold',
+       voi:['inaccurate or superficial'],
+       accessible:['narrowly misses pass threshold']},
+      {bad:'Demonstrates very poor critical analysis; substantially below expectations',
+       good:'Significant gaps in theoretical engagement; response attempts the task but falls substantially short',
+       voi:['significant gaps'],
+       accessible:['significant gaps','falls substantially short']},
+      {bad:'No attempt at critical analysis evident',
+       good:'No meaningful engagement with theory or analysis; response does not address the task',
+       voi:[],
+       accessible:['no meaningful engagement','does not address the task']}
+    ]
+  },
+  {
+    idx:3,
+    badCrit:'Analysis &amp; Recommendations',
+    goodCrit:'Application to Practice',
+    weight:'25%',
+    cells:[
+      {bad:'Applies theory to practice in an outstanding manner with excellent recommendations',
+       good:'Recommendations follow logically from the analysis; each justified with evidence; implementation considers constraints, risks and stakeholder impacts',
+       voi:['follow logically','justified with evidence','constraints, risks and stakeholder impacts'],
+       accessible:['follow logically from the analysis','justified with evidence','constraints, risks and stakeholder impacts']},
+      {bad:'Applies theory to practice very well with strong recommendations',
+       good:'Recommendations grounded in the analysis and supported by evidence; practical considerations addressed; theory–action connections explicit',
+       voi:['supported by evidence','connections explicit'],
+       accessible:['grounded in the analysis','supported by evidence','practical considerations addressed']},
+      {bad:'Applies theory to practice adequately with reasonable recommendations',
+       good:'Recommendations relevant to the case and linked to theoretical concepts; practical detail present but may be generic rather than tailored to the specific context',
+       voi:['generic rather than tailored'],
+       accessible:['relevant to the case','generic rather than tailored to the specific context']},
+      {bad:'Applies theory to practice satisfactorily with basic recommendations',
+       good:'Recommendations stated but connection to theory or analysis is unclear; recommendations could apply to any similar case without modification',
+       voi:['could apply to any similar case'],
+       accessible:['could apply to any similar case without modification']},
+      {bad:'Applies theory to practice poorly; does not meet minimum requirements',
+       good:'Recommendations present but largely unsupported; connection to the case is weak; narrowly misses pass threshold',
+       voi:['largely unsupported'],
+       accessible:['narrowly misses pass threshold']},
+      {bad:'Very poor application to practice; substantially below expectations',
+       good:'Recommendations present but not grounded in analysis or theory; response attempts task but falls short',
+       voi:['not grounded'],
+       accessible:['not grounded in analysis or theory']},
+      {bad:'No attempt to apply theory to practice',
+       good:'No recommendations or entirely off-topic',
+       voi:[],
+       accessible:['entirely off-topic']}
+    ]
+  },
+  {
+    idx:4,
+    badCrit:'Conclusion &amp; Presentation',
+    goodCrit:'Academic Communication',
+    weight:'20%',
+    cells:[
+      {bad:'Communicates with outstanding clarity and excellent organisation throughout',
+       good:'Structure reflects the logical demands of the question; visual aids reinforce rather than duplicate spoken content; delivery adapted to audience reactions; transitions between speakers seamless',
+       voi:['logical demands','reinforce rather than duplicate','adapted to audience reactions'],
+       accessible:['reflects the logical demands','reinforce rather than duplicate','adapted to audience reactions']},
+      {bad:'Communicates very clearly with strong organisation and structure',
+       good:'Structure guides the audience through a logical progression; language appropriate to the audience; speakers build on each other\'s points',
+       voi:['logical progression','appropriate to the audience'],
+       accessible:['guides the audience','appropriate to the audience','build on each other\'s points']},
+      {bad:'Communicates adequately with reasonable organisation',
+       good:'Content is clearly structured; visual aids are present and relevant; language is generally appropriate though occasionally too technical or informal',
+       voi:['present and relevant'],
+       accessible:['clearly structured','present and relevant','occasionally too technical or informal']},
+      {bad:'Communicates satisfactorily with basic organisation',
+       good:'Content presented in a recognisable structure; visual aids present but may be text-heavy or disconnected from spoken content; delivery read from notes',
+       voi:['text-heavy','disconnected'],
+       accessible:['recognisable structure','text-heavy','disconnected from spoken content','read from notes']},
+      {bad:'Communication is poor; does not meet minimum requirements',
+       good:'Structure present but does not serve the argument; communication impedes understanding at points; narrowly misses pass threshold',
+       voi:['impedes understanding'],
+       accessible:['narrowly misses pass threshold']},
+      {bad:'Very poor communication; substantially below expectations',
+       good:'Significant structural or language issues; communication substantially hinders understanding; response attempts task but falls short',
+       voi:['substantially hinders'],
+       accessible:['significantly hinders understanding','falls short']},
+      {bad:'No coherent communication; task not meaningfully attempted',
+       good:'No coherent communication; task not meaningfully attempted',
+       voi:[],
+       accessible:['no coherent communication','not meaningfully attempted']}
+    ]
+  }
+];
+
+// ── UTILITIES ────────────────────────────────────────────────────────────────
+function escRex(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+
+// Render HTML for a single data cell at given step
+function cellHTML(cell, colIdx, step, rowSpine) {
+  if (step === 0) return cell.bad;
+  if (step === 7) return cell.good; // clean final render — no highlights
+  let text = cell.good;
+  if (step === 1) return text;
+
+  if (step === 2) {
+    // Highlight VoI phrases — use voiPhrases if present, fall back to voi array
+    const phrases = (cell.voiPhrases && cell.voiPhrases.length) ? cell.voiPhrases : (cell.voi || []);
+    phrases.forEach(phrase => {
+      if (!phrase) return;
+      text = text.replace(new RegExp(escRex(phrase),'gi'),
+        `<mark class="voi" title="VoI value illustrated">${phrase}</mark>`);
+    });
+    return text;
+  }
+
+  if (step === 3) {
+    const badge = SOLO_LABELS[colIdx]
+      ? `<span class="solo-badge">${SOLO_LABELS[colIdx]}</span>` : '';
+    return badge + text;
+  }
+
+  if (step === 4) {
+    // Use the row-level spine string to split — only the exact opening spine word/phrase
+    if (rowSpine && text.startsWith(rowSpine)) {
+      const rest = text.slice(rowSpine.length);
+      return `<span class="spine-hl">${rowSpine}</span><span class="dist-hl">${rest}</span>`;
+    }
+    // Fallback: split on first semicolon
+    const semi = text.indexOf(';');
+    if (semi !== -1) {
+      return `<span class="spine-hl">${text.slice(0,semi)}</span><span class="dist-hl">${text.slice(semi)}</span>`;
+    }
+    return `<span class="spine-hl">${text}</span>`;
+  }
+
+  if (step === 5) return text;
+
+  if (step === 6) {
+    // Highlight only phrases that replaced vague/idiomatic/jargon originals
+    (cell.accessible||[]).forEach(phrase => {
+      text = text.replace(new RegExp(escRex(phrase),'g'),
+        `<mark class="access">${phrase}</mark>`);
+    });
+    return text;
+  }
+
+  return text;
+}
+
+// ── CUBE ────────────────────────────────────────────────────────────────────
+function buildCube(){
+  document.querySelectorAll('.face').forEach(face=>{
+    for(let i=0;i<9;i++){
+      const c=document.createElement('div');
+      c.className='cell';
+      c.style.backgroundColor=SCRAMBLE_COLS[Math.floor(Math.random()*SCRAMBLE_COLS.length)];
+      face.appendChild(c);
+    }
+  });
+}
+function solveFace(name,color){
+  const face=document.querySelector(`.face[data-face="${name}"]`);
+  if(!face)return;
+  face.querySelectorAll('.cell').forEach((c,i)=>setTimeout(()=>{c.style.backgroundColor=color;},i*65));
+}
+function scrambleFace(name){
+  const face=document.querySelector(`.face[data-face="${name}"]`);
+  if(!face)return;
+  face.querySelectorAll('.cell').forEach((c,i)=>setTimeout(()=>{
+    c.style.backgroundColor=SCRAMBLE_COLS[Math.floor(Math.random()*SCRAMBLE_COLS.length)];
+  },i*65));
+}
+
+// ── RUBRIC RENDERING ────────────────────────────────────────────────────────
+function buildInitialRubric(){
+  const tbody=document.getElementById('rubricBody');
+  tbody.innerHTML='';
+  RUBRIC.forEach(row=>{
+    const tr=document.createElement('tr');
+    tr.className='rub-row show';
+    tr.dataset.row=row.idx;
+
+    const critTd=document.createElement('td');
+    critTd.className='crit';
+    critTd.innerHTML=row.badCrit;
+    tr.appendChild(critTd);
+
+    row.cells.forEach(cell=>{
+      const td=document.createElement('td');
+      td.textContent=cell.bad;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+}
+
+function renderRubric(step){
+  RUBRIC.forEach(row=>{
+    const tr=document.querySelector(`[data-row="${row.idx}"]`);
+    if(!tr)return;
+
+    // Criterion cell
+    const critTd=tr.querySelector('.crit');
+    if(step < 5){
+      critTd.innerHTML=row.badCrit;
+      critTd.classList.remove('crit-highlight');
+    } else if(step === 7){
+      critTd.innerHTML=`${row.goodCrit}<span class="crit-weight">${row.weight}</span>`;
+      critTd.classList.remove('crit-highlight');
+    } else {
+      critTd.innerHTML=`${row.goodCrit}<span class="crit-weight">${row.weight}</span>`;
+      if(step===5) critTd.classList.add('crit-highlight');
+      else critTd.classList.remove('crit-highlight');
+    }
+
+    // Data cells — fade then update
+    const dataTds=tr.querySelectorAll('td:not(.crit)');
+    dataTds.forEach(td=>td.classList.add('fading'));
+    setTimeout(()=>{
+      dataTds.forEach((td,i)=>{
+        const cell=row.cells[i];
+        if(!cell)return;
+        td.innerHTML=cellHTML(cell,i,step,row.spine);
+        td.classList.remove('fading');
+      });
+    },220);
+  });
+}
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+const applied=new Set();
+let currentStep=0;
+
+function updatePanel(){
+  const n=applied.size;
+  const pct=Math.round((n/6)*100);
+  document.getElementById('footerTxt').textContent=`${n} of 6 principles applied`;
+  document.getElementById('footerPct').textContent=pct+'%';
+  document.getElementById('cubePct').textContent=pct+'%';
+  document.getElementById('pgFill').style.width=pct+'%';
+
+  const st=document.getElementById('cubeStatus');
+  st.textContent=CUBE_STATUS[currentStep];
+  st.style.color=currentStep>0?SEC_COLORS[currentStep]:'';
+
+  // Legend
+  const legend=document.getElementById('stepLegend');
+  const legendText=document.getElementById('legendText');
+  if(currentStep>0&&STEP_LEGEND[currentStep]){
+    legend.style.display='block';
+    legend.style.borderColor=STEP_LEGEND[currentStep].color+'44';
+    legendText.innerHTML=`<span style="color:${STEP_LEGEND[currentStep].color};font-weight:700">Step ${currentStep}:</span> ${STEP_LEGEND[currentStep].text}`;
+  } else {
+    legend.style.display='none';
+  }
+
+  // Sidebar nav
+  document.querySelectorAll('.topic-item').forEach(item=>{
+    const i=+item.dataset.i;
+    if(!i)return;
+    item.classList.remove('active','done');
+    if(applied.has(i)) item.classList.add('done');
+  });
+  if(applied.size>0){
+    const highest=Math.max(...applied);
+    const activeItem=document.querySelector(`.topic-item[data-i="${highest}"]`);
+    if(activeItem){activeItem.classList.remove('done');activeItem.classList.add('active');}
+  }
+}
+
+function applySection(idx){
+  if(applied.has(idx))return;
+  applied.add(idx);
+  solveFace(FACE_MAP[idx],SEC_COLORS[idx]);
+  currentStep=Math.max(...applied);
+  renderRubric(currentStep);
+  updatePanel();
+}
+
+function revertSection(idx){
+  if(!applied.has(idx))return;
+  applied.delete(idx);
+  scrambleFace(FACE_MAP[idx]);
+  currentStep=applied.size>0?Math.max(...applied):0;
+  renderRubric(currentStep);
+  updatePanel();
+}
+
+// ── SCROLL ───────────────────────────────────────────────────────────────────
+let hasScrolled=false;
+let scrollingUp=false;
+let lastY=0;
+
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  scrollingUp=y<lastY;
+  lastY=y;
+  hasScrolled=true;
+
+  // Section 1: trigger via position check (always in viewport at top)
+  const s1el=document.getElementById('s1');
+  if(s1el&&!applied.has(1)){
+    if(s1el.getBoundingClientRect().top<window.innerHeight*0.85) applySection(1);
+  }
+  if(applied.has(1)&&scrollingUp){
+    const s1el=document.getElementById('s1');
+    if(s1el&&s1el.getBoundingClientRect().top>window.innerHeight*0.6) revertSection(1);
+  }
+
+  // Force-apply all near page bottom
+  const nearBottom=y+window.innerHeight>=document.documentElement.scrollHeight-200;
+  if(nearBottom){
+    document.querySelectorAll('[data-idx]').forEach(el=>{
+      const idx=+el.dataset.idx;
+      if(idx&&!applied.has(idx))applySection(idx);
+    });
+  }
+
+  // Force-revert all near page top
+  if(y<80&&applied.size>0){
+    [...applied].sort((a,b)=>b-a).forEach(idx=>revertSection(idx));
+  }
+});
+
+// ── OBSERVERS ────────────────────────────────────────────────────────────────
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('v');revObs.unobserve(e.target);}
+  });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+// Dist bars + step 7 clean render when S7 enters view
+let s7Active = false;
+const distObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting && !s7Active){
+      s7Active = true;
+      // Animate dist bars
+      setTimeout(()=>{
+        ['db1','db2','db3'].forEach(id=>{
+          const el=document.getElementById(id);
+          if(el)el.style.width=el.dataset.pct+'%';
+        });
+      },300);
+      // Render clean polished rubric (step 7 = no highlights)
+      renderRubric(7);
+      document.getElementById('cubeStatus').textContent='Rubric complete — reviewing grade profile';
+      document.getElementById('cubeStatus').style.color='#4085C6';
+      document.getElementById('stepLegend').style.display='none';
+    } else if(!e.isIntersecting && s7Active && scrollingUp){
+      s7Active = false;
+      // Revert to step 6 view
+      renderRubric(6);
+      updatePanel();
+    }
+  });
+},{threshold:0.1});
+const s7=document.getElementById('s7');
+if(s7)distObs.observe(s7);
+
+// Section observer: enter while scrolling down → apply; exit while scrolling up → revert
+const secObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!hasScrolled)return;
+    const idx=+e.target.dataset.idx;
+    if(!idx)return;
+    if(e.isIntersecting&&!scrollingUp) applySection(idx);
+    else if(!e.isIntersecting&&scrollingUp) revertSection(idx);
+  });
+},{threshold:0.1});
+document.querySelectorAll('[data-idx]').forEach(el=>secObs.observe(el));
+
+// Nav
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const tgt=document.querySelector(a.getAttribute('href'));
+    if(tgt){e.preventDefault();tgt.scrollIntoView({behavior:'smooth'});}
+  });
+});
+
+buildCube();
+buildInitialRubric();
+</script>
+</body>
+</html>
