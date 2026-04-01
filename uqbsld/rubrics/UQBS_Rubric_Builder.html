@@ -13,6 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 
     <style>
         /* ============================================================================
@@ -941,8 +942,8 @@
                     <div class="section-helper">Upload or paste the full course profile. This gives us the course code, assessment details, learning outcomes, and context.</div>
                     <div class="input-block" id="ecpBlock">
                         <button class="upload-btn" id="ecpUploadBtn">Upload file</button>
-                        <input type="file" id="ecpFileInput" accept=".docx,.pdf,.txt">
-                        <div class="upload-hint">.docx, .pdf, or .txt</div>
+                        <input type="file" id="ecpFileInput" accept=".docx,.pdf,.txt,.xlsx,.xls">
+                        <div class="upload-hint">.docx, .pdf, .xlsx, or .txt</div>
                         <div class="file-status" id="ecpFileStatus"><span id="ecpFileName"></span><span class="remove-file" id="ecpRemoveFile">remove</span></div>
                         <button class="manual-toggle" id="ecpManualToggle">or enter manually</button>
                         <div class="manual-entry" id="ecpManualEntry">
@@ -957,8 +958,8 @@
                     <div class="section-helper">Upload the current rubric for this assessment, if one exists.</div>
                     <div class="input-block" id="rubricBlock">
                         <button class="upload-btn" id="rubricUploadBtn">Upload file</button>
-                        <input type="file" id="rubricFileInput" accept=".docx,.pdf,.txt">
-                        <div class="upload-hint">.docx, .pdf, or .txt</div>
+                        <input type="file" id="rubricFileInput" accept=".docx,.pdf,.txt,.xlsx,.xls">
+                        <div class="upload-hint">.docx, .pdf, .xlsx, or .txt</div>
                         <div class="file-status" id="rubricFileStatus"><span id="rubricFileName"></span><span class="remove-file" id="rubricRemoveFile">remove</span></div>
                         <button class="manual-toggle" id="rubricManualToggle">or enter manually</button>
                         <div class="manual-entry" id="rubricManualEntry">
@@ -976,9 +977,9 @@
                     <div class="section-label">Additional Assessment Documents (optional)</div>
                     <div class="section-helper">Assignment briefs, task sheets, marking guides — anything shared with students that goes beyond the course profile.</div>
                     <div class="input-block" id="docsBlock">
-                        <button class="upload-btn" id="docsUploadBtn">Upload file</button>
-                        <input type="file" id="docsFileInput" accept=".docx,.pdf,.txt">
-                        <div class="upload-hint">.docx, .pdf, or .txt</div>
+                        <button class="upload-btn" id="docsUploadBtn">Upload files</button>
+                        <input type="file" id="docsFileInput" accept=".docx,.pdf,.txt,.xlsx,.xls" multiple>
+                        <div class="upload-hint">.docx, .pdf, .xlsx, or .txt — multiple files OK</div>
                         <div class="file-status" id="docsFileStatus"><span id="docsFileName"></span><span class="remove-file" id="docsRemoveFile">remove</span></div>
                         <button class="manual-toggle" id="docsManualToggle">or enter manually</button>
                         <div class="manual-entry" id="docsManualEntry">
@@ -1688,6 +1689,25 @@ function readFileToText(file) {
             const reader = new FileReader();
             reader.onload = function(e) { resolve(e.target.result); };
             reader.readAsText(file);
+        } else if (name.endsWith('.xlsx') || name.endsWith('.xls')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+                    let fullText = '';
+                    wb.SheetNames.forEach(sheetName => {
+                        fullText += '--- Sheet: ' + sheetName + ' ---\n';
+                        const sheet = wb.Sheets[sheetName];
+                        const csv = XLSX.utils.sheet_to_csv(sheet);
+                        fullText += csv + '\n\n';
+                    });
+                    resolve(fullText.trim());
+                } catch (err) {
+                    console.error('Excel extraction error:', err);
+                    resolve('[Could not extract data from Excel file: ' + file.name + '. Please paste the content manually.]');
+                }
+            };
+            reader.readAsArrayBuffer(file);
         } else if (name.endsWith('.pdf')) {
             const reader = new FileReader();
             reader.onload = async function(e) {
@@ -1729,17 +1749,41 @@ function setupInputBlock(config) {
     const block = document.getElementById(config.blockId);
     const textarea = document.getElementById(config.textareaId);
 
+    const isMulti = fileInput.hasAttribute('multiple');
+
     // Shared file processing function
-    async function processFile(file) {
+    async function processFiles(files) {
         try {
             uploadBtn.textContent = 'Reading...';
             uploadBtn.disabled = true;
-            const text = await readFileToText(file);
-            textarea.value = text;
-            fileName.textContent = file.name;
+            const fileList = Array.from(files);
+            const texts = [];
+            for (const file of fileList) {
+                const text = await readFileToText(file);
+                if (fileList.length > 1) {
+                    texts.push('=== FILE: ' + file.name + ' ===\n' + text);
+                } else {
+                    texts.push(text);
+                }
+            }
+            if (isMulti && textarea.value.trim()) {
+                textarea.value += '\n\n' + texts.join('\n\n');
+            } else {
+                textarea.value = texts.join('\n\n');
+            }
+            const names = fileList.map(f => f.name);
+            if (isMulti && fileName.textContent) {
+                const existing = fileName.textContent.split(', ');
+                names.unshift(...existing);
+            }
+            fileName.textContent = names.join(', ');
             fileStatus.classList.add('visible');
             block.classList.add('has-file');
-            uploadBtn.style.display = 'none';
+            if (!isMulti) {
+                uploadBtn.style.display = 'none';
+            } else {
+                uploadBtn.textContent = 'Add more files';
+            }
             block.querySelector('.upload-hint').style.display = 'none';
             manualToggle.style.display = 'none';
             manualEntry.classList.remove('visible');
@@ -1747,7 +1791,7 @@ function setupInputBlock(config) {
             console.error('Error reading file:', err);
             alert('Could not read that file. Try pasting the content manually.');
         } finally {
-            uploadBtn.textContent = 'Upload file';
+            if (!isMulti) uploadBtn.textContent = 'Upload file';
             uploadBtn.disabled = false;
         }
     }
@@ -1755,7 +1799,7 @@ function setupInputBlock(config) {
     uploadBtn.addEventListener('click', () => fileInput.click());
 
     fileInput.addEventListener('change', async function() {
-        if (this.files[0]) await processFile(this.files[0]);
+        if (this.files.length > 0) await processFiles(this.files);
     });
 
     // Drag and drop
@@ -1778,8 +1822,8 @@ function setupInputBlock(config) {
         e.stopPropagation();
         block.style.borderColor = '';
         block.style.background = '';
-        const file = e.dataTransfer.files[0];
-        if (file) await processFile(file);
+        const files = e.dataTransfer.files;
+        if (files.length > 0) await processFiles(isMulti ? files : [files[0]]);
     });
 
     removeFile.addEventListener('click', () => {
