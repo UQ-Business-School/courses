@@ -880,7 +880,9 @@
         <div style="font-size: 24px; font-weight: 700; color: #51247A; margin-bottom: 0.5rem;">UQBS Rubric Builder</div>
         <div style="font-size: 13px; color: #888; margin-bottom: 1.5rem;">Sign in to continue</div>
         <input type="text" id="usernameInput" placeholder="UQ username (e.g. uqsmitc6)" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #ddd; border-radius: 8px; font-size: 15px; outline: none; transition: border-color 0.2s; margin-bottom: 0.75rem;" onfocus="this.style.borderColor='#51247A'" onblur="this.style.borderColor='#ddd'">
-        <input type="password" id="passwordInput" placeholder="Password" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #ddd; border-radius: 8px; font-size: 15px; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#51247A'" onblur="this.style.borderColor='#ddd'">
+        <input type="password" id="passwordInput" placeholder="Password" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #ddd; border-radius: 8px; font-size: 15px; outline: none; transition: border-color 0.2s; margin-bottom: 0.75rem;" onfocus="this.style.borderColor='#51247A'" onblur="this.style.borderColor='#ddd'">
+        <input type="password" id="apiKeyLoginInput" placeholder="API key" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #ddd; border-radius: 8px; font-size: 15px; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#51247A'" onblur="this.style.borderColor='#ddd'">
+        <div style="font-size: 11px; color: #aaa; margin-top: 0.4rem; text-align: left;">Key is stored in this browser tab only — never saved to disk.</div>
         <div id="passwordError" style="color: #e74c3c; font-size: 13px; margin-top: 0.5rem; height: 1.2em;"></div>
         <button id="passwordSubmitBtn" style="width: 100%; padding: 0.75rem; background: #51247A; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 0.75rem; transition: background 0.2s;" onmouseover="this.style.background='#962A8B'" onmouseout="this.style.background='#51247A'">Enter</button>
     </div>
@@ -1216,8 +1218,17 @@ document.getElementById('usernameInput').addEventListener('keydown', function(e)
 });
 
 document.getElementById('passwordInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('apiKeyLoginInput').focus();
+});
+
+document.getElementById('apiKeyLoginInput').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') document.getElementById('passwordSubmitBtn').click();
 });
+
+// Pre-fill API key if already in sessionStorage (same tab)
+if (sessionStorage.getItem('rubricBuilderApiKey')) {
+    document.getElementById('apiKeyLoginInput').value = sessionStorage.getItem('rubricBuilderApiKey');
+}
 
 document.getElementById('passwordSubmitBtn').addEventListener('click', function() {
     const input = document.getElementById('passwordInput').value;
@@ -1227,8 +1238,16 @@ document.getElementById('passwordSubmitBtn').addEventListener('click', function(
         document.getElementById('usernameInput').focus();
         return;
     }
+    const apiKeyVal = document.getElementById('apiKeyLoginInput').value.trim();
     if (checkPassword(input)) {
+        if (!apiKeyVal) {
+            document.getElementById('passwordError').textContent = 'Please enter the API key.';
+            document.getElementById('apiKeyLoginInput').focus();
+            return;
+        }
         sessionUser = username;
+        settings.apiKey = apiKeyVal;
+        sessionStorage.setItem('rubricBuilderApiKey', apiKeyVal);
         document.getElementById('passwordGate').style.display = 'none';
         document.getElementById('appContainer').style.display = 'flex';
     } else {
@@ -1315,15 +1334,9 @@ function trackCost(model, usage, phase) {
 
 // downloadCostLog removed — costs now persist via localStorage dashboard
 
-// Settings stored in JS variable (not localStorage)
-// Key is obfuscated — not plaintext in source
-const _k = [
-    'c2stYW50LWFwaTAzLWIwb2dUQUZRa0NCdU16aHVTSUp3NzRtUHRZdW10',
-    'bEtLdnMwS2k0YXZqNmFsckZLbWVod3Nwb0t2TVQ4a09Lb1o5WmlLZkJf',
-    'dDhLTmJjWG9CbFpNcy13LU5uSFN1UUFB'
-];
+// API key stored in sessionStorage only (never in source code)
 let settings = {
-    apiKey: atob(_k.join(''))
+    apiKey: sessionStorage.getItem('rubricBuilderApiKey') || ''
 };
 
 let appState = {
@@ -1464,6 +1477,7 @@ settingsBtn.addEventListener('click', (e) => {
 closeSettingsBtn.addEventListener('click', () => {
     settingsModal.classList.remove('visible');
     settings.apiKey = apiKeyInput.value;
+    sessionStorage.setItem('rubricBuilderApiKey', apiKeyInput.value);
 });
 
 toggleApiKeyBtn.addEventListener('click', function() {
@@ -1533,11 +1547,10 @@ function logToGoogleSheet(session) {
 
     fetch(GOOGLE_SHEET_ENDPOINT, {
         method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(payload)
-    }).then(() => {
-        console.log('Cost data sent to Google Sheet');
+        body: JSON.stringify(payload),
+        redirect: 'follow'
+    }).then(resp => {
+        console.log('Cost data sent to Google Sheet, status:', resp.status);
     }).catch(err => {
         console.warn('Google Sheet logging failed (non-critical):', err);
     });
@@ -2414,10 +2427,15 @@ async function runWriter() {
         showLoading(false);
         renderPreview();
         goToStep(4);
+
+        // Log costs when generation completes (don't wait for download)
+        saveCostSession();
     } catch (error) {
         showLoading(false);
         alert('Rubric generation failed: ' + error.message);
         console.error(error);
+        // Still log partial costs on failure
+        if (costTracker.calls.length > 0) saveCostSession();
     }
 }
 
