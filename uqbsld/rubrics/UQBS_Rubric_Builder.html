@@ -952,8 +952,8 @@
                         </div>
                         <div style="font-size: 11px; color: #aaa; text-align: center; margin-bottom: 0.75rem;">— or —</div>
                         <button class="upload-btn" id="ecpUploadBtn">Upload file</button>
-                        <input type="file" id="ecpFileInput" accept=".docx,.pdf,.txt,.xlsx,.xls">
-                        <div class="upload-hint">.docx, .pdf, .xlsx, or .txt</div>
+                        <input type="file" id="ecpFileInput" accept=".docx,.pdf,.txt,.xlsx,.xls,.html,.htm">
+                        <div class="upload-hint">.docx, .pdf, .xlsx, .html, or .txt</div>
                         <div class="file-status" id="ecpFileStatus"><span id="ecpFileName"></span><span class="remove-file" id="ecpRemoveFile">remove</span></div>
                         <button class="manual-toggle" id="ecpManualToggle">or enter manually</button>
                         <div class="manual-entry" id="ecpManualEntry">
@@ -968,8 +968,8 @@
                     <div class="section-helper">Upload the current rubric for this assessment, if one exists.</div>
                     <div class="input-block" id="rubricBlock">
                         <button class="upload-btn" id="rubricUploadBtn">Upload file</button>
-                        <input type="file" id="rubricFileInput" accept=".docx,.pdf,.txt,.xlsx,.xls">
-                        <div class="upload-hint">.docx, .pdf, .xlsx, or .txt</div>
+                        <input type="file" id="rubricFileInput" accept=".docx,.pdf,.txt,.xlsx,.xls,.html,.htm">
+                        <div class="upload-hint">.docx, .pdf, .xlsx, .html, or .txt</div>
                         <div class="file-status" id="rubricFileStatus"><span id="rubricFileName"></span><span class="remove-file" id="rubricRemoveFile">remove</span></div>
                         <button class="manual-toggle" id="rubricManualToggle">or enter manually</button>
                         <div class="manual-entry" id="rubricManualEntry">
@@ -988,8 +988,8 @@
                     <div class="section-helper">Assignment briefs, task sheets, marking guides — anything shared with students that goes beyond the course profile.</div>
                     <div class="input-block" id="docsBlock">
                         <button class="upload-btn" id="docsUploadBtn">Upload files</button>
-                        <input type="file" id="docsFileInput" accept=".docx,.pdf,.txt,.xlsx,.xls" multiple>
-                        <div class="upload-hint">.docx, .pdf, .xlsx, or .txt — multiple files OK</div>
+                        <input type="file" id="docsFileInput" accept=".docx,.pdf,.txt,.xlsx,.xls,.html,.htm" multiple>
+                        <div class="upload-hint">.docx, .pdf, .xlsx, .html, or .txt — multiple files OK</div>
                         <div class="file-status" id="docsFileStatus"><span id="docsFileName"></span><span class="remove-file" id="docsRemoveFile">remove</span></div>
                         <button class="manual-toggle" id="docsManualToggle">or enter manually</button>
                         <div class="manual-entry" id="docsManualEntry">
@@ -1538,6 +1538,9 @@ function saveCostSession() {
 // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE (see setup instructions)
 const GOOGLE_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwyz1UANXm5Ev2GRW1niuwO9FKxINmWOkmZyqLkoA0jt9sxAm5hg0GBAtM4riyUWmQF/exec';
 
+// PASTE YOUR ECP PROXY APPS SCRIPT URL HERE (see ECP_Proxy_Apps_Script.js)
+const ECP_PROXY_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzjwQK1p68Bwtq7R7e1V7hGpA_p9W60bkVMNbk6Uw_oOkIQBicnQqDl607_Bh6z9LVw/exec';
+
 function logToGoogleSheet(session) {
     if (!GOOGLE_SHEET_ENDPOINT) return; // Skip if not configured
 
@@ -1753,6 +1756,31 @@ function readFileToText(file) {
                 }
             };
             reader.readAsArrayBuffer(file);
+        } else if (name.endsWith('.html') || name.endsWith('.htm')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const htmlContent = e.target.result;
+                    // Try smart ECP parsing first (works for UQ course profile pages)
+                    const ecpParsed = parseECPHtml(htmlContent);
+                    if (ecpParsed && ecpParsed.length > 200) {
+                        resolve(ecpParsed);
+                    } else {
+                        // Fallback: strip tags and clean up for generic HTML
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(htmlContent, 'text/html');
+                        doc.querySelectorAll('script, style, nav, header, footer').forEach(el => el.remove());
+                        let text = (doc.body || doc.documentElement).textContent || '';
+                        text = text.replace(/\s+/g, ' ').trim();
+                        if (text.length > 15000) text = text.substring(0, 15000) + '... [truncated]';
+                        resolve(text);
+                    }
+                } catch (err) {
+                    console.error('HTML extraction error:', err);
+                    resolve('[Could not extract text from HTML: ' + file.name + '. Please paste the content manually.]');
+                }
+            };
+            reader.readAsText(file);
         } else {
             reject(new Error('Unsupported file type'));
         }
@@ -1993,28 +2021,53 @@ document.getElementById('ecpFetchUrlBtn').addEventListener('click', async functi
     this.disabled = true;
 
     try {
-        // Try direct fetch first (works if served from same-origin or CORS allowed)
-        let html;
-        try {
-            const resp = await fetch(url);
-            if (resp.ok) {
-                html = await resp.text();
+        let html = null;
+
+        // Strategy 1: Google Apps Script proxy (most reliable)
+        if (ECP_PROXY_ENDPOINT) {
+            try {
+                statusEl.textContent = 'Fetching course profile...';
+                const proxyUrl = ECP_PROXY_ENDPOINT + '?url=' + encodeURIComponent(url);
+                const resp = await fetch(proxyUrl, { redirect: 'follow' });
+                if (resp.ok) {
+                    const text = await resp.text();
+                    // Check it's not a JSON error response
+                    if (text.length > 500 && !text.startsWith('{"error')) {
+                        html = text;
+                    } else {
+                        console.log('Proxy returned error or short response:', text.substring(0, 200));
+                    }
+                }
+            } catch (e) {
+                console.log('Apps Script proxy failed:', e.message);
             }
-        } catch (e) {
-            // CORS blocked — try proxy
+        }
+
+        // Strategy 2: Direct fetch (works if same-origin or CORS allowed)
+        if (!html) {
+            try {
+                statusEl.textContent = ECP_PROXY_ENDPOINT ? 'Trying direct fetch...' : 'Fetching course profile...';
+                const resp = await fetch(url, { signal: AbortSignal.timeout(10000) });
+                if (resp.ok) html = await resp.text();
+            } catch (e) {
+                console.log('Direct fetch failed (expected if CORS blocked):', e.message);
+            }
         }
 
         if (!html) {
-            // Use allorigins proxy as fallback
-            const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
-            const resp = await fetch(proxyUrl);
-            if (!resp.ok) throw new Error('Could not fetch course profile (status ' + resp.status + ')');
-            html = await resp.text();
+            if (!ECP_PROXY_ENDPOINT) {
+                statusEl.innerHTML = 'URL fetch is not configured yet. <strong>Save the course profile page as HTML (Ctrl+S / Cmd+S) and upload it here instead.</strong> The smart parser will extract only the relevant sections.';
+            } else {
+                statusEl.innerHTML = 'Could not fetch that course profile. <strong>Try saving the page as HTML (Ctrl+S / Cmd+S) and uploading it here instead.</strong>';
+            }
+            statusEl.style.color = '#e74c3c';
+            this.disabled = false;
+            return;
         }
 
         const parsed = parseECPHtml(html);
         if (!parsed) {
-            statusEl.textContent = 'Could not extract content from that page. Try uploading the course profile instead.';
+            statusEl.textContent = 'Fetched the page but could not extract content. Try uploading the course profile as a file instead.';
             statusEl.style.color = '#e74c3c';
             this.disabled = false;
             return;
