@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluating Rubric Outputs — Rubric Design Fundamentals | UQ Business School</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, Helvetica, sans-serif;
+            color: #1a1714;
+            background-color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e4dfd9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header-school {
+            font-size: 11px;
+            font-weight: 400;
+            color: #6b6460;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1714;
+        }
+
+        .header-right a {
+            font-size: 14px;
+            font-weight: 500;
+            color: #51247A;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .header-right a:hover {
+            color: #962A8B;
+        }
+
+        /* Main content */
+        main {
+            margin-top: 56px;
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: #51247A;
+            color: #ffffff;
+            padding: 72px 32px 64px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .hero-tag {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: rgba(255,255,255,0.55);
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 44px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.1;
+        }
+
+        .hero .subtitle {
+            font-size: 16px;
+            font-weight: 300;
+            margin-bottom: 16px;
+            line-height: 1.75;
+            color: rgba(255,255,255,0.85);
+            max-width: 580px;
+        }
+
+        .hero .intro-para {
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 1.75;
+            color: rgba(255,255,255,0.85);
+            max-width: 580px;
+        }
+
+        /* Sections */
+        .content-section {
+            padding: 80px 24px;
+        }
+
+        .content-section.alt {
+            background-color: #f7f5f3;
+        }
+
+        .section-container {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .section-tag {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-tag::before {
+            content: '';
+            display: inline-block;
+            width: 18px;
+            height: 1.5px;
+            background-color: currentColor;
+        }
+
+        .tag-blue { color: #4085C6; }
+        .tag-purple { color: #51247A; }
+        .tag-magenta { color: #962A8B; }
+        .tag-green { color: #2EA836; }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.3;
+            color: #1a1714;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 32px 0 16px 0;
+            color: #1a1714;
+        }
+
+        p {
+            font-size: 15px;
+            margin-bottom: 16px;
+            line-height: 1.7;
+            color: #1a1714;
+        }
+
+        .lead {
+            font-size: 15px;
+            color: #6b6460;
+            line-height: 1.8;
+            margin-bottom: 32px;
+            max-width: 560px;
+        }
+
+        /* Checklist items */
+        .check-group {
+            margin: 24px 0;
+        }
+
+        .check-item {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+
+        .check-icon {
+            min-width: 22px;
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--check-color, #51247A);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .check-icon svg {
+            width: 12px;
+            height: 12px;
+            opacity: 0.3;
+        }
+
+        .check-text {
+            font-size: 15px;
+            line-height: 1.65;
+            color: #1a1714;
+        }
+
+        .check-text strong {
+            font-weight: 600;
+        }
+
+        .check-text .detail {
+            display: block;
+            font-size: 14px;
+            color: #6b6460;
+            line-height: 1.6;
+            margin-top: 4px;
+        }
+
+        /* Emphasis box */
+        .emphasis-box {
+            background: #f7f5f3;
+            border-left: 4px solid #51247A;
+            padding: 24px;
+            margin: 28px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .alt .emphasis-box {
+            background: #ffffff;
+        }
+
+        .emphasis-box p {
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 1.7;
+            color: #1a1714;
+            margin-bottom: 0;
+        }
+
+        .emphasis-box p + p {
+            margin-top: 12px;
+        }
+
+        /* Download cards */
+        .download-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 28px 0;
+        }
+
+        .download-card {
+            border: 1px solid #e4dfd9;
+            border-radius: 10px;
+            padding: 22px;
+            background: #ffffff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .download-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+        }
+
+        .download-card-label {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #6b6460;
+            margin-bottom: 8px;
+        }
+
+        .download-card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1714;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .download-card-desc {
+            font-size: 13px;
+            color: #6b6460;
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+        .download-card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            text-decoration: none;
+            color: #51247A;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #51247A;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .download-card-link:hover {
+            background: #51247A;
+            color: #fff;
+        }
+
+        /* Audience guide */
+        .audience-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin: 28px 0;
+        }
+
+        .audience-card {
+            border: 1px solid #e4dfd9;
+            border-radius: 10px;
+            padding: 22px;
+            background: #fff;
+            border-left: 3.5px solid var(--accent, #51247A);
+        }
+
+        .audience-card-role {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent, #51247A);
+            margin-bottom: 6px;
+        }
+
+        .audience-card p {
+            font-size: 14px;
+            color: #6b6460;
+            line-height: 1.65;
+            margin-bottom: 0;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #51247A 0%, #962A8B 100%);
+            color: #ffffff;
+            padding: 60px 24px;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .cta-section p {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 28px;
+            line-height: 1.7;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid #ffffff;
+        }
+
+        .cta-button.primary {
+            background-color: #ffffff;
+            color: #51247A;
+        }
+
+        .cta-button.primary:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .cta-button.secondary {
+            background-color: transparent;
+            color: #ffffff;
+        }
+
+        .cta-button.secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .cta-credit {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 24px;
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(14px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 0 16px;
+            }
+
+            .container,
+            .content-section {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .content-section {
+                padding-top: 60px;
+                padding-bottom: 60px;
+            }
+
+            .hero {
+                padding: 80px 16px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero .subtitle,
+            .hero .intro-para {
+                font-size: 14px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            h3 {
+                font-size: 16px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            .download-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .cta-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <div class="header-school">UQ Business School</div>
+            <div class="header-title">Evaluating Rubric Outputs</div>
+        </div>
+        <div class="header-right">
+            <a href="index.html">← Rubric Design Fundamentals</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-tag">Rubric Design Fundamentals · Quality Assurance</div>
+                <h1>Evaluating Rubric Outputs</h1>
+                <p class="subtitle">A structured guide for reviewing rubrics — whether they've been generated by AI, drafted by a colleague, or revised from an existing version.</p>
+                <p class="intro-para">Work through four focus areas: GA criteria accuracy, constructive alignment, language and clarity, and practical usability. Each section explains what to look for and why it matters.</p>
+            </div>
+        </section>
+
+        <!-- ──────────────────────────────────────── -->
+        <!-- SECTION 1: GA Criteria Accuracy -->
+        <!-- ──────────────────────────────────────── -->
+        <section class="content-section alt">
+            <div class="section-container">
+                <div class="section-tag tag-blue reveal">Section 1</div>
+                <h2 class="reveal">Graduate Attribute Criteria Accuracy</h2>
+                <p class="lead reveal">Getting the GA criteria right is essential — they feed directly into AACSB Assurance of Learning reporting. Start by checking the basics.</p>
+
+                <h3 class="reveal">1.1 Correct GA Selection and Criteria Count</h3>
+                <p class="reveal">Before checking anything else, determine what type of course you're dealing with. This affects how many sub-criteria are required.</p>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#4085C6">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#4085C6" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Is this an AoL-designated course or a general GA mapping course?</strong>
+                            <span class="detail">AoL courses use the rubric as a formal data-collection instrument for AACSB reporting. General GA mapping courses integrate GA criteria for curriculum uplift but aren't used for formal AoL data collection. This distinction matters for the sub-criteria count.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#4085C6">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#4085C6" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are the correct GAs included?</strong>
+                            <span class="detail">Cross-check against the course's official GA mapping. The GAs in the rubric must match what is mapped for this specific assessment task.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#4085C6">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#4085C6" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>How many GAs are represented?</strong>
+                            <span class="detail">The standard is two GAs per course. However, there are legitimate exceptions — some courses map only one GA to a rubric-assessed task. Verify the number against the official mapping rather than assuming two.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#4085C6">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#4085C6" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Is the sub-criteria count correct for this course type?</strong>
+                            <span class="detail">For <strong>AoL-designated courses</strong>, all three sub-criteria from each GA are required. For <strong>general GA mapping courses</strong>, two of the three is standard.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="reveal">1.2 Faithful Representation and Contextualisation</h3>
+                <p class="reveal">The GA criteria should preserve the intent of the original templates while being translated into assessment-specific language.</p>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#4085C6">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#4085C6" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Do the GA criteria retain the core intent of the template descriptors?</strong>
+                            <span class="detail">The wording doesn't need to be identical, but the intellectual substance must be preserved.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#4085C6">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#4085C6" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Has the template language been contextualised to this specific assessment?</strong>
+                            <span class="detail">The GA templates use intentionally generic language that cannot be used verbatim. If the descriptors still read like the generic template, the contextualisation hasn't happened. Check for both: fidelity to GA intent <em>and</em> specificity to the task.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#4085C6">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#4085C6" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Has the "smush" distorted the GA criteria?</strong>
+                            <span class="detail">When GA criteria are blended with existing rubric criteria, there's a risk the GA elements get diluted. Check that GA-specific requirements are still clearly identifiable.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#4085C6">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#4085C6" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are all seven grade levels written for each GA criterion?</strong>
+                            <span class="detail">Every GA criterion needs descriptors at every level (HD through LF) — no gaps. Descriptors should progress logically, not just repeat the same idea with weaker adverbs.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="reveal">1.3 Weighting and Marking Requirements</h3>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#4085C6">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#4085C6" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Do the GA criteria collectively account for at least 10% of the assessment's marks?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#4085C6">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#4085C6" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are the asterisk markers (*) present on all GA criteria names?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#4085C6">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#4085C6" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Is the GA attribution footer present?</strong>
+                            <span class="detail">The rubric should include a footer note explaining what the asterisk means and which GAs are being assessed.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ──────────────────────────────────────── -->
+        <!-- SECTION 2: Constructive Alignment -->
+        <!-- ──────────────────────────────────────── -->
+        <section class="content-section">
+            <div class="section-container">
+                <div class="section-tag tag-purple reveal">Section 2</div>
+                <h2 class="reveal">Constructive Alignment</h2>
+                <p class="lead reveal">A beautifully written rubric is useless if it's measuring the wrong things. This section checks whether the rubric criteria actually match the assessment task and learning outcomes.</p>
+
+                <h3 class="reveal">2.1 Alignment with Assessment Task</h3>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Does every criterion relate to something the assessment task actually requires?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are all major components of the task represented in the rubric?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are the criteria capability-based rather than section-based?</strong>
+                            <span class="detail">Criteria should describe intellectual capabilities (e.g., "Critical Analysis," "Evidence Integration") rather than assignment sections (e.g., "Introduction," "Body," "Conclusion").</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="reveal">2.2 Alignment with Learning Outcomes</h3>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Can you trace each criterion back to a course learning outcome?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are the CLOs that this assessment is mapped to adequately covered?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Is the cognitive level consistent with the CLOs?</strong>
+                            <span class="detail">If a CLO says students will "evaluate" or "create," the rubric's HD descriptors should require evaluation or creation — not just description or application.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="reveal">2.3 Course Level Calibration</h3>
+
+                <div class="emphasis-box reveal">
+                    <p>The same criterion at the same grade level should look different depending on whether you're assessing a first-year undergraduate or a postgraduate student. An HD descriptor for a first-year course is not the same standard as an HD for a 7000-level course.</p>
+                </div>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are the descriptor expectations appropriate for the course level?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Is the baseline (Pass level) realistic for the cohort?</strong></div>
+                    </div>
+                </div>
+
+                <h3 class="reveal">2.4 Bloom's Taxonomy Progression</h3>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Do the grade levels require progressively higher-order thinking?</strong>
+                            <span class="detail">The progression should move up through Bloom's levels: remembering and understanding at lower grades, analysing and evaluating at higher grades, and creating or synthesising at HD.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Does the rubric avoid rewarding quantity instead of quality?</strong>
+                            <span class="detail">"More examples" or "more sources" is not higher-order thinking. Higher grades should require different kinds of thinking, not just more of the same kind.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="reveal">2.5 Assessment Type-Specific Checks</h3>
+                <p class="reveal">Different assessment types have different pitfalls. Check the common issues for your type:</p>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Essays and reports:</strong> Are criteria capability-based? Does the rubric avoid rewarding length over depth?</div>
+                    </div>
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Presentations:</strong> Is content weighted appropriately relative to delivery? Are delivery criteria culturally inclusive?</div>
+                    </div>
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Reflective tasks:</strong> Does the rubric assess the quality of analytical reflection, not the intensity of personal disclosure?</div>
+                    </div>
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Vivas and practicals:</strong> Consider whether the Dreyfus Model (novice → expert) is more appropriate than Bloom's for assessing professional skill development.</div>
+                    </div>
+                </div>
+
+                <h3 class="reveal">2.6 Requirements Embedding</h3>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#51247A">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#51247A" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are task requirements (word count, source minimums, formatting) embedded within descriptors?</strong>
+                            <span class="detail">Meeting the source minimum should sit at Credit level; exceeding it with seminal works at HD. Requirements should not be listed separately from the rubric.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ──────────────────────────────────────── -->
+        <!-- SECTION 3: Language and Clarity -->
+        <!-- ──────────────────────────────────────── -->
+        <section class="content-section alt">
+            <div class="section-container">
+                <div class="section-tag tag-magenta reveal">Section 3</div>
+                <h2 class="reveal">Language and Clarity</h2>
+                <p class="lead reveal">Rubrics fail when markers interpret descriptors differently or when students can't understand what's expected. This section checks whether the language is clear, specific, and accessible.</p>
+
+                <h3 class="reveal">3.1 The Adverb Trap</h3>
+                <p class="reveal">This is the single most common problem in rubrics. Check carefully.</p>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Do the descriptors differentiate levels using observable behaviours rather than adverbs?</strong>
+                            <span class="detail">If the main difference between levels is words like "thoroughly," "adequately," "somewhat," or "clearly," the rubric has fallen into the adverb trap.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Could two markers read the same descriptor and agree on what it means?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>What would a student learn from reading this rubric?</strong>
+                            <span class="detail">A well-written rubric teaches students what higher performance looks like. "Demonstrates adequate understanding" teaches nothing. A good descriptor tells them what to do differently.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="reveal">3.2 Specificity and Measurability</h3>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Do the descriptors describe what is present in the work, not just how good it is?</strong>
+                            <span class="detail">"Excellent analysis" is a judgement. "Identifies multiple causal factors and explains how they interact" is a description.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Do the descriptors use action verbs?</strong>
+                            <span class="detail">Look for "identifies," "evaluates," "integrates," "proposes," "critiques." Be wary of adjectives doing the heavy lifting.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are count metrics used appropriately?</strong>
+                            <span class="detail">"Identifies 4 or more factors" is a quantity proxy, not a quality measure. Counts are fine for task requirements (source minimums at Credit) but not as stand-ins for analytical depth.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="reveal">3.3 Logical Progression Across Levels</h3>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Is there a clear qualitative difference between adjacent grade levels?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Can you identify the spine and distinguishers?</strong>
+                            <span class="detail">Descriptors should share a consistent stem (the "spine") with qualitatively different elements (the "distinguishers") that change at each level. If the spine shifts unpredictably, that's a readability problem.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Which differentiation lever is each criterion scaling?</strong>
+                            <span class="detail">The three levers are Scope (how wide?), Complexity (how connected?), and Autonomy (how independent?). Check that the choice is consistent across grade levels within each criterion.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are negative definitions used to clarify boundaries?</strong>
+                            <span class="detail">E.g., "Unlike the Distinction level, the Credit level relies primarily on assigned course readings and does not incorporate independent research." Look for this especially at the C/D and D/HD boundaries.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are the Fail and Marginal Fail descriptors substantive?</strong>
+                            <span class="detail">These levels should describe what the work looks like, not just say "does not meet requirements."</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="reveal">3.4 CALD Accessibility</h3>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Is jargon minimised or explained?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are idioms and culturally specific expressions avoided?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are delivery criteria (for presentations) culturally inclusive?</strong>
+                            <span class="detail">Avoid requiring sustained eye contact, assertive body language, or extroverted delivery styles.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#962A8B">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#962A8B" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Is grammatical accuracy assessed separately from content quality?</strong>
+                            <span class="detail">Separating expression from content improves marking reliability for all students — not just CALD inclusion. If language quality matters, give it its own criterion.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ──────────────────────────────────────── -->
+        <!-- SECTION 4: Practical Usability -->
+        <!-- ──────────────────────────────────────── -->
+        <section class="content-section">
+            <div class="section-container">
+                <div class="section-tag tag-green reveal">Section 4</div>
+                <h2 class="reveal">Practical Usability</h2>
+                <p class="lead reveal">Will the rubric actually work — for markers using it to assess, for students using it to prepare, and for coordinators using it to maintain consistency?</p>
+
+                <h3 class="reveal">4.1 Structure and Scope</h3>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Is the number of criteria appropriate?</strong>
+                            <span class="detail">Aim for 3–6. Fewer than 3 is too broad; more than 6 is too granular.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Do the weightings reflect relative importance?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Do the weightings add up to exactly 100%?</strong></div>
+                    </div>
+                </div>
+
+                <h3 class="reveal">4.2 Coordinator Buy-In</h3>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Would the coordinator recognise their rubric in this output?</strong>
+                            <span class="detail">If the original has been substantially reworked, check whether recognisable elements have been preserved. A rubric that feels entirely foreign will face resistance.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Has the revision preserved what was already working?</strong>
+                            <span class="detail">The approach should be "remix rather than scrap."</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are the changes defensible?</strong>
+                            <span class="detail">Every significant departure from the original should be traceable to a design principle.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="reveal">4.3 Marking Feasibility</h3>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Could a sessional marker use this rubric with minimal training?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Are the descriptors the right length?</strong>
+                            <span class="detail">Generally 1–3 sentences per descriptor. If a single descriptor is a full paragraph, it's probably doing too much.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Is there enough differentiation between adjacent levels?</strong></div>
+                    </div>
+                </div>
+
+                <h3 class="reveal">4.4 Student Readability</h3>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Could a student understand what HD-level work looks like?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Does the rubric help students self-assess?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Is the rubric self-contained?</strong>
+                            <span class="detail">Students shouldn't need a separate document to understand expectations.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="reveal">4.5 Formatting and Presentation</h3>
+
+                <div class="check-group reveal">
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>Document header contains: course code, course name, semester, assessment number, name, and weighting?</strong></div>
+                    </div>
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>UQ formatting applied correctly?</strong>
+                            <span class="detail">Purple header row, alternating row colours, grade headers with percentage ranges, criterion names with weightings.</span>
+                        </div>
+                    </div>
+                    <div class="check-item" style="--check-color:#2EA836">
+                        <div class="check-icon"><svg viewBox="0 0 12 12" fill="none" stroke="#2EA836" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
+                        <div class="check-text"><strong>File named correctly?</strong>
+                            <span class="detail">Standard convention: [CourseCode]_A[Number]_Rubric_[GA].docx</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ──────────────────────────────────────── -->
+        <!-- SECTION 5: How to Use / Downloads -->
+        <!-- ──────────────────────────────────────── -->
+        <section class="content-section alt">
+            <div class="section-container">
+                <div class="section-tag tag-purple reveal">Getting Started</div>
+                <h2 class="reveal">How to Use This Guide</h2>
+
+                <div class="audience-cards reveal">
+                    <div class="audience-card" style="--accent:#4085C6">
+                        <div class="audience-card-role">For Learning Designers</div>
+                        <p>Work through all four sections before sending a rubric to an academic for review. Sections 1 and 2 are your primary responsibility — academics will rely on your expertise here.</p>
+                    </div>
+                    <div class="audience-card" style="--accent:#51247A">
+                        <div class="audience-card-role">For Academics and Course Coordinators</div>
+                        <p>Focus on sections 2 and 4 first. You're best placed to judge whether the rubric aligns with what you actually want students to do (section 2) and whether it will work in your marking context (section 4).</p>
+                    </div>
+                    <div class="audience-card" style="--accent:#962A8B">
+                        <div class="audience-card-role">For Collaborative Review</div>
+                        <p>Start with section 2 (constructive alignment) as common ground, then divide the remaining sections based on expertise.</p>
+                    </div>
+                </div>
+
+                <div class="emphasis-box reveal">
+                    <p><strong>When you find issues:</strong> Note the specific criterion, level, and what needs to change. Be as concrete as possible — "the D descriptor for Critical Analysis needs to differentiate from C by requiring integration of perspectives, not just listing them" is far more actionable than "the middle levels need work."</p>
+                </div>
+
+                <h3 class="reveal">AI Prompt Templates</h3>
+                <p class="reveal">If you'd prefer to use your own AI tool (ChatGPT, Claude, Gemini, etc.) for rubric design, these master prompts encode the same principles and frameworks used by the Rubric Builder. Paste them into any AI chat as a starting message, then provide your assessment details.</p>
+
+                <div class="download-cards reveal">
+                    <div class="download-card">
+                        <div class="download-card-label">Master Prompt</div>
+                        <div class="download-card-title">Rubric Design Prompt</div>
+                        <div class="download-card-desc">Universal rubric creation and quality uplift — works for any institution and any assessment type.</div>
+                        <a href="Rubric_Design_Master_Prompt.txt" class="download-card-link" download>↓ Download .txt</a>
+                    </div>
+                    <div class="download-card">
+                        <div class="download-card-label">Master Prompt</div>
+                        <div class="download-card-title">GA/AoL Integration Prompt</div>
+                        <div class="download-card-desc">UQ-specific Graduate Attribute embedding with full GA templates and formatting specification.</div>
+                        <a href="GA-AoL_Integration_Master_Prompt.txt" class="download-card-link" download>↓ Download .txt</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ──────────────────────────────────────── -->
+        <!-- CTA FOOTER -->
+        <!-- ──────────────────────────────────────── -->
+        <section class="cta-section">
+            <div class="cta-content">
+                <p>Need to build or revise a rubric? Use the Rubric Builder tool, or explore the full design guide for worked examples and frameworks.</p>
+                <div class="cta-buttons">
+                    <a href="UQBS_Rubric_Builder.html" class="cta-button primary">Launch Rubric Builder →</a>
+                    <a href="UQBS_Rubric%20Design%20Fundamentals_FINAL.html" class="cta-button secondary">Build a Better Rubric →</a>
+                    <a href="index.html" class="cta-button secondary">← Rubric Design Fundamentals</a>
+                </div>
+                <div class="cta-credit">Prepared by UQ Business School Learning Design · 2026</div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        revealElements.forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
