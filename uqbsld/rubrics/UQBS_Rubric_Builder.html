@@ -941,8 +941,16 @@
                 <!-- Course Profile Input -->
                 <div class="form-section">
                     <div class="section-label">Course Profile</div>
-                    <div class="section-helper">Upload or paste the full course profile. This gives us the course code, assessment details, learning outcomes, and context.</div>
+                    <div class="section-helper">Fetch from UQ course profiles, upload a file, or paste the content. This gives us the course code, assessment details, learning outcomes, and context.</div>
                     <div class="input-block" id="ecpBlock">
+                        <div id="ecpUrlGroup" style="margin-bottom: 0.75rem;">
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <input type="text" id="ecpUrlInput" placeholder="https://course-profiles.uq.edu.au/course-profiles/MGTS1301-..." style="flex: 1; padding: 0.6rem 0.8rem; border: 2px solid #ddd; border-radius: 8px; font-size: 13px; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#51247A'" onblur="this.style.borderColor='#ddd'">
+                                <button class="upload-btn" id="ecpFetchUrlBtn" style="white-space: nowrap; padding: 0.6rem 1rem;">Fetch</button>
+                            </div>
+                            <div id="ecpUrlStatus" style="font-size: 11px; color: #888; margin-top: 0.3rem;"></div>
+                        </div>
+                        <div style="font-size: 11px; color: #aaa; text-align: center; margin-bottom: 0.75rem;">— or —</div>
                         <button class="upload-btn" id="ecpUploadBtn">Upload file</button>
                         <input type="file" id="ecpFileInput" accept=".docx,.pdf,.txt,.xlsx,.xls">
                         <div class="upload-hint">.docx, .pdf, .xlsx, or .txt</div>
@@ -1846,8 +1854,18 @@ function setupInputBlock(config) {
         fileStatus.classList.remove('visible');
         block.classList.remove('has-file');
         uploadBtn.style.display = '';
+        if (!isMulti) uploadBtn.textContent = 'Upload file';
         block.querySelector('.upload-hint').style.display = '';
         manualToggle.style.display = '';
+        // Restore URL group if this is the ECP block
+        const urlGroup = block.querySelector('#ecpUrlGroup');
+        if (urlGroup) {
+            urlGroup.style.display = '';
+            const orDivider = block.querySelector('[style*="— or —"]');
+            if (orDivider) orDivider.style.display = '';
+            document.getElementById('ecpUrlInput').value = '';
+            document.getElementById('ecpUrlStatus').textContent = '';
+        }
     });
 
     manualToggle.addEventListener('click', (e) => {
@@ -1878,6 +1896,164 @@ setupInputBlock({
     fileStatusId: 'docsFileStatus', fileNameId: 'docsFileName', removeFileId: 'docsRemoveFile',
     manualToggleId: 'docsManualToggle', manualEntryId: 'docsManualEntry',
     blockId: 'docsBlock', textareaId: 'additionalDocsInput'
+});
+
+// ============================================================================
+// ECP URL FETCH — Fetch and parse UQ course profile pages
+// ============================================================================
+
+function parseECPHtml(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const sections = [];
+
+    // Remove hidden/screenreader-only elements that cause duplication
+    doc.querySelectorAll('.visually-hidden, .sr-only, [aria-hidden="true"]').forEach(el => el.remove());
+
+    function extractBetween(startId, endId) {
+        const startEl = doc.getElementById(startId);
+        if (!startEl) return null;
+
+        // Find the parent section containing startEl, then collect until endId
+        let container = startEl.closest('section, div, article') || startEl;
+        let collecting = false;
+        let text = '';
+        const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT, null);
+        let node;
+        while (node = walker.nextNode()) {
+            // Check if we've reached the start element
+            if (!collecting && startEl.contains(node)) collecting = true;
+            // Check if we've reached the end element
+            if (collecting && endId) {
+                const endEl = doc.getElementById(endId);
+                if (endEl && endEl.contains(node)) break;
+            }
+            if (collecting) {
+                const t = node.textContent.trim();
+                if (t) text += t + ' ';
+            }
+            if (text.length > 15000) break;
+        }
+        // Deduplicate repeated consecutive phrases (common in accessible HTML)
+        text = text.replace(/(\b\w[\w\s,.()']{10,}?)\s+\1/g, '$1');
+        return text.replace(/\s+/g, ' ').trim();
+    }
+
+    function addSection(startId, endId, label) {
+        const text = extractBetween(startId, endId);
+        if (text && text.length > 20) {
+            sections.push('=== ' + label + ' ===\n' + text);
+        }
+    }
+
+    // Extract only the sections relevant to rubric design
+    addSection('course-overview--section', 'course-requirements', 'COURSE OVERVIEW');
+    addSection('learning-outcomes', 'assessment', 'LEARNING OUTCOMES');
+    addSection('assessment--section', 'course-grading', 'ASSESSMENT');
+    addSection('course-grading', 'supplementary-assessment', 'COURSE GRADING');
+
+    if (sections.length === 0) {
+        // Fallback: try to get the main content area
+        const main = doc.getElementById('main-content');
+        if (main) {
+            let text = main.textContent.replace(/\s+/g, ' ').trim();
+            if (text.length > 12000) text = text.substring(0, 12000) + '... [truncated]';
+            return text;
+        }
+        return null;
+    }
+
+    return sections.join('\n\n');
+}
+
+document.getElementById('ecpFetchUrlBtn').addEventListener('click', async function() {
+    const urlInput = document.getElementById('ecpUrlInput');
+    const statusEl = document.getElementById('ecpUrlStatus');
+    const textarea = document.getElementById('ecpInput');
+    let url = urlInput.value.trim();
+
+    if (!url) {
+        statusEl.textContent = 'Please enter a course profile URL.';
+        statusEl.style.color = '#e74c3c';
+        return;
+    }
+
+    // Validate it looks like a UQ course profile URL
+    if (!url.includes('course-profiles.uq.edu.au')) {
+        statusEl.textContent = 'Please enter a UQ course profile URL (course-profiles.uq.edu.au).';
+        statusEl.style.color = '#e74c3c';
+        return;
+    }
+
+    // Strip hash fragment
+    url = url.split('#')[0];
+
+    statusEl.textContent = 'Fetching course profile...';
+    statusEl.style.color = '#51247A';
+    this.disabled = true;
+
+    try {
+        // Try direct fetch first (works if served from same-origin or CORS allowed)
+        let html;
+        try {
+            const resp = await fetch(url);
+            if (resp.ok) {
+                html = await resp.text();
+            }
+        } catch (e) {
+            // CORS blocked — try proxy
+        }
+
+        if (!html) {
+            // Use allorigins proxy as fallback
+            const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
+            const resp = await fetch(proxyUrl);
+            if (!resp.ok) throw new Error('Could not fetch course profile (status ' + resp.status + ')');
+            html = await resp.text();
+        }
+
+        const parsed = parseECPHtml(html);
+        if (!parsed) {
+            statusEl.textContent = 'Could not extract content from that page. Try uploading the course profile instead.';
+            statusEl.style.color = '#e74c3c';
+            this.disabled = false;
+            return;
+        }
+
+        textarea.value = parsed;
+
+        // Extract course code from URL for display
+        const codeMatch = url.match(/course-profiles\/([A-Z]{4}\d{4})/i);
+        const label = codeMatch ? codeMatch[1].toUpperCase() : 'Course profile';
+
+        // Update UI to show success
+        const fileStatus = document.getElementById('ecpFileStatus');
+        const fileName = document.getElementById('ecpFileName');
+        const block = document.getElementById('ecpBlock');
+        fileName.textContent = label + ' (fetched from URL)';
+        fileStatus.classList.add('visible');
+        block.classList.add('has-file');
+        document.getElementById('ecpUploadBtn').style.display = 'none';
+        block.querySelector('.upload-hint').style.display = 'none';
+        document.getElementById('ecpManualToggle').style.display = 'none';
+        document.getElementById('ecpUrlGroup').style.display = 'none';
+        block.querySelector('[style*="— or —"]').style.display = 'none';
+
+        statusEl.textContent = '';
+        statusEl.style.color = '#888';
+
+    } catch (err) {
+        console.error('ECP fetch error:', err);
+        statusEl.textContent = 'Fetch failed: ' + err.message + '. Try uploading the course profile instead.';
+        statusEl.style.color = '#e74c3c';
+    } finally {
+        this.disabled = false;
+    }
+});
+
+// Also handle Enter key in URL input
+document.getElementById('ecpUrlInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('ecpFetchUrlBtn').click();
 });
 
 // No existing rubric checkbox — disables the rubric upload block
