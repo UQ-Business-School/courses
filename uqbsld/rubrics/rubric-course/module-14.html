@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 14: CALD Accessibility — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── Idiom highlight hunt ── */
+.idiom-hunt-container {
+  padding: 16px;
+  background: #f9f7f5;
+  border: 1px solid #e4dfd9;
+  border-radius: 8px;
+  margin: 16px 0;
+  position: relative;
+}
+
+.idiom-hunt-timer {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #962A8B;
+}
+
+.hunt-text {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #1a1714;
+  margin-bottom: 16px;
+}
+
+.hw {
+  padding: 2px 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.hw:hover {
+  background: rgba(150, 42, 139, 0.1);
+  border-radius: 3px;
+}
+
+.hw.found {
+  background: #ffd700;
+  border-radius: 3px;
+}
+
+.found-count {
+  text-align: center;
+  font-size: 13px;
+  color: #6b6460;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e4dfd9;
+}
+
+/* ── Rewrite activity ── */
+.rewrite-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid #e4dfd9;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.rewrite-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.rewrite-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #51247A;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.rewrite-original {
+  padding: 12px;
+  background: #f9f7f5;
+  border-left: 3px solid #d4a8d4;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #1a1714;
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+.rewrite-input {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px;
+  border: 1px solid #e4dfd9;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 13px;
+  resize: vertical;
+  margin-bottom: 12px;
+}
+
+.rewrite-feedback {
+  font-size: 12px;
+  padding: 8px;
+  border-radius: 4px;
+  display: none;
+}
+
+.rewrite-feedback.show {
+  display: block;
+}
+
+.rewrite-feedback.correct {
+  background: rgba(46, 168, 54, 0.1);
+  color: #2ea836;
+  border-left: 3px solid #2ea836;
+}
+
+.rewrite-feedback.check {
+  background: rgba(81, 36, 122, 0.1);
+  color: #51247A;
+  border-left: 3px solid #51247A;
+}
+
+.rewrite-model {
+  font-size: 12px;
+  padding: 8px;
+  background: rgba(81, 36, 122, 0.05);
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+/* ── Delivery criteria problem ── */
+.delivery-criteria-list {
+  background: #fff;
+  border: 1px solid #e4dfd9;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+.delivery-item {
+  padding: 12px;
+  background: #f9f7f5;
+  border-left: 3px solid #d9534f;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: #1a1714;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.delivery-item:hover {
+  background: rgba(217, 83, 79, 0.08);
+}
+
+.delivery-item.highlighted {
+  background: #fff9e6;
+  border-left-color: #ffc107;
+}
+
+.delivery-item-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #51247A;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+}
+
+.delivery-rewrite-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+
+.delivery-rewrite-modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.modal-content h3 {
+  margin-bottom: 12px;
+}
+
+.modal-original {
+  padding: 12px;
+  background: #f9f7f5;
+  border-left: 3px solid #d9534f;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #1a1714;
+}
+
+.modal-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border: 1px solid #e4dfd9;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 13px;
+  resize: vertical;
+  margin-bottom: 12px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.modal-buttons button {
+  flex: 1;
+}
+
+/* ── Drag sort: Language vs Content ── */
+.drag-sort-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.drag-sort-column {
+  border: 2px dashed #d4a8d4;
+  border-radius: 8px;
+  padding: 16px;
+  background: rgba(150, 42, 139, 0.02);
+  min-height: 250px;
+}
+
+.drag-sort-column h4 {
+  font-size: 12px;
+  font-weight: 700;
+  color: #51247A;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.drag-sort-column.drag-over {
+  border-color: #962A8B;
+  background: rgba(150, 42, 139, 0.08);
+}
+
+.drag-item {
+  padding: 12px;
+  background: #fff;
+  border: 1px solid #e4dfd9;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  cursor: move;
+  font-size: 13px;
+  color: #1a1714;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.drag-item:hover {
+  border-color: #962A8B;
+  box-shadow: 0 2px 6px rgba(150, 42, 139, 0.12);
+}
+
+.drag-item.dragging {
+  opacity: 0.6;
+  cursor: grabbing;
+}
+
+/* ── CALD Check Checklist ── */
+.cald-checklist {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.cald-check-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px;
+  border: 1px solid #e4dfd9;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.cald-check-item input[type="checkbox"] {
+  margin-right: 12px;
+  margin-top: 3px;
+  cursor: pointer;
+}
+
+.cald-check-item label {
+  cursor: pointer;
+  font-size: 13px;
+  color: #1a1714;
+  line-height: 1.5;
+}
+
+.cald-check-item.flagged {
+  background: rgba(217, 83, 79, 0.04);
+  border-color: #d9534f;
+}
+
+.mc-option {
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #e4dfd9;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.mc-option input[type="radio"] {
+  margin-right: 8px;
+}
+
+.mc-option:hover {
+  border-color: #51247A;
+  background: #f9f7f5;
+}
+
+.mc-option.selected {
+  border-color: #51247A;
+  background: rgba(81, 36, 122, 0.04);
+}
+
+.feedback.neutral {
+  border-left-color: #51247A;
+  background: rgba(81, 36, 122, 0.04);
+}
+
+.feedback.success {
+  border-left-color: #2ea836;
+  background: rgba(46, 168, 54, 0.04);
+}
+
+.feedback.warning {
+  border-left-color: #d9534f;
+  background: rgba(217, 83, 79, 0.04);
+}
+
+@media (max-width: 760px) {
+  .rewrite-pair {
+    grid-template-columns: 1fr;
+  }
+  .drag-sort-container {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 14 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<section class="module-hero part-c">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part C · Calibration & Context — Module 14</div>
+    <h1>CALD Accessibility</h1>
+    <p class="hero-sub">Culturally and Linguistically Diverse (CALD) students navigate rubrics written in idiom, jargon, and cultural assumption. Rewrite your criteria for clarity: literal, specific, and globally fair.</p>
+    <span class="hero-time">&#9201; ~15 minutes</span>
+  </div>
+</section>
+
+<!-- ── INTRO ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">The Issue</div>
+    <h2 class="reveal">Language Barriers in Rubrics</h2>
+    <p class="lead reveal">A rubric phrase like "thinks outside the box" is opaque to non-native speakers and culturally specific. It says nothing about the actual capability. When you rewrite for clarity, you don't dumb down—you clarify. Everyone benefits.</p>
+
+    <div class="emphasis-box reveal" style="border-left-color:#962A8B;">
+      <p><strong>The accessibility principle:</strong></p>
+      <p style="margin-top:8px;font-size:13px;">Clear rubrics help all learners. When you replace idiom with specificity, when you separate language quality from content, when you name cultural assumptions and reject them, you create rubrics that are fair, honest, and universally understood.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: IDIOM HUNT ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Activity 1 of 5</div>
+    <h2 class="reveal">Idiom Hunt</h2>
+    <p class="lead reveal">Below is a rubric fragment with 6 idioms hidden in it. Click to highlight each one. Time counts—but take your time and get them all.</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">Find and Highlight Idioms</div>
+
+      <div class="idiom-hunt-container">
+        <div class="idiom-hunt-timer">Time: <span id="timer">0:00</span></div>
+        <div class="hunt-text">
+          <strong>HD Descriptor: Analysis</strong><br><br>
+          Student <span class="hw" id="idiom-1" data-idiom="thinks outside the box">thinks outside the box</span> in their approach to the case, moving beyond surface-level observations. They successfully <span class="hw" id="idiom-2" data-idiom="unpack the issue">unpack the issue</span>, examining underlying assumptions and <span class="hw" id="idiom-3" data-idiom="drill down">drilling down</span> into systemic factors. The argument is <span class="hw" id="idiom-4" data-idiom="fleshed out">fleshed out</span> with evidence and examples, and conclusions <span class="hw" id="idiom-5" data-idiom="hit the nail on the head">hit the nail on the head</span> with precision. Ideas <span class="hw" id="idiom-6" data-idiom="flows smoothly">flow smoothly</span> between paragraphs, demonstrating coherent reasoning.
+        </div>
+        <div class="found-count">Found: <strong id="found-tally">0</strong>/6</div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-reveal-a1" style="margin-top:16px;">Reveal All</button>
+
+      <div class="feedback neutral" id="a1-feedback" style="display:none;margin-top:16px;">
+        <span class="label">Idioms Found!</span>
+        <p id="a1-msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: REWRITE FOR CLARITY ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Activity 2 of 5</div>
+    <h2 class="reveal">Rewrite for Clarity</h2>
+    <p class="lead reveal">For each idiom you found, write a literal replacement. Here's the key: be specific about what you're assessing. "Fleshed out" doesn't describe a skill; "Developed with supporting evidence and specific examples" does.</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Replace Each Idiom</div>
+
+      <div class="rewrite-pair">
+        <div class="rewrite-column">
+          <span class="rewrite-label">Original Idiom</span>
+          <div class="rewrite-original">thinks outside the box</div>
+          <textarea class="rewrite-input" id="rw-1" placeholder="What does this actually mean?"></textarea>
+          <div class="rewrite-feedback" id="rw-1-fb"></div>
+        </div>
+        <div class="rewrite-column">
+          <span class="rewrite-label">Model Answer</span>
+          <div class="rewrite-original">Proposes approaches not derived from course materials</div>
+          <button class="btn btn-secondary btn-small" onclick="document.getElementById('rw-1').value='Proposes approaches not derived from course materials'; checkRewrite(1);">Fill Model</button>
+        </div>
+      </div>
+
+      <div class="rewrite-pair">
+        <div class="rewrite-column">
+          <span class="rewrite-label">Original Idiom</span>
+          <div class="rewrite-original">unpack the issue</div>
+          <textarea class="rewrite-input" id="rw-2" placeholder="What does this actually mean?"></textarea>
+          <div class="rewrite-feedback" id="rw-2-fb"></div>
+        </div>
+        <div class="rewrite-column">
+          <span class="rewrite-label">Model Answer</span>
+          <div class="rewrite-original">Identifies and explains the component parts of the problem</div>
+          <button class="btn btn-secondary btn-small" onclick="document.getElementById('rw-2').value='Identifies and explains the component parts of the problem'; checkRewrite(2);">Fill Model</button>
+        </div>
+      </div>
+
+      <div class="rewrite-pair">
+        <div class="rewrite-column">
+          <span class="rewrite-label">Original Idiom</span>
+          <div class="rewrite-original">drill down</div>
+          <textarea class="rewrite-input" id="rw-3" placeholder="What does this actually mean?"></textarea>
+          <div class="rewrite-feedback" id="rw-3-fb"></div>
+        </div>
+        <div class="rewrite-column">
+          <span class="rewrite-label">Model Answer</span>
+          <div class="rewrite-original">Examines underlying causes in detail</div>
+          <button class="btn btn-secondary btn-small" onclick="document.getElementById('rw-3').value='Examines underlying causes in detail'; checkRewrite(3);">Fill Model</button>
+        </div>
+      </div>
+
+      <div class="rewrite-pair">
+        <div class="rewrite-column">
+          <span class="rewrite-label">Original Idiom</span>
+          <div class="rewrite-original">fleshed out</div>
+          <textarea class="rewrite-input" id="rw-4" placeholder="What does this actually mean?"></textarea>
+          <div class="rewrite-feedback" id="rw-4-fb"></div>
+        </div>
+        <div class="rewrite-column">
+          <span class="rewrite-label">Model Answer</span>
+          <div class="rewrite-original">Developed with supporting evidence and specific examples</div>
+          <button class="btn btn-secondary btn-small" onclick="document.getElementById('rw-4').value='Developed with supporting evidence and specific examples'; checkRewrite(4);">Fill Model</button>
+        </div>
+      </div>
+
+      <div class="rewrite-pair">
+        <div class="rewrite-column">
+          <span class="rewrite-label">Original Idiom</span>
+          <div class="rewrite-original">hit the nail on the head</div>
+          <textarea class="rewrite-input" id="rw-5" placeholder="What does this actually mean?"></textarea>
+          <div class="rewrite-feedback" id="rw-5-fb"></div>
+        </div>
+        <div class="rewrite-column">
+          <span class="rewrite-label">Model Answer</span>
+          <div class="rewrite-original">Accurately identifies the core issue</div>
+          <button class="btn btn-secondary btn-small" onclick="document.getElementById('rw-5').value='Accurately identifies the core issue'; checkRewrite(5);">Fill Model</button>
+        </div>
+      </div>
+
+      <div class="rewrite-pair">
+        <div class="rewrite-column">
+          <span class="rewrite-label">Original Idiom</span>
+          <div class="rewrite-original">flows smoothly</div>
+          <textarea class="rewrite-input" id="rw-6" placeholder="What does this actually mean?"></textarea>
+          <div class="rewrite-feedback" id="rw-6-fb"></div>
+        </div>
+        <div class="rewrite-column">
+          <span class="rewrite-label">Model Answer</span>
+          <div class="rewrite-original">Uses explicit transitions between paragraphs; ideas progress logically</div>
+          <button class="btn btn-secondary btn-small" onclick="document.getElementById('rw-6').value='Uses explicit transitions between paragraphs; ideas progress logically'; checkRewrite(6);">Fill Model</button>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-check-a2" style="margin-top:16px;">Check All Rewrites</button>
+      <button class="btn btn-secondary btn-small" id="btn-reset-a2" style="margin-left:8px;">Reset</button>
+
+      <div class="feedback neutral" id="a2-feedback" style="display:none;margin-top:16px;">
+        <span class="label" id="a2-label"></span>
+        <p id="a2-msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: DELIVERY CRITERIA PROBLEM ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Activity 3 of 5</div>
+    <h2 class="reveal">Delivery Criteria Problem</h2>
+    <p class="lead reveal">A presentation rubric says: "Maintains confident eye contact", "Shows assertive body language", "Commands the room with vocal presence." These are culturally specific and inaccessible. Identify them and rewrite to focus on communication strategy, not style.</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">Identify & Rewrite Culturally Biased Criteria</div>
+
+      <div class="delivery-criteria-list">
+        <div class="delivery-item" id="deliv-1">
+          <span class="delivery-item-label">Current criterion:</span>
+          Maintains confident eye contact throughout the presentation
+        </div>
+        <div class="delivery-item" id="deliv-2">
+          <span class="delivery-item-label">Current criterion:</span>
+          Shows assertive body language and commanding presence
+        </div>
+        <div class="delivery-item" id="deliv-3">
+          <span class="delivery-item-label">Current criterion:</span>
+          Uses commanding vocal presence and dynamic pacing
+        </div>
+      </div>
+
+      <p style="font-size:13px;color:#6b6460;margin:16px 0;">Click on a criterion to highlight it as culturally specific and rewrite it.</p>
+
+      <button class="btn btn-primary" id="btn-show-rewrite" style="margin-top:12px;">Show Model Revision</button>
+
+      <div class="feedback success" id="a3-feedback" style="display:none;margin-top:16px;">
+        <span class="label">Model Revision</span>
+        <p><strong>Revised criterion:</strong> "Maintains audience engagement through visual, verbal, or physical communication strategies appropriate to the context." This focuses on <em>outcome</em> (engagement) and allows for <em>cultural variation</em> in how that's achieved. It removes assumptions about what "assertive" or "confident" looks like.</p>
+      </div>
+
+      <button class="btn btn-secondary btn-small" id="btn-complete-a3" style="margin-top:12px;">I Understand</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: LANGUAGE vs CONTENT ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Activity 4 of 5</div>
+    <h2 class="reveal">Language vs Content</h2>
+    <p class="lead reveal">Below is a rubric where grammar errors are penalised within analysis criteria. This conflates two different skills. Drag criteria into the right columns to separate language quality from content quality.</p>
+
+    <div class="activity reveal" id="act-4">
+      <div class="activity-number">4</div>
+      <div class="activity-title">Restructure Rubric Columns</div>
+
+      <div id="drag-source" style="margin: 16px 0; padding: 16px; background: #f9f7f5; border: 1px solid #e4dfd9; border-radius: 8px;">
+        <h4 style="font-size: 12px; font-weight: 700; color: #51247A; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Drag these criteria to the right column:</h4>
+        <div id="criteria-pool"></div>
+      </div>
+
+      <div class="drag-sort-container">
+        <div class="drag-sort-column" id="col-content">
+          <h4>Content Quality</h4>
+        </div>
+        <div class="drag-sort-column" id="col-language">
+          <h4>Academic Communication (Language)</h4>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-check-a4" style="margin-top:16px;">Check My Restructure</button>
+      <button class="btn btn-secondary btn-small" id="btn-reset-a4" style="margin-left:8px;">Reset</button>
+
+      <div class="feedback neutral" id="a4-feedback" style="display:none;margin-top:16px;">
+        <span class="label" id="a4-label"></span>
+        <p id="a4-msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 5: CALD CHECK ON MGTS2501 ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Activity 5 of 5</div>
+    <h2 class="reveal">CALD Check on MGTS2501</h2>
+    <p class="lead reveal">Run through your MGTS2501 rubric with this checklist. Flag criteria that contain jargon, idioms, or cultural bias. Mark each as you review it.</p>
+
+    <div class="activity reveal" id="act-5">
+      <div class="activity-number">5</div>
+      <div class="activity-title">Accessibility Review</div>
+
+      <div class="cald-checklist" id="cald-items">
+        <div class="cald-check-item">
+          <input type="checkbox" id="cald-1" data-item="idiom">
+          <label for="cald-1">✓ Check for idioms (think outside box, unpack, drill down, etc.)</label>
+        </div>
+        <div class="cald-check-item">
+          <input type="checkbox" id="cald-2" data-item="jargon">
+          <label for="cald-2">✓ Check for discipline jargon without definition</label>
+        </div>
+        <div class="cald-check-item">
+          <input type="checkbox" id="cald-3" data-item="cultural">
+          <label for="cald-3">✓ Check for cultural assumptions (communication styles, value systems, examples)</label>
+        </div>
+        <div class="cald-check-item">
+          <input type="checkbox" id="cald-4" data-item="adverbs">
+          <label for="cald-4">✓ Check for vague adverbs (excellent, well, appropriately) without definition</label>
+        </div>
+        <div class="cald-check-item">
+          <input type="checkbox" id="cald-5" data-item="language">
+          <label for="cald-5">✓ Check that language quality is separate from content criteria</label>
+        </div>
+        <div class="cald-check-item">
+          <input type="checkbox" id="cald-6" data-item="examples">
+          <label for="cald-6">✓ Check for local/culturally specific examples that exclude other perspectives</label>
+        </div>
+        <div class="cald-check-item">
+          <input type="checkbox" id="cald-7" data-item="bias">
+          <label for="cald-7">✓ Check for stereotypes or assumptions about who "belongs" in the field</label>
+        </div>
+        <div class="cald-check-item">
+          <input type="checkbox" id="cald-8" data-item="clarity">
+          <label for="cald-8">✓ Confirm descriptors are clear and testable (not subjective interpretations)</label>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-complete-a5" style="margin-top:16px;">Mark Module Complete</button>
+
+      <div class="feedback success" id="a5-feedback" style="display:none;margin-top:16px;">
+        <span class="label">Excellent Work!</span>
+        <p>You've completed Module 14 and reviewed your rubric for cultural and linguistic accessibility. You now understand how idiom, jargon, and unexamined assumptions can silently exclude learners. Rewriting for clarity doesn't simplify—it clarifies what you actually value. Next: Module 15, your final synthesis.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<nav class="module-nav">
+  <a href="module-13.html">← Module 13</a>
+  <a href="module-15.html" class="nav-next" id="nav-next-m15">Module 15 →</a>
+</nav>
+
+<footer class="module-cta"><p class="cta-credit">UQ Business School Learning Design &middot; 2026</p></footer>
+
+<script src="shared.js"></script>
+<script>
+(function(){
+  const RC = window.RubricCourse;
+  const tracker = RC.ModuleTracker(14, 5);
+  const SAVE_KEY = 'm14';
+
+  // Helper: save to localStorage
+  function saveTLS(key, data) {
+    try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
+  }
+  function loadTLS(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; }
+  }
+
+  /* ─────── Activity 1: Idiom Hunt (Click & Highlight) ─────── */
+  (function(){
+    let startTime = null;
+    let timerInterval = null;
+
+    function startTimer() {
+      if (startTime) return;
+      startTime = Date.now();
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        const mins = Math.floor(elapsed / 60);
+        const secs = elapsed % 60;
+        document.getElementById('timer').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+      }, 100);
+    }
+
+    const idiomElements = document.querySelectorAll('.hw');
+    let found = 0;
+
+    idiomElements.forEach(el => {
+      el.addEventListener('click', () => {
+        startTimer();
+        if (!el.classList.contains('found')) {
+          el.classList.add('found');
+          found++;
+          document.getElementById('found-tally').textContent = found;
+
+          if (found === idiomElements.length) {
+            clearInterval(timerInterval);
+            tracker.markDone('act-1');
+          }
+        }
+      });
+    });
+
+    document.getElementById('btn-reveal-a1').addEventListener('click', () => {
+      idiomElements.forEach(el => {
+        if (!el.classList.contains('found')) {
+          el.classList.add('found');
+          found++;
+        }
+      });
+      document.getElementById('found-tally').textContent = found;
+      clearInterval(timerInterval);
+
+      const elapsed = startTime ? Math.floor((Date.now() - startTime) / 1000) : 0;
+      const fb = document.getElementById('a1-feedback');
+      const msg = document.getElementById('a1-msg');
+      fb.style.display = 'block';
+      msg.innerHTML = `<p>You found all 6 idioms${startTime ? ` in ${Math.floor(elapsed / 60)}:${(elapsed % 60).toString().padStart(2, '0')}` : ''}. These are native-English phrases that aren't transparent to CALD learners. Ready to rewrite them?</p>`;
+      tracker.markDone('act-1');
+    });
+  })();
+
+  /* ─────── Activity 2: Rewrite for Clarity ─────── */
+  window.checkRewrite = function(num) {
+    const textarea = document.getElementById(`rw-${num}`);
+    const feedback = document.getElementById(`rw-${num}-fb`);
+    const text = textarea.value.trim();
+
+    if (text.length > 10) {
+      feedback.classList.add('show', 'check');
+      feedback.innerHTML = `<strong>✓ Submitted</strong>. Compare with the model. Key: your rewrite should describe a <em>capability</em>, not an idiom.`;
+    }
+  };
+
+  document.getElementById('btn-check-a2').addEventListener('click', () => {
+    const answers = [1, 2, 3, 4, 5, 6].map(n => {
+      const ta = document.getElementById(`rw-${n}`);
+      return ta.value.trim().length > 10;
+    });
+
+    const completed = answers.filter(a => a).length;
+    const fb = document.getElementById('a2-feedback');
+    const label = document.getElementById('a2-label');
+    const msg = document.getElementById('a2-msg');
+
+    fb.style.display = 'block';
+    fb.classList.remove('warning', 'neutral');
+
+    if (completed >= 5) {
+      fb.classList.add('success');
+      label.textContent = 'Great Work!';
+      msg.innerHTML = '<p>You\'ve rewritten idioms into literal, specific descriptors. This benefits all learners: CALD students understand what\'s expected, and native speakers get clarity too.</p>';
+      tracker.markDone('act-2');
+    } else {
+      fb.classList.add('neutral');
+      label.textContent = 'Complete All Six';
+      msg.innerHTML = `<p>You\'ve filled in ${completed} of 6. For each idiom, write what capability it describes. Use the model answers as a guide.</p>`;
+    }
+
+    saveTLS(SAVE_KEY + '-a2', { completed });
+  });
+
+  document.getElementById('btn-reset-a2').addEventListener('click', () => {
+    [1, 2, 3, 4, 5, 6].forEach(n => {
+      document.getElementById(`rw-${n}`).value = '';
+      document.getElementById(`rw-${n}-fb`).classList.remove('show');
+    });
+    document.getElementById('a2-feedback').style.display = 'none';
+  });
+
+  /* ─────── Activity 3: Delivery Criteria Problem ─────── */
+  (function(){
+    const items = document.querySelectorAll('.delivery-item');
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        items.forEach(i => i.classList.remove('highlighted'));
+        item.classList.add('highlighted');
+      });
+    });
+
+    document.getElementById('btn-show-rewrite').addEventListener('click', () => {
+      document.getElementById('a3-feedback').style.display = 'block';
+      tracker.markDone('act-3');
+    });
+
+    document.getElementById('btn-complete-a3').addEventListener('click', () => {
+      tracker.markDone('act-3');
+    });
+  })();
+
+  /* ─────── Activity 4: Language vs Content (Drag & Sort) ─────── */
+  (function(){
+    const criteria = [
+      { text: 'Analysis demonstrates synthesis of evidence', type: 'content' },
+      { text: 'Grammar, spelling, and punctuation are correct', type: 'language' },
+      { text: 'Conclusions are supported by logical reasoning', type: 'content' },
+      { text: 'Sentence structure is varied and appropriate', type: 'language' },
+      { text: 'Ideas connect to course concepts', type: 'content' },
+      { text: 'Uses discipline terminology accurately', type: 'language' }
+    ];
+
+    const pool = document.getElementById('criteria-pool');
+    const colContent = document.getElementById('col-content');
+    const colLanguage = document.getElementById('col-language');
+
+    criteria.forEach((crit, i) => {
+      const item = document.createElement('div');
+      item.className = 'drag-item';
+      item.draggable = true;
+      item.innerHTML = crit.text;
+      item.dataset.type = crit.type;
+      item.dataset.index = i;
+
+      item.addEventListener('dragstart', (e) => {
+        e.dataTransfer.effectAllowed = 'move';
+        item.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', i.toString());
+      });
+
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+      });
+
+      pool.appendChild(item);
+    });
+
+    [colContent, colLanguage].forEach(col => {
+      col.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        col.classList.add('drag-over');
+      });
+
+      col.addEventListener('dragleave', () => {
+        col.classList.remove('drag-over');
+      });
+
+      col.addEventListener('drop', (e) => {
+        e.preventDefault();
+        col.classList.remove('drag-over');
+        const idx = parseInt(e.dataTransfer.getData('text/plain'));
+        const sourceItem = document.querySelector(`.drag-item[data-index="${idx}"]`);
+
+        if (sourceItem) {
+          const clone = sourceItem.cloneNode(true);
+          clone.draggable = true;
+          clone.classList.remove('dragging');
+          clone.style.opacity = '1';
+
+          clone.addEventListener('dragstart', (e) => {
+            e.dataTransfer.effectAllowed = 'move';
+            clone.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', idx.toString());
+          });
+
+          clone.addEventListener('dragend', () => {
+            clone.classList.remove('dragging');
+          });
+
+          col.appendChild(clone);
+          sourceItem.style.opacity = '0.5';
+        }
+      });
+    });
+
+    document.getElementById('btn-check-a4').addEventListener('click', () => {
+      const contentItems = colContent.querySelectorAll('.drag-item');
+      const languageItems = colLanguage.querySelectorAll('.drag-item');
+
+      let correct = 0;
+      contentItems.forEach(item => {
+        if (item.dataset.type === 'content') correct++;
+      });
+      languageItems.forEach(item => {
+        if (item.dataset.type === 'language') correct++;
+      });
+
+      const fb = document.getElementById('a4-feedback');
+      const label = document.getElementById('a4-label');
+      const msg = document.getElementById('a4-msg');
+
+      fb.style.display = 'block';
+      fb.classList.remove('warning', 'neutral');
+
+      if (correct === 6) {
+        fb.classList.add('success');
+        label.textContent = 'Perfect!';
+        msg.innerHTML = '<p>You\'ve separated language from content. This allows CALD students with strong ideas but developing English to get credit for their thinking. Language support becomes a separate conversation.</p>';
+        tracker.markDone('act-4');
+      } else {
+        fb.classList.add('neutral');
+        label.textContent = 'Review Your Sort';
+        msg.innerHTML = `<p>You placed ${correct}/6 correctly. Remember: "Grammar, spelling, punctuation" and "Sentence structure varied" are language criteria. Everything else is content.</p>`;
+      }
+
+      saveTLS(SAVE_KEY + '-a4', { correct });
+    });
+
+    document.getElementById('btn-reset-a4').addEventListener('click', () => {
+      pool.querySelectorAll('.drag-item').forEach(item => item.style.opacity = '1');
+      const clones = colContent.querySelectorAll('.drag-item'), colLangItems = colLanguage.querySelectorAll('.drag-item');
+      [...clones, ...colLangItems].forEach(item => item.remove());
+      document.getElementById('a4-feedback').style.display = 'none';
+    });
+  })();
+
+  /* ─────── Activity 5: CALD Check (Checklist) ─────── */
+  (function(){
+    const items = document.querySelectorAll('.cald-check-item');
+    items.forEach(item => {
+      const checkbox = item.querySelector('input[type="checkbox"]');
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          item.classList.add('flagged');
+        } else {
+          item.classList.remove('flagged');
+        }
+        saveTLS(SAVE_KEY + '-a5', { checkedCount: document.querySelectorAll('#cald-items input:checked').length });
+      });
+    });
+
+    document.getElementById('btn-complete-a5').addEventListener('click', () => {
+      const checked = document.querySelectorAll('#cald-items input[type="checkbox"]:checked').length;
+      const total = document.querySelectorAll('#cald-items input[type="checkbox"]').length;
+
+      if (checked >= total * 0.75) {
+        tracker.markDone('act-5');
+        tracker.completeModule();
+        document.getElementById('a5-feedback').style.display = 'block';
+        document.getElementById('nav-next-m15').classList.remove('disabled');
+        document.getElementById('nav-next-m15').setAttribute('aria-disabled', 'false');
+      } else {
+        alert('Review at least 6 of 8 items before completing.');
+      }
+    });
+  })();
+
+  // Reveal animation
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    setTimeout(() => { el.style.opacity = '1'; }, i * 100);
+  });
+})();
+</script>
+
+</body>
+</html>

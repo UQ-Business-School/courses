@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 16: Fail Levels and Formatting — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── MC quiz ── */
+.mc-options {
+  margin: 12px 0;
+}
+
+.mc-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  margin: 8px 0;
+  border: 1px solid #e4dfd9;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.mc-option:hover {
+  border-color: #51247A;
+  background: rgba(81, 36, 122, 0.02);
+}
+
+.mc-option.selected {
+  border-color: #51247A;
+  background: rgba(81, 36, 122, 0.05);
+}
+
+.mc-option.correct {
+  border-color: #2EA836;
+  background: #f0faf0;
+}
+
+.mc-option.incorrect {
+  border-color: #d9534f;
+  background: #fef5f5;
+}
+
+.mc-radio {
+  min-width: 20px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d0c9c2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: border-color 0.2s;
+}
+
+.mc-option.selected .mc-radio {
+  border-color: #51247A;
+}
+
+.mc-option.selected .mc-radio::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: #51247A;
+  border-radius: 50%;
+}
+
+.mc-option.correct .mc-radio {
+  border-color: #2EA836;
+}
+
+.mc-option.correct .mc-radio::after {
+  background: #2EA836;
+}
+
+/* ── Text transform ── */
+.transform-box {
+  margin: 12px 0;
+}
+
+.transform-original {
+  font-size: 14px;
+  line-height: 1.65;
+  padding: 16px;
+  background: #fef5f5;
+  border: 1px solid #e6c3c3;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  color: #1a1714;
+}
+
+.transform-original .label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #d9534f;
+  margin-bottom: 6px;
+}
+
+.transform-input {
+  width: 100%;
+  min-height: 80px;
+  padding: 14px;
+  border: 1px solid #e4dfd9;
+  border-radius: 8px;
+  font-family: 'Roboto', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #1a1714;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.transform-input:focus {
+  outline: none;
+  border-color: #51247A;
+}
+
+.transform-input::placeholder {
+  color: #c0b8b0;
+}
+
+.model-answer {
+  font-size: 14px;
+  line-height: 1.65;
+  padding: 16px;
+  background: #f0faf0;
+  border: 1px solid #c3e6c3;
+  border-radius: 8px;
+  margin-top: 12px;
+  color: #1a1714;
+  display: none;
+}
+
+.model-answer.show {
+  display: block;
+  animation: fadeSlideIn 0.3s ease;
+}
+
+.model-answer .label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #2d8a2d;
+  margin-bottom: 6px;
+}
+
+/* ── Fail levels info box ── */
+.fail-levels-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.fail-level-card {
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e4dfd9;
+}
+
+.fail-level-card.mf {
+  background: #fef8e8;
+  border-color: #e6a817;
+}
+
+.fail-level-card.f {
+  background: #fef5f5;
+  border-color: #d9534f;
+}
+
+.fail-level-card.lf {
+  background: #f5f0f5;
+  border-color: #962A8B;
+}
+
+.fail-level-card .grade {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.fail-level-card.mf .grade {
+  color: #e6a817;
+}
+
+.fail-level-card.f .grade {
+  color: #d9534f;
+}
+
+.fail-level-card.lf .grade {
+  color: #962A8B;
+}
+
+.fail-level-card .range {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #1a1714;
+}
+
+.fail-level-card .desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #6b6460;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .fail-levels-info {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 16 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<section class="module-hero part-d">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part D · Requirements & Formatting — Module 16</div>
+    <h1>Fail Levels and Formatting</h1>
+    <p class="hero-sub">Most rubrics collapse failure into a single "Fail" grade. UQ rubrics use three: Minimal Fail (47–49%), Fail (30–46%), and Low Fail (0–29%). Each has implications for supplementary assessment and what the work actually looks like.</p>
+    <span class="hero-time">⏱ ~15 minutes</span>
+  </div>
+</section>
+
+<!-- ── INTRO: THE THREE FAIL LEVELS ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#6b6460">Overview</div>
+    <h2 class="reveal">Three Fail Zones, Not One</h2>
+    <p class="lead reveal">Understanding fail-level implications changes how you write failure descriptors. Each zone has different assessment rules and different observable work characteristics.</p>
+
+    <div class="fail-levels-info reveal">
+      <div class="fail-level-card mf">
+        <div class="grade">MF: Minimal Fail</div>
+        <div class="range">47–49%</div>
+        <div class="desc"><strong>Eligible for supplementary assessment.</strong> Work is close to passing but falls short on one or two criteria. With targeted revision, could reach Pass standard.</div>
+      </div>
+      <div class="fail-level-card f">
+        <div class="grade">F: Fail</div>
+        <div class="range">30–46%</div>
+        <div class="desc"><strong>Not eligible for supplementary.</strong> Work has significant gaps or misunderstandings. Multiple criteria not met. Requires substantial re-engagement.</div>
+      </div>
+      <div class="fail-level-card lf">
+        <div class="grade">LF: Low Fail</div>
+        <div class="range">0–29%</div>
+        <div class="desc"><strong>Significant non-submission or fundamental misalignment.</strong> Work may be incomplete, off-topic, or show fundamental misunderstanding of the task.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: WHY THREE FAIL LEVELS ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#6b6460">Activity 1 of 4</div>
+    <h2 class="reveal">Why Three Fail Levels?</h2>
+    <p class="lead reveal">Each fail level carries different meaning for the student and different assessment consequences. Test your understanding.</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">Quick Knowledge Check</div>
+
+      <!-- Question 1 -->
+      <div style="margin:16px 0;">
+        <p class="activity-instruction"><strong>Q1: Which fail level is a student eligible for supplementary assessment?</strong></p>
+        <div class="mc-options" id="mc-1">
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Fail (30–46%)</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Minimal Fail (47–49%)</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Low Fail (0–29%)</span>
+          </div>
+        </div>
+        <div class="feedback neutral" id="a1-q1-feedback"></div>
+      </div>
+
+      <!-- Question 2 -->
+      <div style="margin:16px 0;padding-top:12px;border-top:1px solid #e4dfd9;">
+        <p class="activity-instruction"><strong>Q2: What grade range is "Fail"?</strong></p>
+        <div class="mc-options" id="mc-2">
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>47–49%</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>30–46%</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>0–29%</span>
+          </div>
+        </div>
+        <div class="feedback neutral" id="a1-q2-feedback"></div>
+      </div>
+
+      <!-- Question 3 -->
+      <div style="margin:16px 0;padding-top:12px;border-top:1px solid #e4dfd9;">
+        <p class="activity-instruction"><strong>Q3: A student who submits nothing receives?</strong></p>
+        <div class="mc-options" id="mc-3">
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Minimal Fail</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Fail</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Low Fail</span>
+          </div>
+        </div>
+        <div class="feedback neutral" id="a1-q3-feedback"></div>
+      </div>
+
+      <div class="feedback neutral" id="a1-overall-feedback" style="margin-top:16px;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: WRITE SUBSTANTIVE FAIL DESCRIPTORS ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#6b6460">Activity 2 of 4</div>
+    <h2 class="reveal">Write Substantive Fail Descriptors</h2>
+    <p class="lead reveal">The existing rubric has "Does not demonstrate analysis" at Fail. That's too vague. Rewrite to show what MF, F, and LF work actually looks like for "Critical Analysis."</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Differentiate Across Three Fail Zones</div>
+      <p class="activity-instruction">Use these models as a guide, then write your own versions.</p>
+
+      <!-- Model MF -->
+      <div style="margin:16px 0;padding:16px;background:#fef8e8;border:1px solid #e6a817;border-radius:8px;">
+        <p style="font-size:12px;font-weight:700;color:#e6a817;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model: Minimal Fail (47–49%)</p>
+        <p style="font-size:14px;margin:0;color:#1a1714;">Identifies one or two relevant factors but analysis is superficial or partially incorrect. Some relevant theory mentioned but not applied to the case. With additional development, could reach Pass standard.</p>
+      </div>
+
+      <!-- Model F -->
+      <div style="margin:16px 0;padding:16px;background:#fef5f5;border:1px solid #d9534f;border-radius:8px;">
+        <p style="font-size:12px;font-weight:700;color:#d9534f;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model: Fail (30–46%)</p>
+        <p style="font-size:14px;margin:0;color:#1a1714;">Attempts analysis but misidentifies causes or applies theory incorrectly. Response is largely descriptive rather than analytical. Significant gaps between claims and evidence.</p>
+      </div>
+
+      <!-- Model LF -->
+      <div style="margin:16px 0;padding:16px;background:#f5f0f5;border:1px solid #962A8B;border-radius:8px;">
+        <p style="font-size:12px;font-weight:700;color:#962A8B;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model: Low Fail (0–29%)</p>
+        <p style="font-size:14px;margin:0;color:#1a1714;">No meaningful analysis attempted. Response may restate the question, provide only personal opinion, or be substantially incomplete. Fundamental misunderstanding of the task.</p>
+      </div>
+
+      <p class="activity-instruction" style="margin-top:20px;">Now you try. Write MF for your rubric:</p>
+      <textarea class="transform-input" id="tf-mf" placeholder="Minimal Fail: identifies... but..."></textarea>
+
+      <p class="activity-instruction" style="margin-top:12px;">Write F:</p>
+      <textarea class="transform-input" id="tf-f" placeholder="Fail: attempts... but..."></textarea>
+
+      <p class="activity-instruction" style="margin-top:12px;">Write LF:</p>
+      <textarea class="transform-input" id="tf-lf" placeholder="Low Fail: no meaningful..."></textarea>
+
+      <button class="btn btn-primary" id="btn-reveal-a2" style="margin-top:12px;">Reveal Models & Compare</button>
+
+      <div style="display:none;margin-top:16px;" id="a2-models">
+        <div style="margin:12px 0;padding:16px;background:#fef8e8;border:1px solid #e6a817;border-radius:8px;">
+          <p style="font-size:12px;font-weight:700;color:#e6a817;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model MF</p>
+          <p style="font-size:14px;margin:0;color:#1a1714;">Identifies one or two relevant factors but analysis is superficial or partially incorrect. Some relevant theory mentioned but not applied to the case. With additional development, could reach Pass standard.</p>
+        </div>
+        <div style="margin:12px 0;padding:16px;background:#fef5f5;border:1px solid #d9534f;border-radius:8px;">
+          <p style="font-size:12px;font-weight:700;color:#d9534f;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model F</p>
+          <p style="font-size:14px;margin:0;color:#1a1714;">Attempts analysis but misidentifies causes or applies theory incorrectly. Response is largely descriptive rather than analytical. Significant gaps between claims and evidence.</p>
+        </div>
+        <div style="margin:12px 0;padding:16px;background:#f5f0f5;border:1px solid #962A8B;border-radius:8px;">
+          <p style="font-size:12px;font-weight:700;color:#962A8B;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model LF</p>
+          <p style="font-size:14px;margin:0;color:#1a1714;">No meaningful analysis attempted. Response may restate the question, provide only personal opinion, or be substantially incomplete. Fundamental misunderstanding of the task.</p>
+        </div>
+      </div>
+
+      <div class="feedback neutral" id="a2-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: NEGATIVE DEFINITION ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#6b6460">Activity 3 of 4</div>
+    <h2 class="reveal">Negative Definition: Credit vs. Distinction</h2>
+    <p class="lead reveal">A powerful technique: define the boundary between grades by stating what Credit does <em>not</em> require. "Unlike Distinction, Credit does not...". This removes ambiguity.</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">Write Three Boundary Markers</div>
+      <p class="activity-instruction">For three criteria, write what Credit level does NOT require that Distinction does.</p>
+
+      <!-- Model 1 -->
+      <div style="margin:16px 0;padding:16px;background:#f0faf0;border:1px solid #c3e6c3;border-radius:8px;">
+        <p style="font-size:12px;font-weight:700;color:#2d8a2d;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model: Critical Analysis</p>
+        <p style="font-size:14px;margin:0;color:#1a1714;">Unlike the Distinction level, the Credit level does not require explaining how contributing factors interact — identifying them independently is sufficient.</p>
+      </div>
+
+      <p class="activity-instruction" style="margin-top:16px;">Now you try. Write for <strong>Critical Analysis</strong>:</p>
+      <textarea class="transform-input" id="tf-ca" placeholder="Unlike the Distinction level, the Credit level does not..."></textarea>
+
+      <!-- Model 2 -->
+      <div style="margin:16px 0;padding:16px;background:#f0faf0;border:1px solid #c3e6c3;border-radius:8px;">
+        <p style="font-size:12px;font-weight:700;color:#2d8a2d;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model: Evidence Integration</p>
+        <p style="font-size:14px;margin:0;color:#1a1714;">Unlike the Distinction level, the Credit level does not require synthesising across sources — using individual sources to support separate claims is sufficient.</p>
+      </div>
+
+      <p class="activity-instruction" style="margin-top:16px;">Write for <strong>Evidence Integration</strong>:</p>
+      <textarea class="transform-input" id="tf-ei" placeholder="Unlike the Distinction level, the Credit level does not..."></textarea>
+
+      <!-- Model 3 -->
+      <div style="margin:16px 0;padding:16px;background:#f0faf0;border:1px solid #c3e6c3;border-radius:8px;">
+        <p style="font-size:12px;font-weight:700;color:#2d8a2d;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model: Recommendations</p>
+        <p style="font-size:14px;margin:0;color:#1a1714;">Unlike the Distinction level, the Credit level does not require evaluating feasibility — proposing reasonable recommendations is sufficient.</p>
+      </div>
+
+      <p class="activity-instruction" style="margin-top:16px;">Write for <strong>Recommendations</strong>:</p>
+      <textarea class="transform-input" id="tf-rec" placeholder="Unlike the Distinction level, the Credit level does not..."></textarea>
+
+      <button class="btn btn-primary" id="btn-reveal-a3" style="margin-top:12px;">Reveal Models & Compare</button>
+
+      <div style="display:none;margin-top:16px;" id="a3-models">
+        <div style="margin:12px 0;padding:16px;background:#f0faf0;border:1px solid #c3e6c3;border-radius:8px;">
+          <p style="font-size:12px;font-weight:700;color:#2d8a2d;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model CA</p>
+          <p style="font-size:14px;margin:0;color:#1a1714;">Unlike the Distinction level, the Credit level does not require explaining how contributing factors interact — identifying them independently is sufficient.</p>
+        </div>
+        <div style="margin:12px 0;padding:16px;background:#f0faf0;border:1px solid #c3e6c3;border-radius:8px;">
+          <p style="font-size:12px;font-weight:700;color:#2d8a2d;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model EI</p>
+          <p style="font-size:14px;margin:0;color:#1a1714;">Unlike the Distinction level, the Credit level does not require synthesising across sources — using individual sources to support separate claims is sufficient.</p>
+        </div>
+        <div style="margin:12px 0;padding:16px;background:#f0faf0;border:1px solid #c3e6c3;border-radius:8px;">
+          <p style="font-size:12px;font-weight:700;color:#2d8a2d;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model Rec</p>
+          <p style="font-size:14px;margin:0;color:#1a1714;">Unlike the Distinction level, the Credit level does not require evaluating feasibility — proposing reasonable recommendations is sufficient.</p>
+        </div>
+      </div>
+
+      <div class="feedback neutral" id="a3-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: FORMAT CHECK ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#6b6460">Activity 4 of 4</div>
+    <h2 class="reveal">UQ Rubric Formatting Standards</h2>
+    <p class="lead reveal">UQ rubrics have specific formatting requirements. This quiz checks your knowledge of those visual standards.</p>
+
+    <div class="activity reveal" id="act-4">
+      <div class="activity-number">4</div>
+      <div class="activity-title">Format Knowledge Check</div>
+
+      <!-- Q1 -->
+      <div style="margin:16px 0;">
+        <p class="activity-instruction"><strong>Q1: What is the standard page orientation for UQ rubrics?</strong></p>
+        <div class="mc-options" id="mc-4-1">
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Portrait A4</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Landscape A4</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Either is acceptable</span>
+          </div>
+        </div>
+        <div class="feedback neutral" id="a4-q1-feedback"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div style="margin:16px 0;padding-top:12px;border-top:1px solid #e4dfd9;">
+        <p class="activity-instruction"><strong>Q2: What is the header colour for UQ rubrics?</strong></p>
+        <div class="mc-options" id="mc-4-2">
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>UQ Purple (#51247A)</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Dark Grey (#333333)</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Navy Blue (#003366)</span>
+          </div>
+        </div>
+        <div class="feedback neutral" id="a4-q2-feedback"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div style="margin:16px 0;padding-top:12px;border-top:1px solid #e4dfd9;">
+        <p class="activity-instruction"><strong>Q3: What are the alternating row colours?</strong></p>
+        <div class="mc-options" id="mc-4-3">
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>White and light purple (#E8E0F0)</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>White and light grey (#F0F0F0)</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Alternating not required</span>
+          </div>
+        </div>
+        <div class="feedback neutral" id="a4-q3-feedback"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div style="margin:16px 0;padding-top:12px;border-top:1px solid #e4dfd9;">
+        <p class="activity-instruction"><strong>Q4: How many grade columns in a standard UQ rubric?</strong></p>
+        <div class="mc-options" id="mc-4-4">
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>5 (HD, D, C, P, F)</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>7 (HD, D, C, P, MF, F, LF)</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>6 (HD, D, C, P, F, Incomplete)</span>
+          </div>
+        </div>
+        <div class="feedback neutral" id="a4-q4-feedback"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div style="margin:16px 0;padding-top:12px;border-top:1px solid #e4dfd9;">
+        <p class="activity-instruction"><strong>Q5: What is the standard font for UQ rubrics?</strong></p>
+        <div class="mc-options" id="mc-4-5">
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Times New Roman</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Arial</span>
+          </div>
+          <div class="mc-option">
+            <div class="mc-radio"></div>
+            <span>Calibri</span>
+          </div>
+        </div>
+        <div class="feedback neutral" id="a4-q5-feedback"></div>
+      </div>
+
+      <div class="feedback neutral" id="a4-overall-feedback" style="margin-top:16px;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RUBRIC UPDATE ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#6b6460">Your Rubric</div>
+    <h2 class="reveal">Fail Levels Now Fully Articulated</h2>
+    <p class="lead reveal">Your rubric now has substantive, differentiated descriptors across all three fail zones for "Critical Analysis." Students and markers can now see exactly what distinguishes MF from F from LF.</p>
+    <div class="rubric-preview rubric-preview-auto reveal"></div>
+  </div>
+</section>
+
+<!-- ── NAVIGATION ── -->
+<section class="module-section alt">
+  <div class="section-inner" style="text-align:center;">
+    <div class="module-nav">
+      <a href="module-15.html">← Module 15</a>
+      <button class="btn btn-primary btn-complete-module" disabled>Complete Module 16</button>
+      <a href="module-17.html" class="nav-next disabled" aria-disabled="true">Module 17 →</a>
+    </div>
+    <p style="font-size:12px;color:#6b6460;margin-top:12px;">Complete all four activities to unlock.</p>
+  </div>
+</section>
+
+<script src="shared.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  const tracker = ModuleTracker(16, 4);
+
+  /* ═══════════════════════════════════════
+     ACTIVITY 1: MULTIPLE CHOICE QUESTIONS
+     ═══════════════════════════════════════ */
+  (function() {
+    const q1Container = document.getElementById('mc-1');
+    const q2Container = document.getElementById('mc-2');
+    const q3Container = document.getElementById('mc-3');
+    const overallFeedback = document.getElementById('a1-overall-feedback');
+    let q1Correct = false, q2Correct = false, q3Correct = false;
+
+    MultipleChoice(q1Container, {
+      correctIndex: 1,  // Minimal Fail
+      feedback: {
+        correct: 'Correct! Only Minimal Fail (47–49%) is eligible for supplementary assessment.',
+        incorrect: 'Not quite. Minimal Fail is the zone closest to passing, so only that level is eligible for supplementary assessment.'
+      },
+      saveKey: 'm16-a1-q1',
+      onComplete: (isCorrect) => {
+        q1Correct = isCorrect;
+        checkAll();
+      }
+    });
+
+    MultipleChoice(q2Container, {
+      correctIndex: 1,  // 30-46%
+      feedback: {
+        correct: 'Correct! Fail is the 30–46% range.',
+        incorrect: 'Not quite. Fail is 30–46%, the middle fail zone.'
+      },
+      saveKey: 'm16-a1-q2',
+      onComplete: (isCorrect) => {
+        q2Correct = isCorrect;
+        checkAll();
+      }
+    });
+
+    MultipleChoice(q3Container, {
+      correctIndex: 2,  // Low Fail
+      feedback: {
+        correct: 'Correct! Non-submission or fundamental misalignment results in Low Fail (0–29%).',
+        incorrect: 'Not quite. Complete non-submission falls in the Low Fail zone (0–29%).'
+      },
+      saveKey: 'm16-a1-q3',
+      onComplete: (isCorrect) => {
+        q3Correct = isCorrect;
+        checkAll();
+      }
+    });
+
+    function checkAll() {
+      if (q1Correct && q2Correct && q3Correct) {
+        overallFeedback.className = 'feedback show correct';
+        overallFeedback.innerHTML = 'Perfect! You understand the three fail zones and their assessment implications.';
+        tracker.markDone('m16-a1');
+      }
+    }
+
+    // Restore from storage
+    const saved = Exercises.get('m16-a1-q1');
+    if (saved && saved.correct) {
+      q1Correct = true;
+    }
+    const saved2 = Exercises.get('m16-a1-q2');
+    if (saved2 && saved2.correct) {
+      q2Correct = true;
+    }
+    const saved3 = Exercises.get('m16-a1-q3');
+    if (saved3 && saved3.correct) {
+      q3Correct = true;
+    }
+    if (q1Correct && q2Correct && q3Correct) {
+      tracker.markDone('m16-a1');
+      overallFeedback.className = 'feedback show correct';
+      overallFeedback.innerHTML = 'Perfect! You understand the three fail zones and their assessment implications.';
+    }
+  })();
+
+  /* ═══════════════════════════════════════
+     ACTIVITY 2: WRITE FAIL DESCRIPTORS
+     ═══════════════════════════════════════ */
+  (function() {
+    const mfInput = document.getElementById('tf-mf');
+    const fInput = document.getElementById('tf-f');
+    const lfInput = document.getElementById('tf-lf');
+    const revealBtn = document.getElementById('btn-reveal-a2');
+    const modelsDiv = document.getElementById('a2-models');
+    const feedback = document.getElementById('a2-feedback');
+
+    revealBtn.addEventListener('click', () => {
+      modelsDiv.style.display = 'block';
+      revealBtn.disabled = true;
+      revealBtn.textContent = 'Models Revealed';
+
+      if (mfInput.value.trim() && fInput.value.trim() && lfInput.value.trim()) {
+        feedback.className = 'feedback show correct';
+        feedback.innerHTML = 'Excellent! You\'ve written descriptors that differentiate across fail zones. MF hints at potential, F shows why supplementary won\'t help, LF indicates fundamental non-engagement.';
+        tracker.markDone('m16-a2');
+        Exercises.set('m16-a2', {
+          mf: mfInput.value,
+          f: fInput.value,
+          lf: lfInput.value,
+          completed: true
+        });
+      }
+    });
+
+    // Restore from storage
+    const saved = Exercises.get('m16-a2');
+    if (saved && saved.completed) {
+      tracker.markDone('m16-a2');
+      mfInput.value = saved.mf || '';
+      fInput.value = saved.f || '';
+      lfInput.value = saved.lf || '';
+    }
+  })();
+
+  /* ═══════════════════════════════════════
+     ACTIVITY 3: NEGATIVE DEFINITION
+     ═══════════════════════════════════════ */
+  (function() {
+    const caInput = document.getElementById('tf-ca');
+    const eiInput = document.getElementById('tf-ei');
+    const recInput = document.getElementById('tf-rec');
+    const revealBtn = document.getElementById('btn-reveal-a3');
+    const modelsDiv = document.getElementById('a3-models');
+    const feedback = document.getElementById('a3-feedback');
+
+    revealBtn.addEventListener('click', () => {
+      modelsDiv.style.display = 'block';
+      revealBtn.disabled = true;
+      revealBtn.textContent = 'Models Revealed';
+
+      if (caInput.value.trim() && eiInput.value.trim() && recInput.value.trim()) {
+        feedback.className = 'feedback show correct';
+        feedback.innerHTML = 'Great work! Negative definitions create clarity. Markers know exactly what Credit doesn\'t need to demonstrate, removing ambiguity between adjacent grades.';
+        tracker.markDone('m16-a3');
+        Exercises.set('m16-a3', {
+          ca: caInput.value,
+          ei: eiInput.value,
+          rec: recInput.value,
+          completed: true
+        });
+      }
+    });
+
+    // Restore from storage
+    const saved = Exercises.get('m16-a3');
+    if (saved && saved.completed) {
+      tracker.markDone('m16-a3');
+      caInput.value = saved.ca || '';
+      eiInput.value = saved.ei || '';
+      recInput.value = saved.rec || '';
+    }
+  })();
+
+  /* ═══════════════════════════════════════
+     ACTIVITY 4: FORMAT QUIZ
+     ═══════════════════════════════════════ */
+  (function() {
+    const q1Container = document.getElementById('mc-4-1');
+    const q2Container = document.getElementById('mc-4-2');
+    const q3Container = document.getElementById('mc-4-3');
+    const q4Container = document.getElementById('mc-4-4');
+    const q5Container = document.getElementById('mc-4-5');
+    const overallFeedback = document.getElementById('a4-overall-feedback');
+    let correct = 0;
+
+    function checkAllQuestions() {
+      const saved1 = Exercises.get('m16-a4-q1');
+      const saved2 = Exercises.get('m16-a4-q2');
+      const saved3 = Exercises.get('m16-a4-q3');
+      const saved4 = Exercises.get('m16-a4-q4');
+      const saved5 = Exercises.get('m16-a4-q5');
+
+      correct = 0;
+      if (saved1 && saved1.correct) correct++;
+      if (saved2 && saved2.correct) correct++;
+      if (saved3 && saved3.correct) correct++;
+      if (saved4 && saved4.correct) correct++;
+      if (saved5 && saved5.correct) correct++;
+
+      if (correct === 5) {
+        overallFeedback.className = 'feedback show correct';
+        overallFeedback.innerHTML = 'Perfect! You know UQ rubric formatting standards. These details matter for professional presentation and accessibility.';
+        tracker.markDone('m16-a4');
+      }
+    }
+
+    MultipleChoice(q1Container, {
+      correctIndex: 1,  // Landscape A4
+      feedback: {
+        correct: 'Correct! UQ rubrics are landscape to accommodate 7 grade columns.',
+        incorrect: 'Not quite. Landscape orientation accommodates the full width needed for 7 grade columns.'
+      },
+      saveKey: 'm16-a4-q1',
+      onComplete: (isCorrect) => {
+        checkAllQuestions();
+      }
+    });
+
+    MultipleChoice(q2Container, {
+      correctIndex: 0,  // UQ Purple
+      feedback: {
+        correct: 'Correct! UQ Purple (#51247A) is the official header colour.',
+        incorrect: 'Not quite. UQ Purple is the official branding colour for headers.'
+      },
+      saveKey: 'm16-a4-q2',
+      onComplete: (isCorrect) => {
+        checkAllQuestions();
+      }
+    });
+
+    MultipleChoice(q3Container, {
+      correctIndex: 0,  // White and light purple
+      feedback: {
+        correct: 'Correct! White and light purple (#E8E0F0) are the alternating row colours.',
+        incorrect: 'Not quite. Light purple alternates with white for visual clarity.'
+      },
+      saveKey: 'm16-a4-q3',
+      onComplete: (isCorrect) => {
+        checkAllQuestions();
+      }
+    });
+
+    MultipleChoice(q4Container, {
+      correctIndex: 1,  // 7 columns
+      feedback: {
+        correct: 'Correct! 7 grade columns for HD, D, C, P, MF, F, LF.',
+        incorrect: 'Not quite. UQ rubrics use 7 columns to include all three fail zones.'
+      },
+      saveKey: 'm16-a4-q4',
+      onComplete: (isCorrect) => {
+        checkAllQuestions();
+      }
+    });
+
+    MultipleChoice(q5Container, {
+      correctIndex: 1,  // Arial
+      feedback: {
+        correct: 'Correct! Arial is the standard font for UQ rubrics.',
+        incorrect: 'Not quite. Arial is the standard font for UQ documents.'
+      },
+      saveKey: 'm16-a4-q5',
+      onComplete: (isCorrect) => {
+        checkAllQuestions();
+      }
+    });
+
+    // Restore from storage
+    checkAllQuestions();
+  })();
+
+  // Initialize rubric preview
+  setTimeout(() => {
+    const rubricContainer = document.querySelector('.rubric-preview-auto');
+    if (rubricContainer && typeof Rubric !== 'undefined') {
+      Rubric.renderPreview(rubricContainer);
+    }
+  }, 100);
+})();
+</script>
+
+</body>
+</html>

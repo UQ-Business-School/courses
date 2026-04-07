@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 8: Spine-and-Distinguisher Structure — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.spine-grid{display:grid;grid-template-columns:1fr;gap:12px;margin:16px 0;}
+.spine-row{padding:14px;border:1px solid #e4dfd9;border-radius:8px;background:#fff;font-size:13px;line-height:1.6;}
+.spine-row-label{font-size:11px;color:#8b7f77;font-weight:700;margin-bottom:6px;letter-spacing:.5px;}
+.spine-row-text{color:#3a3a3a;}
+.spine-word{cursor:pointer;padding:2px 4px;border-radius:3px;transition:all .15s;}
+.spine-word.spine-target{background:#d4f4d4;border-bottom:2px solid #2ea836;}
+.spine-word.spine-target:hover{background:#c0ecc0;}
+.spine-word.distinguisher-target{background:#ffe6e6;border-bottom:2px solid #d9534f;}
+.spine-word.distinguisher-target:hover{background:#ffcccc;}
+.spine-word.spine-highlighted{background:#c0ecc0;border-bottom:3px solid #2ea836;font-weight:600;}
+.spine-word.distinguisher-highlighted{background:#ffb3b3;border-bottom:3px solid #d9534f;font-weight:600;}
+
+.broken-spine-display{padding:14px;border:1px solid #e4dfd9;border-radius:8px;background:#fef5f0;margin:12px 0;}
+.broken-spine-row{padding:10px;margin:8px 0;border-left:3px solid #d9534f;background:#fff;font-size:13px;line-height:1.6;}
+.broken-spine-row.spineless{opacity:.7;font-style:italic;color:#8b7f77;}
+
+.timer-display{font-size:32px;font-weight:700;color:#51247A;text-align:center;margin:20px 0;font-family:monospace;}
+.timer-label{font-size:12px;color:#8b7f77;text-align:center;margin-top:8px;}
+.comparison-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;}
+.comparison-cell{padding:14px;border:1px solid #e4dfd9;border-radius:8px;background:#fff;}
+.comparison-cell h4{font-size:12px;font-weight:700;color:#51247A;margin-bottom:10px;letter-spacing:.5px;}
+.comparison-cell .criterion-level{padding:10px;margin:8px 0;border-left:3px solid #e4dfd9;background:#f9f7f5;font-size:13px;line-height:1.5;}
+.comparison-cell.with-spine .criterion-level{border-left-color:#2ea836;}
+.comparison-cell.no-spine .criterion-level{border-left-color:#d9534f;}
+
+.transform-steps{display:grid;grid-template-columns:1fr;gap:16px;margin:16px 0;}
+.transform-step{padding:14px;border:1px solid #e4dfd9;border-radius:8px;background:#f9f7f5;}
+.transform-step.active{border-color:#51247A;background:rgba(81,36,122,0.04);}
+.transform-step-num{font-size:11px;font-weight:700;color:#51247A;letter-spacing:.5px;margin-bottom:6px;}
+.transform-step-title{font-size:14px;font-weight:600;color:#2d2d2d;margin-bottom:8px;}
+.transform-step textarea{width:100%;min-height:80px;padding:10px;border:1px solid #e4dfd9;border-radius:6px;font-size:13px;font-family:inherit;resize:vertical;}
+.transform-step.disabled{opacity:.5;pointer-events:none;}
+
+@media(max-width:760px){
+  .comparison-pair{grid-template-columns:1fr;}
+  .spine-grid{gap:8px;}
+}
+</style>
+</head>
+<body>
+
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 8 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<section class="module-hero part-b">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part B · Frameworks &mdash; Module 8</div>
+    <h1>Spine-and-Distinguisher Structure</h1>
+    <p class="hero-sub">How a consistent "spine" (the text that stays the same) paired with precise "distinguishers" (the text that changes) makes your rubric faster to read and easier to mark with.</p>
+    <span class="hero-time">&#9201; ~15 minutes</span>
+  </div>
+</section>
+
+<!-- ── INTRO ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">The Framework</div>
+    <h2 class="reveal">Why Consistency Matters</h2>
+    <p class="lead reveal">In previous modules, you learned that criteria rows should use consistent language and avoid ambiguous adverbs. This module takes that principle further: in a well-designed criterion, part of the text should stay identical across all grades (the "spine"), while other parts change to show the progression (the "distinguishers").</p>
+    <p class="reveal">This structure has three benefits: (1) it's <strong>faster to mark</strong> — your eye immediately spots what changes; (2) it's <strong>easier to write</strong> — you're not starting from scratch at each level; and (3) it's <strong>clearer to students</strong> — they see exactly what shifts between grades.</p>
+
+    <div class="emphasis-box reveal" style="border-left-color:#51247A;">
+      <p><strong>Example spine:</strong> "Selects and synthesises sources that [...], building a [...] evidence base."</p>
+      <p style="margin-top:8px;font-size:13px;"><strong>Distinguishers:</strong> The bracketed portions change at each level (challenging vs. supporting vs. meeting requirements), as does the adjective before "evidence base" (original vs. coherent vs. functional).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: DECONSTRUCT A SPINE ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 1 of 4</div>
+    <h2 class="reveal">Deconstruct a Spine</h2>
+    <p class="lead reveal">Below is a well-written criterion row for "Evidence Integration" at four levels. Click on words to highlight: <span style="background:#d4f4d4;padding:2px 4px;border-radius:3px;">spine words stay the same in green</span>, <span style="background:#ffe6e6;padding:2px 4px;border-radius:3px;">distinguishers change in red</span>.</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">Identify Spine and Distinguishers</div>
+
+      <div class="spine-grid" id="spine-grid-a1">
+        <div class="spine-row">
+          <div class="spine-row-label">HD (Excellent)</div>
+          <div class="spine-row-text">Selects and synthesises sources that <span class="spine-word" data-id="s1-hd-dist">challenge the argument and resolve tensions between perspectives</span>, building an <span class="spine-word" data-id="s1-hd-adj">original</span> evidence base.</div>
+        </div>
+        <div class="spine-row">
+          <div class="spine-row-label">D (Distinction)</div>
+          <div class="spine-row-text">Selects and synthesises sources that <span class="spine-word" data-id="s1-d-dist">support multiple aspects of the argument and identify thematic connections</span>, building a <span class="spine-word" data-id="s1-d-adj">coherent</span> evidence base.</div>
+        </div>
+        <div class="spine-row">
+          <div class="spine-row-label">C (Credit)</div>
+          <div class="spine-row-text">Selects and synthesises sources that <span class="spine-word" data-id="s1-c-dist">support each main claim with relevant citations</span>, building a <span class="spine-word" data-id="s1-c-adj">functional</span> evidence base.</div>
+        </div>
+        <div class="spine-row">
+          <div class="spine-row-label">P (Pass)</div>
+          <div class="spine-row-text">Selects and synthesises sources that <span class="spine-word" data-id="s1-p-dist">meet the minimum requirements with descriptive referencing</span>, building a <span class="spine-word" data-id="s1-p-adj">basic</span> evidence base.</div>
+        </div>
+      </div>
+
+      <div class="emphasis-box" style="margin-top:16px;border-left-color:#2ea836;">
+        <p><strong>The spine:</strong> "Selects and synthesises sources that [...], building a/an [...] evidence base"</p>
+        <p style="margin-top:8px;font-size:13px;"><strong>The distinguishers:</strong> The bracketed phrases (what the sources do) and the adjective (original/coherent/functional/basic).</p>
+        <p style="margin-top:8px;font-size:12px;color:#6b6460;">Hint: Once you click the correct spine words, they'll turn green. Distinguisher words turn red. Try to identify them all.</p>
+      </div>
+
+      <div class="feedback neutral" id="a1-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: FIX A BROKEN SPINE ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 2 of 4</div>
+    <h2 class="reveal">Fix a Broken Spine</h2>
+    <p class="lead reveal">This criterion for "Recommendations" has a broken spine: the structure shifts at Credit and Pass levels, making it harder to read and mark. Rewrite C and P to restore the consistent structure you see in HD and D.</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Restore the Spine Structure</div>
+
+      <div class="broken-spine-display">
+        <div class="broken-spine-row" style="border-left-color:#2ea836;">
+          <strong>HD:</strong> Recommendations demonstrate strategic thinking with clear implementation plans
+        </div>
+        <div class="broken-spine-row" style="border-left-color:#2ea836;">
+          <strong>D:</strong> Recommendations demonstrate well-developed thinking with some implementation detail
+        </div>
+        <div class="broken-spine-row spineless" style="border-left-color:#d9534f;">
+          <strong>C:</strong> The student suggests some recommendations
+        </div>
+        <div class="broken-spine-row spineless" style="border-left-color:#d9534f;">
+          <strong>P:</strong> Basic suggestions are provided
+        </div>
+      </div>
+
+      <div class="emphasis-box" style="margin-top:16px;border-left-color:#d9534f;">
+        <p><strong>Problem:</strong> At C and P, the spine "Recommendations demonstrate [...]" disappears. The sentence structure changes completely.</p>
+        <p style="margin-top:8px;font-size:13px;"><strong>Your task:</strong> Rewrite C and P so they follow the same pattern: "Recommendations demonstrate [adjective] thinking with [adjective] implementation [noun]"</p>
+      </div>
+
+      <div class="transform-box" style="margin-top:16px;">
+        <label style="display:block;font-size:13px;font-weight:600;color:#2d2d2d;margin-bottom:8px;">Credit level:</label>
+        <textarea class="transform-input" id="tf-c-level" placeholder="Recommendations demonstrate..." data-level="c"></textarea>
+
+        <label style="display:block;font-size:13px;font-weight:600;color:#2d2d2d;margin-bottom:8px;margin-top:12px;">Pass level:</label>
+        <textarea class="transform-input" id="tf-p-level" placeholder="Recommendations demonstrate..." data-level="p"></textarea>
+
+        <button class="btn btn-primary" id="btn-show-model-a2" style="margin-top:12px;">Show Model Answer</button>
+        <div class="model-answer" id="a2-model">
+          <span class="label">Model Answer</span>
+          <p style="margin:6px 0;"><strong>C:</strong> Recommendations demonstrate practical thinking with general implementation ideas</p>
+          <p style="margin:6px 0;"><strong>P:</strong> Recommendations demonstrate emerging thinking with limited implementation detail</p>
+        </div>
+
+        <button class="btn btn-primary" id="btn-check-a2" style="margin-top:12px;">Check My Answer</button>
+        <button class="btn btn-secondary btn-small" id="btn-reset-a2" style="margin-left:8px;">Reset</button>
+      </div>
+
+      <div class="feedback neutral" id="a2-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: BUILD A SPINE FROM SCRATCH ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 3 of 4</div>
+    <h2 class="reveal">Build a Spine from Scratch</h2>
+    <p class="lead reveal">Given the HD-level descriptor for "Academic Communication," you'll build the spine and then write distinguishers for D, C, and P. This step-by-step approach shows how consistent structure emerges naturally from a strong foundation.</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">Build Step by Step</div>
+
+      <div class="emphasis-box" style="border-left-color:#51247A;margin-bottom:16px;">
+        <p><strong>HD descriptor (given):</strong> "Presents a sustained, well-structured argument where each section builds on the previous one, with explicit transitions and discipline-appropriate terminology used precisely."</p>
+      </div>
+
+      <div class="transform-steps">
+        <div class="transform-step active" id="step-1">
+          <div class="transform-step-num">STEP 1</div>
+          <div class="transform-step-title">Write the Spine</div>
+          <p style="font-size:13px;color:#6b6460;margin-bottom:10px;">This is the skeleton that will stay the same across all levels. It should include placeholders [...] for parts that will change.</p>
+          <textarea class="transform-input" id="tf-spine" placeholder="Presents a [...] argument where [...], with [...] transitions and discipline-appropriate terminology used [...]." data-step="spine"></textarea>
+          <button class="btn btn-secondary btn-small" id="btn-spine-hint" style="margin-top:8px;">Show Hint</button>
+          <div class="hint-text" id="spine-hint" style="display:none;margin-top:8px;padding:10px;background:#fef5f0;border-left:3px solid #d9534f;font-size:12px;color:#6b6460;">
+            Model: "Presents a [...] argument where [...], with [...] transitions and discipline-appropriate terminology used [...]."
+          </div>
+        </div>
+
+        <div class="transform-step" id="step-2">
+          <div class="transform-step-num">STEP 2</div>
+          <div class="transform-step-title">Write the D Distinguisher</div>
+          <p style="font-size:13px;color:#6b6460;margin-bottom:10px;">Fill in the bracketed parts for Distinction. Example words: "coherent, logically organised / sections connect to form a clear narrative / clear / accurately"</p>
+          <textarea class="transform-input" id="tf-d-dist" placeholder="Write the distinguisher words here..." data-step="d-dist"></textarea>
+          <button class="btn btn-secondary btn-small" id="btn-d-hint" style="margin-top:8px;">Show Hint</button>
+          <div class="hint-text" id="d-hint" style="display:none;margin-top:8px;padding:10px;background:#fef5f0;border-left:3px solid #d9534f;font-size:12px;color:#6b6460;">
+            Model: "coherent, logically organised / sections connect to form a clear narrative / clear / accurately"
+          </div>
+        </div>
+
+        <div class="transform-step" id="step-3">
+          <div class="transform-step-num">STEP 3</div>
+          <div class="transform-step-title">Write the C Distinguisher</div>
+          <p style="font-size:13px;color:#6b6460;margin-bottom:10px;">Fill in the bracketed parts for Credit. Example words: "structured / sections address the topic with some logical flow / adequate / generally correctly"</p>
+          <textarea class="transform-input" id="tf-c-dist" placeholder="Write the distinguisher words here..." data-step="c-dist"></textarea>
+          <button class="btn btn-secondary btn-small" id="btn-c-hint" style="margin-top:8px;">Show Hint</button>
+          <div class="hint-text" id="c-hint" style="display:none;margin-top:8px;padding:10px;background:#fef5f0;border-left:3px solid #d9534f;font-size:12px;color:#6b6460;">
+            Model: "structured / sections address the topic with some logical flow / adequate / generally correctly"
+          </div>
+        </div>
+
+        <div class="transform-step" id="step-4">
+          <div class="transform-step-num">STEP 4</div>
+          <div class="transform-step-title">Write the P Distinguisher</div>
+          <p style="font-size:13px;color:#6b6460;margin-bottom:10px;">Fill in the bracketed parts for Pass. Example words: "basic / sections are present but connections are limited / minimal / with occasional errors"</p>
+          <textarea class="transform-input" id="tf-p-dist" placeholder="Write the distinguisher words here..." data-step="p-dist"></textarea>
+          <button class="btn btn-secondary btn-small" id="btn-p-hint" style="margin-top:8px;">Show Hint</button>
+          <div class="hint-text" id="p-hint" style="display:none;margin-top:8px;padding:10px;background:#fef5f0;border-left:3px solid #d9534f;font-size:12px;color:#6b6460;">
+            Model: "basic / sections are present but connections are limited / minimal / with occasional errors"
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-check-a3" style="margin-top:16px;">Show Model Spine and Distinguishers</button>
+      <div class="model-answer" id="a3-model" style="margin-top:12px;">
+        <span class="label">Model Answer</span>
+        <p style="margin:6px 0;font-size:12px;"><strong>Spine:</strong> Presents a [...] argument where [...], with [...] transitions and discipline-appropriate terminology used [...].</p>
+        <p style="margin:6px 0;font-size:12px;"><strong>D:</strong> coherent, logically organised / sections connect to form a clear narrative / clear / accurately</p>
+        <p style="margin:6px 0;font-size:12px;"><strong>C:</strong> structured / sections address the topic with some logical flow / adequate / generally correctly</p>
+        <p style="margin:6px 0;font-size:12px;"><strong>P:</strong> basic / sections are present but connections are limited / minimal / with occasional errors</p>
+      </div>
+
+      <div class="feedback neutral" id="a3-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: THE READABILITY TEST ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 4 of 4</div>
+    <h2 class="reveal">The Readability Test</h2>
+    <p class="lead reveal">Compare two versions of the same criterion: one without a consistent spine (harder to spot the difference) and one with (easier). Time yourself finding the difference in each version. The spine version should be noticeably faster.</p>
+
+    <div class="activity reveal" id="act-4">
+      <div class="activity-number">4</div>
+      <div class="activity-title">Speed Comparison</div>
+
+      <p style="font-size:13px;color:#6b6460;margin:16px 0;">For each version below, find what changes between Credit and Distinction. Click "I found the difference" when you spot it. Your time will be recorded.</p>
+
+      <!-- No Spine Version -->
+      <div style="margin:24px 0;padding:16px;border:2px solid #d9534f;border-radius:8px;background:#fef5f0;">
+        <h4 style="font-size:14px;font-weight:600;color:#d9534f;margin-bottom:12px;">Version A: Without a Consistent Spine (Harder)</h4>
+
+        <div class="comparison-pair">
+          <div class="comparison-cell no-spine">
+            <h4>DISTINCTION</h4>
+            <div class="criterion-level">
+              Thoroughly analyses the case using multiple theoretical perspectives and draws connections between them
+            </div>
+          </div>
+          <div class="comparison-cell no-spine">
+            <h4>CREDIT</h4>
+            <div class="criterion-level">
+              The student provides a good analysis that uses some theories
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center;">
+          <button class="btn btn-primary" id="btn-find-a4-a">I Found the Difference</button>
+          <div class="timer-display" id="timer-a4-a" style="display:none;">0s</div>
+          <div class="timer-label" id="label-a4-a" style="display:none;"></div>
+        </div>
+      </div>
+
+      <!-- With Spine Version -->
+      <div style="margin:24px 0;padding:16px;border:2px solid #2ea836;border-radius:8px;background:#f5faf5;">
+        <h4 style="font-size:14px;font-weight:600;color:#2ea836;margin-bottom:12px;">Version B: With a Consistent Spine (Easier)</h4>
+
+        <div class="comparison-pair">
+          <div class="comparison-cell with-spine">
+            <h4>DISTINCTION</h4>
+            <div class="criterion-level">
+              Analyses the case by applying <strong>multiple theoretical perspectives and explaining how they connect</strong>
+            </div>
+          </div>
+          <div class="comparison-cell with-spine">
+            <h4>CREDIT</h4>
+            <div class="criterion-level">
+              Analyses the case by applying <strong>at least two theoretical perspectives to relevant aspects of the problem</strong>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center;">
+          <button class="btn btn-primary" id="btn-find-a4-b">I Found the Difference</button>
+          <div class="timer-display" id="timer-a4-b" style="display:none;">0s</div>
+          <div class="timer-label" id="label-a4-b" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div class="emphasis-box" style="margin-top:24px;border-left-color:#2ea836;">
+        <p><strong>What you should notice:</strong> In Version B, your eye can skip straight to the bold text (the distinguisher). In Version A, you have to parse the entire sentences to find the difference. Version B is typically 3–5 seconds faster.</p>
+        <p style="margin-top:8px;font-size:13px;">This is why spine-and-distinguisher structure matters for real-world marking: it reduces cognitive load, making your job easier and more consistent.</p>
+      </div>
+
+      <div class="feedback neutral" id="a4-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RUBRIC STATE ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Your Rubric</div>
+    <h2 class="reveal">Spine Applied to Academic Communication</h2>
+    <p class="lead reveal">The Academic Communication criterion now uses spine-and-distinguisher structure for all four levels. This makes the progression in writing quality immediately visible.</p>
+    <div class="rubric-preview rubric-preview-auto reveal"></div>
+  </div>
+</section>
+
+<section class="module-section" style="padding-bottom:24px;">
+  <div class="section-inner" style="text-align:center;">
+    <button class="btn btn-primary btn-complete-module" disabled>Complete Module 8</button>
+    <p style="font-size:12px;color:#6b6460;margin-top:12px;">Complete all four activities to unlock this button.</p>
+  </div>
+</section>
+
+<nav class="module-nav">
+  <a href="module-07.html">← Module 7</a>
+  <a href="module-09.html" class="nav-next disabled" aria-disabled="true">Module 9 →</a>
+</nav>
+
+<footer class="module-cta">
+  <p class="cta-credit">UQ Business School Learning Design &middot; 2026</p>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+(function(){
+  const RC = window.RubricCourse;
+  const tracker = RC.ModuleTracker(8, 4);
+
+  /* ── Activity 1: Deconstruct spine ── */
+  (function(){
+    const correctSpine = ['s1-hd-dist', 's1-d-dist', 's1-c-dist', 's1-p-dist', 's1-hd-adj', 's1-d-adj', 's1-c-adj', 's1-p-adj'];
+    const correctDistinguishers = ['s1-hd-dist', 's1-d-dist', 's1-c-dist', 's1-p-dist', 's1-hd-adj', 's1-d-adj', 's1-c-adj', 's1-p-adj'];
+    const spineOnly = ['s1-hd-dist', 's1-d-dist', 's1-c-dist', 's1-p-dist'];
+    const adjOnly = ['s1-hd-adj', 's1-d-adj', 's1-c-adj', 's1-p-adj'];
+
+    const saved = RC.Exercises.get('m8-a1') || { highlighted: {} };
+    const words = document.querySelectorAll('#spine-grid-a1 .spine-word');
+    const fb = document.getElementById('a1-feedback');
+
+    words.forEach(word => {
+      const id = word.dataset.id;
+
+      // Restore saved state
+      if (saved.highlighted[id] === 'spine') {
+        word.classList.add('spine-highlighted');
+      } else if (saved.highlighted[id] === 'dist') {
+        word.classList.add('distinguisher-highlighted');
+      }
+
+      word.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const current = saved.highlighted[id];
+
+        if (current === 'spine') {
+          this.classList.remove('spine-highlighted');
+          delete saved.highlighted[id];
+        } else if (current === 'dist') {
+          this.classList.remove('distinguisher-highlighted');
+          saved.highlighted[id] = 'spine';
+          this.classList.add('spine-highlighted');
+        } else {
+          saved.highlighted[id] = 'spine';
+          this.classList.add('spine-highlighted');
+        }
+        RC.Exercises.set('m8-a1', saved);
+        checkA1();
+      });
+    });
+
+    function checkA1() {
+      const spineCorrect = spineOnly.filter(id => saved.highlighted[id] === 'spine').length === spineOnly.length;
+      const adjCorrect = adjOnly.filter(id => saved.highlighted[id] === 'spine').length === adjOnly.length;
+
+      if (spineCorrect && adjCorrect) {
+        tracker.markDone('act-1');
+        fb.className = 'feedback show correct';
+        fb.innerHTML = '<p><strong>Perfect!</strong> You\'ve identified the spine: "Selects and synthesises sources that [...], building a/an [...] evidence base." The bracketed phrases and adjectives are the distinguishers that show the progression in quality.</p>';
+      }
+    }
+
+    if (Object.keys(saved.highlighted).length >= 8) checkA1();
+  })();
+
+  /* ── Activity 2: Fix broken spine ── */
+  (function(){
+    const cInput = document.getElementById('tf-c-level');
+    const pInput = document.getElementById('tf-p-level');
+    const modelBtn = document.getElementById('btn-show-model-a2');
+    const modelEl = document.getElementById('a2-model');
+    const checkBtn = document.getElementById('btn-check-a2');
+    const resetBtn = document.getElementById('btn-reset-a2');
+    const fb = document.getElementById('a2-feedback');
+
+    const saved = RC.Exercises.get('m8-a2') || {};
+    if (saved.c) cInput.value = saved.c;
+    if (saved.p) pInput.value = saved.p;
+    if (saved.modelShown) { modelEl.classList.add('show'); modelBtn.disabled = true; }
+
+    cInput.addEventListener('input', debounce(() => {
+      saved.c = cInput.value;
+      RC.Exercises.set('m8-a2', saved);
+    }, 500));
+
+    pInput.addEventListener('input', debounce(() => {
+      saved.p = pInput.value;
+      RC.Exercises.set('m8-a2', saved);
+    }, 500));
+
+    modelBtn.addEventListener('click', () => {
+      modelEl.classList.add('show');
+      saved.modelShown = true;
+      RC.Exercises.set('m8-a2', saved);
+      modelBtn.disabled = true;
+      modelBtn.textContent = 'Model Shown ✓';
+    });
+
+    checkBtn.addEventListener('click', () => {
+      const cText = cInput.value.toLowerCase().trim();
+      const pText = pInput.value.toLowerCase().trim();
+
+      const cMatch = cText.includes('practical') && cText.includes('general');
+      const pMatch = pText.includes('emerging') && pText.includes('limited');
+      const cStartsCorrect = cText.startsWith('recommendations demonstrate');
+      const pStartsCorrect = pText.startsWith('recommendations demonstrate');
+
+      const correct = cMatch && pMatch && cStartsCorrect && pStartsCorrect;
+
+      if (correct) {
+        tracker.markDone('act-2');
+        fb.className = 'feedback show correct';
+        fb.innerHTML = '<p><strong>Excellent!</strong> Both levels now follow the spine structure. Notice how the progression is clearer: strategic → well-developed → practical → emerging. The spine makes the rubric self-explanatory.</p>';
+        RC.Rubric.updateDescriptor(3, 'C', 'Recommendations demonstrate practical thinking with general implementation ideas');
+        RC.Rubric.updateDescriptor(3, 'P', 'Recommendations demonstrate emerging thinking with limited implementation detail');
+        document.querySelectorAll('.rubric-preview-auto').forEach(el => RC.RubricPreview(el));
+      } else {
+        fb.className = 'feedback show incorrect';
+        fb.innerHTML = '<p><strong>Not quite.</strong> Remember: both C and P should start with "Recommendations demonstrate [adjective] thinking with [adjective] implementation [noun]". Check the model answer above for guidance.</p>';
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      cInput.value = '';
+      pInput.value = '';
+      saved.c = '';
+      saved.p = '';
+      RC.Exercises.set('m8-a2', saved);
+      fb.className = 'feedback';
+    });
+  })();
+
+  /* ── Activity 3: Build spine step by step ── */
+  (function(){
+    const spineInput = document.getElementById('tf-spine');
+    const dDistInput = document.getElementById('tf-d-dist');
+    const cDistInput = document.getElementById('tf-c-dist');
+    const pDistInput = document.getElementById('tf-p-dist');
+    const checkBtn = document.getElementById('btn-check-a3');
+    const modelEl = document.getElementById('a3-model');
+    const fb = document.getElementById('a3-feedback');
+
+    const saved = RC.Exercises.get('m8-a3') || {};
+    if (saved.spine) spineInput.value = saved.spine;
+    if (saved.d) dDistInput.value = saved.d;
+    if (saved.c) cDistInput.value = saved.c;
+    if (saved.p) pDistInput.value = saved.p;
+    if (saved.modelShown) { modelEl.classList.add('show'); checkBtn.disabled = true; }
+
+    // Hint buttons
+    ['spine', 'd', 'c', 'p'].forEach(level => {
+      const btn = document.getElementById('btn-' + level + '-hint');
+      const hintEl = document.getElementById(level + '-hint');
+      if (btn && hintEl) {
+        btn.addEventListener('click', () => {
+          if (hintEl.style.display === 'none') {
+            hintEl.style.display = 'block';
+            btn.textContent = 'Hide Hint';
+          } else {
+            hintEl.style.display = 'none';
+            btn.textContent = 'Show Hint';
+          }
+        });
+      }
+    });
+
+    spineInput.addEventListener('input', debounce(() => {
+      saved.spine = spineInput.value;
+      RC.Exercises.set('m8-a3', saved);
+    }, 500));
+
+    dDistInput.addEventListener('input', debounce(() => {
+      saved.d = dDistInput.value;
+      RC.Exercises.set('m8-a3', saved);
+    }, 500));
+
+    cDistInput.addEventListener('input', debounce(() => {
+      saved.c = cDistInput.value;
+      RC.Exercises.set('m8-a3', saved);
+    }, 500));
+
+    pDistInput.addEventListener('input', debounce(() => {
+      saved.p = pDistInput.value;
+      RC.Exercises.set('m8-a3', saved);
+    }, 500));
+
+    checkBtn.addEventListener('click', () => {
+      if (!spineInput.value.trim()) {
+        fb.className = 'feedback show incorrect';
+        fb.innerHTML = '<p><strong>Not yet.</strong> Start by writing the spine — the structure that stays the same. Review the hint above if you need guidance.</p>';
+        return;
+      }
+
+      modelEl.classList.add('show');
+      saved.modelShown = true;
+      RC.Exercises.set('m8-a3', saved);
+      checkBtn.disabled = true;
+      checkBtn.textContent = 'Model Shown ✓';
+
+      // Update rubric with Communication criterion
+      const spineTemplate = 'Presents a [...] argument where [...], with [...] transitions and discipline-appropriate terminology used [...]';
+      const hd = 'Presents a sustained, well-structured argument where each section builds on the previous one, with explicit transitions and discipline-appropriate terminology used precisely';
+      const d = 'Presents a coherent, logically organised argument where sections connect to form a clear narrative, with clear transitions and discipline-appropriate terminology used accurately';
+      const c = 'Presents a structured argument where sections address the topic with some logical flow, with adequate transitions and discipline-appropriate terminology used generally correctly';
+      const p = 'Presents a basic argument where sections are present but connections are limited, with minimal transitions and discipline-appropriate terminology used with occasional errors';
+
+      RC.Rubric.updateDescriptor(1, 'HD', hd);
+      RC.Rubric.updateDescriptor(1, 'D', d);
+      RC.Rubric.updateDescriptor(1, 'C', c);
+      RC.Rubric.updateDescriptor(1, 'P', p);
+      document.querySelectorAll('.rubric-preview-auto').forEach(el => RC.RubricPreview(el));
+
+      tracker.markDone('act-3');
+      fb.className = 'feedback show correct';
+      fb.innerHTML = '<p><strong>Done!</strong> You\'ve built a complete criterion using spine structure. Notice how the progression is logical and the meaning clear without vague adverbs.</p>';
+    });
+  })();
+
+  /* ── Activity 4: Readability test ── */
+  (function(){
+    const saved = RC.Exercises.get('m8-a4') || { times: {} };
+    let timers = {};
+
+    ['a', 'b'].forEach(version => {
+      const btn = document.getElementById('btn-find-a4-' + version);
+      const timerEl = document.getElementById('timer-a4-' + version);
+      const labelEl = document.getElementById('label-a4-' + version);
+
+      btn.addEventListener('click', () => {
+        if (timers[version]) {
+          // Stop timer
+          const elapsed = Math.round((Date.now() - timers[version]) / 100) / 10;
+          saved.times[version] = elapsed;
+          RC.Exercises.set('m8-a4', saved);
+
+          timerEl.style.display = 'none';
+          labelEl.style.display = 'block';
+          labelEl.textContent = 'Found in ' + elapsed + 's';
+          btn.disabled = true;
+          btn.textContent = 'Found ✓';
+
+          checkA4();
+        } else {
+          // Start timer
+          timers[version] = Date.now();
+          timerEl.style.display = 'block';
+          labelEl.style.display = 'none';
+          btn.textContent = 'Stop Timer';
+
+          const interval = setInterval(() => {
+            const elapsed = (Date.now() - timers[version]) / 1000;
+            timerEl.textContent = elapsed.toFixed(1) + 's';
+            if (elapsed > 60) clearInterval(interval);
+          }, 100);
+        }
+      });
+    });
+
+    function checkA4() {
+      if (saved.times.a && saved.times.b) {
+        tracker.markDone('act-4');
+        const fb = document.getElementById('a4-feedback');
+        const diff = (saved.times.a - saved.times.b).toFixed(1);
+        const faster = saved.times.a > saved.times.b ? 'Version B (spine)' : 'Version A (no spine)';
+
+        fb.className = 'feedback show correct';
+        fb.innerHTML = '<p><strong>Complete!</strong> You found Version A in ' + saved.times.a + 's and Version B in ' + saved.times.b + 's. ' +
+          (diff > 0.5 ? 'Notice how much faster the spine version is — your eye can focus directly on the change.' : 'Both took similar time, but the spine version reduces cognitive load over many comparisons.') +
+          '</p>';
+      }
+    }
+
+    if (saved.times.a) {
+      document.getElementById('timer-a4-a').style.display = 'none';
+      document.getElementById('label-a4-a').style.display = 'block';
+      document.getElementById('label-a4-a').textContent = 'Found in ' + saved.times.a + 's';
+      document.getElementById('btn-find-a4-a').disabled = true;
+      document.getElementById('btn-find-a4-a').textContent = 'Found ✓';
+    }
+    if (saved.times.b) {
+      document.getElementById('timer-a4-b').style.display = 'none';
+      document.getElementById('label-a4-b').style.display = 'block';
+      document.getElementById('label-a4-b').textContent = 'Found in ' + saved.times.b + 's';
+      document.getElementById('btn-find-a4-b').disabled = true;
+      document.getElementById('btn-find-a4-b').textContent = 'Found ✓';
+    }
+
+    if (saved.times.a && saved.times.b) checkA4();
+  })();
+
+  function debounce(fn, ms) { let t; return function(...a){ clearTimeout(t); t = setTimeout(() => fn.apply(this, a), ms); }; }
+})();
+</script>
+
+</body>
+</html>

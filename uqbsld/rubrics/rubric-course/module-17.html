@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 17: Graduate Attributes Overview</title>
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .module-hero {
+            background: linear-gradient(135deg, #2EA836 0%, #1f7424 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .module-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .module-hero .module-meta {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .activity-container {
+            margin-bottom: 3rem;
+        }
+
+        .activity-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #2EA836;
+        }
+
+        .activity-number {
+            background: #2EA836;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .activity-header h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        /* GA Explorer Cards */
+        .ga-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .ga-card {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .ga-card:hover {
+            border-color: #2EA836;
+            box-shadow: 0 4px 12px rgba(46, 168, 54, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .ga-card.expanded {
+            border-color: #2EA836;
+            background: #f0f8f2;
+        }
+
+        .ga-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .ga-number {
+            background: #2EA836;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .ga-card-title {
+            margin: 0;
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        .ga-card-subtitle {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .ga-subcriteria {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+        }
+
+        .ga-card.expanded .ga-subcriteria {
+            display: block;
+        }
+
+        .ga-subcriteria ol {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .ga-subcriteria li {
+            margin-bottom: 0.5rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .ga-expansion-toggle {
+            color: #2EA836;
+            font-weight: bold;
+            display: block;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Drag Sort Activity */
+        .drag-container {
+            margin-bottom: 2rem;
+        }
+
+        .scenario {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .scenario-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .scenario-description {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .drag-zone {
+            background: white;
+            border: 2px dashed #ccc;
+            border-radius: 6px;
+            min-height: 80px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-content: flex-start;
+        }
+
+        .drag-zone.over {
+            background: #f0f8f2;
+            border-color: #2EA836;
+        }
+
+        .draggable-item {
+            background: #2EA836;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: move;
+            user-select: none;
+            transition: all 0.2s ease;
+        }
+
+        .draggable-item:hover {
+            background: #1f7424;
+            box-shadow: 0 2px 6px rgba(46, 168, 54, 0.3);
+        }
+
+        .draggable-item.dragging {
+            opacity: 0.5;
+        }
+
+        .ga-items-source {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 6px;
+        }
+
+        .ga-items-source p {
+            width: 100%;
+            margin: 0 0 0.5rem 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* MC Questions */
+        .mc-question {
+            background: #f5f5f5;
+            border-left: 4px solid #2EA836;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+        }
+
+        .mc-question p {
+            margin: 0 0 1rem 0;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .mc-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .mc-option {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mc-option:hover {
+            border-color: #2EA836;
+            background: #f0f8f2;
+        }
+
+        .mc-option input[type="radio"] {
+            margin-right: 0.75rem;
+        }
+
+        .mc-option label {
+            cursor: pointer;
+            margin: 0;
+            flex: 1;
+        }
+
+        /* Tracker */
+        .module-tracker {
+            background: white;
+            border: 2px solid #2EA836;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tracker-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .tracker-bars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tracker-item {
+            text-align: center;
+        }
+
+        .tracker-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .tracker-bar {
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+        }
+
+        .tracker-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2EA836, #1f7424);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .module-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #eee;
+        }
+
+        .nav-button {
+            padding: 0.75rem 1.5rem;
+            background: #2EA836;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .nav-button:hover {
+            background: #1f7424;
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .nav-center {
+            text-align: center;
+            color: #666;
+        }
+
+        /* Completion Feedback */
+        .completion-badge {
+            display: none;
+            background: #2EA836;
+            color: white;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+
+        .completion-badge.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="module-hero part-e">
+            <h1>Graduate Attributes Overview</h1>
+            <p class="module-meta">Part E · GA Integration — Module 17</p>
+            <p class="module-meta">~15 minutes · 4 activities</p>
+        </div>
+
+        <div class="module-tracker">
+            <div class="tracker-title">Module Progress</div>
+            <div class="tracker-bars">
+                <div class="tracker-item">
+                    <div class="tracker-label">GA Explorer</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="1"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">Match to Assessment</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="2"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">AoL vs General</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="3"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">Map the Scenario</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="completion-badge" id="completionBadge">
+            All activities completed! You've mastered the Graduate Attributes framework.
+        </div>
+
+        <!-- Activity 1: GA Explorer -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">1</div>
+                <h2>GA Explorer: Interactive Card Grid</h2>
+            </div>
+            <p>Click each card to explore the Graduate Attributes and their three sub-criteria. Each GA defines a key capability developed through your studies.</p>
+
+            <div class="ga-grid" id="gaGrid">
+                <!-- Cards will be generated by JavaScript -->
+            </div>
+            <p style="color: #666; font-size: 0.9rem;" id="gaExploreFeedback">Expand all 6 cards to track progress.</p>
+        </div>
+
+        <!-- Activity 2: Match to Assessment Types -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">2</div>
+                <h2>Match to Assessment Types: Drag & Sort</h2>
+            </div>
+            <p>For each assessment scenario, drag the two most appropriate GAs into the drop zone. Think about which attributes that assessment will develop.</p>
+
+            <div class="ga-items-source">
+                <p>Available GAs:</p>
+                <div class="draggable-item" draggable="true" data-ga="GA1">GA1: Accomplished Scholars</div>
+                <div class="draggable-item" draggable="true" data-ga="GA2">GA2: Courageous Thinkers</div>
+                <div class="draggable-item" draggable="true" data-ga="GA3">GA3: Connected Citizens</div>
+                <div class="draggable-item" draggable="true" data-ga="GA4">GA4: Culturally Capable</div>
+                <div class="draggable-item" draggable="true" data-ga="GA5">GA5: Influential Communicators</div>
+                <div class="draggable-item" draggable="true" data-ga="GA6">GA6: Respectful Leaders</div>
+            </div>
+
+            <div class="drag-container" id="dragContainer">
+                <!-- Scenarios will be generated by JavaScript -->
+            </div>
+            <p style="color: #666; font-size: 0.9rem;" id="dragFeedback">Complete all 6 scenarios to progress.</p>
+        </div>
+
+        <!-- Activity 3: AoL vs General Mapping -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">3</div>
+                <h2>AoL vs General Mapping: Multiple Choice</h2>
+            </div>
+            <p>Identify whether each scenario describes an Assurance of Learning (AoL) designated course or general GA mapping.</p>
+            <p style="background: #f0f8f2; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem;">
+                <strong>Key Distinction:</strong> AoL-designated courses collect data on all 3 sub-criteria at the Collecting level. General mapping tracks 2 of 3 sub-criteria but isn't formally collecting AoL data.
+            </p>
+
+            <div id="aolMcContainer">
+                <!-- MC questions will be generated by JavaScript -->
+            </div>
+            <p style="color: #666; font-size: 0.9rem;" id="aolFeedback">Answer all 4 questions to progress.</p>
+        </div>
+
+        <!-- Activity 4: Map the Scenario -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">4</div>
+                <h2>Map the Scenario: Course-Specific Mapping</h2>
+            </div>
+            <p>For MGTS2501, identify which 2 GAs are mapped and select their sub-criteria. This represents how a specific course integrates graduate attributes.</p>
+
+            <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 6px; margin-bottom: 1.5rem;">
+                <h4 style="margin-top: 0;">MGTS2501: Organisational Management</h4>
+                <p style="color: #666;">This course develops students' ability to critically analyse organisational challenges and communicate findings to diverse stakeholders.</p>
+
+                <div style="margin-top: 1.5rem;">
+                    <p style="font-weight: bold; margin-bottom: 1rem;">Select 2 GAs that are mapped to this course:</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;" id="courseGASelect">
+                        <!-- GA selection will be generated by JavaScript -->
+                    </div>
+
+                    <p style="font-weight: bold; margin-bottom: 1rem;">For each selected GA, choose which sub-criteria are addressed:</p>
+                    <div id="subcriteriaSelect" style="display: none;">
+                        <!-- Sub-criteria selection will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <button id="mapScenarioBtn" style="padding: 0.75rem 1.5rem; background: #2EA836; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem;" disabled>Save Mapping</button>
+                <div id="mappingFeedback" style="margin-top: 1rem;"></div>
+            </div>
+        </div>
+
+        <!-- Module Navigation -->
+        <nav class="module-nav">
+            <a href="module-16.html" class="disabled" aria-disabled="true">← Module 16</a>
+            <div class="nav-center">Module 17 of 19</div>
+            <a href="module-18.html" class="nav-next disabled" aria-disabled="true">Module 18 →</a>
+        </nav>
+    </div>
+
+    <script src="shared.js"></script>
+    <script>
+        const MODULE_ID = 17;
+        const ACTIVITY_COUNT = 4;
+
+        // Graduate Attributes data
+        const GAs = [
+            {
+                number: 1,
+                name: "Accomplished Scholars",
+                subcriteria: [
+                    "Depth of disciplinary knowledge",
+                    "Application across contexts",
+                    "Integration of knowledge"
+                ]
+            },
+            {
+                number: 2,
+                name: "Courageous Thinkers",
+                subcriteria: [
+                    "Critical Analysis",
+                    "Creative Problem Solving",
+                    "Evidence-Based Decision Making"
+                ]
+            },
+            {
+                number: 3,
+                name: "Connected Citizens",
+                subcriteria: [
+                    "Societal awareness",
+                    "Ethical engagement",
+                    "Global citizenship"
+                ]
+            },
+            {
+                number: 4,
+                name: "Culturally Capable",
+                subcriteria: [
+                    "Cultural self-awareness",
+                    "Intercultural competence",
+                    "Inclusive practice"
+                ]
+            },
+            {
+                number: 5,
+                name: "Influential Communicators",
+                subcriteria: [
+                    "Written communication",
+                    "Oral communication",
+                    "Stakeholder engagement"
+                ]
+            },
+            {
+                number: 6,
+                name: "Respectful Leaders",
+                subcriteria: [
+                    "Ethical leadership",
+                    "Collaborative practice",
+                    "Responsibility and integrity"
+                ]
+            }
+        ];
+
+        // Assessment scenarios for Activity 2
+        const scenarios = [
+            {
+                id: 1,
+                title: "2,000-word case study analysis",
+                description: "Students write an analytical essay examining a business case.",
+                correct: ["GA1", "GA2"]
+            },
+            {
+                id: 2,
+                title: "Group consulting project with client presentation",
+                description: "Teams work with a real or simulated client and present recommendations.",
+                correct: ["GA3", "GA5"]
+            },
+            {
+                id: 3,
+                title: "Individual reflective journal on cultural encounters",
+                description: "Students document and reflect on cross-cultural experiences.",
+                correct: ["GA4", "GA6"]
+            },
+            {
+                id: 4,
+                title: "Research proposal with literature review",
+                description: "Students design a research project and review existing scholarship.",
+                correct: ["GA1", "GA2"]
+            },
+            {
+                id: 5,
+                title: "Team-based simulation with peer evaluation",
+                description: "Groups participate in a business simulation and evaluate each other.",
+                correct: ["GA3", "GA6"]
+            },
+            {
+                id: 6,
+                title: "Oral defence of dissertation findings",
+                description: "Students present and defend their research orally to examiners.",
+                correct: ["GA2", "GA5"]
+            }
+        ];
+
+        // Activity 1: GA Explorer
+        function initGAExplorer() {
+            const grid = document.getElementById('gaGrid');
+            grid.innerHTML = '';
+            let expandedCount = 0;
+
+            GAs.forEach(ga => {
+                const card = document.createElement('div');
+                card.className = 'ga-card';
+                card.dataset.ga = `GA${ga.number}`;
+
+                const html = `
+                    <div class="ga-card-header">
+                        <div class="ga-number">GA${ga.number}</div>
+                        <div>
+                            <h3 class="ga-card-title">${ga.name}</h3>
+                            <p class="ga-card-subtitle">Click to expand</p>
+                        </div>
+                    </div>
+                    <div class="ga-subcriteria">
+                        <ol>
+                            ${ga.subcriteria.map(sc => `<li>${sc}</li>`).join('')}
+                        </ol>
+                    </div>
+                `;
+
+                card.innerHTML = html;
+                card.addEventListener('click', function() {
+                    this.classList.toggle('expanded');
+                    const newExpandedCount = document.querySelectorAll('.ga-card.expanded').length;
+                    updateActivity1Progress(newExpandedCount);
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        function updateActivity1Progress(expandedCount) {
+            const tracker = document.querySelector('[data-activity="1"]');
+            const percent = (expandedCount / 6) * 100;
+            tracker.style.width = percent + '%';
+            if (expandedCount > 0) {
+                tracker.textContent = expandedCount;
+            }
+            if (expandedCount === 6) {
+                document.getElementById('gaExploreFeedback').textContent = '✓ All cards explored! Move to Activity 2.';
+                document.getElementById('gaExploreFeedback').style.color = '#2EA836';
+            }
+            checkModuleCompletion();
+        }
+
+        // Activity 2: Drag & Sort
+        function initDragSort() {
+            const container = document.getElementById('dragContainer');
+            container.innerHTML = '';
+
+            scenarios.forEach((scenario, index) => {
+                const scenarioDiv = document.createElement('div');
+                scenarioDiv.className = 'scenario';
+                scenarioDiv.dataset.scenarioId = scenario.id;
+                scenarioDiv.innerHTML = `
+                    <div class="scenario-title">Scenario ${index + 1}</div>
+                    <div class="scenario-description">${scenario.title}</div>
+                    <p style="color: #555; font-size: 0.95rem; margin-bottom: 1rem;">${scenario.description}</p>
+                    <div class="drag-zone" data-zone-id="scenario-${scenario.id}">
+                        <p style="width: 100%; color: #999; margin: 0;">Drop 2 GAs here</p>
+                    </div>
+                `;
+                container.appendChild(scenarioDiv);
+            });
+
+            addDragListeners();
+        }
+
+        function addDragListeners() {
+            const draggables = document.querySelectorAll('.ga-items-source .draggable-item');
+            const zones = document.querySelectorAll('.drag-zone');
+
+            draggables.forEach(item => {
+                item.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.effectAllowed = 'copy';
+                    e.dataTransfer.setData('ga', item.dataset.ga);
+                    item.classList.add('dragging');
+                });
+
+                item.addEventListener('dragend', () => {
+                    item.classList.remove('dragging');
+                });
+            });
+
+            zones.forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'copy';
+                    zone.classList.add('over');
+                });
+
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('over');
+                });
+
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('over');
+                    const ga = e.dataTransfer.getData('ga');
+                    const existing = zone.querySelectorAll('.draggable-item').length;
+
+                    if (existing < 2) {
+                        const item = document.createElement('div');
+                        item.className = 'draggable-item';
+                        item.textContent = ga;
+                        item.dataset.ga = ga;
+
+                        // Remove placeholder text
+                        const placeholder = zone.querySelector('p');
+                        if (placeholder) placeholder.remove();
+
+                        zone.appendChild(item);
+                        updateActivity2Progress();
+                    }
+                });
+            });
+        }
+
+        function updateActivity2Progress() {
+            let completedScenarios = 0;
+            scenarios.forEach(scenario => {
+                const zone = document.querySelector(`[data-zone-id="scenario-${scenario.id}"]`);
+                const items = zone.querySelectorAll('.draggable-item[data-ga]');
+                if (items.length === 2) {
+                    completedScenarios++;
+                }
+            });
+
+            const tracker = document.querySelector('[data-activity="2"]');
+            const percent = (completedScenarios / 6) * 100;
+            tracker.style.width = percent + '%';
+            if (completedScenarios > 0) {
+                tracker.textContent = completedScenarios;
+            }
+            if (completedScenarios === 6) {
+                document.getElementById('dragFeedback').textContent = '✓ All scenarios matched! Move to Activity 3.';
+                document.getElementById('dragFeedback').style.color = '#2EA836';
+                localStorage.setItem('m17-a2', JSON.stringify({ completed: true, timestamp: Date.now() }));
+            }
+            checkModuleCompletion();
+        }
+
+        // Activity 3: AoL vs General MC
+        function initAoLMC() {
+            const container = document.getElementById('aolMcContainer');
+            const questions = [
+                {
+                    id: 1,
+                    scenario: "MGTS2501 is an AoL-designated course for GA2",
+                    correct: "AoL",
+                    explanation: "AoL-designated courses collect data on all 3 sub-criteria."
+                },
+                {
+                    id: 2,
+                    scenario: "MGTS3301 has GA5 mapped for general tracking",
+                    correct: "General",
+                    explanation: "General mapping tracks 2 of 3 sub-criteria but isn't formally collecting AoL data."
+                },
+                {
+                    id: 3,
+                    scenario: "MGTS7501 is collecting AoL data for GA1 this semester",
+                    correct: "AoL",
+                    explanation: "Actively collecting AoL data indicates it's an AoL-designated course."
+                },
+                {
+                    id: 4,
+                    scenario: "ACCT1101 maps GA3 but isn't collecting this year",
+                    correct: "General",
+                    explanation: "Without active data collection, it's general mapping only."
+                }
+            ];
+
+            container.innerHTML = '';
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'mc-question';
+                questionDiv.dataset.questionId = q.id;
+                questionDiv.innerHTML = `
+                    <p>${index + 1}. ${q.scenario}</p>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="q${q.id}" value="AoL">
+                            <span>AoL-designated (all 3 sub-criteria collected)</span>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="q${q.id}" value="General">
+                            <span>General mapping (2 of 3 sub-criteria)</span>
+                        </label>
+                    </div>
+                    <div class="feedback" style="margin-top: 1rem; display: none; padding: 0.75rem; background: #e8f5e9; border-left: 3px solid #2EA836; color: #2EA836;"></div>
+                `;
+                container.appendChild(questionDiv);
+
+                const radios = questionDiv.querySelectorAll('input[type="radio"]');
+                radios.forEach(radio => {
+                    radio.addEventListener('change', () => {
+                        const feedback = questionDiv.querySelector('.feedback');
+                        feedback.style.display = 'block';
+                        feedback.textContent = q.explanation;
+                        if (radio.value === q.correct) {
+                            feedback.style.background = '#e8f5e9';
+                            feedback.style.color = '#2EA836';
+                        } else {
+                            feedback.style.background = '#ffebee';
+                            feedback.style.color = '#c62828';
+                            feedback.textContent = 'Not quite. ' + q.explanation;
+                        }
+                        updateActivity3Progress();
+                    });
+                });
+            });
+        }
+
+        function updateActivity3Progress() {
+            let answeredCount = 0;
+            document.querySelectorAll('.mc-question').forEach(q => {
+                const checked = q.querySelector('input[type="radio"]:checked');
+                if (checked) answeredCount++;
+            });
+
+            const tracker = document.querySelector('[data-activity="3"]');
+            const percent = (answeredCount / 4) * 100;
+            tracker.style.width = percent + '%';
+            if (answeredCount > 0) {
+                tracker.textContent = answeredCount;
+            }
+            if (answeredCount === 4) {
+                document.getElementById('aolFeedback').textContent = '✓ All questions answered! Move to Activity 4.';
+                document.getElementById('aolFeedback').style.color = '#2EA836';
+            }
+            checkModuleCompletion();
+        }
+
+        // Activity 4: Map the Scenario
+        function initMapScenario() {
+            const selectContainer = document.getElementById('courseGASelect');
+            selectContainer.innerHTML = '';
+
+            GAs.forEach(ga => {
+                const label = document.createElement('label');
+                label.style.display = 'flex';
+                label.style.alignItems = 'center';
+                label.style.padding = '0.75rem';
+                label.style.background = '#f9f9f9';
+                label.style.borderRadius = '4px';
+                label.style.cursor = 'pointer';
+                label.innerHTML = `
+                    <input type="checkbox" value="GA${ga.number}" style="margin-right: 0.75rem;">
+                    <span><strong>GA${ga.number}:</strong> ${ga.name}</span>
+                `;
+                selectContainer.appendChild(label);
+
+                label.querySelector('input').addEventListener('change', updateMapScenarioState);
+            });
+        }
+
+        function updateMapScenarioState() {
+            const selected = Array.from(document.querySelectorAll('#courseGASelect input:checked')).map(cb => cb.value);
+
+            if (selected.length === 2) {
+                document.getElementById('subcriteriaSelect').style.display = 'block';
+                renderSubcriteriaSelection(selected);
+                document.getElementById('mapScenarioBtn').disabled = false;
+            } else {
+                document.getElementById('subcriteriaSelect').style.display = 'none';
+                document.getElementById('mapScenarioBtn').disabled = true;
+            }
+        }
+
+        function renderSubcriteriaSelection(selectedGAs) {
+            const container = document.getElementById('subcriteriaSelect');
+            container.innerHTML = '';
+
+            selectedGAs.forEach(gaId => {
+                const gaNum = parseInt(gaId.replace('GA', ''));
+                const ga = GAs.find(g => g.number === gaNum);
+
+                const div = document.createElement('div');
+                div.style.marginBottom = '1.5rem';
+                div.innerHTML = `<h5 style="margin: 0 0 0.75rem 0; color: #333;">${gaId}: ${ga.name}</h5>`;
+
+                ga.subcriteria.forEach((sc, index) => {
+                    const label = document.createElement('label');
+                    label.style.display = 'flex';
+                    label.style.alignItems = 'center';
+                    label.style.marginBottom = '0.5rem';
+                    label.style.cursor = 'pointer';
+                    label.innerHTML = `
+                        <input type="checkbox" value="${gaId}-${index}" style="margin-right: 0.5rem;">
+                        <span>${sc}</span>
+                    `;
+                    div.appendChild(label);
+                });
+
+                container.appendChild(div);
+            });
+        }
+
+        document.getElementById('mapScenarioBtn').addEventListener('click', () => {
+            const selected = Array.from(document.querySelectorAll('#courseGASelect input:checked')).map(cb => cb.value);
+            const feedback = document.getElementById('mappingFeedback');
+
+            if (selected.length === 2 && selected.includes('GA2')) {
+                feedback.innerHTML = '<div style="background: #e8f5e9; padding: 1rem; border-radius: 4px; color: #2EA836;"><strong>✓ Mapping saved!</strong> GA2 (Courageous Thinkers) is correctly mapped to MGTS2501. The course develops students\' critical analysis and communication skills.</div>';
+                localStorage.setItem('m17-a4', JSON.stringify({ gaMapping: selected, timestamp: Date.now() }));
+                updateActivity4Progress();
+            } else {
+                feedback.innerHTML = '<div style="background: #ffebee; padding: 1rem; border-radius: 4px; color: #c62828;">The model answer is GA2. Please select GA2 and one other GA.</div>';
+            }
+        });
+
+        function updateActivity4Progress() {
+            const tracker = document.querySelector('[data-activity="4"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('mappingFeedback').innerHTML += '<p style="margin-top: 0.5rem; color: #2EA836; font-weight: bold;">Activity 4 complete!</p>';
+            checkModuleCompletion();
+        }
+
+        // Module completion check
+        function checkModuleCompletion() {
+            const all4Filled =
+                document.querySelectorAll('.ga-card.expanded').length === 6 &&
+                document.querySelectorAll('[data-zone-id] .draggable-item[data-ga]').length === 12 &&
+                document.querySelectorAll('.mc-question input[type="radio"]:checked').length === 4 &&
+                localStorage.getItem('m17-a4');
+
+            if (all4Filled) {
+                document.getElementById('completionBadge').classList.add('show');
+                localStorage.setItem(`m17-complete`, JSON.stringify({ completed: true, timestamp: Date.now() }));
+                const next = document.querySelector('.nav-next');
+                if (next) {
+                    next.classList.remove('disabled');
+                    next.removeAttribute('aria-disabled');
+                }
+            }
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initGAExplorer();
+            initDragSort();
+            initAoLMC();
+            initMapScenario();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 15: Embedding Requirements — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── Brief & Rubric side-by-side ── */
+.brief-rubric-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+  padding: 12px;
+  background: #fafaf8;
+  border: 1px solid #e4dfd9;
+  border-radius: 8px;
+}
+
+.brief-panel, .rubric-panel {
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e4dfd9;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.brief-label, .rubric-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #51247A;
+  margin-bottom: 8px;
+}
+
+.rubric-label {
+  color: #962A8B;
+}
+
+.brief-text {
+  color: #1a1714;
+}
+
+.requirement-highlight {
+  padding: 2px 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.requirement-highlight:hover {
+  background: rgba(150, 42, 139, 0.1);
+  border-radius: 3px;
+}
+
+.requirement-highlight.found {
+  background: #ffd700;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.requirements-found {
+  text-align: center;
+  font-size: 13px;
+  color: #6b6460;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e4dfd9;
+}
+
+/* ── Drag sort for requirements ── */
+.drag-zone {
+  min-height: 60px;
+  border: 2px dashed #d0c9c2;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 8px 0;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.drag-zone.over {
+  border-color: #51247A;
+  background: rgba(81, 36, 122, 0.04);
+}
+
+.drag-zone.correct-drop {
+  border-color: #2EA836;
+  background: rgba(46, 168, 54, 0.04);
+}
+
+.drag-zone-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b6460;
+  margin-bottom: 8px;
+}
+
+.drag-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  margin: 4px;
+  background: #fff;
+  border: 1px solid #e4dfd9;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #1a1714;
+  cursor: grab;
+  transition: transform 0.15s, box-shadow 0.15s;
+  user-select: none;
+  max-width: 100%;
+}
+
+.drag-item:active {
+  cursor: grabbing;
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.drag-item.placed {
+  opacity: 0.85;
+  cursor: default;
+}
+
+.drag-item.correct {
+  background: #f0faf0;
+  border-color: #2EA836;
+  color: #1a5c1a;
+}
+
+.drag-item.incorrect {
+  background: #fef5f5;
+  border-color: #d9534f;
+  color: #7a1a1a;
+}
+
+/* ── MC quiz ── */
+.mc-options {
+  margin: 12px 0;
+}
+
+.mc-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  margin: 8px 0;
+  border: 1px solid #e4dfd9;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.mc-option:hover {
+  border-color: #51247A;
+  background: rgba(81, 36, 122, 0.02);
+}
+
+.mc-option.selected {
+  border-color: #51247A;
+  background: rgba(81, 36, 122, 0.05);
+}
+
+.mc-option.correct {
+  border-color: #2EA836;
+  background: #f0faf0;
+}
+
+.mc-option.incorrect {
+  border-color: #d9534f;
+  background: #fef5f5;
+}
+
+.mc-radio {
+  min-width: 20px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d0c9c2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: border-color 0.2s;
+}
+
+.mc-option.selected .mc-radio {
+  border-color: #51247A;
+}
+
+.mc-option.selected .mc-radio::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: #51247A;
+  border-radius: 50%;
+}
+
+.mc-option.correct .mc-radio {
+  border-color: #2EA836;
+}
+
+.mc-option.correct .mc-radio::after {
+  background: #2EA836;
+}
+
+/* ── Text transform ── */
+.transform-box {
+  margin: 12px 0;
+}
+
+.transform-original {
+  font-size: 14px;
+  line-height: 1.65;
+  padding: 16px;
+  background: #fef5f5;
+  border: 1px solid #e6c3c3;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  color: #1a1714;
+}
+
+.transform-original .label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #d9534f;
+  margin-bottom: 6px;
+}
+
+.transform-input {
+  width: 100%;
+  min-height: 80px;
+  padding: 14px;
+  border: 1px solid #e4dfd9;
+  border-radius: 8px;
+  font-family: 'Roboto', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #1a1714;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.transform-input:focus {
+  outline: none;
+  border-color: #51247A;
+}
+
+.transform-input::placeholder {
+  color: #c0b8b0;
+}
+
+.model-answer {
+  font-size: 14px;
+  line-height: 1.65;
+  padding: 16px;
+  background: #f0faf0;
+  border: 1px solid #c3e6c3;
+  border-radius: 8px;
+  margin-top: 12px;
+  color: #1a1714;
+  display: none;
+}
+
+.model-answer.show {
+  display: block;
+  animation: fadeSlideIn 0.3s ease;
+}
+
+.model-answer .label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #2d8a2d;
+  margin-bottom: 6px;
+}
+
+@media (max-width: 580px) {
+  .brief-rubric-pair {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 15 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<section class="module-hero part-d">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part D · Requirements & Formatting — Module 15</div>
+    <h1>Embedding Requirements</h1>
+    <p class="hero-sub">Assessment briefs specify requirements (word counts, source minimums, formatting standards). Rubrics often ignore them. This module shows how to embed them explicitly into grade levels.</p>
+    <span class="hero-time">⏱ ~15 minutes</span>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: FIND ORPHANED REQUIREMENTS ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#6b6460">Activity 1 of 4</div>
+    <h2 class="reveal">Find the Orphaned Requirements</h2>
+    <p class="lead reveal">Below is an assessment brief and rubric for MGTS2501. The brief specifies several requirements, but the rubric doesn't mention them. Click each requirement in the brief to highlight it. Can you find all four?</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">Click to Highlight Orphaned Requirements</div>
+      <p class="activity-instruction">The brief is on the left, the rubric on the right. Spot the mismatch.</p>
+
+      <div class="brief-rubric-pair">
+        <div class="brief-panel">
+          <span class="brief-label">Assessment Brief</span>
+          <div class="brief-text">
+            <p><strong>MGTS2501: Case Study Analysis (30%)</strong></p>
+            <p>Submit a <span class="requirement-highlight" id="req-1">2,000-word case study analysis</span> examining a real organisation facing a strategic challenge. Your response must include <span class="requirement-highlight" id="req-2">at least 8 peer-reviewed academic sources</span> that support your analysis. <span class="requirement-highlight" id="req-3">Use APA 7 referencing</span> throughout. The submission should follow <span class="requirement-highlight" id="req-4">case study format</span> (introduction, analysis, recommendations, references). Submissions must be typed, single-spaced, using 12-point Arial.</p>
+          </div>
+        </div>
+        <div class="rubric-panel">
+          <span class="rubric-label">Current Rubric</span>
+          <div style="font-size:12px;">
+            <strong>Criteria:</strong>
+            <ul style="margin: 8px 0 0 16px;">
+              <li>Introduction (10%)</li>
+              <li>Critical Analysis (40%)</li>
+              <li>Recommendations (30%)</li>
+              <li>Referencing & Presentation (20%)</li>
+            </ul>
+            <p style="margin-top:8px;"><em>No mention of word count, source minimum, APA, or case study format.</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="requirements-found" id="req-count">Found 0 of 4 requirements</div>
+
+      <div class="feedback neutral" id="a1-feedback" style="margin-top:16px;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: PLACE AT THE RIGHT LEVEL ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#6b6460">Activity 2 of 4</div>
+    <h2 class="reveal">Place at the Right Grade Level</h2>
+    <p class="lead reveal">Each requirement belongs at a specific grade level. Some are thresholds (if you miss them, you fail); others are quality markers that differentiate grades.</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Drag Requirements to Grade Zones</div>
+      <p class="activity-instruction">Drag each requirement into the zone where it best belongs. Think: Is this a minimum threshold, or a quality differentiator?</p>
+
+      <div id="req-pool-a2" style="margin-bottom:16px;padding:12px;background:#f7f5f3;border-radius:8px;">
+        <div class="drag-item" draggable="true" id="req-item-1">Meets 8-source minimum</div>
+        <div class="drag-item" draggable="true" id="req-item-2">Exceeds source minimum with seminal and recent research</div>
+        <div class="drag-item" draggable="true" id="req-item-3">Fewer than 8 sources</div>
+        <div class="drag-item" draggable="true" id="req-item-4">APA 7 formatting with no errors</div>
+        <div class="drag-item" draggable="true" id="req-item-5">APA 7 formatting with minor errors</div>
+        <div class="drag-item" draggable="true" id="req-item-6">Within 10% of word limit</div>
+        <div class="drag-item" draggable="true" id="req-item-7">Significant referencing errors or omissions</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr;gap:8px;">
+        <div>
+          <div class="drag-zone-label" style="color:#2EA836;">HD (High Distinction)</div>
+          <div class="drag-zone" id="zone-hd" style="min-height:44px;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label" style="color:#962A8B;">D (Distinction)</div>
+          <div class="drag-zone" id="zone-d" style="min-height:44px;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label" style="color:#51247A;">C (Credit)</div>
+          <div class="drag-zone" id="zone-c" style="min-height:44px;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label" style="color:#4085C6;">P (Pass)</div>
+          <div class="drag-zone" id="zone-p" style="min-height:44px;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label" style="color:#d9534f;">Below Pass</div>
+          <div class="drag-zone" id="zone-f" style="min-height:44px;"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <button class="btn btn-primary" id="btn-check-a2">Check Placement</button>
+        <button class="btn btn-secondary btn-small" id="btn-reset-a2" style="margin-left:8px;">Reset</button>
+      </div>
+      <div class="feedback neutral" id="a2-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: COUNT METRICS TRAP ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#6b6460">Activity 3 of 4</div>
+    <h2 class="reveal">The Count Metrics Trap</h2>
+    <p class="lead reveal">Numbers trap us. It's tempting to use counts as quality proxies, but counts measure requirements, not quality. This quiz tests the difference.</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">Which Is the Quality Proxy?</div>
+      <p class="activity-instruction">Read both descriptors. Which one actually measures <em>quality of analysis</em>?</p>
+
+      <div style="margin:16px 0;padding:16px;background:#fef5f5;border:1px solid #e6c3c3;border-radius:8px;">
+        <p><strong>Descriptor A:</strong> "Identifies 4 or more contributing factors"</p>
+      </div>
+
+      <div style="margin:16px 0;padding:16px;background:#fef5f5;border:1px solid #e6c3c3;border-radius:8px;">
+        <p><strong>Descriptor B:</strong> "Identifies contributing factors and explains how they interact"</p>
+      </div>
+
+      <div class="mc-options" id="mc-a3">
+        <div class="mc-option">
+          <div class="mc-radio"></div>
+          <span><strong>A</strong> — "4 or more factors" is the better quality proxy</span>
+        </div>
+        <div class="mc-option">
+          <div class="mc-radio"></div>
+          <span><strong>B</strong> — "Explains interactions" is the better quality proxy</span>
+        </div>
+      </div>
+
+      <div class="feedback neutral" id="a3-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: EMBED INTO YOUR RUBRIC ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#6b6460">Activity 4 of 4</div>
+    <h2 class="reveal">Embed Requirements into Your Rubric</h2>
+    <p class="lead reveal">Take the MGTS2501 requirements (2,000 words, 8 sources, APA 7) and write how they'd appear at Pass and Credit levels. We'll show you model answers first.</p>
+
+    <div class="activity reveal" id="act-4">
+      <div class="activity-number">4</div>
+      <div class="activity-title">Write Evidence Integration</div>
+      <p class="activity-instruction">Use these model answers as a guide, then write your own for Pass and Credit levels.</p>
+
+      <div style="margin:20px 0;padding:16px;background:#f0faf0;border:1px solid #c3e6c3;border-radius:8px;">
+        <p style="font-size:12px;font-weight:700;color:#2d8a2d;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model: Pass Level</p>
+        <p style="font-size:14px;margin:0;">"Meets the minimum requirement of 8 peer-reviewed sources. References formatted in APA 7 with some errors. Submission within 10% of 2,000-word limit."</p>
+      </div>
+
+      <div style="margin:20px 0;padding:16px;background:#f0faf0;border:1px solid #c3e6c3;border-radius:8px;">
+        <p style="font-size:12px;font-weight:700;color:#2d8a2d;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model: Credit Level</p>
+        <p style="font-size:14px;margin:0;">"Meets or exceeds 8-source minimum with appropriate range of seminal and recent research. APA 7 formatting with only minor inconsistencies. Submission meets 2,000-word requirement."</p>
+      </div>
+
+      <p class="activity-instruction" style="margin-top:20px;">Now you try. Write the <strong>Pass</strong> descriptor for your rubric's evidence integration criterion:</p>
+      <textarea class="transform-input" id="tf-pass" placeholder="Pass: meets the minimum..."></textarea>
+
+      <p class="activity-instruction" style="margin-top:12px;">Now write the <strong>Credit</strong> descriptor:</p>
+      <textarea class="transform-input" id="tf-credit" placeholder="Credit: meets or exceeds..."></textarea>
+
+      <button class="btn btn-primary" id="btn-reveal-a4" style="margin-top:12px;">Reveal Models & Compare</button>
+
+      <div style="display:none;margin-top:16px;" id="a4-models">
+        <div style="padding:16px;background:#f0faf0;border:1px solid #c3e6c3;border-radius:8px;margin-bottom:12px;">
+          <p style="font-size:12px;font-weight:700;color:#2d8a2d;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model Pass</p>
+          <p style="font-size:14px;margin:0;color:#1a1714;">Meets the minimum requirement of 8 peer-reviewed sources. References formatted in APA 7 with some errors. Submission within 10% of 2,000-word limit.</p>
+        </div>
+        <div style="padding:16px;background:#f0faf0;border:1px solid #c3e6c3;border-radius:8px;">
+          <p style="font-size:12px;font-weight:700;color:#2d8a2d;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Model Credit</p>
+          <p style="font-size:14px;margin:0;color:#1a1714;">Meets or exceeds 8-source minimum with appropriate range of seminal and recent research. APA 7 formatting with only minor inconsistencies. Submission meets 2,000-word requirement.</p>
+        </div>
+      </div>
+
+      <div class="feedback neutral" id="a4-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RUBRIC UPDATE ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#6b6460">Your Rubric</div>
+    <h2 class="reveal">Evidence Integration Now Embedded</h2>
+    <p class="lead reveal">Your rubric now explicitly connects the assessment brief's requirements to grade levels. Thresholds (8 sources, APA, word count) are now visible in the Pass/Credit descriptors.</p>
+    <div class="rubric-preview rubric-preview-auto reveal"></div>
+  </div>
+</section>
+
+<!-- ── NAVIGATION ── -->
+<section class="module-section">
+  <div class="section-inner" style="text-align:center;">
+    <nav class="module-nav">
+      <a href="module-14.html">← Module 14</a>
+      <button class="btn btn-primary btn-complete-module" disabled>Complete Module 15</button>
+      <a href="module-16.html" class="nav-next disabled" aria-disabled="true">Module 16 →</a>
+    </nav>
+    <p style="font-size:12px;color:#6b6460;margin-top:12px;">Complete all four activities to unlock.</p>
+  </div>
+</section>
+
+<script src="shared.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  const tracker = ModuleTracker(15, 4);
+
+  /* ═══════════════════════════════════════
+     ACTIVITY 1: FIND ORPHANED REQUIREMENTS
+     ═══════════════════════════════════════ */
+  (function() {
+    const highlights = document.querySelectorAll('.requirement-highlight');
+    const reqCount = document.getElementById('req-count');
+    const feedback = document.getElementById('a1-feedback');
+    const found = new Set();
+
+    highlights.forEach((el, idx) => {
+      el.addEventListener('click', () => {
+        if (!el.classList.contains('found')) {
+          el.classList.add('found');
+          found.add(idx);
+          updateCount();
+
+          if (found.size === 4) {
+            feedback.className = 'feedback show correct';
+            feedback.innerHTML = 'Perfect! You found all 4 orphaned requirements: word count, source minimum, APA 7, and case study format. None are mentioned in the rubric.';
+            tracker.markDone('m15-a1');
+          }
+        }
+      });
+    });
+
+    function updateCount() {
+      reqCount.textContent = 'Found ' + found.size + ' of 4 requirements';
+    }
+
+    // Restore from storage
+    const saved = Exercises.get('m15-a1');
+    if (saved && saved.found) {
+      saved.found.forEach(idx => {
+        highlights[idx].classList.add('found');
+        found.add(idx);
+      });
+      updateCount();
+      if (found.size === 4) {
+        feedback.className = 'feedback show correct';
+        feedback.innerHTML = 'Perfect! You found all 4 orphaned requirements: word count, source minimum, APA 7, and case study format. None are mentioned in the rubric.';
+        tracker.markDone('m15-a1');
+      }
+    }
+  })();
+
+  /* ═══════════════════════════════════════
+     ACTIVITY 2: DRAG SORT REQUIREMENTS
+     ═══════════════════════════════════════ */
+  (function() {
+    const container = document.getElementById('act-2');
+    const zones = document.querySelectorAll('#act-2 .drag-zone');
+    const items = document.querySelectorAll('#req-pool-a2 .drag-item');
+    let draggedEl = null;
+
+    const correctPairs = {
+      'req-item-2': 'zone-hd',  // Exceeds → HD
+      'req-item-1': 'zone-c',   // Meets 8 → Credit
+      'req-item-4': 'zone-hd',  // APA no errors → HD
+      'req-item-5': 'zone-c',   // APA minor errors → Credit
+      'req-item-6': 'zone-p',   // Within 10% → Pass
+      'req-item-3': 'zone-f',   // Fewer than 8 → Below Pass
+      'req-item-7': 'zone-f'    // Significant errors → Below Pass
+    };
+
+    items.forEach(item => {
+      item.draggable = true;
+      item.addEventListener('dragstart', e => {
+        draggedEl = item;
+        e.dataTransfer.effectAllowed = 'move';
+        item.style.opacity = '0.5';
+      });
+      item.addEventListener('dragend', () => {
+        item.style.opacity = '';
+        draggedEl = null;
+      });
+    });
+
+    zones.forEach(zone => {
+      zone.addEventListener('dragover', e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        zone.classList.add('over');
+      });
+      zone.addEventListener('dragleave', () => {
+        zone.classList.remove('over');
+      });
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('over');
+        if (draggedEl) {
+          zone.appendChild(draggedEl);
+          draggedEl.classList.add('placed');
+        }
+      });
+    });
+
+    document.getElementById('btn-check-a2').addEventListener('click', () => {
+      let correct = 0;
+      const feedback = document.getElementById('a2-feedback');
+      items.forEach(item => {
+        item.classList.remove('correct', 'incorrect');
+        const expectedZone = correctPairs[item.id];
+        const actualZone = item.parentElement.id;
+        if (actualZone === expectedZone) {
+          item.classList.add('correct');
+          correct++;
+        } else if (actualZone !== 'req-pool-a2') {
+          item.classList.add('incorrect');
+        }
+      });
+      if (correct === 7) {
+        feedback.className = 'feedback show correct';
+        feedback.innerHTML = 'Excellent! You\'ve correctly placed each requirement at its grade level. Requirements set thresholds (8 sources, APA); quality variants differentiate within grades.';
+        tracker.markDone('m15-a2');
+        Exercises.set('m15-a2', { checked: true, correct: true });
+      } else {
+        feedback.className = 'feedback show incorrect';
+        feedback.innerHTML = 'Not quite. Think about which zones are thresholds (failing vs passing) and which show quality variation within a passing grade.';
+      }
+    });
+
+    document.getElementById('btn-reset-a2').addEventListener('click', () => {
+      document.getElementById('req-pool-a2').append(...items);
+      items.forEach(item => item.classList.remove('placed', 'correct', 'incorrect'));
+      zones.forEach(zone => zone.classList.remove('correct-drop'));
+    });
+
+    // Restore from storage
+    const saved = Exercises.get('m15-a2');
+    if (saved && saved.correct) {
+      tracker.markDone('m15-a2');
+    }
+  })();
+
+  /* ═══════════════════════════════════════
+     ACTIVITY 3: MULTIPLE CHOICE
+     ═══════════════════════════════════════ */
+  (function() {
+    const container = document.getElementById('act-3');
+    MultipleChoice(container, {
+      correctIndex: 1,  // B is correct
+      feedback: {
+        correct: 'Right! Descriptor B measures the quality of analysis (explaining interactions). Descriptor A just counts factors—a number tells you quantity, not quality.',
+        incorrect: 'Not quite. Counts (like "4 or more factors") measure whether a requirement is met, not whether analysis is high quality. The ability to explain how factors interact shows analytical sophistication.'
+      },
+      saveKey: 'm15-a3',
+      onComplete: (isCorrect) => {
+        if (isCorrect) tracker.markDone('m15-a3');
+      }
+    });
+
+    // Check if already completed
+    const saved = Exercises.get('m15-a3');
+    if (saved && saved.correct) {
+      tracker.markDone('m15-a3');
+    }
+  })();
+
+  /* ═══════════════════════════════════════
+     ACTIVITY 4: TEXT TRANSFORM
+     ═══════════════════════════════════════ */
+  (function() {
+    const passInput = document.getElementById('tf-pass');
+    const creditInput = document.getElementById('tf-credit');
+    const revealBtn = document.getElementById('btn-reveal-a4');
+    const modelsDiv = document.getElementById('a4-models');
+    const feedback = document.getElementById('a4-feedback');
+
+    revealBtn.addEventListener('click', () => {
+      modelsDiv.style.display = 'block';
+      revealBtn.disabled = true;
+      revealBtn.textContent = 'Models Revealed';
+
+      if (passInput.value.trim() && creditInput.value.trim()) {
+        feedback.className = 'feedback show correct';
+        feedback.innerHTML = 'Great work! Your descriptors now explicitly link requirements (word count, sources, formatting) to grade levels. This removes ambiguity for both students and markers.';
+        tracker.markDone('m15-a4');
+        Exercises.set('m15-a4', {
+          pass: passInput.value,
+          credit: creditInput.value,
+          completed: true
+        });
+      }
+    });
+
+    // Restore from storage
+    const saved = Exercises.get('m15-a4');
+    if (saved && saved.completed) {
+      tracker.markDone('m15-a4');
+      passInput.value = saved.pass || '';
+      creditInput.value = saved.credit || '';
+    }
+  })();
+
+  // Initialize rubric preview
+  setTimeout(() => {
+    const rubricContainer = document.querySelector('.rubric-preview-auto');
+    if (rubricContainer && typeof Rubric !== 'undefined') {
+      Rubric.renderPreview(rubricContainer);
+    }
+  }, 100);
+})();
+</script>
+
+</body>
+</html>

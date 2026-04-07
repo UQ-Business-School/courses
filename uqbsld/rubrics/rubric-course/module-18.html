@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 18: GA Template Translation</title>
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .module-hero {
+            background: linear-gradient(135deg, #2EA836 0%, #1f7424 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .module-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .module-hero .module-meta {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .activity-container {
+            margin-bottom: 3rem;
+        }
+
+        .activity-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #2EA836;
+        }
+
+        .activity-number {
+            background: #2EA836;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .activity-header h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        /* Template Display */
+        .template-box {
+            background: #f9f9f9;
+            border-left: 4px solid #2EA836;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .template-label {
+            font-weight: bold;
+            color: #2EA836;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        /* Highlightable text */
+        .highlightable-text {
+            word-spacing: 0.25em;
+            cursor: text;
+            user-select: text;
+        }
+
+        .highlightable-text .word {
+            display: inline-block;
+            padding: 0.2em 0.3em;
+            margin: 0.1em 0;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .highlightable-text .word.target {
+            background: #ffffcc;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .highlightable-text .word.target:hover {
+            background: #ffd700;
+        }
+
+        .highlightable-text .word.highlighted {
+            background: #c8e6c9;
+            color: #1b5e20;
+        }
+
+        /* Text Transform Activities */
+        .text-transform-container {
+            margin-bottom: 2rem;
+        }
+
+        .text-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .text-input-group label {
+            font-weight: bold;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .text-input-group textarea {
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            min-height: 100px;
+            resize: vertical;
+            transition: border-color 0.2s ease;
+        }
+
+        .text-input-group textarea:focus {
+            outline: none;
+            border-color: #2EA836;
+            box-shadow: 0 0 0 3px rgba(46, 168, 54, 0.1);
+        }
+
+        .text-input-group textarea:disabled {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        /* Comparison View */
+        .comparison-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .comparison-column {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .comparison-header {
+            background: #2EA836;
+            color: white;
+            padding: 1rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .comparison-content {
+            padding: 1.5rem;
+            background: white;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .comparison-content.variant2 {
+            background: #f0f8f2;
+        }
+
+        .comparison-content.variant3 {
+            background: #fffbf0;
+        }
+
+        .comparison-text {
+            line-height: 1.7;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        /* MC Question */
+        .mc-question {
+            background: #f5f5f5;
+            border-left: 4px solid #2EA836;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+        }
+
+        .mc-question p {
+            margin: 0 0 1rem 0;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .mc-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .mc-option {
+            display: flex;
+            align-items: flex-start;
+            padding: 0.75rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mc-option:hover {
+            border-color: #2EA836;
+            background: #f0f8f2;
+        }
+
+        .mc-option input[type="radio"] {
+            margin-right: 0.75rem;
+            margin-top: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        .mc-option label {
+            cursor: pointer;
+            margin: 0;
+            flex: 1;
+        }
+
+        .mc-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .mc-feedback.show {
+            display: block;
+        }
+
+        .mc-feedback.correct {
+            background: #e8f5e9;
+            border-left: 3px solid #2EA836;
+            color: #2EA836;
+        }
+
+        .mc-feedback.incorrect {
+            background: #ffebee;
+            border-left: 3px solid #c62828;
+            color: #c62828;
+        }
+
+        /* Tracker */
+        .module-tracker {
+            background: white;
+            border: 2px solid #2EA836;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tracker-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .tracker-bars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tracker-item {
+            text-align: center;
+        }
+
+        .tracker-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .tracker-bar {
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+        }
+
+        .tracker-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2EA836, #1f7424);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .module-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #eee;
+        }
+
+        .nav-button {
+            padding: 0.75rem 1.5rem;
+            background: #2EA836;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .nav-button:hover {
+            background: #1f7424;
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .nav-center {
+            text-align: center;
+            color: #666;
+        }
+
+        /* Completion Badge */
+        .completion-badge {
+            display: none;
+            background: #2EA836;
+            color: white;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+
+        .completion-badge.show {
+            display: block;
+        }
+
+        /* Learning Path Box */
+        .learning-path {
+            background: #f0f8f2;
+            border: 1px solid #2EA836;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+        }
+
+        .learning-path h4 {
+            margin-top: 0;
+            color: #2EA836;
+        }
+
+        .learning-path ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .learning-path li {
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box {
+            background: #fffbf0;
+            border: 1px solid #f0ad4e;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="module-hero part-e">
+            <h1>GA Template Translation</h1>
+            <p class="module-meta">Part E · GA Integration — Module 18</p>
+            <p class="module-meta">~20 minutes · 5 activities</p>
+        </div>
+
+        <div class="learning-path">
+            <h4>Full Circle: Modules 2–18</h4>
+            <p>This module applies everything you've learned about rubric design, SOLO taxonomy, and VoI frameworks to contextualize generic GA templates into observable, assessable criteria.</p>
+            <ul>
+                <li>Module 2: Identifying adverbs and quality words in rubric language</li>
+                <li>Modules 5–9: Design frameworks (VoI, SOLO, observable criteria)</li>
+                <li>Module 18: Applying those frameworks to GA template translation</li>
+            </ul>
+        </div>
+
+        <div class="module-tracker">
+            <div class="tracker-title">Module Progress</div>
+            <div class="tracker-bars">
+                <div class="tracker-item">
+                    <div class="tracker-label">Template Diagnosis</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="1"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">Strip to Core</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="2"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">Contextualise</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="3"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">Apply Frameworks</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="4"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">Compare Versions</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="5"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="completion-badge" id="completionBadge">
+            All activities completed! You can now translate GA templates for any course context.
+        </div>
+
+        <!-- Activity 1: Template Diagnosis -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">1</div>
+                <h2>Template Diagnosis: Click & Highlight</h2>
+            </div>
+            <p>Below is GA2 (Courageous Thinkers) Critical Analysis descriptor at HD level. Click on each adverb and quality word—the same trap we identified in Module 2!</p>
+
+            <div class="template-box">
+                <div class="template-label">GA2: Critical Analysis (HD Level)</div>
+                <div class="highlightable-text" id="highlightableText">
+                    <!-- Text will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="highlight-box" id="highlightFeedback">
+                <p>Target words to find: "Deeply", "cogently", "significant", "coherently", "relevant"</p>
+            </div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity1Feedback">Highlight all 5 target adverbs/quality words to progress.</p>
+        </div>
+
+        <!-- Activity 2: Strip to Core Capability -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">2</div>
+                <h2>Strip to Core Capability: Text Transform</h2>
+            </div>
+            <p>Remove the adverbs and quality words. Write the stripped version in plain language—what's the actual capability being assessed?</p>
+
+            <div class="text-input-group">
+                <label>Original (with adverbs):</label>
+                <textarea disabled>"Deeply analyses information and cogently justifies significant insights, coherently integrating relevant perspectives to identify biases and gaps in knowledge."</textarea>
+            </div>
+
+            <div class="text-input-group">
+                <label>Your answer (core capability only):</label>
+                <textarea id="a2Input" placeholder="Write the core capability without adverbs..."></textarea>
+            </div>
+
+            <button id="a2CheckBtn" style="padding: 0.75rem 1.5rem; background: #2EA836; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem;">Check Answer</button>
+            <div id="a2Feedback" style="margin-top: 1rem;"></div>
+
+            <div id="a2Model" style="display: none; margin-top: 1.5rem; background: #f0f8f2; padding: 1.5rem; border-radius: 6px;">
+                <p style="font-weight: bold; margin-top: 0;">Model Answer:</p>
+                <p style="font-style: italic;">"Analyses information, justifies insights, integrates perspectives, identifies biases and gaps in knowledge."</p>
+            </div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity2Feedback">Complete your answer to progress.</p>
+        </div>
+
+        <!-- Activity 3: Contextualise to Task -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">3</div>
+                <h2>Contextualise to Task: Text Transform</h2>
+            </div>
+            <p>Now rewrite the stripped capability for a specific MGTS2501 case study. What does "integrating perspectives" mean in the context of analysing a staff turnover case?</p>
+
+            <div style="background: #f5f5f5; padding: 1.5rem; border-radius: 6px; margin-bottom: 1.5rem;">
+                <h4 style="margin-top: 0;">Course Context: MGTS2501 — Organisational Management</h4>
+                <p><strong>Assessment:</strong> Case study analysing staff turnover in a technology company.</p>
+                <p><strong>Key task:</strong> Analyse root causes, integrate multiple theoretical perspectives, and justify your interpretation with case evidence.</p>
+            </div>
+
+            <div class="text-input-group">
+                <label>Contextualised capability (for the turnover case):</label>
+                <textarea id="a3Input" placeholder="How would you rewrite the capability for the turnover case analysis?..."></textarea>
+            </div>
+
+            <button id="a3CheckBtn" style="padding: 0.75rem 1.5rem; background: #2EA836; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem;">Check Answer</button>
+            <div id="a3Feedback" style="margin-top: 1rem;"></div>
+
+            <div id="a3Model" style="display: none; margin-top: 1.5rem; background: #f0f8f2; padding: 1.5rem; border-radius: 6px;">
+                <p style="font-weight: bold; margin-top: 0;">Model Answer:</p>
+                <p>"Analyses the turnover case from multiple theoretical angles, justifies the interpretation with case-specific evidence, integrates competing perspectives on the causes, and identifies assumptions or biases in both the case data and the theories applied."</p>
+            </div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity3Feedback">Complete your answer to progress.</p>
+        </div>
+
+        <!-- Activity 4: Apply Design Frameworks -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">4</div>
+                <h2>Apply Design Frameworks: VoI + SOLO</h2>
+            </div>
+            <p>Take the contextualised descriptor and apply VoI (Depth/Breadth/Cogency) and SOLO (Depth progression) to make it fully observable. This draws on everything from Modules 5–9.</p>
+
+            <div class="highlight-box">
+                <p><strong>Frameworks to apply:</strong> Variation of Importance (Depth, Breadth, Cogency) and SOLO taxonomy (Unistructural → Multistructural → Relational → Extended Abstract).</p>
+            </div>
+
+            <div class="text-input-group">
+                <label>Your observable descriptor (using VoI + SOLO):</label>
+                <textarea id="a4Input" placeholder="Write an observable descriptor that integrates VoI and SOLO frameworks..."></textarea>
+            </div>
+
+            <button id="a4CheckBtn" style="padding: 0.75rem 1.5rem; background: #2EA836; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem;">Check Answer</button>
+            <div id="a4Feedback" style="margin-top: 1rem;"></div>
+
+            <div id="a4Model" style="display: none; margin-top: 1.5rem; background: #f0f8f2; padding: 1.5rem; border-radius: 6px;">
+                <p style="font-weight: bold; margin-top: 0;">Model Answer:</p>
+                <p>"Analyses root causes of the turnover problem by examining underlying assumptions (Depth). Synthesises across 3+ theoretical perspectives (Breadth), resolving where they conflict (Cogency). Constructs an original interpretation that abstracts transferable principles (Extended Abstract). Identifies biases in both the case data and the analytical frameworks used."</p>
+            </div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity4Feedback">Complete your answer to progress.</p>
+        </div>
+
+        <!-- Activity 5: Side-by-Side Comparison -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">5</div>
+                <h2>Side-by-Side Comparison: Visual</h2>
+            </div>
+            <p>Compare all three versions: the original generic template, a contextualised version, and the model answer with VoI + SOLO applied.</p>
+
+            <div class="comparison-container">
+                <div class="comparison-column">
+                    <div class="comparison-header">Version 1: Generic Template</div>
+                    <div class="comparison-content">
+                        <div class="comparison-text">
+                            "Deeply analyses information and cogently justifies significant insights, coherently integrating relevant perspectives to identify biases and gaps in knowledge."
+                        </div>
+                        <p style="margin-top: 1.5rem; color: #c62828; font-size: 0.85rem;"><strong>Issues:</strong> Adverbs ("deeply", "cogently"), vague ("significant", "relevant"), not observable.</p>
+                    </div>
+                </div>
+
+                <div class="comparison-column">
+                    <div class="comparison-header comparison-content.variant2">Version 2: Contextualised</div>
+                    <div class="comparison-content variant2">
+                        <div class="comparison-text">
+                            "Analyses the turnover case from multiple theoretical angles, justifies the interpretation with case-specific evidence, integrates competing perspectives on the causes, and identifies assumptions or biases in both the case data and the theories applied."
+                        </div>
+                        <p style="margin-top: 1.5rem; color: #f57c00; font-size: 0.85rem;"><strong>Better:</strong> Task-specific, clearer verbs. Still benefits from SOLO structure.</p>
+                    </div>
+                </div>
+
+                <div class="comparison-column">
+                    <div class="comparison-header">Version 3: VoI + SOLO</div>
+                    <div class="comparison-content variant3">
+                        <div class="comparison-text">
+                            "Analyses root causes by examining underlying assumptions (Depth). Synthesises across 3+ theoretical perspectives (Breadth), resolving conflicts (Cogency). Constructs original interpretation abstracting principles (Extended Abstract). Identifies biases in case data and frameworks."
+                        </div>
+                        <p style="margin-top: 1.5rem; color: #2EA836; font-size: 0.85rem;"><strong>Best:</strong> Observable, structured, markers know exactly what to assess.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mc-question">
+                <p><strong>Which version would be most useful for a marker assessing this task?</strong></p>
+                <div class="mc-options" id="a5Options">
+                    <!-- Options will be generated by JavaScript -->
+                </div>
+                <div class="mc-feedback" id="a5Feedback"></div>
+            </div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity5Feedback">Select your answer to complete the module.</p>
+        </div>
+
+        <!-- Module Navigation -->
+        <nav class="module-nav">
+            <a href="module-17.html">← Module 17</a>
+            <div class="nav-center">Module 18 of 19</div>
+            <a href="module-19.html" class="nav-next disabled" aria-disabled="true">Module 19 →</a>
+        </nav>
+    </div>
+
+    <script src="shared.js"></script>
+    <script>
+        const MODULE_ID = 18;
+        const ACTIVITY_COUNT = 5;
+
+        const originalTemplate = "Deeply analyses information and cogently justifies significant insights, coherently integrating relevant perspectives to identify biases and gaps in knowledge.";
+        const targetWords = ["Deeply", "cogently", "significant", "coherently", "relevant"];
+
+        // Activity 1: Template Diagnosis
+        function initTemplateHighlight() {
+            const container = document.getElementById('highlightableText');
+            const words = originalTemplate.split(/\s+/);
+
+            words.forEach(word => {
+                const span = document.createElement('span');
+                span.className = 'word';
+                span.textContent = word;
+
+                if (targetWords.some(target => word.includes(target))) {
+                    span.classList.add('target');
+                    span.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        this.classList.toggle('highlighted');
+                        updateActivity1Progress();
+                    });
+                }
+
+                container.appendChild(span);
+                container.appendChild(document.createTextNode(' '));
+            });
+        }
+
+        function updateActivity1Progress() {
+            const highlighted = document.querySelectorAll('.word.target.highlighted').length;
+            const tracker = document.querySelector('[data-activity="1"]');
+            const percent = (highlighted / 5) * 100;
+            tracker.style.width = percent + '%';
+            if (highlighted > 0) {
+                tracker.textContent = highlighted;
+            }
+            if (highlighted === 5) {
+                document.getElementById('activity1Feedback').textContent = '✓ All adverbs highlighted! Move to Activity 2.';
+                document.getElementById('activity1Feedback').style.color = '#2EA836';
+            }
+            checkModuleCompletion();
+        }
+
+        // Activity 2: Strip to Core
+        function initActivity2() {
+            document.getElementById('a2CheckBtn').addEventListener('click', () => {
+                const userAnswer = document.getElementById('a2Input').value.trim();
+                const feedback = document.getElementById('a2Feedback');
+                const model = document.getElementById('a2Model');
+
+                if (userAnswer.length > 50) {
+                    feedback.innerHTML = '<div style="background: #e8f5e9; padding: 1rem; border-radius: 4px; color: #2EA836;"><strong>✓ Good answer!</strong> You\'ve stripped away the adverbs and identified the core capabilities. Compare with the model answer below.</div>';
+                    model.style.display = 'block';
+                    updateActivity2Progress();
+                } else {
+                    feedback.innerHTML = '<div style="background: #fff3e0; padding: 1rem; border-radius: 4px; color: #f57c00;">Write more detail. What are the actual capabilities being assessed?</div>';
+                }
+            });
+        }
+
+        function updateActivity2Progress() {
+            const tracker = document.querySelector('[data-activity="2"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('activity2Feedback').textContent = '✓ Activity 2 complete! Move to Activity 3.';
+            document.getElementById('activity2Feedback').style.color = '#2EA836';
+            checkModuleCompletion();
+        }
+
+        // Activity 3: Contextualise
+        function initActivity3() {
+            document.getElementById('a3CheckBtn').addEventListener('click', () => {
+                const userAnswer = document.getElementById('a3Input').value.trim();
+                const feedback = document.getElementById('a3Feedback');
+                const model = document.getElementById('a3Model');
+
+                if (userAnswer.includes('case') && userAnswer.length > 80) {
+                    feedback.innerHTML = '<div style="background: #e8f5e9; padding: 1rem; border-radius: 4px; color: #2EA836;"><strong>✓ Excellent!</strong> You\'ve contextualised the capability to the specific task. Compare with the model answer.</div>';
+                    model.style.display = 'block';
+                    updateActivity3Progress();
+                } else {
+                    feedback.innerHTML = '<div style="background: #fff3e0; padding: 1rem; border-radius: 4px; color: #f57c00;">Include task-specific language. How does "integrating perspectives" apply to the turnover case?</div>';
+                }
+            });
+        }
+
+        function updateActivity3Progress() {
+            const tracker = document.querySelector('[data-activity="3"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('activity3Feedback').textContent = '✓ Activity 3 complete! Move to Activity 4.';
+            document.getElementById('activity3Feedback').style.color = '#2EA836';
+            checkModuleCompletion();
+        }
+
+        // Activity 4: Apply Frameworks
+        function initActivity4() {
+            document.getElementById('a4CheckBtn').addEventListener('click', () => {
+                const userAnswer = document.getElementById('a4Input').value.trim();
+                const feedback = document.getElementById('a4Feedback');
+                const model = document.getElementById('a4Model');
+
+                const hasDepth = userAnswer.includes('Depth') || userAnswer.includes('depth');
+                const hasBreadth = userAnswer.includes('Breadth') || userAnswer.includes('breadth') || userAnswer.includes('multiple');
+                const hasSOLO = userAnswer.includes('Extended Abstract') || userAnswer.includes('abstract');
+
+                if (userAnswer.length > 100 && (hasDepth || hasBreadth || hasSOLO)) {
+                    feedback.innerHTML = '<div style="background: #e8f5e9; padding: 1rem; border-radius: 4px; color: #2EA836;"><strong>✓ Great effort!</strong> You\'ve integrated frameworks to make the descriptor observable. Compare with the model answer which uses explicit VoI and SOLO labels.</div>';
+                    model.style.display = 'block';
+                    updateActivity4Progress();
+                } else {
+                    feedback.innerHTML = '<div style="background: #fff3e0; padding: 1rem; border-radius: 4px; color: #f57c00;">Use VoI framework language (Depth, Breadth, Cogency) and SOLO levels (Extended Abstract, Relational). These make the descriptor observable.</div>';
+                }
+            });
+        }
+
+        function updateActivity4Progress() {
+            const tracker = document.querySelector('[data-activity="4"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('activity4Feedback').textContent = '✓ Activity 4 complete! Move to Activity 5 (final activity).';
+            document.getElementById('activity4Feedback').style.color = '#2EA836';
+            checkModuleCompletion();
+        }
+
+        // Activity 5: Comparison MC
+        function initActivity5() {
+            const container = document.getElementById('a5Options');
+            const options = [
+                {
+                    text: 'Version 1: Generic Template',
+                    correct: false,
+                    reason: 'Version 1 contains adverbs and is not observable for marking.'
+                },
+                {
+                    text: 'Version 2: Contextualised',
+                    correct: false,
+                    reason: 'Version 2 is better contextualised but lacks the observable SOLO structure.'
+                },
+                {
+                    text: 'Version 3: VoI + SOLO',
+                    correct: true,
+                    reason: 'Version 3 is most useful. Markers know exactly what to assess: depth of analysis, breadth of perspectives, level of abstraction. This is fully observable and linked to design frameworks.'
+                }
+            ];
+
+            options.forEach((opt, index) => {
+                const label = document.createElement('label');
+                label.className = 'mc-option';
+                label.innerHTML = `
+                    <input type="radio" name="a5" value="${index}">
+                    <label>${opt.text}</label>
+                `;
+                container.appendChild(label);
+
+                label.querySelector('input').addEventListener('change', () => {
+                    const feedback = document.getElementById('a5Feedback');
+                    feedback.classList.add('show');
+                    if (opt.correct) {
+                        feedback.classList.remove('incorrect');
+                        feedback.classList.add('correct');
+                        feedback.textContent = 'Correct! ' + opt.reason;
+                        updateActivity5Progress();
+                    } else {
+                        feedback.classList.remove('correct');
+                        feedback.classList.add('incorrect');
+                        feedback.textContent = 'Not quite. ' + options[2].reason;
+                    }
+                });
+            });
+        }
+
+        function updateActivity5Progress() {
+            const tracker = document.querySelector('[data-activity="5"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('activity5Feedback').textContent = '✓ Activity 5 complete! Module finished.';
+            document.getElementById('activity5Feedback').style.color = '#2EA836';
+
+            // Update rubric with GA2 mapping
+            const gaMapping = {
+                criterionIndex: 0,
+                gaRef: 'GA2',
+                isGA: true,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('m18-ga2-mapping', JSON.stringify(gaMapping));
+
+            checkModuleCompletion();
+        }
+
+        // Module completion check
+        function checkModuleCompletion() {
+            const a1Done = document.querySelectorAll('.word.target.highlighted').length === 5;
+            const a2Done = document.getElementById('a2Model').style.display !== 'none';
+            const a3Done = document.getElementById('a3Model').style.display !== 'none';
+            const a4Done = document.getElementById('a4Model').style.display !== 'none';
+            const a5Done = document.querySelector('input[name="a5"]:checked');
+
+            if (a1Done && a2Done && a3Done && a4Done && a5Done) {
+                document.getElementById('completionBadge').classList.add('show');
+                localStorage.setItem('m18-complete', JSON.stringify({ completed: true, timestamp: Date.now() }));
+                const next = document.querySelector('.nav-next');
+                if (next) {
+                    next.classList.remove('disabled');
+                    next.removeAttribute('aria-disabled');
+                }
+            }
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initTemplateHighlight();
+            initActivity2();
+            initActivity3();
+            initActivity4();
+            initActivity5();
+        });
+    </script>
+</body>
+</html>

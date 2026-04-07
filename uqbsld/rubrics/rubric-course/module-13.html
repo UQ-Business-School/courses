@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 13: Assessment Type Design — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── Drag-and-drop pitfall matching ── */
+.pitfall-drag-zone {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.pitfall-source {
+  border: 1px solid #e4dfd9;
+  border-radius: 8px;
+  padding: 16px;
+  background: #f9f7f5;
+  min-height: 200px;
+}
+
+.pitfall-source h4 {
+  font-size: 12px;
+  font-weight: 700;
+  color: #51247A;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pitfall-item {
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #e4dfd9;
+  border-radius: 6px;
+  cursor: move;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #1a1714;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.pitfall-item:hover {
+  border-color: #962A8B;
+  box-shadow: 0 2px 6px rgba(150, 42, 139, 0.12);
+}
+
+.pitfall-item.dragging {
+  opacity: 0.6;
+  cursor: grabbing;
+}
+
+.pitfall-target {
+  border: 2px dashed #d4a8d4;
+  border-radius: 8px;
+  padding: 16px;
+  background: rgba(150, 42, 139, 0.02);
+  min-height: 180px;
+}
+
+.pitfall-target h4 {
+  font-size: 12px;
+  font-weight: 700;
+  color: #51247A;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pitfall-target.drag-over {
+  border-color: #962A8B;
+  background: rgba(150, 42, 139, 0.08);
+}
+
+.pitfall-placed {
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #962A8B;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #1a1714;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pitfall-remove {
+  background: none;
+  border: none;
+  color: #d9534f;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  margin-left: 8px;
+}
+
+.pitfall-remove:hover {
+  color: #c9302c;
+}
+
+/* ── Criteria selection checkboxes ── */
+.criteria-type-group {
+  margin: 24px 0;
+  padding: 16px;
+  border: 1px solid #e4dfd9;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.criteria-type-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #51247A;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.criteria-checklist {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.criteria-check-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px;
+  background: #f9f7f5;
+  border-radius: 6px;
+}
+
+.criteria-check-item input[type="checkbox"] {
+  margin-right: 10px;
+  margin-top: 3px;
+  cursor: pointer;
+}
+
+.criteria-check-item label {
+  cursor: pointer;
+  font-size: 13px;
+  color: #1a1714;
+  line-height: 1.5;
+}
+
+/* ── Slider styling ── */
+.slider-group {
+  margin: 20px 0;
+  padding: 16px;
+  background: #f9f7f5;
+  border-radius: 8px;
+}
+
+.slider-group h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #51247A;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.slider-container {
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.slider-container label {
+  font-size: 13px;
+  color: #1a1714;
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #e4dfd9;
+  outline: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #962A8B;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #962A8B;
+  cursor: pointer;
+  border: none;
+}
+
+.slider-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #962A8B;
+  text-align: right;
+}
+
+.slider-feedback-text {
+  font-size: 13px;
+  color: #6b6460;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.justification-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  border: 1px solid #e4dfd9;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 13px;
+  resize: vertical;
+}
+
+/* ── Multiple choice excerpts ── */
+.excerpt-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.excerpt-box {
+  border: 1px solid #e4dfd9;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+}
+
+.excerpt-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #51247A;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.excerpt-text {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #1a1714;
+  font-style: italic;
+  margin-bottom: 12px;
+  padding: 12px;
+  border-left: 3px solid #d4a8d4;
+  background: #f9f7f5;
+  border-radius: 4px;
+}
+
+.excerpt-radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.excerpt-radio input[type="radio"] {
+  margin-top: 4px;
+  cursor: pointer;
+}
+
+.excerpt-radio label {
+  cursor: pointer;
+  font-size: 13px;
+  color: #1a1714;
+}
+
+/* ── Checklist adaptation ── */
+.adapt-checklist {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.adapt-check-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #e4dfd9;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.adapt-check-item input[type="checkbox"] {
+  margin-right: 12px;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.adapt-check-item label {
+  cursor: pointer;
+  font-size: 13px;
+  color: #1a1714;
+  flex: 1;
+}
+
+.adapt-check-item.checked {
+  background: rgba(46, 168, 54, 0.04);
+  border-color: #2ea836;
+}
+
+.mc-option {
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #e4dfd9;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.mc-option input[type="radio"] {
+  margin-right: 8px;
+}
+
+.mc-option:hover {
+  border-color: #51247A;
+  background: #f9f7f5;
+}
+
+.mc-option.selected {
+  border-color: #51247A;
+  background: rgba(81, 36, 122, 0.04);
+}
+
+.feedback.neutral {
+  border-left-color: #51247A;
+  background: rgba(81, 36, 122, 0.04);
+}
+
+.feedback.success {
+  border-left-color: #2ea836;
+  background: rgba(46, 168, 54, 0.04);
+}
+
+.feedback.warning {
+  border-left-color: #d9534f;
+  background: rgba(217, 83, 79, 0.04);
+}
+
+@media (max-width: 760px) {
+  .pitfall-drag-zone {
+    grid-template-columns: 1fr;
+  }
+  .excerpt-compare {
+    grid-template-columns: 1fr;
+  }
+  .slider-container {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 13 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<section class="module-hero part-c">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part C · Calibration & Context — Module 13</div>
+    <h1>Assessment Type Design</h1>
+    <p class="hero-sub">Different assessment types carry different pitfalls. Master them: recognise the risks in essays, presentations, group work, and reflection, then design rubrics that mitigate them.</p>
+    <span class="hero-time">&#9201; ~20 minutes</span>
+  </div>
+</section>
+
+<!-- ── INTRO ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">The Challenge</div>
+    <h2 class="reveal">Every Assessment Type Has Blind Spots</h2>
+    <p class="lead reveal">Essays invite word-count padding. Presentations reward delivery over substance. Group projects hide free-riding. Reflective tasks can become confessional rather than analytical. Your rubric must anticipate these pitfalls and design them out.</p>
+
+    <div class="emphasis-box reveal" style="border-left-color:#962A8B;">
+      <p><strong>The design principle:</strong></p>
+      <p style="margin-top:8px;font-size:13px;">Once you name a pitfall, you can design criteria that sidestep it. This module teaches you to diagnose common rubric mistakes and rewrite criteria that are robust across assessment types.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: PITFALL MATCHING (DRAG & DROP) ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Activity 1 of 5</div>
+    <h2 class="reveal">Pitfall Matching</h2>
+    <p class="lead reveal">Below are 8 common rubric pitfalls and 5 assessment types. Drag each pitfall to the assessment type it most commonly affects. Some types may receive multiple pitfalls; some pitfalls affect all types.</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">Drag Pitfalls to Assessment Types</div>
+
+      <div class="pitfall-drag-zone">
+        <!-- Source -->
+        <div class="pitfall-source">
+          <h4>Pitfalls (Drag These)</h4>
+          <div id="pitfall-list">
+            <div class="pitfall-item" draggable="true" data-pitfall="section-based">Section-based criteria</div>
+            <div class="pitfall-item" draggable="true" data-pitfall="delivery-over-content">Grading delivery over content</div>
+            <div class="pitfall-item" draggable="true" data-pitfall="confession">Grading the confession</div>
+            <div class="pitfall-item" draggable="true" data-pitfall="word-count">Word count as quality proxy</div>
+            <div class="pitfall-item" draggable="true" data-pitfall="adverbs">Adverb-only descriptors</div>
+            <div class="pitfall-item" draggable="true" data-pitfall="group-contrib">Missing group contribution criteria</div>
+            <div class="pitfall-item" draggable="true" data-pitfall="vague-reflection">Vague reflection requirements</div>
+            <div class="pitfall-item" draggable="true" data-pitfall="style-bias">Presentation style bias</div>
+          </div>
+        </div>
+
+        <!-- Targets -->
+        <div>
+          <div class="pitfall-target" data-type="essay">
+            <h4>Essay</h4>
+            <div id="target-essay"></div>
+          </div>
+          <div class="pitfall-target" data-type="presentation">
+            <h4>Presentation</h4>
+            <div id="target-presentation"></div>
+          </div>
+          <div class="pitfall-target" data-type="group">
+            <h4>Group Project</h4>
+            <div id="target-group"></div>
+          </div>
+          <div class="pitfall-target" data-type="reflection">
+            <h4>Reflective Task</h4>
+            <div id="target-reflection"></div>
+          </div>
+          <div class="pitfall-target" data-type="general">
+            <h4>General (All Types)</h4>
+            <div id="target-general"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-check-a1" style="margin-top:16px;">Check My Matches</button>
+      <button class="btn btn-secondary btn-small" id="btn-reset-a1" style="margin-left:8px;">Reset</button>
+
+      <div class="feedback neutral" id="a1-feedback" style="display:none;margin-top:16px;">
+        <span class="label" id="a1-label"></span>
+        <p id="a1-msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: CRITERIA SELECTION ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Activity 2 of 5</div>
+    <h2 class="reveal">Criteria Selection</h2>
+    <p class="lead reveal">For each assessment type below, select the most appropriate criteria from a list of 10 options. The best rubrics focus on what matters, not what's easy to measure.</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Select Best Criteria for Each Type</div>
+
+      <!-- Essay Criteria -->
+      <div class="criteria-type-group">
+        <div class="criteria-type-title">Essay: Which criteria matter most?</div>
+        <div class="criteria-checklist" id="essay-criteria">
+          <div class="criteria-check-item">
+            <input type="checkbox" id="e1" value="argument-evidence" data-correct="1">
+            <label for="e1">Constructs argument supported by evidence and reasoning</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="e2" value="word-count" data-correct="0">
+            <label for="e2">Meets word count requirements exactly</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="e3" value="synthesis" data-correct="1">
+            <label for="e3">Synthesises multiple sources into coherent analysis</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="e4" value="spelling" data-correct="0">
+            <label for="e4">Grammar and spelling are perfect</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="e5" value="critical-engagement" data-correct="1">
+            <label for="e5">Critically engages with ideas, not just summarises</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Presentation Criteria -->
+      <div class="criteria-type-group">
+        <div class="criteria-type-title">Presentation: Which criteria matter most?</div>
+        <div class="criteria-checklist" id="presentation-criteria">
+          <div class="criteria-check-item">
+            <input type="checkbox" id="p1" value="content-quality" data-correct="1">
+            <label for="p1">Content is accurate, well-researched, and supported by evidence</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="p2" value="eye-contact" data-correct="0">
+            <label for="p2">Maintains confident eye contact throughout</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="p3" value="engagement" data-correct="1">
+            <label for="p3">Engages audience through clear communication and structure</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="p4" value="voice-tone" data-correct="0">
+            <label for="p4">Uses assertive, commanding vocal presence</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="p5" value="logical-flow" data-correct="1">
+            <label for="p5">Ideas progress logically with clear transitions</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group Project Criteria -->
+      <div class="criteria-type-group">
+        <div class="criteria-type-title">Group Project: Which criteria matter most?</div>
+        <div class="criteria-checklist" id="group-criteria">
+          <div class="criteria-check-item">
+            <input type="checkbox" id="g1" value="individual-contribution" data-correct="1">
+            <label for="g1">Can identify individual contributions of each member</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="g2" value="group-harmony" data-correct="0">
+            <label for="g2">All group members got along and enjoyed working together</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="g3" value="quality-integration" data-correct="1">
+            <label for="g3">Work is integrated, not just concatenated sections</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="g4" value="equal-effort" data-correct="0">
+            <label for="g4">Each member contributed equally to every part</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="g5" value="final-quality" data-correct="1">
+            <label for="g5">Final product demonstrates collective mastery of content</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reflective Task Criteria -->
+      <div class="criteria-type-group">
+        <div class="criteria-type-title">Reflective Task: Which criteria matter most?</div>
+        <div class="criteria-checklist" id="reflection-criteria">
+          <div class="criteria-check-item">
+            <input type="checkbox" id="r1" value="analysis-not-disclosure" data-correct="1">
+            <label for="r1">Shows analytical thinking about learning, not just personal disclosure</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="r2" value="emotional-depth" data-correct="0">
+            <label for="r2">Reveals deeply personal or emotional experiences</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="r3" value="evidence-linking" data-correct="1">
+            <label for="r3">Links reflection to specific course concepts and evidence</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="r4" value="authenticity" data-correct="0">
+            <label for="r4">Feels genuine and unfiltered</label>
+          </div>
+          <div class="criteria-check-item">
+            <input type="checkbox" id="r5" value="growth-orientation" data-correct="1">
+            <label for="r5">Identifies specific areas for improvement and future action</label>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-check-a2" style="margin-top:16px;">Check My Selections</button>
+      <button class="btn btn-secondary btn-small" id="btn-reset-a2" style="margin-left:8px;">Reset</button>
+
+      <div class="feedback neutral" id="a2-feedback" style="display:none;margin-top:16px;">
+        <span class="label" id="a2-label"></span>
+        <p id="a2-msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: PRESENTATION WEIGHTING ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Activity 3 of 5</div>
+    <h2 class="reveal">Presentation Weighting</h2>
+    <p class="lead reveal">A rubric weights "delivery" at 60% and "content" at 40%. This is backwards. Use the sliders below to rebalance, then explain your rationale.</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">Reweight Delivery vs Content</div>
+
+      <div class="slider-feedback-text">
+        A typical weak rubric overweights delivery (how slick the presentation looks) and underweights content (what's being said). Adjust the weightings below to reflect what should actually matter.
+      </div>
+
+      <div class="slider-group">
+        <h4>Current (Weak) Weighting</h4>
+        <div style="padding:12px;background:#fff;border-radius:6px;border-left:3px solid #d9534f;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+            <span style="font-size:13px;color:#1a1714;">Delivery (e.g., eye contact, voice, slides)</span>
+            <span style="font-size:16px;font-weight:700;color:#d9534f;">60%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span style="font-size:13px;color:#1a1714;">Content (e.g., accuracy, depth, evidence)</span>
+            <span style="font-size:16px;font-weight:700;color:#d9534f;">40%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slider-group">
+        <h4>Your Reweighting</h4>
+        <div class="slider-container">
+          <label for="delivery-slider">Delivery %</label>
+          <input type="range" id="delivery-slider" min="10" max="80" value="35">
+          <div class="slider-value"><span id="delivery-value">35</span>%</div>
+        </div>
+        <div class="slider-container">
+          <label for="content-slider">Content %</label>
+          <input type="range" id="content-slider" min="20" max="90" value="65">
+          <div class="slider-value"><span id="content-value">65</span>%</div>
+        </div>
+        <div style="font-size:12px;color:#6b6460;margin-top:12px;text-align:center;">
+          <strong>Total: <span id="total-weight">100</span>%</strong>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <label class="descriptor-label" for="weighting-justification">Your Justification (Why this split?)</label>
+        <textarea class="justification-textarea" id="weighting-justification" placeholder="Explain why you chose this weighting..."></textarea>
+      </div>
+
+      <button class="btn btn-primary" id="btn-check-a3" style="margin-top:16px;">Submit My Weighting</button>
+      <button class="btn btn-secondary btn-small" id="btn-reset-a3" style="margin-left:8px;">Reset</button>
+
+      <div class="feedback neutral" id="a3-feedback" style="display:none;margin-top:16px;">
+        <span class="label" id="a3-label"></span>
+        <p id="a3-msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: REFLECTION QUALITY vs DISCLOSURE ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Activity 4 of 5</div>
+    <h2 class="reveal">Reflection Quality vs Disclosure</h2>
+    <p class="lead reveal">Two reflective excerpts from the same assignment. One is deeply personal but analytically shallow. The other shows moderate disclosure but rich analysis. Which deserves the higher grade?</p>
+
+    <div class="activity reveal" id="act-4">
+      <div class="activity-number">4</div>
+      <div class="activity-title">Analyse Reflection Quality</div>
+
+      <div class="excerpt-compare">
+        <div class="excerpt-box">
+          <div class="excerpt-label">Excerpt A: Deep Disclosure, Shallow Analysis</div>
+          <div class="excerpt-text">
+            This module was the hardest thing I've done. When we discussed failure, I broke down because I'm terrified of failing. My father always said I wasn't good enough, and that haunts me every day. This assignment made me realise I need therapy. I felt so vulnerable sharing my struggles with the class, but I'm grateful to feel less alone.
+          </div>
+          <div class="excerpt-radio">
+            <input type="radio" id="choice-a" name="reflection" value="shallow">
+            <label for="choice-a">Excerpt A deserves the higher grade</label>
+          </div>
+        </div>
+
+        <div class="excerpt-box">
+          <div class="excerpt-label">Excerpt B: Moderate Disclosure, Rich Analysis</div>
+          <div class="excerpt-text">
+            I recognised I often avoid risk-taking in assignments. Reflecting on the framework we studied (Dweck's growth mindset), I see I was operating in a fixed mindset: "I'm either good at this or not." The module's emphasis on iterative improvement helped me reframe failure as data. Going forward, I'll build in multiple drafts rather than trying to be perfect on the first attempt.
+          </div>
+          <div class="excerpt-radio">
+            <input type="radio" id="choice-b" name="reflection" value="rich">
+            <label for="choice-b">Excerpt B deserves the higher grade</label>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-check-a4" style="margin-top:16px;">Submit My Choice</button>
+      <button class="btn btn-secondary btn-small" id="btn-reset-a4" style="margin-left:8px;">Reset</button>
+
+      <div class="feedback neutral" id="a4-feedback" style="display:none;margin-top:16px;">
+        <span class="label" id="a4-label"></span>
+        <p id="a4-msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 5: ADAPT YOUR RUBRIC ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Activity 5 of 5</div>
+    <h2 class="reveal">Adapt Your Rubric</h2>
+    <p class="lead reveal">Review your MGTS2501 rubric against this checklist. Tick off each item as you confirm it's not vulnerable to the assessment-type pitfalls you've just learned.</p>
+
+    <div class="activity reveal" id="act-5">
+      <div class="activity-number">5</div>
+      <div class="activity-title">Safety-Check Your Criteria</div>
+
+      <div class="adapt-checklist" id="adapt-items">
+        <div class="adapt-check-item">
+          <input type="checkbox" id="adapt-1" data-item="sections">
+          <label for="adapt-1">Criteria assess capabilities, not essay sections (no "Introduction", "Body", "Conclusion")</label>
+        </div>
+        <div class="adapt-check-item">
+          <input type="checkbox" id="adapt-2" data-item="evidence">
+          <label for="adapt-2">Evidence integration is separated from content quality (they're different skills)</label>
+        </div>
+        <div class="adapt-check-item">
+          <input type="checkbox" id="adapt-3" data-item="mechanics">
+          <label for="adapt-3">Grammar/mechanics are a separate criterion, not embedded in content criteria</label>
+        </div>
+        <div class="adapt-check-item">
+          <input type="checkbox" id="adapt-4" data-item="word-count">
+          <label for="adapt-4">No mention of word/page counts as a proxy for quality</label>
+        </div>
+        <div class="adapt-check-item">
+          <input type="checkbox" id="adapt-5" data-item="adverbs">
+          <label for="adapt-5">Descriptors use action verbs (identifies, synthesises, evaluates) not just adverbs (excellent, satisfactory)</label>
+        </div>
+        <div class="adapt-check-item">
+          <input type="checkbox" id="adapt-6" data-item="group">
+          <label for="adapt-6">If group work: can you distinguish individual contribution from group quality?</label>
+        </div>
+        <div class="adapt-check-item">
+          <input type="checkbox" id="adapt-7" data-item="reflection">
+          <label for="adapt-7">If reflective: criteria reward analysis and learning identification, not personal depth</label>
+        </div>
+        <div class="adapt-check-item">
+          <input type="checkbox" id="adapt-8" data-item="presentation">
+          <label for="adapt-8">If presentation: content quality weighted more heavily than delivery style</label>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-complete-a5" style="margin-top:16px;">Mark Module Complete</button>
+
+      <div class="feedback success" id="a5-feedback" style="display:none;margin-top:16px;">
+        <span class="label">Well Done!</span>
+        <p>You've completed Module 13. You now understand how different assessment types can mislead rubric designers into measuring the wrong things. In Module 14, you'll tackle accessibility: making sure your rubrics are clear and fair for all learners.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<nav class="module-nav">
+  <a href="module-12.html">← Module 12</a>
+  <a href="module-14.html" class="nav-next" id="nav-next-m14">Module 14 →</a>
+</nav>
+
+<footer class="module-cta"><p class="cta-credit">UQ Business School Learning Design &middot; 2026</p></footer>
+
+<script src="shared.js"></script>
+<script>
+(function(){
+  const RC = window.RubricCourse;
+  const tracker = RC.ModuleTracker(13, 5);
+  const SAVE_KEY = 'm13';
+
+  // Helper: save to localStorage
+  function saveTLS(key, data) {
+    try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
+  }
+  function loadTLS(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; }
+  }
+
+  /* ─────── Activity 1: Pitfall Matching (Drag & Drop) ─────── */
+  (function(){
+    const correctMappings = {
+      'section-based': 'essay',
+      'delivery-over-content': 'presentation',
+      'confession': 'reflection',
+      'word-count': 'general',
+      'adverbs': 'general',
+      'group-contrib': 'group',
+      'vague-reflection': 'reflection',
+      'style-bias': 'presentation'
+    };
+
+    const targets = {
+      'essay': document.getElementById('target-essay'),
+      'presentation': document.getElementById('target-presentation'),
+      'group': document.getElementById('target-group'),
+      'reflection': document.getElementById('target-reflection'),
+      'general': document.getElementById('target-general')
+    };
+
+    const pitfallItems = document.querySelectorAll('.pitfall-item');
+
+    pitfallItems.forEach(item => {
+      item.addEventListener('dragstart', (e) => {
+        e.dataTransfer.effectAllowed = 'move';
+        item.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', item.dataset.pitfall);
+      });
+
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+      });
+    });
+
+    Object.keys(targets).forEach(typeKey => {
+      const target = targets[typeKey];
+      target.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        target.parentElement.classList.add('drag-over');
+      });
+
+      target.addEventListener('dragleave', () => {
+        target.parentElement.classList.remove('drag-over');
+      });
+
+      target.addEventListener('drop', (e) => {
+        e.preventDefault();
+        target.parentElement.classList.remove('drag-over');
+        const pitfallKey = e.dataTransfer.getData('text/plain');
+        const pitfallItem = document.querySelector(`.pitfall-item[data-pitfall="${pitfallKey}"]`);
+
+        if (pitfallItem) {
+          const placed = document.createElement('div');
+          placed.className = 'pitfall-placed';
+          placed.innerHTML = `
+            <span>${pitfallItem.textContent}</span>
+            <button class="pitfall-remove" data-pitfall="${pitfallKey}">✕</button>
+          `;
+
+          target.appendChild(placed);
+
+          placed.querySelector('.pitfall-remove').addEventListener('click', () => {
+            placed.remove();
+          });
+        }
+      });
+    });
+
+    document.getElementById('btn-check-a1').addEventListener('click', () => {
+      let correct = 0;
+      const totalCorrect = Object.keys(correctMappings).length;
+
+      Object.keys(targets).forEach(typeKey => {
+        const target = targets[typeKey];
+        const placed = target.querySelectorAll('.pitfall-placed');
+        placed.forEach(p => {
+          const pitfallKey = p.querySelector('.pitfall-remove').dataset.pitfall;
+          if (correctMappings[pitfallKey] === typeKey) {
+            correct++;
+          }
+        });
+      });
+
+      const fb = document.getElementById('a1-feedback');
+      const label = document.getElementById('a1-label');
+      const msg = document.getElementById('a1-msg');
+
+      fb.style.display = 'block';
+      fb.classList.remove('warning', 'neutral');
+
+      if (correct === totalCorrect) {
+        fb.classList.add('success');
+        label.textContent = 'Perfect!';
+        msg.innerHTML = '<p>You\'ve correctly mapped all pitfalls. Each assessment type carries predictable risks, and good rubrics design them out proactively.</p>';
+        tracker.markDone('act-1');
+      } else {
+        fb.classList.add('neutral');
+        label.textContent = 'Review & Retry';
+        msg.innerHTML = `<p>You matched ${correct}/${totalCorrect} correctly. Hint: some pitfalls affect all types (especially those about descriptors), while others are type-specific.</p>`;
+      }
+
+      saveTLS(SAVE_KEY + '-a1', { matched: correct, total: totalCorrect });
+    });
+
+    document.getElementById('btn-reset-a1').addEventListener('click', () => {
+      Object.keys(targets).forEach(typeKey => {
+        targets[typeKey].innerHTML = '';
+      });
+      document.getElementById('a1-feedback').style.display = 'none';
+    });
+  })();
+
+  /* ─────── Activity 2: Criteria Selection ── */
+  (function(){
+    const groups = [
+      { id: 'essay-criteria', correctAnswers: ['argument-evidence', 'synthesis', 'critical-engagement'] },
+      { id: 'presentation-criteria', correctAnswers: ['content-quality', 'engagement', 'logical-flow'] },
+      { id: 'group-criteria', correctAnswers: ['individual-contribution', 'quality-integration', 'final-quality'] },
+      { id: 'reflection-criteria', correctAnswers: ['analysis-not-disclosure', 'evidence-linking', 'growth-orientation'] }
+    ];
+
+    document.getElementById('btn-check-a2').addEventListener('click', () => {
+      let allCorrect = true;
+      let score = 0;
+      let total = 0;
+
+      groups.forEach(group => {
+        const checkboxes = document.querySelectorAll(`#${group.id} input[type="checkbox"]`);
+        checkboxes.forEach(cb => {
+          total++;
+          const isCorrect = group.correctAnswers.includes(cb.value);
+          const isChecked = cb.checked;
+
+          if ((isCorrect && isChecked) || (!isCorrect && !isChecked)) {
+            score++;
+          } else {
+            allCorrect = false;
+          }
+        });
+      });
+
+      const fb = document.getElementById('a2-feedback');
+      const label = document.getElementById('a2-label');
+      const msg = document.getElementById('a2-msg');
+
+      fb.style.display = 'block';
+      fb.classList.remove('warning', 'neutral');
+
+      if (allCorrect) {
+        fb.classList.add('success');
+        label.textContent = 'Excellent!';
+        msg.innerHTML = '<p>You\'ve identified criteria that focus on learning outcomes, not easy-to-measure proxies. This is the hallmark of robust rubric design.</p>';
+        tracker.markDone('act-2');
+      } else {
+        fb.classList.add('neutral');
+        label.textContent = 'Review Your Selections';
+        msg.innerHTML = `<p>You got ${score}/${total} right. Remember: avoid word count, grammar perfection, personality judgements, and equal contribution expectations. Focus on what students <em>can do</em>, not how they look or sound.</p>`;
+      }
+
+      saveTLS(SAVE_KEY + '-a2', { score, total });
+    });
+
+    document.getElementById('btn-reset-a2').addEventListener('click', () => {
+      document.querySelectorAll('#act-2 input[type="checkbox"]').forEach(cb => cb.checked = false);
+      document.getElementById('a2-feedback').style.display = 'none';
+    });
+  })();
+
+  /* ─────── Activity 3: Presentation Weighting (Sliders) ─────── */
+  (function(){
+    const deliverySlider = document.getElementById('delivery-slider');
+    const contentSlider = document.getElementById('content-slider');
+    const deliveryValue = document.getElementById('delivery-value');
+    const contentValue = document.getElementById('content-value');
+    const totalWeight = document.getElementById('total-weight');
+    const justification = document.getElementById('weighting-justification');
+
+    function updateWeights() {
+      const delVal = parseInt(deliverySlider.value);
+      const contVal = parseInt(contentSlider.value);
+      const total = delVal + contVal;
+
+      deliveryValue.textContent = delVal;
+      contentValue.textContent = contVal;
+      totalWeight.textContent = total;
+
+      if (total !== 100) {
+        totalWeight.parentElement.style.color = '#d9534f';
+      } else {
+        totalWeight.parentElement.style.color = '#6b6460';
+      }
+    }
+
+    deliverySlider.addEventListener('input', updateWeights);
+    contentSlider.addEventListener('input', updateWeights);
+
+    document.getElementById('btn-check-a3').addEventListener('click', () => {
+      const delVal = parseInt(deliverySlider.value);
+      const contVal = parseInt(contentSlider.value);
+      const justText = justification.value.trim();
+
+      const fb = document.getElementById('a3-feedback');
+      const label = document.getElementById('a3-label');
+      const msg = document.getElementById('a3-msg');
+
+      fb.style.display = 'block';
+      fb.classList.remove('warning', 'neutral');
+
+      // Model answer: content 60-70%, delivery 30-40%
+      const isGoodWeighting = contVal >= 60 && contVal <= 70 && delVal >= 30 && delVal <= 40;
+      const hasJustification = justText.length > 20;
+
+      if (isGoodWeighting && hasJustification) {
+        fb.classList.add('success');
+        label.textContent = 'Great Thinking!';
+        msg.innerHTML = '<p>You\'ve reweighted the rubric to prioritise content. This prevents delivery style from overwhelming substance—a common pitfall in presentation rubrics.</p>';
+        tracker.markDone('act-3');
+      } else {
+        fb.classList.add('neutral');
+        label.textContent = 'Consider This';
+        msg.innerHTML = '<p>The model answers with content at 60-70% and delivery at 30-40%. If you chose differently, explain your reasoning. The key: make sure assessment measures learning, not presentation style.</p>';
+      }
+
+      saveTLS(SAVE_KEY + '-a3', { delivery: delVal, content: contVal, justification: justText });
+    });
+
+    document.getElementById('btn-reset-a3').addEventListener('click', () => {
+      deliverySlider.value = 35;
+      contentSlider.value = 65;
+      justification.value = '';
+      updateWeights();
+      document.getElementById('a3-feedback').style.display = 'none';
+    });
+
+    updateWeights();
+  })();
+
+  /* ─────── Activity 4: Reflection Quality vs Disclosure ─────── */
+  (function(){
+    document.getElementById('btn-check-a4').addEventListener('click', () => {
+      const selected = document.querySelector('input[name="reflection"]:checked');
+      if (!selected) {
+        alert('Please select an excerpt.');
+        return;
+      }
+
+      const answer = selected.value;
+      saveTLS(SAVE_KEY + '-a4', { answer });
+
+      const fb = document.getElementById('a4-feedback');
+      const label = document.getElementById('a4-label');
+      const msg = document.getElementById('a4-msg');
+
+      fb.style.display = 'block';
+      fb.classList.remove('warning', 'neutral');
+
+      if (answer === 'rich') {
+        fb.classList.add('success');
+        label.textContent = 'Correct!';
+        msg.innerHTML = '<p><strong>Excerpt B deserves the higher grade.</strong> It shows analytical thinking (growth mindset framework), links to course concepts, and identifies actionable improvement. Excerpt A reveals vulnerability but offers no analytical insight. Good rubrics reward thinking, not confession.</p>';
+        tracker.markDone('act-4');
+      } else {
+        fb.classList.add('neutral');
+        label.textContent = 'Reconsider';
+        msg.innerHTML = '<p>This is a tough one. Excerpt A feels more authentic and vulnerable. But reflection is not therapy; it\'s about analysing your learning. Excerpt B shows the student has <em>learned something</em> and can apply it going forward. That\'s what should be graded higher.</p>';
+      }
+    });
+
+    document.getElementById('btn-reset-a4').addEventListener('click', () => {
+      document.querySelectorAll('input[name="reflection"]').forEach(rb => rb.checked = false);
+      document.getElementById('a4-feedback').style.display = 'none';
+    });
+  })();
+
+  /* ─────── Activity 5: Adapt Your Rubric (Checklist) ─────── */
+  (function(){
+    const items = document.querySelectorAll('.adapt-check-item');
+    items.forEach(item => {
+      const checkbox = item.querySelector('input[type="checkbox"]');
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          item.classList.add('checked');
+        } else {
+          item.classList.remove('checked');
+        }
+        saveTLS(SAVE_KEY + '-a5', { checkedItems: Array.from(items).map(i => i.querySelector('input').id) });
+      });
+    });
+
+    document.getElementById('btn-complete-a5').addEventListener('click', () => {
+      const checkedCount = document.querySelectorAll('#adapt-items input[type="checkbox"]:checked').length;
+      const totalItems = document.querySelectorAll('#adapt-items input[type="checkbox"]').length;
+
+      const fb = document.getElementById('a5-feedback');
+      fb.style.display = 'block';
+
+      if (checkedCount >= totalItems * 0.75) {
+        tracker.markDone('act-5');
+        tracker.completeModule();
+        document.getElementById('nav-next-m14').classList.remove('disabled');
+        document.getElementById('nav-next-m14').setAttribute('aria-disabled', 'false');
+      }
+    });
+  })();
+
+  // Restore saved state
+  window.addEventListener('load', () => {
+    const saved = loadTLS(SAVE_KEY + '-a5', null);
+    if (saved && saved.checkedItems) {
+      saved.checkedItems.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.checked = true;
+          el.closest('.adapt-check-item').classList.add('checked');
+        }
+      });
+    }
+  });
+
+  // Reveal animation
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    setTimeout(() => { el.style.opacity = '1'; }, i * 100);
+  });
+})();
+</script>
+
+</body>
+</html>

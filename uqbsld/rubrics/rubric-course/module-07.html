@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 7: Three Differentiation Levers — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.lever-badge{display:inline-block;padding:6px 12px;border-radius:16px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-right:8px;}
+.lever-scope{background:#fff3cd;color:#856404;}
+.lever-complexity{background:#cfe2ff;color:#084298;}
+.lever-autonomy{background:#d1e7dd;color:#0f5132;}
+.lever-card{padding:14px;margin:12px 0;border:1px solid #e4dfd9;border-radius:8px;background:#fff;transition:border-color .2s;}
+.lever-card h4{font-size:14px;font-weight:600;margin-bottom:6px;color:#51247A;}
+.lever-card p{font-size:13px;color:#6b6460;line-height:1.5;margin:0;}
+.lever-card strong{color:#2d2d2d;}
+.mc-pair{padding:12px;margin:10px 0;border:1px solid #e4dfd9;border-radius:6px;background:#fff;}
+.mc-pair-label{font-size:11px;color:#999;margin-bottom:6px;display:block;}
+.mc-pair-text{font-size:13px;margin:6px 0;line-height:1.5;}
+.mc-pair-arrow{color:#999;font-size:12px;margin:6px 0;}
+.highlight-zone{padding:12px;background:#f7f5f3;border:1px solid #e4dfd9;border-radius:6px;margin:8px 0;cursor:pointer;transition:all .2s;}
+.highlight-zone:hover{border-color:#51247A;background:#f9f8f6;}
+.highlight-zone.correct{background:#f0faf0;border-color:#2EA836;}
+.highlight-zone.incorrect{background:#fef5f5;border-color:#d9534f;}
+.side-by-side{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+.sbs-panel{padding:12px;border:1px solid #e4dfd9;border-left:4px solid #51247A;border-radius:4px;background:#f9f8f6;}
+.sbs-label{display:inline-block;font-size:10px;color:#6b6460;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;}
+.sbs-panel.before{background:#fef5f5;border-left-color:#e6a817;}
+.sbs-label.before{color:#e6a817;}
+.sbs-panel.after{background:#f0faf0;border-left-color:#2EA836;}
+.sbs-label.after{color:#2EA836;}
+.criterion-row{padding:12px;margin:8px 0;border:1px solid #e4dfd9;border-radius:6px;background:#fff;}
+.criterion-row h4{font-size:13px;font-weight:600;margin-bottom:8px;color:#2d2d2d;}
+.criterion-row .radio-group{display:flex;gap:12px;flex-wrap:wrap;}
+.criterion-row .radio-option{display:flex;align-items:center;gap:6px;font-size:13px;}
+.criterion-row .radio-option input[type="radio"]{cursor:pointer;}
+.criterion-row .radio-option label{cursor:pointer;margin:0;}
+@media(max-width:640px){.side-by-side{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 7 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<section class="module-hero part-b">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part B · Frameworks &mdash; Module 7</div>
+    <h1>Three Differentiation Levers</h1>
+    <p class="hero-sub">Beyond SOLO's structural complexity: three independent ways to challenge students across the same intellectual terrain — Scope, Complexity, and Autonomy.</p>
+    <span class="hero-time">&#9201; ~15 minutes</span>
+  </div>
+</section>
+
+<!-- ── INTRO ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">The Framework</div>
+    <h2 class="reveal">Three Levers You Can Pull</h2>
+    <p class="lead reveal">SOLO describes <em>how</em> students structure their thinking. But it doesn't prescribe <em>what to ask them to think about</em> or <em>how much freedom to give them</em>. The Three Differentiation Levers fill that gap. Each lever can be pulled independently: you can increase scope without increasing complexity, or demand autonomy while keeping scope narrow.</p>
+
+    <div class="reveal">
+      <div class="lever-card">
+        <span class="lever-badge lever-scope">Scope</span>
+        <h4>How wide did they look?</h4>
+        <p><strong>Narrow:</strong> Single source, single perspective, single case.<br>
+        <strong>Moderate:</strong> Multiple sources or perspectives; comparative analysis.<br>
+        <strong>Broad:</strong> Cross-disciplinary, macro-level, systemic view.</p>
+      </div>
+
+      <div class="lever-card">
+        <span class="lever-badge lever-complexity">Complexity</span>
+        <h4>How deeply did they think?</h4>
+        <p><strong>Simple/surface:</strong> Apply a single concept; identify factors independently.<br>
+        <strong>Moderate connections:</strong> See how two or three ideas interact; explain tensions.<br>
+        <strong>Complex interactions:</strong> Synthesise multiple perspectives; handle contradictions and emergent properties.</p>
+      </div>
+
+      <div class="lever-card">
+        <span class="lever-badge lever-autonomy">Autonomy</span>
+        <h4>How independently did they work?</h4>
+        <p><strong>Guided/prompted:</strong> Follow provided structure; apply given framework.<br>
+        <strong>Structured independently:</strong> Design own structure within clear parameters; justify choices.<br>
+        <strong>Self-directed and original:</strong> Choose what to study, how to approach it, which tools to use.</p>
+      </div>
+    </div>
+
+    <div class="emphasis-box reveal" style="margin-top:20px;border-left-color:#51247A;">
+      <p><strong>Key insight:</strong> These three levers are independent. A descriptor can pull high on Scope while staying modest on Complexity (e.g., "synthesises 5+ sources" without requiring interactions between them). A single criterion can pull all three, or focus on just one.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: LEVER IDENTIFICATION ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 1 of 4</div>
+    <h2 class="reveal">Identify the Lever</h2>
+    <p class="lead reveal">Six pairs of adjacent-grade descriptors from real rubrics. For each pair, identify which <em>single</em> lever is being pulled to move from the lower to the higher grade.</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">Which Lever Moved?</div>
+
+      <div id="lever-pairs"></div>
+
+      <div class="feedback neutral" id="a1-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: CONSISTENCY CHECK ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 2 of 4</div>
+    <h2 class="reveal">Spot the Inconsistency</h2>
+    <p class="lead reveal">One criterion across five grade levels. Four levels pull the same lever consistently. One level suddenly switches levers mid-criterion — creating an inconsistent grade boundary. Click the inconsistent level.</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Find the Lever Switch</div>
+      <p class="activity-instruction">This criterion should progress via <strong>Scope only</strong>. But one level switches to Complexity. Which one?</p>
+
+      <div id="consistency-check"></div>
+
+      <button class="btn btn-primary" id="btn-check-a2" style="margin-top:14px;">Check</button>
+      <div class="feedback neutral" id="a2-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: BUILD WITH ONE LEVER ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 3 of 4</div>
+    <h2 class="reveal">Build with One Lever</h2>
+    <p class="lead reveal">For the "Evidence Integration" criterion in MGTS2501, write a 4-level progression (HD, D, C, P) using <strong>only the Complexity lever</strong>. Keep scope narrow (same evidence base); keep autonomy constant. Then reveal the model and compare.</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">Complexity-Only Progression</div>
+
+      <div class="side-by-side" style="margin-bottom:16px;">
+        <div class="sbs-panel before">
+          <span class="sbs-label before">Original Criterion</span>
+          <strong>Evidence Integration</strong><br>
+          Broad progression across multiple levers.
+        </div>
+      </div>
+
+      <p class="activity-instruction" style="margin-top:14px;"><strong>Level: HD</strong> (most complex thinking)</p>
+      <textarea class="transform-input" id="tf-hd" placeholder="Synthesises sources to build an original argument; identifies and resolves tensions..."></textarea>
+
+      <p class="activity-instruction"><strong>Level: D</strong> (moderate complexity)</p>
+      <textarea class="transform-input" id="tf-d" placeholder="Groups sources thematically and explains how they support different aspects..."></textarea>
+
+      <p class="activity-instruction"><strong>Level: C</strong> (basic complexity)</p>
+      <textarea class="transform-input" id="tf-c" placeholder="Uses individual sources to support specific claims; sources applied but not compared..."></textarea>
+
+      <p class="activity-instruction"><strong>Level: P</strong> (surface level)</p>
+      <textarea class="transform-input" id="tf-p" placeholder="Includes required sources; references are descriptive rather than analytical..."></textarea>
+
+      <button class="btn btn-primary" id="btn-complexity-model" style="margin-top:12px;">Show Model &amp; Compare</button>
+
+      <div class="side-by-side" id="complexity-model-sbs" style="display:none;margin-top:16px;">
+        <div class="sbs-panel after" style="background:#f0faf0;border-color:#c3e6c3;">
+          <span class="sbs-label after">Model (Complexity Only)</span>
+          <strong>HD:</strong> Synthesises sources to build an original argument; identifies where sources contradict each other and resolves the tension<br>
+          <strong>D:</strong> Groups sources thematically and explains how they support different aspects of the argument<br>
+          <strong>C:</strong> Uses individual sources to support specific claims; sources are applied but not compared to each other<br>
+          <strong>P:</strong> Includes required sources; references are descriptive rather than analytical
+        </div>
+        <div class="sbs-panel after" style="background:#f0f0fa;border-color:#c3c3e6;">
+          <span class="sbs-label after">Scope-Only Version</span>
+          <strong>HD:</strong> Synthesises 5+ sources from multiple disciplines<br>
+          <strong>D:</strong> Draws on 3–4 sources from different theoretical traditions<br>
+          <strong>C:</strong> Uses 2 sources from the core reading list<br>
+          <strong>P:</strong> Cites course materials but does not integrate them
+        </div>
+      </div>
+
+      <div class="self-rate" id="tf-complexity-rate" style="margin-top:12px;">
+        <span class="self-rate-label">How close?</span>
+        <button class="self-rate-btn green" data-rating="green" title="Nailed it"></button>
+        <button class="self-rate-btn amber" data-rating="amber" title="Getting there"></button>
+        <button class="self-rate-btn red" data-rating="red" title="Way off"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: CHOOSE YOUR LEVER ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 4 of 4</div>
+    <h2 class="reveal">Choose Your Lever</h2>
+    <p class="lead reveal">Five criteria from MGTS2501 "Strategic Management." For each, select the <em>primary</em> lever your rubric uses to differentiate between grades. Then your answers update the rubric metadata with lever information.</p>
+
+    <div class="activity reveal" id="act-4">
+      <div class="activity-number">4</div>
+      <div class="activity-title">Primary Lever per Criterion</div>
+
+      <div id="lever-choice"></div>
+
+      <button class="btn btn-primary" id="btn-check-a4" style="margin-top:16px;">Check &amp; Update Rubric</button>
+      <div class="feedback neutral" id="a4-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RUBRIC STATE ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Your Rubric</div>
+    <h2 class="reveal">Levers Mapped to Criteria</h2>
+    <p class="lead reveal">Each criterion in your rubric now has a clear lever signature. You can now debug rubric inconsistencies: if every criterion pulls Scope and one pulls Autonomy, you've spotted a design problem.</p>
+    <div class="rubric-preview rubric-preview-auto reveal"></div>
+  </div>
+</section>
+
+<section class="module-section" style="padding-bottom:24px;">
+  <div class="section-inner" style="text-align:center;">
+    <button class="btn btn-primary btn-complete-module" disabled>Complete Module 7</button>
+    <p style="font-size:12px;color:#6b6460;margin-top:12px;">Complete all four activities to unlock.</p>
+  </div>
+</section>
+
+<nav class="module-nav">
+  <a href="module-06.html">← Module 6</a>
+  <a href="module-08.html" class="nav-next disabled" aria-disabled="true">Module 8 →</a>
+</nav>
+
+<footer class="module-cta"><p class="cta-credit">UQ Business School Learning Design &middot; 2026</p></footer>
+
+<script src="shared.js"></script>
+<script>
+(function(){
+  const RC = window.RubricCourse;
+  const tracker = RC.ModuleTracker(7, 4);
+
+  /* ── Activity 1: Lever Identification (Multiple choice × 6) ── */
+  (function(){
+    const pairs = [
+      {
+        pair: 1,
+        lower: 'Uses sources from the course reading list',
+        upper: 'Uses sources from the reading list AND independently sourced research',
+        answer: 'scope'
+      },
+      {
+        pair: 2,
+        lower: 'Identifies contributing factors',
+        upper: 'Explains how contributing factors interact to produce the outcome',
+        answer: 'complexity'
+      },
+      {
+        pair: 3,
+        lower: 'Applies the theory demonstrated in lectures',
+        upper: 'Selects and justifies their own theoretical framework',
+        answer: 'autonomy'
+      },
+      {
+        pair: 4,
+        lower: 'Considers the organisation\'s internal context',
+        upper: 'Considers internal, industry, and macro-economic contexts',
+        answer: 'scope'
+      },
+      {
+        pair: 5,
+        lower: 'Proposes recommendations',
+        upper: 'Proposes recommendations with implementation steps and anticipated barriers',
+        answer: 'complexity'
+      },
+      {
+        pair: 6,
+        lower: 'Follows the analytical structure provided in the assessment brief',
+        upper: 'Develops their own analytical structure suited to the case',
+        answer: 'autonomy'
+      }
+    ];
+
+    const container = document.getElementById('lever-pairs');
+    const saved = RC.Exercises.get('m7-a1') || {};
+
+    pairs.forEach(p => {
+      const div = document.createElement('div');
+      div.style.cssText = 'margin:14px 0;padding:12px;border:1px solid #e4dfd9;border-radius:6px;background:#fff;';
+
+      let opts = '<option value="">Select a lever...</option>';
+      ['scope', 'complexity', 'autonomy'].forEach(v => {
+        const label = v.charAt(0).toUpperCase() + v.slice(1);
+        opts += '<option value="' + v + '"' + (saved['p' + p.pair] === v ? ' selected' : '') + '>' + label + '</option>';
+      });
+
+      div.innerHTML = '<strong style="display:block;margin-bottom:10px;">Pair ' + p.pair + '</strong>' +
+        '<div class="mc-pair"><div class="mc-pair-label">Lower Grade</div><div class="mc-pair-text">' + p.lower + '</div></div>' +
+        '<div class="mc-pair-arrow">↓ Which lever? ↓</div>' +
+        '<div class="mc-pair"><div class="mc-pair-label">Higher Grade</div><div class="mc-pair-text">' + p.upper + '</div></div>' +
+        '<select style="width:100%;padding:8px;border:1px solid #e4dfd9;border-radius:6px;font-size:13px;margin-top:8px;max-width:200px;" data-pair="' + p.pair + '">' + opts + '</select>' +
+        '<div class="feedback" id="a1-fb-' + p.pair + '" style="margin-top:8px;"></div>';
+
+      container.appendChild(div);
+
+      div.querySelector('select').addEventListener('change', function(){
+        saved['p' + p.pair] = this.value;
+        RC.Exercises.set('m7-a1', saved);
+        if (this.value) {
+          const fb = document.getElementById('a1-fb-' + p.pair);
+          const isCorrect = this.value === p.answer;
+          fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+          fb.textContent = isCorrect ? '✓ Correct!' : '✗ The lever is ' + p.answer.charAt(0).toUpperCase() + p.answer.slice(1) + '.';
+          checkAllA1();
+        }
+      });
+
+      if (saved['p' + p.pair]) {
+        const sel = div.querySelector('select');
+        const fb = document.getElementById('a1-fb-' + p.pair);
+        const isCorrect = saved['p' + p.pair] === p.answer;
+        fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+        fb.textContent = isCorrect ? '✓ Correct!' : '✗ The lever is ' + p.answer.charAt(0).toUpperCase() + p.answer.slice(1) + '.';
+      }
+    });
+
+    function checkAllA1() {
+      let correct = 0;
+      pairs.forEach(p => { if (saved['p' + p.pair] === p.answer) correct++; });
+      if (correct === 6) {
+        tracker.markDone('act-1');
+        const fb = document.getElementById('a1-feedback');
+        fb.className = 'feedback show correct';
+        fb.innerHTML = '<p><strong>Perfect!</strong> You\'ve identified all six levers. Notice: Pairs 1 and 4 pull Scope (broader source range or context). Pairs 2 and 5 pull Complexity (deeper thinking about interactions). Pairs 3 and 6 pull Autonomy (less guidance, more student choice).</p>';
+      }
+    }
+  })();
+
+  /* ── Activity 2: Consistency Check (Click highlight) ── */
+  (function(){
+    const levels = [
+      { grade: 'HD', descriptor: 'Synthesises across 5+ perspectives from multiple disciplines', lever: 'scope', correct: false },
+      { grade: 'D', descriptor: 'Draws on 3–4 perspectives from different theoretical traditions', lever: 'scope', correct: false },
+      { grade: 'C', descriptor: 'Explains how two perspectives interact and create tensions', lever: 'complexity', correct: true },
+      { grade: 'P', descriptor: 'Engages with perspectives from the course readings', lever: 'scope', correct: false },
+      { grade: 'F', descriptor: 'Does not engage with any theoretical perspective', lever: 'scope', correct: false }
+    ];
+
+    const container = document.getElementById('consistency-check');
+    const saved = RC.Exercises.get('m7-a2') || {};
+
+    levels.forEach((lvl, i) => {
+      const div = document.createElement('div');
+      div.className = 'highlight-zone';
+      div.style.cursor = 'pointer';
+      div.setAttribute('data-level', i);
+      div.innerHTML = '<strong style="display:block;margin-bottom:4px;">' + lvl.grade + ':</strong> ' + lvl.descriptor + ' ' +
+        '<span class="lever-badge lever-' + lvl.lever + '" style="margin-top:6px;display:inline-block;">' + lvl.lever + '</span>';
+
+      div.addEventListener('click', () => {
+        if (saved.selected === undefined) {
+          saved.selected = i;
+          RC.Exercises.set('m7-a2', saved);
+          checkA2();
+        }
+      });
+
+      container.appendChild(div);
+    });
+
+    if (saved.selected !== undefined) {
+      document.querySelector('[data-level="' + saved.selected + '"]').className = 'highlight-zone ' + (levels[saved.selected].correct ? 'correct' : 'incorrect');
+      if (!document.getElementById('a2-feedback').classList.contains('show')) {
+        checkA2();
+      }
+    }
+
+    function checkA2() {
+      const div = document.querySelector('[data-level="' + saved.selected + '"]');
+      const lvl = levels[saved.selected];
+      div.className = 'highlight-zone ' + (lvl.correct ? 'correct' : 'incorrect');
+
+      const fb = document.getElementById('a2-feedback');
+      fb.className = 'feedback show ' + (lvl.correct ? 'correct' : 'incorrect');
+      if (lvl.correct) {
+        fb.innerHTML = '<p><strong>Right!</strong> The Credit level switches from Scope ("perspectives" suggests breadth) to Complexity ("explains how... interact" demands deep thinking). This breaks the progression. All other levels stay on Scope.</p>';
+        tracker.markDone('act-2');
+      } else {
+        fb.innerHTML = '<p><strong>Not that one.</strong> That level stays consistent with the lever progression. Look for a level that suddenly uses different language and demands a different kind of thinking.</p>';
+      }
+    }
+
+    document.getElementById('btn-check-a2').addEventListener('click', () => {
+      if (saved.selected !== undefined) return;
+      document.getElementById('a2-feedback').innerHTML = '<p style="color:#d9534f;">Click a level to answer.</p>';
+    });
+  })();
+
+  /* ── Activity 3: Build with One Lever ── */
+  (function(){
+    const hdInput = document.getElementById('tf-hd');
+    const dInput = document.getElementById('tf-d');
+    const cInput = document.getElementById('tf-c');
+    const pInput = document.getElementById('tf-p');
+    const modelBtn = document.getElementById('btn-complexity-model');
+    const modelSbs = document.getElementById('complexity-model-sbs');
+    const rates = document.querySelectorAll('#tf-complexity-rate .self-rate-btn');
+
+    const saved = RC.Exercises.get('m7-a3') || {};
+    if (saved.hd) hdInput.value = saved.hd;
+    if (saved.d) dInput.value = saved.d;
+    if (saved.c) cInput.value = saved.c;
+    if (saved.p) pInput.value = saved.p;
+    if (saved.revealed) { modelSbs.style.display = ''; modelBtn.disabled = true; modelBtn.textContent = 'Compared ✓'; }
+    if (saved.rating) rates.forEach(r => { if (r.dataset.rating === saved.rating) r.classList.add('selected'); });
+
+    function save() {
+      saved.hd = hdInput.value;
+      saved.d = dInput.value;
+      saved.c = cInput.value;
+      saved.p = pInput.value;
+      RC.Exercises.set('m7-a3', saved);
+    }
+    hdInput.addEventListener('input', debounce(save, 500));
+    dInput.addEventListener('input', debounce(save, 500));
+    cInput.addEventListener('input', debounce(save, 500));
+    pInput.addEventListener('input', debounce(save, 500));
+
+    modelBtn.addEventListener('click', () => {
+      if (!hdInput.value.trim() || !dInput.value.trim() || !cInput.value.trim() || !pInput.value.trim()) {
+        const empties = [hdInput, dInput, cInput, pInput].filter(el => !el.value.trim());
+        empties.forEach(el => { el.style.borderColor = '#d9534f'; });
+        setTimeout(() => { empties.forEach(el => { el.style.borderColor = ''; }); }, 1500);
+        return;
+      }
+      modelSbs.style.display = '';
+      saved.revealed = true;
+      RC.Exercises.set('m7-a3', saved);
+      modelBtn.disabled = true;
+      modelBtn.textContent = 'Compared ✓';
+    });
+
+    rates.forEach(btn => {
+      btn.addEventListener('click', () => {
+        rates.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        saved.rating = btn.dataset.rating;
+        RC.Exercises.set('m7-a3', saved);
+        tracker.markDone('act-3');
+      });
+    });
+  })();
+
+  /* ── Activity 4: Choose Your Lever ── */
+  (function(){
+    const criteria = [
+      { name: 'Problem Identification', answer: 'complexity' },
+      { name: 'Critical Analysis', answer: 'complexity' },
+      { name: 'Evidence Integration', answer: 'scope' },
+      { name: 'Recommendations', answer: 'autonomy' },
+      { name: 'Academic Communication', answer: 'complexity' }
+    ];
+
+    const container = document.getElementById('lever-choice');
+    const saved = RC.Exercises.get('m7-a4') || {};
+
+    criteria.forEach((crit, i) => {
+      const div = document.createElement('div');
+      div.className = 'criterion-row';
+
+      let radioHtml = '<div class="radio-group">';
+      ['scope', 'complexity', 'autonomy'].forEach(lever => {
+        const id = 'lever-' + i + '-' + lever;
+        radioHtml += '<div class="radio-option"><input type="radio" id="' + id + '" name="crit-' + i + '" value="' + lever + '"' + (saved['c' + i] === lever ? ' checked' : '') + '> <label for="' + id + '">' + lever.charAt(0).toUpperCase() + lever.slice(1) + '</label></div>';
+      });
+      radioHtml += '</div>';
+
+      div.innerHTML = '<h4>' + crit.name + '</h4>' + radioHtml;
+      container.appendChild(div);
+
+      div.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+          saved['c' + i] = radio.value;
+          RC.Exercises.set('m7-a4', saved);
+        });
+      });
+    });
+
+    document.getElementById('btn-check-a4').addEventListener('click', () => {
+      let correct = 0;
+      criteria.forEach((crit, i) => { if (saved['c' + i] === crit.answer) correct++; });
+
+      const fb = document.getElementById('a4-feedback');
+      fb.className = 'feedback show ' + (correct === 5 ? 'correct' : 'incorrect');
+      fb.innerHTML = '<p><strong>' + correct + '/5 correct.</strong> ';
+
+      if (correct === 5) {
+        fb.innerHTML += 'Perfect! Problem and Critical Analysis pull Complexity (how deeply they diagnose and evaluate). Evidence Integration pulls Scope (how many sources they consider). Recommendations pull Autonomy (how freely they design solutions). Communication pulls Complexity (structural sophistication).</p>';
+        tracker.markDone('act-4');
+        // Update rubric metadata
+        RC.Rubric.updateCriterionLevers({
+          'Problem Identification': 'complexity',
+          'Critical Analysis': 'complexity',
+          'Evidence Integration': 'scope',
+          'Recommendations': 'autonomy',
+          'Academic Communication': 'complexity'
+        });
+        document.querySelectorAll('.rubric-preview-auto').forEach(el => RC.RubricPreview(el));
+      } else {
+        fb.innerHTML += 'Some mismatches. Think about what each criterion asks students to <em>do</em>: identify deeply (C), analyse deeply (C), source widely (S), choose freely (A), structure clearly (C).</p>';
+      }
+    });
+  })();
+
+  function debounce(fn, ms) { let t; return function(...a){ clearTimeout(t); t = setTimeout(() => fn.apply(this, a), ms); }; }
+})();
+</script>
+
+</body>
+</html>

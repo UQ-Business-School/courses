@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 20: Quality Check and Export</title>
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .module-hero {
+            background: linear-gradient(135deg, #2EA836 0%, #1f7424 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .module-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .module-hero .module-meta {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .activity-container {
+            margin-bottom: 3rem;
+        }
+
+        .activity-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #2EA836;
+        }
+
+        .activity-number {
+            background: #2EA836;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .activity-header h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        /* Checklist styles */
+        .checklist-section {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .checklist-header {
+            background: #f5f5f5;
+            padding: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+            color: #333;
+            transition: all 0.2s ease;
+        }
+
+        .checklist-header:hover {
+            background: #e8f5e9;
+        }
+
+        .checklist-header.expanded {
+            background: #2EA836;
+            color: white;
+        }
+
+        .checklist-header::before {
+            content: '▶';
+            font-size: 0.8rem;
+            transition: transform 0.2s ease;
+            display: inline-block;
+            width: 0.5rem;
+        }
+
+        .checklist-header.expanded::before {
+            transform: rotate(90deg);
+        }
+
+        .checklist-items {
+            display: none;
+            padding: 1rem;
+            border-top: 1px solid #ddd;
+        }
+
+        .checklist-items.show {
+            display: block;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .checklist-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-top: 0.25rem;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checklist-item label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .checklist-item.content {
+            background: #f9f9f9;
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+            border: none;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        /* Text input */
+        .text-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .text-input-group label {
+            font-weight: bold;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .text-input-group textarea {
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            min-height: 120px;
+            resize: vertical;
+            transition: border-color 0.2s ease;
+        }
+
+        .text-input-group textarea:focus {
+            outline: none;
+            border-color: #2EA836;
+            box-shadow: 0 0 0 3px rgba(46, 168, 54, 0.1);
+        }
+
+        /* Rubric preview */
+        .rubric-preview-container {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .rubric-table th,
+        .rubric-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .rubric-table th {
+            background: #2EA836;
+            color: white;
+            font-weight: bold;
+        }
+
+        .rubric-table td {
+            vertical-align: top;
+        }
+
+        .rubric-table .grade-header {
+            background: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .rubric-table .ga-marker {
+            color: #2EA836;
+            font-weight: bold;
+        }
+
+        /* Status message */
+        .status-message {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .status-message.show {
+            display: block;
+        }
+
+        .status-message.success {
+            background: #e8f5e9;
+            border-left: 4px solid #2EA836;
+            color: #2EA836;
+        }
+
+        .status-message.warning {
+            background: #fff3e0;
+            border-left: 4px solid #f57c00;
+            color: #f57c00;
+        }
+
+        /* Tracker */
+        .module-tracker {
+            background: white;
+            border: 2px solid #2EA836;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tracker-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .tracker-bars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tracker-item {
+            text-align: center;
+        }
+
+        .tracker-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .tracker-bar {
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+        }
+
+        .tracker-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2EA836, #1f7424);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .module-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #eee;
+        }
+
+        .nav-button {
+            padding: 0.75rem 1.5rem;
+            background: #2EA836;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .nav-button:hover {
+            background: #1f7424;
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .nav-center {
+            text-align: center;
+            color: #666;
+        }
+
+        /* Completion Badge */
+        .completion-badge {
+            display: none;
+            background: #2EA836;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 6px;
+            text-align: center;
+            margin: 2rem 0;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .completion-badge.show {
+            display: block;
+        }
+
+        .confetti {
+            display: inline-block;
+            margin: 0 0.25rem;
+            animation: confetti-fall 2s ease-out;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(20px) rotate(360deg);
+            }
+        }
+
+        /* Learning Path Box */
+        .learning-path {
+            background: #f0f8f2;
+            border: 1px solid #2EA836;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+        }
+
+        .learning-path h4 {
+            margin-top: 0;
+            color: #2EA836;
+        }
+
+        .learning-path ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .learning-path li {
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box {
+            background: #fffbf0;
+            border: 1px solid #f0ad4e;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            color: #856404;
+        }
+
+        .emphasis-box {
+            background: #e8f5e9;
+            border: 2px solid #2EA836;
+            padding: 1.5rem;
+            border-radius: 6px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .emphasis-box h3 {
+            margin-top: 0;
+            color: #2EA836;
+            font-size: 1.5rem;
+        }
+
+        .emphasis-box p {
+            color: #555;
+            margin: 0.5rem 0;
+        }
+
+        .button {
+            padding: 0.75rem 1.5rem;
+            background: #2EA836;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .button:hover {
+            background: #1f7424;
+        }
+
+        .button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .link-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .link-card:hover {
+            border-color: #2EA836;
+            box-shadow: 0 2px 8px rgba(46, 168, 54, 0.1);
+        }
+
+        .link-card h4 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .link-card a {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #2EA836;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .link-card a:hover {
+            background: #1f7424;
+        }
+
+        .note {
+            background: #fff3e0;
+            border-left: 4px solid #f57c00;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .note p {
+            margin: 0;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="module-hero part-e">
+            <h1>Quality Check and Export</h1>
+            <p class="module-meta">Part E · GA Integration — Module 20</p>
+            <p class="module-meta">~20 minutes · 5 activities</p>
+        </div>
+
+        <div class="learning-path">
+            <h4>Final Quality Assurance: The Last Step</h4>
+            <p>You've designed, refined, and integrated GA criteria into your rubric. Now it's time for a final quality check to ensure your rubric is evaluation-ready, and then celebrate your achievement.</p>
+            <ul>
+                <li>Module 19: Integrated GA criteria using the "Smush" strategy</li>
+                <li>Module 20: Run final quality checks, verify alignment, and export your rubric</li>
+            </ul>
+        </div>
+
+        <div class="module-tracker">
+            <div class="tracker-title">Module Progress</div>
+            <div class="tracker-bars">
+                <div class="tracker-item">
+                    <div class="tracker-label">Self-Evaluation</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="1"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">Fix Issues</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="2"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">Coordinator Test</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="3"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">View Rubric</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="4"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">What's Next?</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="5"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="completion-badge" id="completionBadge">
+            <span id="confettiSpan"></span>
+            You've completed all 20 modules! You now have the knowledge and skills to design effective, criterion-referenced assessment rubrics with integrated Graduate Attributes.
+        </div>
+
+        <!-- Activity 1: Self-Evaluation Checklist -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">1</div>
+                <h2>Self-Evaluation: Checklist Walkthrough</h2>
+            </div>
+            <p>Run the completed rubric through the 4-section Evaluation Guide. Check all items to proceed.</p>
+
+            <div id="checklistContainer"></div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity1Feedback">Check all items in all sections to progress.</p>
+        </div>
+
+        <!-- Activity 2: Fix Remaining Issues -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">2</div>
+                <h2>Fix Remaining Issues: Conditional</h2>
+            </div>
+
+            <div id="a2Container">
+                <div id="a2IssuesList" style="display: none;">
+                    <p><strong>Items flagged for review:</strong></p>
+                    <ul id="a2Issues"></ul>
+                    <div class="text-input-group">
+                        <label>Describe corrections you've made:</label>
+                        <textarea id="a2Input" placeholder="What issues did you identify and fix?..."></textarea>
+                    </div>
+                    <button class="button" id="a2CheckBtn">Mark as Fixed</button>
+                    <div id="a2Feedback" style="margin-top: 1rem;"></div>
+                </div>
+
+                <div id="a2NoIssues" style="display: none;">
+                    <div class="status-message success show">
+                        <strong>✓ No issues found!</strong> Your rubric passes the quality check.
+                    </div>
+                </div>
+            </div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity2Feedback">Complete as needed to progress.</p>
+        </div>
+
+        <!-- Activity 3: The Coordinator Test -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">3</div>
+                <h2>The Coordinator Test: Text Transform</h2>
+            </div>
+            <p>Write a brief rationale for one criterion change—explaining to the course coordinator why a specific change was made and why it matters. Example: "The original 'Introduction (10%)' became 'Problem Identification (15%)' and here's why: The original criterion assessed a section of the assignment rather than a transferable skill. 'Problem Identification' assesses the student's ability to recognise and articulate the core issue, which is assessable across different assignment formats and more useful as feedback..."</p>
+
+            <div class="text-input-group">
+                <label>Your rationale (criterion change explanation):</label>
+                <textarea id="a3Input" placeholder="Explain one key change you made to your rubric and why it matters..."></textarea>
+            </div>
+
+            <button class="button" id="a3CheckBtn">Check Answer</button>
+            <div id="a3Feedback" style="margin-top: 1rem;"></div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity3Feedback">Complete your answer to progress.</p>
+        </div>
+
+        <!-- Activity 4: View the Finished Rubric -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">4</div>
+                <h2>View the Finished Rubric: Full Preview</h2>
+            </div>
+            <p>Your complete, GA-integrated rubric, formatted to UQ specification:</p>
+
+            <div class="rubric-preview-container">
+                <h3 style="margin-top: 0;">MGTS2501 · Assessment A2: Case Study Analysis</h3>
+                <table class="rubric-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">Criterion</th>
+                            <th>High Distinction (85–100%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Problem Identification</strong><br><small>10%</small></td>
+                            <td>Identifies both immediate and systemic causes of the turnover problem, distinguishing symptoms from root issues. Diagnosis is specific to the case context.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Critical Analysis<span class="ga-marker">*</span></strong><br><small>35% (GA2)</small></td>
+                            <td>Supports each cause with multiple relevant theories, explaining how they interact. Evaluates management's response against what the theories predict, identifying assumptions, biases, and gaps in the analysis. Analysis moves beyond description to build an original, evidence-based interpretation.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Evidence Integration</strong><br><small>25%</small></td>
+                            <td>Selects evidence from case data and scholarly sources that directly supports each theoretical argument. Explains the relevance of evidence to the specific context.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Structure &amp; Clarity</strong><br><small>20%</small></td>
+                            <td>Argument is logically sequenced. Transitions between ideas are explicit. Writing is clear, concise, and maintains professional register throughout.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reflection &amp; Limitations</strong><br><small>10%</small></td>
+                            <td>Acknowledges limitations in the analysis or the case data. Considers alternative interpretations. Reflects on what the analysis reveals about management practice more broadly.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 1.5rem; padding: 1rem; background: #f9f9f9; border-radius: 4px; font-size: 0.9rem;">
+                    <p style="margin-top: 0;"><strong>* Denotes criterion mapped to Graduate Attribute GA2: Courageous Thinkers (Critical Analysis)</strong></p>
+                    <p style="margin-bottom: 0;"><strong>Sub-criteria assessed:</strong> Critical Analysis, Evidence Synthesis, Originality</p>
+                </div>
+
+                <div class="note">
+                    <p><strong>Print/Save Note:</strong> Use your browser's Print function (Ctrl+P or Cmd+P) to save this rubric as a PDF or print to paper. This is your master rubric for training markers and assessing student work.</p>
+                </div>
+            </div>
+
+            <button class="button" id="a4CheckBtn">I've reviewed the rubric!</button>
+            <div id="a4Feedback" style="margin-top: 1rem; display: none; padding: 1rem; background: #e8f5e9; border-radius: 4px; color: #2EA836;"><strong>✓ Excellent!</strong> You now have a complete, assessment-ready rubric.</div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity4Feedback">Review and click the button to complete this activity.</p>
+        </div>
+
+        <!-- Activity 5: What's Next? -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">5</div>
+                <h2>What's Next? Celebrate and Continue Learning</h2>
+            </div>
+
+            <div class="emphasis-box">
+                <h3>🎉 You've Completed All 20 Modules!</h3>
+                <p>You now have the knowledge and skills to design effective, criterion-referenced assessment rubrics with integrated Graduate Attributes.</p>
+                <p><strong>Next steps:</strong> Use these tools to create and refine rubrics for your courses, or help colleagues do the same.</p>
+            </div>
+
+            <h3 style="margin-top: 2rem;">Useful Resources to Revisit</h3>
+
+            <div class="links-grid">
+                <div class="link-card">
+                    <h4>Rubric Builder Tool</h4>
+                    <p>Create and edit rubrics interactively. Use this as your main working tool.</p>
+                    <a href="../UQBS_Rubric_Builder.html">Go to Builder</a>
+                </div>
+
+                <div class="link-card">
+                    <h4>Evaluation Guide</h4>
+                    <p>Quality checklist for assessing completed rubrics. Use it before finalising.</p>
+                    <a href="../UQBS_Rubric_Evaluation_Guide.html">Go to Guide</a>
+                </div>
+
+                <div class="link-card">
+                    <h4>AI Prompt Templates</h4>
+                    <p>Master prompts for creating rubric descriptors and translating GA language using AI.</p>
+                    <a href="../Rubric Design Master Prompt.txt">Rubric Design Prompt</a>
+                </div>
+
+                <div class="link-card">
+                    <h4>GA-AoL Integration</h4>
+                    <p>Advanced templates for integrating multiple GA criteria and assurance of learning frameworks.</p>
+                    <a href="../GA-AoL Integration Master Prompt.txt">GA Integration Prompt</a>
+                </div>
+            </div>
+
+            <h3>Module Navigation</h3>
+            <p>Return to the <a href="index.html" style="color: #2EA836; font-weight: bold;">Course Map</a> to review any previous modules or revisit your learning journey.</p>
+
+            <button class="button" id="a5CheckBtn">I'm ready to create rubrics!</button>
+            <div id="a5Feedback" style="margin-top: 1rem; display: none; padding: 1rem; background: #e8f5e9; border-radius: 4px; color: #2EA836;"><strong>✓ Perfect!</strong> Course completed. Now go forth and design amazing rubrics!</div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity5Feedback">Click the button to complete this final activity.</p>
+        </div>
+
+        <!-- Module Navigation -->
+        <nav class="module-nav">
+            <a href="module-19.html">← Module 19</a>
+            <div class="nav-center">Module 20 of 20 · FINAL MODULE</div>
+            <a href="index.html">Course Map</a>
+        </nav>
+    </div>
+
+    <script src="shared.js"></script>
+    <script>
+        const MODULE_ID = 20;
+        const ACTIVITY_COUNT = 5;
+
+        const evaluationGuide = [
+            {
+                section: 'GA Criteria Accuracy',
+                items: [
+                    'GA criteria are mapped correctly to your rubric (marked with *).',
+                    'GA language is observable and specific to your assessment task.',
+                    'GA criteria cover the sub-criteria listed in the institutional template.'
+                ]
+            },
+            {
+                section: 'Constructive Alignment',
+                items: [
+                    'Learning outcomes, assessment task, and rubric criteria are aligned.',
+                    'GA criteria are weighted proportionally to learning outcome importance.',
+                    'Criteria are feasible to assess in the time available.',
+                    'Rubric language matches the learning outcomes language where relevant.'
+                ]
+            },
+            {
+                section: 'Language and Clarity',
+                items: [
+                    'No vague adverbs ("deeply", "well", "appropriately"). All criteria are observable.',
+                    'Criterion names are parallel and grammatically consistent.',
+                    'All technical or discipline-specific terms are explained or defined.'
+                ]
+            },
+            {
+                section: 'Practical Usability',
+                items: [
+                    'Markers can use this rubric to assess student work consistently.',
+                    'The rubric fits on a single page or can be printed/viewed as a complete table.',
+                    'Footer includes GA attribution and citation details.'
+                ]
+            }
+        ];
+
+        // Activity 1: Self-Evaluation Checklist
+        function initActivity1() {
+            const container = document.getElementById('checklistContainer');
+            const allCheckboxes = [];
+
+            evaluationGuide.forEach((section, sectionIdx) => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'checklist-section';
+
+                const header = document.createElement('div');
+                header.className = 'checklist-header';
+                header.textContent = `Section ${sectionIdx + 1}: ${section.section}`;
+                header.addEventListener('click', () => {
+                    header.classList.toggle('expanded');
+                    items.classList.toggle('show');
+                });
+
+                const items = document.createElement('div');
+                items.className = 'checklist-items';
+
+                section.items.forEach((item, itemIdx) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'checklist-item';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = `check-${sectionIdx}-${itemIdx}`;
+                    allCheckboxes.push(checkbox);
+
+                    const label = document.createElement('label');
+                    label.htmlFor = checkbox.id;
+                    label.textContent = item;
+
+                    itemDiv.appendChild(checkbox);
+                    itemDiv.appendChild(label);
+                    items.appendChild(itemDiv);
+
+                    checkbox.addEventListener('change', () => {
+                        checkAllBoxes();
+                    });
+                });
+
+                sectionDiv.appendChild(header);
+                sectionDiv.appendChild(items);
+                container.appendChild(sectionDiv);
+            });
+
+            function checkAllBoxes() {
+                const allChecked = allCheckboxes.every(cb => cb.checked);
+                if (allChecked) {
+                    updateActivity1Progress();
+                }
+            }
+        }
+
+        function updateActivity1Progress() {
+            const tracker = document.querySelector('[data-activity="1"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('activity1Feedback').textContent = '✓ All items checked! Move to Activity 2.';
+            document.getElementById('activity1Feedback').style.color = '#2EA836';
+            checkActivity2Status();
+            checkModuleCompletion();
+        }
+
+        // Activity 2: Fix Issues
+        function checkActivity2Status() {
+            // For this example, all items are checked, so no issues
+            document.getElementById('a2NoIssues').style.display = 'block';
+            updateActivity2Progress();
+        }
+
+        function updateActivity2Progress() {
+            const tracker = document.querySelector('[data-activity="2"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('activity2Feedback').textContent = '✓ Activity 2 complete! Move to Activity 3.';
+            document.getElementById('activity2Feedback').style.color = '#2EA836';
+            checkModuleCompletion();
+        }
+
+        // Activity 3: Coordinator Test
+        function initActivity3() {
+            document.getElementById('a3CheckBtn').addEventListener('click', () => {
+                const userAnswer = document.getElementById('a3Input').value.trim();
+                const feedback = document.getElementById('a3Feedback');
+
+                if (userAnswer.length > 100) {
+                    feedback.innerHTML = '<div style="background: #e8f5e9; padding: 1rem; border-radius: 4px; color: #2EA836;"><strong>✓ Excellent rationale!</strong> You can clearly articulate why your rubric changes matter. Move to Activity 4.</div>';
+                    updateActivity3Progress();
+                } else {
+                    feedback.innerHTML = '<div style="background: #fff3e0; padding: 1rem; border-radius: 4px; color: #f57c00;">Write a fuller explanation. Why does the criterion change matter? How does it improve assessment?</div>';
+                }
+            });
+        }
+
+        function updateActivity3Progress() {
+            const tracker = document.querySelector('[data-activity="3"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('activity3Feedback').textContent = '✓ Activity 3 complete! Move to Activity 4.';
+            document.getElementById('activity3Feedback').style.color = '#2EA836';
+            checkModuleCompletion();
+        }
+
+        // Activity 4: View Rubric
+        function initActivity4() {
+            document.getElementById('a4CheckBtn').addEventListener('click', () => {
+                document.getElementById('a4Feedback').style.display = 'block';
+                updateActivity4Progress();
+            });
+        }
+
+        function updateActivity4Progress() {
+            const tracker = document.querySelector('[data-activity="4"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('activity4Feedback').textContent = '✓ Activity 4 complete! Final activity: What\'s Next?';
+            document.getElementById('activity4Feedback').style.color = '#2EA836';
+            checkModuleCompletion();
+        }
+
+        // Activity 5: What's Next?
+        function initActivity5() {
+            document.getElementById('a5CheckBtn').addEventListener('click', () => {
+                document.getElementById('a5Feedback').style.display = 'block';
+                updateActivity5Progress();
+            });
+        }
+
+        function updateActivity5Progress() {
+            const tracker = document.querySelector('[data-activity="5"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('activity5Feedback').textContent = '✓ Activity 5 complete! Course finished!';
+            document.getElementById('activity5Feedback').style.color = '#2EA836';
+
+            localStorage.setItem('m20-complete', JSON.stringify({ completed: true, timestamp: Date.now() }));
+            localStorage.setItem('course-complete', JSON.stringify({ completed: true, timestamp: Date.now() }));
+
+            checkModuleCompletion();
+        }
+
+        // Module completion check
+        function checkModuleCompletion() {
+            const a1Done = document.querySelectorAll('input[type="checkbox"]:checked').length > 0;
+            const a2Done = document.getElementById('a2NoIssues').style.display !== 'none' || document.getElementById('a2Feedback').textContent.includes('fixed');
+            const a3Done = document.getElementById('a3Feedback').textContent.includes('Excellent');
+            const a4Done = document.getElementById('a4Feedback').style.display !== 'none';
+            const a5Done = document.getElementById('a5Feedback').style.display !== 'none';
+
+            if (a1Done && a2Done && a3Done && a4Done && a5Done) {
+                const badge = document.getElementById('completionBadge');
+                badge.classList.add('show');
+
+                // Add confetti effect
+                const confettiSpan = document.getElementById('confettiSpan');
+                for (let i = 0; i < 10; i++) {
+                    const confetti = document.createElement('span');
+                    confetti.className = 'confetti';
+                    confetti.textContent = '🎉';
+                    confettiSpan.appendChild(confetti);
+                }
+
+                localStorage.setItem('m20-complete', JSON.stringify({ completed: true, timestamp: Date.now() }));
+            }
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initActivity1();
+            initActivity3();
+            initActivity4();
+            initActivity5();
+        });
+    </script>
+</body>
+</html>

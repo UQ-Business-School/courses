@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 10: Bloom's and Dreyfus — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.bloom-grid{display:grid;grid-template-columns:1fr;gap:12px;margin:16px 0;}
+.bloom-level-card{padding:14px;border:1px solid #e4dfd9;border-radius:8px;background:#fff;font-size:13px;line-height:1.6;}
+.bloom-level-card h4{font-size:13px;font-weight:700;color:#51247A;margin-bottom:8px;}
+.bloom-level-card.remember{border-left:4px solid #6c757d;}
+.bloom-level-card.understand{border-left:4px solid #0dcaf0;}
+.bloom-level-card.apply{border-left:4px solid #0d6efd;}
+.bloom-level-card.analyse{border-left:4px solid #6f42c1;}
+.bloom-level-card.evaluate{border-left:4px solid #fd7e14;}
+.bloom-level-card.create{border-left:4px solid #198754;}
+.drag-item{display:inline-block;padding:8px 12px;margin:4px;background:#f9f7f5;border:1px solid #e4dfd9;border-radius:6px;cursor:move;user-select:none;font-size:13px;transition:all 0.2s;}
+.drag-item:hover{border-color:#51247A;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.08);}
+.drag-item.dragging{opacity:0.6;background:#e4dfd9;}
+.drag-item.placed{background:#f0faf0;border-color:#2ea836;color:#0f5132;font-weight:600;}
+.drop-zone{min-height:80px;padding:12px;margin:12px 0;border:2px dashed #e4dfd9;border-radius:6px;background:#f9f8f6;transition:all 0.2s;}
+.drop-zone:hover{border-color:#51247A;background:#fff;}
+.drop-zone.active{border-color:#51247A;background:rgba(81,36,122,0.05);}
+.drop-zone.has-items{border-color:#2ea836;background:#f0faf0;}
+.drop-item-slot{display:inline-block;padding:6px 10px;margin:4px 4px 4px 0;background:#fff;border:1px solid #e4dfd9;border-radius:4px;font-size:12px;position:relative;}
+.drop-item-slot .remove-btn{position:absolute;right:4px;top:2px;cursor:pointer;color:#d9534f;font-weight:bold;font-size:14px;display:none;}
+.drop-item-slot:hover .remove-btn{display:inline;}
+
+.clo-pair-container{padding:14px;margin:12px 0;border:1px solid #e4dfd9;border-radius:8px;background:#fff;}
+.clo-pair-header{font-size:11px;color:#6b6460;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:10px;}
+.clo-text{padding:10px;margin:8px 0;background:#f9f8f6;border-left:3px solid #51247A;font-size:13px;line-height:1.5;border-radius:4px;}
+.clo-text.descriptor{background:#f0f0fa;border-left-color:#6f42c1;}
+.clo-text strong{color:#2d2d2d;display:block;margin-bottom:4px;}
+.mc-options{display:flex;gap:12px;margin:12px 0;flex-wrap:wrap;}
+.mc-option{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;}
+.mc-option input[type="radio"]{cursor:pointer;}
+.mc-option label{cursor:pointer;margin:0;}
+
+.mc-question{padding:12px;margin:12px 0;border:1px solid #e4dfd9;border-radius:6px;background:#fff;}
+.mc-question-text{font-size:13px;margin-bottom:10px;font-weight:600;}
+.question-options{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+.question-option{display:flex;align-items:center;gap:8px;}
+.question-option input[type="radio"]{cursor:pointer;}
+.question-option label{cursor:pointer;margin:0;font-size:13px;}
+
+.dreyfus-descriptor-box{padding:12px;margin:12px 0;border:1px solid #e4dfd9;border-radius:6px;background:#fff;}
+.dreyfus-descriptor-box label{display:block;font-size:12px;font-weight:700;color:#51247A;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;}
+.dreyfus-descriptor-box textarea{width:100%;min-height:100px;padding:10px;border:1px solid #e4dfd9;border-radius:6px;font-size:13px;font-family:inherit;resize:vertical;}
+
+.blueprint{padding:12px;margin:12px 0;border:1px solid #e4dfd9;border-radius:6px;background:#f9f8f6;font-size:13px;line-height:1.5;}
+.blueprint-context{font-style:italic;color:#6b6460;margin-bottom:8px;}
+
+@media(max-width:640px){
+  .drag-item, .drop-item-slot{font-size:12px;padding:6px 8px;}
+}
+</style>
+</head>
+<body>
+
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 10 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<section class="module-hero part-b">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part B · Frameworks &mdash; Module 10</div>
+    <h1>Bloom's and Dreyfus</h1>
+    <p class="hero-sub">Two frameworks for cognitive depth: Bloom's taxonomy for knowledge and cognitive products, Dreyfus for skill development and performance mastery.</p>
+    <span class="hero-time">&#9201; ~15 minutes</span>
+  </div>
+</section>
+
+<!-- ── INTRO ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">The Frameworks</div>
+    <h2 class="reveal">When to Use Bloom's, When to Use Dreyfus</h2>
+    <p class="lead reveal">Bloom's taxonomy describes <em>cognitive complexity</em> — the depth at which students think. It works best for knowledge-based assessment: essays, written analysis, tests. Dreyfus describes <em>skill mastery</em> — the progression from novice to expert. It works best for performance-based assessment: presentations, role plays, live client work, clinical practice.</p>
+
+    <div class="reveal" style="margin-top:16px;">
+      <div class="bloom-level-card remember">
+        <h4>Bloom's: Remember, Understand, Apply, Analyse, Evaluate, Create</h4>
+        <p>A <em>cognitive</em> progression. Use when students produce a product (essay, report, design) that you can assess against cognitive complexity. Levels are <strong>not about practice or repetition</strong>; they're about what level of thinking the task demands.</p>
+      </div>
+
+      <div class="bloom-level-card create" style="margin-top:12px;">
+        <h4>Dreyfus: Novice, Advanced Beginner, Competent, Proficient, Expert</h4>
+        <p>A <em>performance</em> progression. Use when students demonstrate skill <strong>in real time</strong> — responding to questions, adapting to live feedback, handling unexpected challenges. Levels reflect how much guidance they need and how fluidly they perform.</p>
+      </div>
+    </div>
+
+    <div class="emphasis-box reveal" style="margin-top:20px;border-left-color:#51247A;">
+      <p><strong>Key insight:</strong> You can (and should) use both. A rubric for a client consulting project might use Dreyfus for the client presentation (live performance) and Bloom's for the written report (cognitive product).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: BLOOM'S LEVEL SORTING ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 1 of 4</div>
+    <h2 class="reveal">Bloom's Level Sorting</h2>
+    <p class="lead reveal">Drag 12 assessment verbs into their correct Bloom's levels. Each level has a unique cognitive demand. Some verbs are tricky: "list" is Remember (surface recall), not Apply. "Propose" is Create (generating something new), not Evaluate.</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">Sort Verbs into Bloom's Levels</div>
+
+      <div style="margin-bottom:20px;padding:12px;background:#f9f8f6;border-radius:6px;border:1px solid #e4dfd9;">
+        <p style="font-size:13px;margin:0;"><strong>Drag from here:</strong></p>
+        <div id="verb-drag-pool" style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;"></div>
+      </div>
+
+      <div id="bloom-drop-zones"></div>
+
+      <button class="btn btn-primary" id="btn-check-a1" style="margin-top:16px;">Check Answers</button>
+      <div class="feedback neutral" id="a1-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: BLOOM'S ALIGNMENT CHECK ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 2 of 4</div>
+    <h2 class="reveal">Bloom's Alignment Check</h2>
+    <p class="lead reveal">Three CLO (Course Learning Outcome) and rubric pairs. For each, decide: does the HD (Higher Distinction) descriptor rubric truly match the cognitive level demanded by the CLO? Or does the rubric fall short?</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Is the Rubric Aligned?</div>
+
+      <div id="alignment-pairs"></div>
+
+      <button class="btn btn-primary" id="btn-check-a2" style="margin-top:16px;">Check Answers</button>
+      <div class="feedback neutral" id="a2-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: WHEN TO USE DREYFUS ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 3 of 4</div>
+    <h2 class="reveal">When to Use Dreyfus</h2>
+    <p class="lead reveal">Three assessment scenarios. For each, choose: should you use Bloom's (cognitive framework, for products) or Dreyfus (skill framework, for performance)?</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">Bloom's or Dreyfus?</div>
+
+      <div id="framework-choices"></div>
+
+      <button class="btn btn-primary" id="btn-check-a3" style="margin-top:16px;">Check Answers</button>
+      <div class="feedback neutral" id="a3-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: DREYFUS DESCRIPTOR WRITING ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 4 of 4</div>
+    <h2 class="reveal">Dreyfus Descriptor Writing</h2>
+    <p class="lead reveal">Write Dreyfus-level descriptors for a hypothetical viva voce (oral examination). The viva assesses how students explain their analysis, respond to live questions, and defend recommendations. Write descriptors for Novice (P), Competent (C), and Expert (HD) levels.</p>
+
+    <div class="activity reveal" id="act-4">
+      <div class="activity-number">4</div>
+      <div class="activity-title">Write Dreyfus Descriptors for Viva Voce</div>
+
+      <div class="blueprint">
+        <div class="blueprint-context"><strong>Assessment context:</strong> "Students present their case analysis in a 10-minute viva voce. They must explain their analysis, respond to examiner questions, and defend their recommendations."</div>
+      </div>
+
+      <div class="dreyfus-descriptor-box">
+        <label for="desc-novice">Novice / Pass Level (P)</label>
+        <textarea id="desc-novice" placeholder="What would a Novice viva performance look like? (E.g., reads from notes, struggles with questions beyond prepared content...)"></textarea>
+      </div>
+
+      <div class="dreyfus-descriptor-box">
+        <label for="desc-competent">Competent / Credit Level (C)</label>
+        <textarea id="desc-competent" placeholder="What would a Competent viva performance look like? (E.g., answers expected questions with some elaboration, defends with rehearsed points...)"></textarea>
+      </div>
+
+      <div class="dreyfus-descriptor-box">
+        <label for="desc-expert">Expert / Higher Distinction Level (HD)</label>
+        <textarea id="desc-expert" placeholder="What would an Expert viva performance look like? (E.g., fluent responses, adapts explanations in real time, draws on knowledge beyond prepared material...)"></textarea>
+      </div>
+
+      <div class="self-rate" id="a4-rate" style="margin-top:16px;">
+        <span class="self-rate-label">Self-rate your descriptors:</span>
+        <button class="self-rate-btn green" data-rating="green" title="Strong — captures real mastery progression"></button>
+        <button class="self-rate-btn amber" data-rating="amber" title="Good — captures the key differences"></button>
+        <button class="self-rate-btn red" data-rating="red" title="Learning — needs more work to distinguish levels"></button>
+      </div>
+
+      <div class="feedback neutral" id="a4-feedback" style="margin-top:16px;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RUBRIC STATE ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Your Rubric</div>
+    <h2 class="reveal">Bloom's and Dreyfus Applied</h2>
+    <p class="lead reveal">You now understand when to use cognitive frameworks (Bloom's) and when to use performance frameworks (Dreyfus). Review your rubric: which criteria are measuring cognitive products (candidates for Bloom's)? Which are measuring live performance (candidates for Dreyfus)?</p>
+    <div class="rubric-preview rubric-preview-auto reveal"></div>
+  </div>
+</section>
+
+<section class="module-section" style="padding-bottom:24px;">
+  <div class="section-inner" style="text-align:center;">
+    <button class="btn btn-primary btn-complete-module" disabled>Complete Module 10</button>
+    <p style="font-size:12px;color:#6b6460;margin-top:12px;">Complete all four activities to unlock.</p>
+  </div>
+</section>
+
+<nav class="module-nav">
+  <a href="module-09.html">← Module 9</a>
+  <a href="module-11.html" class="nav-next disabled" aria-disabled="true">Module 11 →</a>
+</nav>
+
+<footer class="module-cta"><p class="cta-credit">UQ Business School Learning Design &middot; 2026</p></footer>
+
+<script src="shared.js"></script>
+<script>
+(function(){
+  const RC = window.RubricCourse;
+  const tracker = RC.ModuleTracker(10, 4);
+
+  /* ── Activity 1: Bloom's Level Sorting (Drag & Drop) ── */
+  (function(){
+    const verbs = [
+      { word: 'define', level: 'Remember' },
+      { word: 'recall', level: 'Remember' },
+      { word: 'explain', level: 'Understand' },
+      { word: 'compare', level: 'Understand' },
+      { word: 'apply', level: 'Apply' },
+      { word: 'list', level: 'Remember' },
+      { word: 'analyse', level: 'Analyse' },
+      { word: 'critique', level: 'Evaluate' },
+      { word: 'evaluate', level: 'Evaluate' },
+      { word: 'propose', level: 'Create' },
+      { word: 'create', level: 'Create' },
+      { word: 'design', level: 'Create' }
+    ];
+
+    const levels = [
+      { name: 'Remember', class: 'remember', verbs: [] },
+      { name: 'Understand', class: 'understand', verbs: [] },
+      { name: 'Apply', class: 'apply', verbs: [] },
+      { name: 'Analyse', class: 'analyse', verbs: [] },
+      { name: 'Evaluate', class: 'evaluate', verbs: [] },
+      { name: 'Create', class: 'create', verbs: [] }
+    ];
+
+    const saved = RC.Exercises.get('m10-a1') || { placements: {} };
+
+    // Build drag pool
+    const pool = document.getElementById('verb-drag-pool');
+    verbs.forEach(verb => {
+      const div = document.createElement('div');
+      div.className = 'drag-item';
+      div.textContent = verb.word;
+      div.draggable = true;
+      div.dataset.verb = verb.word;
+      div.dataset.answer = verb.level;
+
+      div.addEventListener('dragstart', (e) => {
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', verb.word);
+        div.classList.add('dragging');
+      });
+      div.addEventListener('dragend', () => {
+        div.classList.remove('dragging');
+      });
+
+      pool.appendChild(div);
+    });
+
+    // Build drop zones
+    const zonesContainer = document.getElementById('bloom-drop-zones');
+    levels.forEach(lvl => {
+      const lvlDiv = document.createElement('div');
+      lvlDiv.className = 'bloom-level-card ' + lvl.class;
+      lvlDiv.innerHTML = '<h4>' + lvl.name + '</h4>';
+
+      const dropZone = document.createElement('div');
+      dropZone.className = 'drop-zone';
+      dropZone.dataset.level = lvl.name;
+
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        dropZone.classList.add('active');
+      });
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('active');
+      });
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const verbWord = e.dataTransfer.getData('text/plain');
+        const verbObj = verbs.find(v => v.word === verbWord);
+        dropZone.classList.remove('active');
+
+        // Only allow valid drops
+        if (!saved.placements[verbWord] || saved.placements[verbWord] !== lvl.name) {
+          saved.placements[verbWord] = lvl.name;
+          RC.Exercises.set('m10-a1', saved);
+          renderA1();
+        }
+      });
+
+      lvlDiv.appendChild(dropZone);
+      zonesContainer.appendChild(lvlDiv);
+    });
+
+    function renderA1() {
+      document.querySelectorAll('#bloom-drop-zones .drop-zone').forEach(zone => {
+        zone.innerHTML = '';
+        zone.classList.remove('has-items');
+
+        Object.entries(saved.placements).forEach(([verb, level]) => {
+          if (level === zone.dataset.level) {
+            const slot = document.createElement('div');
+            slot.className = 'drop-item-slot';
+            slot.innerHTML = verb + '<span class="remove-btn" data-verb="' + verb + '">✕</span>';
+            zone.appendChild(slot);
+
+            slot.querySelector('.remove-btn').addEventListener('click', (e) => {
+              e.stopPropagation();
+              delete saved.placements[verb];
+              RC.Exercises.set('m10-a1', saved);
+              renderA1();
+            });
+          }
+        });
+
+        if (zone.innerHTML.trim() !== '') {
+          zone.classList.add('has-items');
+        }
+      });
+    }
+
+    renderA1();
+
+    document.getElementById('btn-check-a1').addEventListener('click', () => {
+      let correct = 0;
+      verbs.forEach(verb => {
+        if (saved.placements[verb.word] === verb.level) correct++;
+      });
+
+      const fb = document.getElementById('a1-feedback');
+      fb.className = 'feedback show ' + (correct === 12 ? 'correct' : 'incorrect');
+
+      if (correct === 12) {
+        fb.innerHTML = '<p><strong>Perfect!</strong> All 12 verbs correctly placed. Notice: Remember (define, recall, list) is surface recall. Understand (explain, compare) is grasping concepts. Apply is using them in new contexts. Analyse breaks them down. Evaluate judges them. Create generates something entirely new — including "propose" (a new idea) and "design" (a new solution).</p>';
+        tracker.markDone('act-1');
+      } else {
+        fb.innerHTML = '<p><strong>' + correct + '/12 correct.</strong> Key tricky ones: "list" is Remember (just recalling items), not Apply. "Propose" and "design" are Create (generating new things), not Evaluate.</p>';
+      }
+    });
+  })();
+
+  /* ── Activity 2: Bloom's Alignment Check (Multiple choice) ── */
+  (function(){
+    const pairs = [
+      {
+        pair: 1,
+        clo: 'Students will <strong>evaluate</strong> management strategies for reducing staff turnover.',
+        descriptor: 'Applies two management theories to the case study.',
+        answer: 'misaligned',
+        feedback: 'The CLO demands Evaluate (Bloom\'s 5: judging the effectiveness of strategies). But the HD descriptor only requires Apply (Bloom\'s 3: using theories). The rubric falls short of the learning outcome — it measures deeper thinking than Apply, but not as deep as Evaluate.'
+      },
+      {
+        pair: 2,
+        clo: 'Students will <strong>analyse</strong> the causes of organisational problems.',
+        descriptor: 'Analyses multiple causes and explains how they interact to produce outcomes.',
+        answer: 'aligned',
+        feedback: 'Both CLO and descriptor operate at Analyse (breaking down causes and examining relationships). The descriptor even hints at synthesis, which is slightly beyond Analyse but still aligned with the cognitive demand. This is well-matched.'
+      },
+      {
+        pair: 3,
+        clo: 'Students will <strong>create</strong> evidence-based recommendations.',
+        descriptor: 'Provides a comprehensive evaluation of possible solutions.',
+        answer: 'misaligned',
+        feedback: 'The CLO demands Create (Bloom\'s 6: generating new recommendations). But the HD descriptor only requires Evaluate (Bloom\'s 5: judging solutions). The rubric falls short — it assesses judgment, but not generation of new ideas.'
+      }
+    ];
+
+    const container = document.getElementById('alignment-pairs');
+    const saved = RC.Exercises.get('m10-a2') || {};
+
+    pairs.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'clo-pair-container';
+
+      let radioHtml = '<div class="mc-options">';
+      ['aligned', 'misaligned'].forEach(opt => {
+        const id = 'a2-p' + p.pair + '-' + opt;
+        radioHtml += '<div class="mc-option"><input type="radio" id="' + id + '" name="pair-' + p.pair + '" value="' + opt + '"' + (saved['p' + p.pair] === opt ? ' checked' : '') + '> <label for="' + id + '">' + opt.charAt(0).toUpperCase() + opt.slice(1) + '</label></div>';
+      });
+      radioHtml += '</div>';
+
+      div.innerHTML = '<div class="clo-pair-header">Pair ' + p.pair + '</div>' +
+        '<div class="clo-text"><strong>CLO:</strong> ' + p.clo + '</div>' +
+        '<div class="clo-text descriptor"><strong>HD Descriptor:</strong> ' + p.descriptor + '</div>' +
+        radioHtml +
+        '<div class="feedback" id="a2-fb-' + p.pair + '" style="margin-top:8px;"></div>';
+
+      container.appendChild(div);
+
+      const radios = div.querySelectorAll('input[type="radio"]');
+      radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+          saved['p' + p.pair] = radio.value;
+          RC.Exercises.set('m10-a2', saved);
+          const fb = document.getElementById('a2-fb-' + p.pair);
+          const isCorrect = radio.value === p.answer;
+          fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+          fb.innerHTML = '<p>' + p.feedback + '</p>';
+          checkAllA2();
+        });
+      });
+
+      if (saved['p' + p.pair]) {
+        const fb = document.getElementById('a2-fb-' + p.pair);
+        const isCorrect = saved['p' + p.pair] === p.answer;
+        fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+        fb.innerHTML = '<p>' + p.feedback + '</p>';
+      }
+    });
+
+    function checkAllA2() {
+      let correct = 0;
+      pairs.forEach(p => { if (saved['p' + p.pair] === p.answer) correct++; });
+      if (correct === 3) {
+        tracker.markDone('act-2');
+        const summaryFb = document.getElementById('a2-feedback');
+        summaryFb.className = 'feedback show correct';
+        summaryFb.innerHTML = '<p><strong>All aligned!</strong> When a CLO uses a high-level verb (Evaluate, Create), the rubric descriptor must use verbs and language at that cognitive level. A descriptor that only requires Apply cannot satisfactorily assess a Create-level outcome.</p>';
+      }
+    }
+  })();
+
+  /* ── Activity 3: When to Use Dreyfus (Multiple choice) ── */
+  (function(){
+    const scenarios = [
+      {
+        scenario: 1,
+        desc: 'A written essay analysing a business case — students have time to draft, revise, and polish.',
+        answer: 'blooms',
+        explanation: 'This is a cognitive <em>product</em> (an essay). Bloom\'s works best: you\'re assessing what level of analysis they produce, not how fluently they think in real time. You can measure whether they Analyse or Evaluate or Create.'
+      },
+      {
+        scenario: 2,
+        desc: 'A live client presentation with Q&A — students must respond to questions they haven\'t prepared for.',
+        answer: 'dreyfus',
+        explanation: 'This is <em>live performance</em>. Dreyfus works best: you\'re assessing how fluidly they respond in the moment, how much guidance they need, whether they can adapt. A Novice reads notes; an Expert responds fluently and unprepared.'
+      },
+      {
+        scenario: 3,
+        desc: 'A reflective journal tracking a student\'s growing confidence and independence over a placement.',
+        answer: 'dreyfus',
+        explanation: 'This tracks <em>skill development over time</em>. Dreyfus works best: you\'re measuring progression from novice (needed lots of guidance early on) to competent (now independent). This is about mastery trajectory, not cognitive complexity.'
+      }
+    ];
+
+    const container = document.getElementById('framework-choices');
+    const saved = RC.Exercises.get('m10-a3') || {};
+
+    scenarios.forEach(s => {
+      const div = document.createElement('div');
+      div.className = 'mc-question';
+
+      let radioHtml = '<div class="question-options">';
+      ['blooms', 'dreyfus'].forEach(opt => {
+        const id = 'a3-s' + s.scenario + '-' + opt;
+        const label = opt === 'blooms' ? "Bloom's (cognitive)" : 'Dreyfus (performance)';
+        radioHtml += '<div class="question-option"><input type="radio" id="' + id + '" name="scenario-' + s.scenario + '" value="' + opt + '"' + (saved['s' + s.scenario] === opt ? ' checked' : '') + '> <label for="' + id + '">' + label + '</label></div>';
+      });
+      radioHtml += '</div>';
+
+      div.innerHTML = '<div class="mc-question-text"><strong>Scenario ' + s.scenario + ':</strong> ' + s.desc + '</div>' + radioHtml +
+        '<div class="feedback" id="a3-fb-' + s.scenario + '" style="margin-top:8px;"></div>';
+
+      container.appendChild(div);
+
+      const radios = div.querySelectorAll('input[type="radio"]');
+      radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+          saved['s' + s.scenario] = radio.value;
+          RC.Exercises.set('m10-a3', saved);
+          const fb = document.getElementById('a3-fb-' + s.scenario);
+          const isCorrect = radio.value === s.answer;
+          fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+          fb.innerHTML = '<p>' + (isCorrect ? '<strong>Correct.</strong> ' : '<strong>Not quite.</strong> ') + s.explanation + '</p>';
+          checkAllA3();
+        });
+      });
+
+      if (saved['s' + s.scenario]) {
+        const fb = document.getElementById('a3-fb-' + s.scenario);
+        const isCorrect = saved['s' + s.scenario] === s.answer;
+        fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+        fb.innerHTML = '<p>' + (isCorrect ? '<strong>Correct.</strong> ' : '<strong>Not quite.</strong> ') + s.explanation + '</p>';
+      }
+    });
+
+    function checkAllA3() {
+      let correct = 0;
+      scenarios.forEach(s => { if (saved['s' + s.scenario] === s.answer) correct++; });
+      if (correct === 3) {
+        tracker.markDone('act-3');
+        const summaryFb = document.getElementById('a3-feedback');
+        summaryFb.className = 'feedback show correct';
+        summaryFb.innerHTML = '<p><strong>Perfect!</strong> Key rule: if students have <em>time to revise</em>, use Bloom\'s. If you\'re assessing <em>in-the-moment performance</em> or <em>skill development over time</em>, use Dreyfus.</p>';
+      }
+    }
+  })();
+
+  /* ── Activity 4: Dreyfus Descriptor Writing ── */
+  (function(){
+    const noviceInput = document.getElementById('desc-novice');
+    const competentInput = document.getElementById('desc-competent');
+    const expertInput = document.getElementById('desc-expert');
+    const rateButtons = document.querySelectorAll('#a4-rate .self-rate-btn');
+
+    const saved = RC.Exercises.get('m10-a4') || {};
+
+    if (saved.novice) noviceInput.value = saved.novice;
+    if (saved.competent) competentInput.value = saved.competent;
+    if (saved.expert) expertInput.value = saved.expert;
+    if (saved.rating) {
+      rateButtons.forEach(btn => {
+        if (btn.dataset.rating === saved.rating) btn.classList.add('selected');
+      });
+    }
+
+    function saveDescriptors() {
+      saved.novice = noviceInput.value;
+      saved.competent = competentInput.value;
+      saved.expert = expertInput.value;
+      RC.Exercises.set('m10-a4', saved);
+    }
+
+    noviceInput.addEventListener('input', debounce(saveDescriptors, 500));
+    competentInput.addEventListener('input', debounce(saveDescriptors, 500));
+    expertInput.addEventListener('input', debounce(saveDescriptors, 500));
+
+    rateButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        rateButtons.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        saved.rating = btn.dataset.rating;
+        RC.Exercises.set('m10-a4', saved);
+
+        const fb = document.getElementById('a4-feedback');
+
+        // Show model answer
+        const modelNovice = 'Reads from notes; limited ability to respond to questions beyond repeating prepared content. Unable to adapt when challenged on recommendations.';
+        const modelCompetent = 'Responds to expected questions with prepared answers. Can elaborate when prompted but struggles with questions outside their preparation. Defends recommendations using rehearsed justifications.';
+        const modelExpert = 'Responds to all questions fluently, adapting explanations in real time. Draws on knowledge beyond the prepared material to address unexpected angles. Defends recommendations with spontaneous, evidence-based reasoning.';
+
+        fb.className = 'feedback show correct';
+        fb.innerHTML = '<p><strong>Model Answer:</strong></p>' +
+          '<p style="margin:10px 0;"><strong>Novice (P):</strong> ' + modelNovice + '</p>' +
+          '<p style="margin:10px 0;"><strong>Competent (C):</strong> ' + modelCompetent + '</p>' +
+          '<p style="margin:10px 0;"><strong>Expert (HD):</strong> ' + modelExpert + '</p>' +
+          '<p style="margin-top:12px;font-size:12px;color:#6b6460;"><strong>What makes it Dreyfus:</strong> The progression is <em>not about complexity</em> (they\'re all explaining the same material). It\'s about <em>fluency, adaptation, and independence in real time</em>. Novice relies on notes; Expert doesn\'t. Novice struggles with the unexpected; Expert adapts. This is the hallmark of performance mastery.</p>';
+
+        tracker.markDone('act-4');
+      });
+    });
+  })();
+
+  function debounce(fn, ms) { let t; return function(...a){ clearTimeout(t); t = setTimeout(() => fn.apply(this, a), ms); }; }
+})();
+</script>
+
+</body>
+</html>

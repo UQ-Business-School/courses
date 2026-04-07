@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 6: SOLO Taxonomy — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.solo-level{display:flex;align-items:center;gap:12px;padding:14px;margin:8px 0;border:1px solid #e4dfd9;border-radius:8px;background:#fff;transition:border-color .2s;}
+.solo-level .solo-badge{min-width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;background:#51247A;}
+.solo-level .solo-info h4{font-size:14px;font-weight:600;margin-bottom:2px;}
+.solo-level .solo-info p{font-size:12px;color:#6b6460;margin:0;}
+</style>
+</head>
+<body>
+
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 6 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<section class="module-hero part-b">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part B · Frameworks &mdash; Module 6</div>
+    <h1>SOLO Taxonomy</h1>
+    <p class="hero-sub">Structural complexity as grade progression — a framework that describes how student responses become more sophisticated, not just "better."</p>
+    <span class="hero-time">&#9201; ~20 minutes</span>
+  </div>
+</section>
+
+<!-- ── INTRO ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">The Framework</div>
+    <h2 class="reveal">Structure, Not Quality</h2>
+    <p class="lead reveal">SOLO (Structure of the Observed Learning Outcome) describes five levels of structural complexity. The key insight: higher grades don't mean "better" in some vague way — they mean <em>structurally more complex</em>. Ideas are connected, patterns emerge, principles are abstracted.</p>
+
+    <div class="reveal">
+      <div class="solo-level"><div class="solo-badge" style="background:#d9534f;">1</div><div class="solo-info"><h4>Pre-structural</h4><p>Misses the point. Irrelevant, restates the question, or tautological.</p></div></div>
+      <div class="solo-level"><div class="solo-badge" style="background:#e6a817;">2</div><div class="solo-info"><h4>Uni-structural</h4><p>One relevant idea in isolation. No connections to other concepts.</p></div></div>
+      <div class="solo-level"><div class="solo-badge" style="background:#4085C6;">3</div><div class="solo-info"><h4>Multi-structural</h4><p>Several relevant ideas, but treated independently. A list, not an argument.</p></div></div>
+      <div class="solo-level"><div class="solo-badge" style="background:#51247A;">4</div><div class="solo-info"><h4>Relational</h4><p>Ideas connected. Patterns identified, relationships explained, forming a coherent whole.</p></div></div>
+      <div class="solo-level"><div class="solo-badge" style="background:#2EA836;">5</div><div class="solo-info"><h4>Extended Abstract</h4><p>Principles abstracted beyond the case. Applied to new contexts; limitations critiqued.</p></div></div>
+    </div>
+
+    <div class="emphasis-box reveal" style="margin-top:20px;border-left-color:#51247A;">
+      <p><strong>The key difference from VoI:</strong> VoI describes <em>what intellectual qualities</em> are present. SOLO describes <em>how ideas are structured and connected</em>. Both are needed — a response can be coherent (VoI) but only multi-structural (SOLO), or relational (SOLO) but lacking accuracy (VoI).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: SORT BY STRUCTURE ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 1 of 4</div>
+    <h2 class="reveal">Sort by Structural Complexity</h2>
+    <p class="lead reveal">Five student response excerpts to the same question: "What caused TechFlow's high staff turnover?" Drag them into order from least to most structurally complex.</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">Rank from Pre-structural to Extended Abstract</div>
+      <p class="activity-instruction">Drag each excerpt to the correct SOLO level zone.</p>
+
+      <div class="drag-pool" id="drag-pool-a1" style="margin-bottom:16px;padding:12px;background:#f7f5f3;border-radius:8px;">
+        <div class="drag-item" draggable="true" id="solo-e1" style="font-size:12px;max-width:100%;">Staff turnover is when people leave a company. TechFlow has high turnover.</div>
+        <div class="drag-item" draggable="true" id="solo-e2" style="font-size:12px;max-width:100%;">Poor management communication is the main reason employees left TechFlow.</div>
+        <div class="drag-item" draggable="true" id="solo-e3" style="font-size:12px;max-width:100%;">Several factors contributed: poor communication, limited career paths, low salary, and workplace culture issues.</div>
+        <div class="drag-item" draggable="true" id="solo-e4" style="font-size:12px;max-width:100%;">Poor communication eroded trust, which made limited career paths feel even more frustrating, creating a reinforcing cycle that salary increases alone couldn't break.</div>
+        <div class="drag-item" draggable="true" id="solo-e5" style="font-size:12px;max-width:100%;">The case illustrates a broader pattern: organisations that treat turnover as a compensation problem rather than a systems problem tend to misdiagnose the issue. This mirrors findings in healthcare and education sectors.</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr;gap:8px;">
+        <div><div class="drag-zone-label" style="color:#d9534f;">Pre-structural</div><div class="drag-zone" id="sz-1" style="min-height:44px;"></div></div>
+        <div><div class="drag-zone-label" style="color:#e6a817;">Uni-structural</div><div class="drag-zone" id="sz-2" style="min-height:44px;"></div></div>
+        <div><div class="drag-zone-label" style="color:#4085C6;">Multi-structural</div><div class="drag-zone" id="sz-3" style="min-height:44px;"></div></div>
+        <div><div class="drag-zone-label" style="color:#51247A;">Relational</div><div class="drag-zone" id="sz-4" style="min-height:44px;"></div></div>
+        <div><div class="drag-zone-label" style="color:#2EA836;">Extended Abstract</div><div class="drag-zone" id="sz-5" style="min-height:44px;"></div></div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <button class="btn btn-primary" id="btn-check-a1">Check Order</button>
+        <button class="btn btn-secondary btn-small" id="btn-reset-a1" style="margin-left:8px;">Reset</button>
+      </div>
+      <div class="feedback neutral" id="a1-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: SOLO TO GRADE MAPPING ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 2 of 4</div>
+    <h2 class="reveal">Map SOLO to Grades</h2>
+    <p class="lead reveal">SOLO levels map naturally (but not rigidly) to UQ grade levels. For each grade, select the SOLO level you'd typically expect.</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Grade → SOLO Level</div>
+
+      <div id="solo-mapping"></div>
+
+      <button class="btn btn-primary" id="btn-check-a2" style="margin-top:16px;">Check My Mapping</button>
+      <div class="feedback neutral" id="a2-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: REWRITE USING SOLO ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 3 of 4</div>
+    <h2 class="reveal">Rewrite Using SOLO</h2>
+    <p class="lead reveal">Take two adjacent descriptors — Credit and Distinction for "Critical Analysis." Rewrite them so the difference is <em>structural</em> (multi-structural → relational) rather than adverbial.</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">Structural Differentiation</div>
+
+      <div class="side-by-side" style="margin-bottom:16px;">
+        <div class="sbs-panel before">
+          <span class="sbs-label before">Current Credit</span>
+          Demonstrates good critical analysis
+        </div>
+        <div class="sbs-panel before" style="background:#fff5f0;border-color:#e6d3c3;">
+          <span class="sbs-label before" style="color:#e6a817;">Current Distinction</span>
+          Demonstrates very good critical analysis
+        </div>
+      </div>
+
+      <p class="activity-instruction">Rewrite the <strong>Credit</strong> descriptor so it describes multi-structural work:</p>
+      <textarea class="transform-input" id="tf-credit" placeholder="Credit: describes multiple relevant factors but treats them independently..."></textarea>
+
+      <p class="activity-instruction" style="margin-top:12px;">Now rewrite the <strong>Distinction</strong> descriptor so it describes relational work:</p>
+      <textarea class="transform-input" id="tf-distinction" placeholder="Distinction: connects factors into a coherent explanation, showing relationships..."></textarea>
+
+      <button class="btn btn-primary" id="btn-solo-model" style="margin-top:12px;">Show Model &amp; Compare</button>
+
+      <div class="side-by-side" id="solo-model-sbs" style="display:none;margin-top:16px;">
+        <div class="sbs-panel after" style="background:#f0faf0;border-color:#c3e6c3;">
+          <span class="sbs-label after">Model Credit (Multi-structural)</span>
+          Identifies several contributing factors to the turnover problem and applies relevant theoretical concepts to each. Factors are addressed individually without explaining how they interact or influence each other.
+        </div>
+        <div class="sbs-panel after" style="background:#f0f0fa;border-color:#c3c3e6;">
+          <span class="sbs-label after" style="color:#51247A;">Model Distinction (Relational)</span>
+          Identifies multiple contributing factors and explains the relationships between them — for example, how poor communication amplifies the effect of limited career development. Constructs a coherent analytical narrative rather than a list of separate observations.
+        </div>
+      </div>
+
+      <div class="self-rate" id="tf-solo-rate" style="margin-top:12px;">
+        <span class="self-rate-label">How close?</span>
+        <button class="self-rate-btn green" data-rating="green" title="Nailed it"></button>
+        <button class="self-rate-btn amber" data-rating="amber" title="Getting there"></button>
+        <button class="self-rate-btn red" data-rating="red" title="Way off"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: SPOT THE SOLO LEVEL ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 4 of 4</div>
+    <h2 class="reveal">Spot the SOLO Level</h2>
+    <p class="lead reveal">Four rubric descriptors from different courses. Identify each one's SOLO level — but watch out: some are mislabelled in their rubrics.</p>
+
+    <div class="activity reveal" id="act-4">
+      <div class="activity-number">4</div>
+      <div class="activity-title">What Level Is This?</div>
+
+      <div id="solo-spot"></div>
+
+      <div class="feedback neutral" id="a4-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RUBRIC STATE ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Your Rubric</div>
+    <h2 class="reveal">SOLO Progression Built In</h2>
+    <p class="lead reveal">The Critical Analysis criterion now has SOLO-based differentiation for Credit and Distinction levels. The structural progression from multi-structural to relational to extended abstract gives markers a clear basis for grading.</p>
+    <div class="rubric-preview rubric-preview-auto reveal"></div>
+  </div>
+</section>
+
+<section class="module-section" style="padding-bottom:24px;">
+  <div class="section-inner" style="text-align:center;">
+    <button class="btn btn-primary btn-complete-module" disabled>Complete Module 6</button>
+    <p style="font-size:12px;color:#6b6460;margin-top:12px;">Complete all four activities to unlock.</p>
+  </div>
+</section>
+
+<nav class="module-nav">
+  <a href="module-05.html">← Module 5</a>
+  <a href="module-07.html" class="nav-next disabled" aria-disabled="true">Module 7: Three Differentiation Levers →</a>
+</nav>
+
+<footer class="module-cta"><p class="cta-credit">UQ Business School Learning Design &middot; 2026</p></footer>
+
+<script src="shared.js"></script>
+<script>
+(function(){
+  const RC = window.RubricCourse;
+  const tracker = RC.ModuleTracker(6, 4);
+
+  /* ── Activity 1: Sort excerpts ── */
+  (function(){
+    const container = document.getElementById('act-1');
+    const ds = RC.DragSort(container, {
+      pairs: [
+        { item: 'solo-e1', zone: 'sz-1' },
+        { item: 'solo-e2', zone: 'sz-2' },
+        { item: 'solo-e3', zone: 'sz-3' },
+        { item: 'solo-e4', zone: 'sz-4' },
+        { item: 'solo-e5', zone: 'sz-5' }
+      ],
+      saveKey: 'm6-a1'
+    });
+    document.getElementById('btn-check-a1').addEventListener('click', () => {
+      const result = ds.check();
+      const fb = document.getElementById('a1-feedback');
+      fb.className = 'feedback show ' + (result ? 'correct' : 'incorrect');
+      fb.innerHTML = result
+        ? '<p><strong>Perfect!</strong> Pre-structural (restates the question), Uni-structural (one factor), Multi-structural (lists factors), Relational (connects factors in a reinforcing cycle), Extended Abstract (abstracts to a general principle across sectors).</p>'
+        : '<p><strong>Some misplacements.</strong> The key structural markers: Pre-structural = misses the point. Uni = one idea. Multi = list of ideas. Relational = ideas are <em>connected</em> (note the reinforcing cycle language). Extended Abstract = generalises <em>beyond</em> the case to other sectors.</p>';
+      tracker.markDone('act-1');
+    });
+    document.getElementById('btn-reset-a1').addEventListener('click', () => { ds.reset(); document.getElementById('a1-feedback').className = 'feedback'; });
+  })();
+
+  /* ── Activity 2: SOLO-to-grade mapping ── */
+  (function(){
+    const grades = [
+      { grade: 'HD', correct: 'extended-abstract' },
+      { grade: 'D', correct: 'relational' },
+      { grade: 'C', correct: 'multi-strong' },
+      { grade: 'P', correct: 'multi-weak' },
+      { grade: 'MF', correct: 'uni-structural' },
+      { grade: 'F', correct: 'pre-structural' }
+    ];
+    const soloOptions = [
+      { value: 'extended-abstract', label: 'Extended Abstract' },
+      { value: 'relational', label: 'Relational' },
+      { value: 'multi-strong', label: 'Multi-structural (strong)' },
+      { value: 'multi-weak', label: 'Multi-structural (weak)' },
+      { value: 'uni-structural', label: 'Uni-structural' },
+      { value: 'pre-structural', label: 'Pre-structural' }
+    ];
+
+    const container = document.getElementById('solo-mapping');
+    const saved = RC.Exercises.get('m6-a2') || {};
+
+    grades.forEach(g => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;gap:12px;margin:8px 0;';
+      let opts = '<option value="">Select...</option>';
+      soloOptions.forEach(o => { opts += '<option value="' + o.value + '"' + (saved[g.grade] === o.value ? ' selected' : '') + '>' + o.label + '</option>'; });
+      row.innerHTML = '<span style="min-width:40px;font-weight:700;font-size:14px;color:#51247A;">' + g.grade + '</span>' +
+        '<select style="flex:1;padding:8px;border:1px solid #e4dfd9;border-radius:6px;font-size:13px;" data-grade="' + g.grade + '">' + opts + '</select>';
+      container.appendChild(row);
+
+      row.querySelector('select').addEventListener('change', function(){
+        saved[this.dataset.grade] = this.value;
+        RC.Exercises.set('m6-a2', saved);
+      });
+    });
+
+    document.getElementById('btn-check-a2').addEventListener('click', () => {
+      let correct = 0;
+      grades.forEach(g => { if (saved[g.grade] === g.correct) correct++; });
+      const fb = document.getElementById('a2-feedback');
+      fb.className = 'feedback show ' + (correct >= 5 ? 'correct' : 'incorrect');
+      fb.innerHTML = correct === 6
+        ? '<p><strong>All correct!</strong> HD = Extended Abstract, D = Relational, C = Multi-structural (strong), P = Multi-structural (weak), MF = Uni-structural, F = Pre-structural. The mapping isn\'t rigid — a borderline case might sit between levels — but this is the typical alignment.</p>'
+        : '<p><strong>' + correct + '/6 correct.</strong> The natural mapping: HD students abstract beyond the case; D students connect ideas; C students address multiple points; P students list points without connecting them; MF students catch one idea; F students miss the point entirely.</p>';
+      tracker.markDone('act-2');
+    });
+  })();
+
+  /* ── Activity 3: SOLO rewrite ── */
+  (function(){
+    const creditInput = document.getElementById('tf-credit');
+    const distInput = document.getElementById('tf-distinction');
+    const modelBtn = document.getElementById('btn-solo-model');
+    const modelSbs = document.getElementById('solo-model-sbs');
+    const rates = document.querySelectorAll('#tf-solo-rate .self-rate-btn');
+
+    const saved = RC.Exercises.get('m6-a3') || {};
+    if (saved.credit) creditInput.value = saved.credit;
+    if (saved.distinction) distInput.value = saved.distinction;
+    if (saved.revealed) { modelSbs.style.display = ''; modelBtn.disabled = true; modelBtn.textContent = 'Compared ✓'; }
+    if (saved.rating) rates.forEach(r => { if (r.dataset.rating === saved.rating) r.classList.add('selected'); });
+
+    function save() {
+      saved.credit = creditInput.value;
+      saved.distinction = distInput.value;
+      RC.Exercises.set('m6-a3', saved);
+    }
+    creditInput.addEventListener('input', debounce(save, 500));
+    distInput.addEventListener('input', debounce(save, 500));
+
+    modelBtn.addEventListener('click', () => {
+      if (!creditInput.value.trim() || !distInput.value.trim()) {
+        if (!creditInput.value.trim()) creditInput.style.borderColor = '#d9534f';
+        if (!distInput.value.trim()) distInput.style.borderColor = '#d9534f';
+        setTimeout(() => { creditInput.style.borderColor = ''; distInput.style.borderColor = ''; }, 1500);
+        return;
+      }
+      modelSbs.style.display = '';
+      saved.revealed = true;
+      RC.Exercises.set('m6-a3', saved);
+      modelBtn.disabled = true;
+      modelBtn.textContent = 'Compared ✓';
+
+      // Update rubric
+      RC.Rubric.updateDescriptor(0, 'C', 'Identifies several contributing factors to the turnover problem and applies relevant theoretical concepts to each. Factors are addressed individually without explaining how they interact or influence each other.');
+      RC.Rubric.updateDescriptor(0, 'D', 'Identifies multiple contributing factors and explains the relationships between them — for example, how poor communication amplifies the effect of limited career development. Constructs a coherent analytical narrative rather than a list of separate observations.');
+      document.querySelectorAll('.rubric-preview-auto').forEach(el => RC.RubricPreview(el));
+    });
+
+    rates.forEach(btn => {
+      btn.addEventListener('click', () => {
+        rates.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        saved.rating = btn.dataset.rating;
+        RC.Exercises.set('m6-a3', saved);
+        tracker.markDone('act-3');
+      });
+    });
+  })();
+
+  /* ── Activity 4: Spot the SOLO level ── */
+  (function(){
+    const questions = [
+      { text: 'HD descriptor: "Provides a comprehensive evaluation of the management strategy, considering multiple stakeholder perspectives and their competing interests."', labelled: 'HD', actualSolo: 'relational', explain: 'This is labelled HD but it\'s actually Relational — it considers multiple perspectives and their relationships. True Extended Abstract would generalise principles beyond this specific case.' },
+      { text: 'D descriptor: "Identifies several relevant factors contributing to the problem."', labelled: 'D', actualSolo: 'multi-structural', explain: 'Labelled Distinction, but "identifies several factors" is Multi-structural — it\'s a list. Distinction should be Relational (connecting those factors).' },
+      { text: 'C descriptor: "Applies Herzberg\'s theory to explain hygiene factors and connects this to Maslow\'s hierarchy to show how unmet growth needs compound the effect."', labelled: 'C', actualSolo: 'relational', explain: 'Labelled Credit, but this is Relational — it connects two theories and shows how they interact ("compounds the effect"). This descriptor is too demanding for Credit level.' },
+      { text: 'P descriptor: "Mentions the organisational problem but does not identify contributing factors."', labelled: 'P', actualSolo: 'uni-structural', explain: 'Labelled Pass, but "mentions problem without identifying factors" is Uni-structural — one relevant idea without development. Pass should expect more (weak Multi-structural).' }
+    ];
+
+    const soloOpts = ['pre-structural','uni-structural','multi-structural','relational','extended-abstract'];
+    const container = document.getElementById('solo-spot');
+    const fb = document.getElementById('a4-feedback');
+    let answered = 0;
+    const saved = RC.Exercises.get('m6-a4') || { answers: {} };
+
+    questions.forEach((q, i) => {
+      const div = document.createElement('div');
+      div.style.cssText = 'margin:14px 0;padding:14px;border:1px solid #e4dfd9;border-radius:8px;background:#fff;';
+      let opts = '<option value="">Select SOLO level...</option>';
+      soloOpts.forEach(v => { opts += '<option value="' + v + '"' + (saved.answers[i] === v ? ' selected' : '') + '>' + v.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('-') + '</option>'; });
+      div.innerHTML = '<p style="font-size:13px;line-height:1.6;"><span style="color:#6b6460;font-size:11px;">[Labelled: ' + q.labelled + ']</span><br>' + q.text + '</p>' +
+        '<select style="padding:6px 10px;border:1px solid #e4dfd9;border-radius:6px;font-size:13px;margin-top:8px;width:100%;max-width:240px;" data-qi="' + i + '">' + opts + '</select>' +
+        '<div class="feedback" id="solo-fb-' + i + '" style="margin-top:8px;"></div>';
+      container.appendChild(div);
+
+      if (saved.answers[i]) { showResult(i, saved.answers[i]); answered++; }
+
+      div.querySelector('select').addEventListener('change', function(){
+        if (!this.value) return;
+        saved.answers[i] = this.value;
+        RC.Exercises.set('m6-a4', saved);
+        showResult(i, this.value);
+        this.disabled = true;
+        answered++;
+        if (answered >= questions.length) {
+          tracker.markDone('act-4');
+          const correct = questions.filter((q, i) => saved.answers[i] === q.actualSolo).length;
+          fb.className = 'feedback show neutral';
+          fb.innerHTML = '<p><strong>Score: ' + correct + '/' + questions.length + '</strong> — ' +
+            (correct === 4 ? 'Spot on! You can now identify when a descriptor\'s label doesn\'t match its structural level.' :
+             'The key takeaway: many rubrics label descriptors at the wrong SOLO level. HD descriptors that are actually only Relational, or Credit descriptors demanding Relational thinking — these mismatches cause grading inconsistency.') + '</p>';
+        }
+      });
+
+      function showResult(idx, val) {
+        const qfb = document.getElementById('solo-fb-' + idx);
+        const isCorrect = val === questions[idx].actualSolo;
+        qfb.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+        qfb.textContent = (isCorrect ? '✓ Correct! ' : '✗ The actual level is ' + questions[idx].actualSolo.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('-') + '. ') + questions[idx].explain;
+      }
+    });
+  })();
+
+  function debounce(fn, ms) { let t; return function(...a){ clearTimeout(t); t = setTimeout(() => fn.apply(this, a), ms); }; }
+})();
+</script>
+
+</body>
+</html>

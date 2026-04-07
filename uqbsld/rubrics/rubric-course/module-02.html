@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 2: The Adverb Trap — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.grade-bar-chart{display:flex;align-items:flex-end;gap:6px;height:160px;margin:20px 0;padding:12px 0;}
+.grade-bar{display:flex;flex-direction:column;align-items:center;flex:1;}
+.grade-bar-fill{width:100%;border-radius:4px 4px 0 0;transition:height .8s ease;position:relative;}
+.grade-bar-fill span{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;}
+.grade-bar-label{font-size:12px;font-weight:600;margin-top:6px;color:#6b6460;}
+.chart-pair{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:20px 0;}
+.chart-box{padding:16px;border-radius:8px;border:1px solid #e4dfd9;}
+.chart-box h4{font-size:13px;font-weight:600;margin-bottom:8px;text-align:center;}
+.chart-box.vague{background:#fef5f5;border-color:#e6c3c3;}
+.chart-box.observable{background:#f0faf0;border-color:#c3e6c3;}
+@media(max-width:580px){.chart-pair{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 2 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="module-hero part-a">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part A · Foundations &mdash; Module 2</div>
+    <h1>The Adverb Trap</h1>
+    <p class="hero-sub">The single most common rubric failure mode — and once you see it, you'll never be able to un-see it.</p>
+    <span class="hero-time">&#9201; ~15 minutes</span>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: SPOT THE PATTERN ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 1 of 4</div>
+    <h2 class="reveal">Spot the Pattern</h2>
+    <p class="lead reveal">Below are five rubric rows from different courses (anonymised). For each row, <strong>click every word that changes between grade levels</strong>. Look for what the rows have in common — and which one is different.</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">Click the Changing Words</div>
+      <p class="activity-instruction">In each row, the words that stay the same are the "spine." Click on the words that <em>change</em> from one grade level to the next.</p>
+
+      <!-- Row 1 -->
+      <h3 style="margin-top:20px;">Row 1: Critical Analysis</h3>
+      <div class="highlight-passage" id="hp-row1">
+        <strong>HD:</strong> Demonstrates <span class="hw" id="r1-w1">excellent</span> critical analysis of the issue.<br>
+        <strong>D:</strong> Demonstrates <span class="hw" id="r1-w2">very good</span> critical analysis of the issue.<br>
+        <strong>C:</strong> Demonstrates <span class="hw" id="r1-w3">good</span> critical analysis of the issue.<br>
+        <strong>P:</strong> Demonstrates <span class="hw" id="r1-w4">satisfactory</span> critical analysis of the issue.
+      </div>
+
+      <!-- Row 2 -->
+      <h3>Row 2: Written Communication</h3>
+      <div class="highlight-passage" id="hp-row2">
+        <strong>HD:</strong> <span class="hw" id="r2-w1">Outstanding</span> written communication with <span class="hw" id="r2-w2">exceptional</span> clarity.<br>
+        <strong>D:</strong> <span class="hw" id="r2-w3">Very good</span> written communication with <span class="hw" id="r2-w4">high</span> clarity.<br>
+        <strong>C:</strong> <span class="hw" id="r2-w5">Good</span> written communication with <span class="hw" id="r2-w6">reasonable</span> clarity.<br>
+        <strong>P:</strong> <span class="hw" id="r2-w7">Adequate</span> written communication with <span class="hw" id="r2-w8">sufficient</span> clarity.
+      </div>
+
+      <!-- Row 3 -->
+      <h3>Row 3: Research Quality</h3>
+      <div class="highlight-passage" id="hp-row3">
+        <strong>HD:</strong> <span class="hw" id="r3-w1">Comprehensive</span> and <span class="hw" id="r3-w2">highly effective</span> use of scholarly sources.<br>
+        <strong>D:</strong> <span class="hw" id="r3-w3">Thorough</span> and <span class="hw" id="r3-w4">effective</span> use of scholarly sources.<br>
+        <strong>C:</strong> <span class="hw" id="r3-w5">Competent</span> and <span class="hw" id="r3-w6">generally effective</span> use of scholarly sources.<br>
+        <strong>P:</strong> <span class="hw" id="r3-w7">Basic</span> and <span class="hw" id="r3-w8">somewhat effective</span> use of scholarly sources.
+      </div>
+
+      <!-- Row 4 -->
+      <h3>Row 4: Teamwork</h3>
+      <div class="highlight-passage" id="hp-row4">
+        <strong>HD:</strong> <span class="hw" id="r4-w1">Exceptionally</span> effective team contribution.<br>
+        <strong>D:</strong> <span class="hw" id="r4-w2">Highly</span> effective team contribution.<br>
+        <strong>C:</strong> <span class="hw" id="r4-w3">Generally</span> effective team contribution.<br>
+        <strong>P:</strong> <span class="hw" id="r4-w4">Somewhat</span> effective team contribution.
+      </div>
+
+      <!-- Row 5 (THE GOOD ONE) -->
+      <h3>Row 5: Evidence Use</h3>
+      <div class="highlight-passage" id="hp-row5">
+        <strong>HD:</strong> <span class="hw" id="r5-w1">Selects sources that challenge the argument, not just support it; synthesises across 3+ perspectives to build an original position</span>.<br>
+        <strong>D:</strong> <span class="hw" id="r5-w2">Draws on multiple perspectives and identifies tensions between them; begins to synthesise rather than summarise</span>.<br>
+        <strong>C:</strong> <span class="hw" id="r5-w3">Uses relevant sources to support each main point; sources are appropriately cited but treated independently rather than in dialogue</span>.<br>
+        <strong>P:</strong> <span class="hw" id="r5-w4">Includes required number of sources; sources support the argument but are descriptive rather than analytical</span>.
+      </div>
+
+      <p class="highlight-count" id="a1-count">0 words highlighted</p>
+
+      <button class="btn btn-primary" id="btn-a1-reveal">What Did You Notice? →</button>
+
+      <div class="feedback neutral" id="a1-feedback">
+        <p><strong>Rows 1–4</strong> all follow the same pattern: the only words that change are <em>adverbs and adjectives</em> — excellent, very good, good, satisfactory, outstanding, adequate, comprehensive, basic... The underlying sentence stays identical. This is the <strong>Adverb Trap</strong>.</p>
+        <p><strong>Row 5</strong> is fundamentally different. Every grade level describes a qualitatively different kind of work — not a different quality rating of the same work. At HD, the student challenges their own argument and synthesises across perspectives. At Pass, they include sources descriptively. These are different <em>actions</em>, not different <em>adjectives</em>.</p>
+        <p style="margin-bottom:0;">This is the core distinction you'll learn to apply: <strong>differentiate by what the student does, not by how well you think they did it.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: THE ADVERB AUDIT ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 2 of 4</div>
+    <h2 class="reveal">The Adverb Audit</h2>
+    <p class="lead reveal">Let's look at the MGTS2501 rubric's "Analysis" row specifically. Click on <strong>every adverb or adjective</strong> that is doing the work of differentiating grades.</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Audit the Analysis Row</div>
+      <p class="activity-instruction">Click each quality word. How many are there?</p>
+
+      <div class="highlight-passage" id="hp-audit">
+        <strong>HD:</strong> Demonstrates <span class="hw" id="au-1">excellent</span> critical analysis<br>
+        <strong>D:</strong> Demonstrates <span class="hw" id="au-2">very good</span> critical analysis<br>
+        <strong>C:</strong> Demonstrates <span class="hw" id="au-3">good</span> critical analysis<br>
+        <strong>P:</strong> Demonstrates <span class="hw" id="au-4">satisfactory</span> analysis<br>
+        <strong>F:</strong> Does not demonstrate analysis
+      </div>
+
+      <p class="highlight-count" id="a2-count">0 words highlighted</p>
+
+      <button class="btn btn-primary" id="btn-a2-reveal">See the Verdict →</button>
+
+      <div class="feedback neutral" id="a2-feedback">
+        <p><strong>Four adverbs.</strong> That's it. This row has five grade levels differentiated by exactly one word each: excellent, very good, good, satisfactory — and then a binary fail ("does not demonstrate").</p>
+        <p>A marker reading "demonstrates excellent critical analysis" and "demonstrates very good critical analysis" has no objective basis for choosing between them. What is the boundary between "excellent" and "very good"? It's whatever the marker feels it is. And the next marker will feel differently.</p>
+        <p style="margin-bottom:0;">This is why rubrics need to describe <em>what the student does</em> at each level — not just attach a quality label.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: THE MARKER TEST ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 3 of 4</div>
+    <h2 class="reveal">The Marker Test</h2>
+    <p class="lead reveal">Here's a short excerpt of student work. Grade it using the adverb-scaled rubric — then see how 20 other markers graded the same piece.</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">Grade This Work</div>
+
+      <div class="emphasis-box" style="border-left-color:#4085C6;">
+        <p style="font-style:italic;font-size:13px;line-height:1.7;">"The case study reveals several factors contributing to TechFlow's high turnover rate. Herzberg's Two-Factor Theory suggests that dissatisfaction with hygiene factors — particularly management practices and workplace conditions — is driving departures. Additionally, the lack of career development opportunities aligns with what Maslow's hierarchy would predict for employees whose esteem and self-actualisation needs are unmet. Management's response of increasing base salaries addresses only hygiene factors and fails to address the motivational factors that Herzberg identifies as essential for job satisfaction. I recommend implementing a structured mentoring programme and creating clearer promotion pathways, though these would need to be piloted before full rollout."</p>
+      </div>
+
+      <p class="activity-instruction">Using the MGTS2501 "Analysis" row ("Demonstrates excellent/very good/good/satisfactory critical analysis"), what grade would you give this work?</p>
+
+      <div class="mc-options" id="mc-a3">
+        <div class="mc-option" data-index="0"><div class="mc-radio"></div><div><strong>HD</strong> — Excellent critical analysis</div></div>
+        <div class="mc-option" data-index="1"><div class="mc-radio"></div><div><strong>D</strong> — Very good critical analysis</div></div>
+        <div class="mc-option" data-index="2"><div class="mc-radio"></div><div><strong>C</strong> — Good critical analysis</div></div>
+        <div class="mc-option" data-index="3"><div class="mc-radio"></div><div><strong>P</strong> — Satisfactory critical analysis</div></div>
+      </div>
+
+      <div class="feedback neutral" id="a3-feedback" style="display:none;">
+        <p><strong>Here's how 20 markers distributed their grades for this exact excerpt:</strong></p>
+
+        <div class="chart-pair">
+          <div class="chart-box vague">
+            <h4>Adverb-Scaled Rubric</h4>
+            <div class="grade-bar-chart" id="chart-vague">
+              <div class="grade-bar"><div class="grade-bar-fill" style="height:0;background:#51247A;" data-target="15"><span>3</span></div><div class="grade-bar-label">HD</div></div>
+              <div class="grade-bar"><div class="grade-bar-fill" style="height:0;background:#51247A;" data-target="30"><span>6</span></div><div class="grade-bar-label">D</div></div>
+              <div class="grade-bar"><div class="grade-bar-fill" style="height:0;background:#51247A;" data-target="35"><span>7</span></div><div class="grade-bar-label">C</div></div>
+              <div class="grade-bar"><div class="grade-bar-fill" style="height:0;background:#51247A;" data-target="20"><span>4</span></div><div class="grade-bar-label">P</div></div>
+            </div>
+            <p style="font-size:12px;text-align:center;color:#d9534f;font-weight:600;">3-grade spread</p>
+          </div>
+          <div class="chart-box observable">
+            <h4>Observable Rubric</h4>
+            <div class="grade-bar-chart" id="chart-obs">
+              <div class="grade-bar"><div class="grade-bar-fill" style="height:0;background:#2EA836;" data-target="5"><span>1</span></div><div class="grade-bar-label">HD</div></div>
+              <div class="grade-bar"><div class="grade-bar-fill" style="height:0;background:#2EA836;" data-target="55"><span>11</span></div><div class="grade-bar-label">D</div></div>
+              <div class="grade-bar"><div class="grade-bar-fill" style="height:0;background:#2EA836;" data-target="35"><span>7</span></div><div class="grade-bar-label">C</div></div>
+              <div class="grade-bar"><div class="grade-bar-fill" style="height:0;background:#2EA836;" data-target="5"><span>1</span></div><div class="grade-bar-label">P</div></div>
+            </div>
+            <p style="font-size:12px;text-align:center;color:#2d8a2d;font-weight:600;">1-grade spread (mostly D/C)</p>
+          </div>
+        </div>
+
+        <p>With the adverb rubric, markers are spread across all four levels — a three-grade spread. With the observable rubric (where descriptors describe what the student actually does at each level), 18 of 20 markers cluster at Credit or Distinction. The rubric did the thinking for them.</p>
+        <p style="margin-bottom:0;">This is simulated data, but the pattern is well-documented in assessment research. Observable descriptors produce dramatically more consistent marking.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: QUICK QUIZ ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 4 of 4</div>
+    <h2 class="reveal">Quick Classification</h2>
+    <p class="lead reveal">Now that you can see the pattern, let's test your eye. Classify each descriptor as "adverb-scaled" or "observable."</p>
+
+    <div class="activity reveal" id="act-4">
+      <div class="activity-number">4</div>
+      <div class="activity-title">Adverb or Observable?</div>
+
+      <div id="quiz-items"></div>
+
+      <div class="feedback neutral" id="a4-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RUBRIC STATE ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Your Rubric</div>
+    <h2 class="reveal">Diagnosis Complete</h2>
+    <p class="lead reveal">You've now diagnosed the core problem with the MGTS2501 rubric: it's entirely adverb-scaled. Every row differentiates grades using quality words instead of observable descriptions. In Module 3, you'll start fixing this.</p>
+    <div class="rubric-preview rubric-preview-auto reveal"></div>
+  </div>
+</section>
+
+<!-- ── COMPLETE & NAV ── -->
+<section class="module-section alt" style="padding-bottom:24px;">
+  <div class="section-inner" style="text-align:center;">
+    <button class="btn btn-primary btn-complete-module" disabled>Complete Module 2</button>
+    <p style="font-size:12px;color:#6b6460;margin-top:12px;">Complete all four activities to unlock this button.</p>
+  </div>
+</section>
+
+<nav class="module-nav">
+  <a href="module-01.html">← Module 1</a>
+  <a href="module-03.html" class="nav-next disabled" aria-disabled="true">Module 3: Observable Language →</a>
+</nav>
+
+<footer class="module-cta">
+  <p class="cta-credit">UQ Business School Learning Design &middot; 2026</p>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+(function(){
+  const RC = window.RubricCourse;
+  const tracker = RC.ModuleTracker(2, 4);
+
+  /* ── Activity 1: Click highlight ── */
+  (function(){
+    const btn = document.getElementById('btn-a1-reveal');
+    const fb = document.getElementById('a1-feedback');
+    const countEl = document.getElementById('a1-count');
+    const allWords = document.querySelectorAll('[id^="r1-w"],[id^="r2-w"],[id^="r3-w"],[id^="r4-w"],[id^="r5-w"]');
+    let count = 0;
+
+    // Restore
+    const saved = RC.Exercises.get('m2-a1');
+    if (saved && saved.highlighted) {
+      saved.highlighted.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.classList.add('highlighted'); count++; }
+      });
+      countEl.textContent = count + ' words highlighted';
+      if (saved.revealed) { fb.classList.add('show'); tracker.markDone('act-1'); }
+    }
+
+    allWords.forEach(w => {
+      w.addEventListener('click', () => {
+        if (w.classList.toggle('highlighted')) count++;
+        else count--;
+        countEl.textContent = count + ' word' + (count !== 1 ? 's' : '') + ' highlighted';
+        const hl = [];
+        allWords.forEach(x => { if (x.classList.contains('highlighted')) hl.push(x.id); });
+        RC.Exercises.set('m2-a1', { highlighted: hl, revealed: fb.classList.contains('show') });
+      });
+    });
+
+    btn.addEventListener('click', () => {
+      fb.classList.add('show');
+      RC.Exercises.setField('m2-a1', 'revealed', true);
+      tracker.markDone('act-1');
+      btn.disabled = true;
+      btn.textContent = 'Pattern Revealed ✓';
+    });
+  })();
+
+  /* ── Activity 2: Adverb audit ── */
+  (function(){
+    const targets = ['au-1','au-2','au-3','au-4'];
+    const btn = document.getElementById('btn-a2-reveal');
+    const fb = document.getElementById('a2-feedback');
+    const countEl = document.getElementById('a2-count');
+    const words = document.querySelectorAll('[id^="au-"]');
+    let count = 0;
+
+    const saved = RC.Exercises.get('m2-a2');
+    if (saved && saved.highlighted) {
+      saved.highlighted.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.classList.add('highlighted'); count++; }
+      });
+      countEl.textContent = count + ' word' + (count !== 1 ? 's' : '') + ' highlighted';
+      if (saved.revealed) { fb.classList.add('show'); tracker.markDone('act-2'); }
+    }
+
+    words.forEach(w => {
+      w.addEventListener('click', () => {
+        if (w.classList.toggle('highlighted')) count++;
+        else count--;
+        countEl.textContent = count + ' word' + (count !== 1 ? 's' : '') + ' highlighted';
+        const hl = [];
+        words.forEach(x => { if (x.classList.contains('highlighted')) hl.push(x.id); });
+        RC.Exercises.set('m2-a2', { highlighted: hl, revealed: fb.classList.contains('show') });
+      });
+    });
+
+    btn.addEventListener('click', () => {
+      fb.classList.add('show');
+      RC.Exercises.setField('m2-a2', 'revealed', true);
+      tracker.markDone('act-2');
+      btn.disabled = true;
+      btn.textContent = 'Audit Complete ✓';
+    });
+  })();
+
+  /* ── Activity 3: Marker test MC + chart ── */
+  (function(){
+    const container = document.getElementById('act-3');
+    const options = container.querySelectorAll('.mc-option');
+    const fb = document.getElementById('a3-feedback');
+    let answered = false;
+
+    const saved = RC.Exercises.get('m2-a3');
+    if (saved && saved.selected !== undefined) {
+      answered = true;
+      options[saved.selected].classList.add('selected');
+      showCharts();
+      tracker.markDone('act-3');
+    }
+
+    options.forEach((opt, i) => {
+      opt.addEventListener('click', () => {
+        if (answered) return;
+        answered = true;
+        opt.classList.add('selected');
+        RC.Exercises.set('m2-a3', { selected: i });
+        showCharts();
+        tracker.markDone('act-3');
+      });
+    });
+
+    function showCharts() {
+      fb.style.display = 'block';
+      fb.classList.add('show');
+      // Animate bars
+      setTimeout(() => {
+        document.querySelectorAll('.grade-bar-fill').forEach(bar => {
+          const t = parseInt(bar.dataset.target);
+          bar.style.height = t + '%';
+        });
+      }, 100);
+    }
+  })();
+
+  /* ── Activity 4: Quick quiz ── */
+  (function(){
+    const quizData = [
+      { text: '"Demonstrates a thorough understanding of key concepts."', answer: 'adverb', explain: '"Thorough" is a quality judgement — what does a thorough understanding look like in practice?' },
+      { text: '"Identifies at least three theoretical perspectives and explains how they relate to the case."', answer: 'observable', explain: 'This describes a specific, checkable action: identify theories, explain their relationship to the case.' },
+      { text: '"Shows excellent problem-solving skills."', answer: 'adverb', explain: '"Excellent" tells you nothing about what the problem-solving actually looks like.' },
+      { text: '"Proposes recommendations that address both immediate symptoms and root causes, with implementation timelines."', answer: 'observable', explain: 'A marker can check: are there recommendations for symptoms AND root causes? Are timelines included?' },
+      { text: '"Presents work to a very high standard."', answer: 'adverb', explain: '"Very high standard" is entirely subjective — one marker\'s high standard is another\'s average.' },
+      { text: '"Structures the argument so that each section builds on the previous one, with explicit transitions between ideas."', answer: 'observable', explain: 'Describes the observable structure: sequential building, explicit transitions. Checkable.' }
+    ];
+
+    const container = document.getElementById('quiz-items');
+    const fb = document.getElementById('a4-feedback');
+    let answeredCount = 0;
+    const totalQ = quizData.length;
+
+    const saved = RC.Exercises.get('m2-a4') || { answers: {} };
+
+    quizData.forEach((q, i) => {
+      const div = document.createElement('div');
+      div.style.cssText = 'margin:16px 0;padding:16px;border:1px solid #e4dfd9;border-radius:8px;background:#fff;';
+      div.innerHTML =
+        '<p style="font-size:14px;line-height:1.6;margin-bottom:12px;">' + q.text + '</p>' +
+        '<div class="mc-options" id="quiz-q' + i + '">' +
+          '<div class="mc-option" data-ans="adverb" data-qi="' + i + '"><div class="mc-radio"></div><div>Adverb-scaled</div></div>' +
+          '<div class="mc-option" data-ans="observable" data-qi="' + i + '"><div class="mc-radio"></div><div>Observable</div></div>' +
+        '</div>' +
+        '<div class="feedback" id="quiz-fb-' + i + '"></div>';
+      container.appendChild(div);
+
+      // Restore
+      if (saved.answers[i] !== undefined) {
+        answeredCount++;
+        const opts = div.querySelectorAll('.mc-option');
+        opts.forEach(o => {
+          if (o.dataset.ans === saved.answers[i]) {
+            o.classList.add('selected');
+            o.classList.add(saved.answers[i] === q.answer ? 'correct' : 'incorrect');
+          }
+          if (o.dataset.ans === q.answer) o.classList.add('correct');
+        });
+        const qfb = div.querySelector('.feedback');
+        qfb.className = 'feedback show ' + (saved.answers[i] === q.answer ? 'correct' : 'incorrect');
+        qfb.textContent = q.explain;
+      }
+
+      // Click handler
+      div.querySelectorAll('.mc-option').forEach(opt => {
+        opt.addEventListener('click', function(){
+          if (this.closest('.mc-options').querySelector('.selected')) return;
+          this.classList.add('selected');
+          const isCorrect = this.dataset.ans === q.answer;
+          this.classList.add(isCorrect ? 'correct' : 'incorrect');
+          if (!isCorrect) {
+            div.querySelectorAll('.mc-option').forEach(o => {
+              if (o.dataset.ans === q.answer) o.classList.add('correct');
+            });
+          }
+          const qfb = document.getElementById('quiz-fb-' + i);
+          qfb.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+          qfb.textContent = q.explain;
+
+          saved.answers[i] = this.dataset.ans;
+          RC.Exercises.set('m2-a4', saved);
+
+          answeredCount++;
+          if (answeredCount >= totalQ) {
+            tracker.markDone('act-4');
+            fb.className = 'feedback show neutral';
+            const correct = quizData.filter((q, i) => saved.answers[i] === q.answer).length;
+            fb.innerHTML = '<p><strong>Score: ' + correct + '/' + totalQ + '</strong> — ' +
+              (correct === totalQ ? 'Perfect! You\'ve got a sharp eye for the adverb trap.' :
+               correct >= 4 ? 'Well done. The key pattern: observable descriptors describe actions (identifies, proposes, structures) while adverb-scaled ones describe quality (excellent, thorough, high standard).' :
+               'Keep practising. Look for verbs vs adjectives — if the descriptor tells you what to DO, it\'s observable. If it tells you how GOOD something is, it\'s adverb-scaled.') + '</p>';
+          }
+        });
+      });
+    });
+  })();
+
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 3: Observable Language — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.verb-bank{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.verb-card{padding:14px;border:1px solid #e4dfd9;border-radius:8px;background:#fff;cursor:pointer;transition:border-color .2s,background .2s;}
+.verb-card:hover{border-color:#51247A;background:rgba(81,36,122,0.02);}
+.verb-card.open{border-color:#51247A;background:rgba(81,36,122,0.04);}
+.verb-card h4{font-size:13px;font-weight:700;color:#51247A;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em;}
+.verb-card .vc-before{font-size:13px;color:#d9534f;margin-bottom:4px;}
+.verb-card .vc-after{font-size:13px;color:#2d8a2d;display:none;}
+.verb-card.open .vc-after{display:block;}
+.verb-card .vc-toggle{font-size:11px;color:#6b6460;margin-top:6px;}
+@media(max-width:580px){.verb-bank{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 3 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="module-hero part-a">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part A · Foundations &mdash; Module 3</div>
+    <h1>Observable Language</h1>
+    <p class="hero-sub">The foundational skill of rubric design: describing what students do rather than how good their work is.</p>
+    <span class="hero-time">&#9201; ~20 minutes</span>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: TRANSFORM CHALLENGE ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 1 of 4</div>
+    <h2 class="reveal">The Transform Challenge</h2>
+    <p class="lead reveal">Here are five adverb-heavy descriptors. For each, rewrite it using observable language — describe what the student <em>does</em>, not how <em>well</em> they do it. Then reveal the model answer and rate how close you got.</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">Rewrite Five Descriptors</div>
+
+      <!-- Transform 1 -->
+      <div class="transform-box" id="tf-1">
+        <div class="transform-original">
+          <span class="label">Original (adverb-scaled)</span>
+          "Demonstrates excellent critical analysis of the case study."
+        </div>
+        <textarea class="transform-input" placeholder="Rewrite this using observable language..." id="tf1-input"></textarea>
+        <button class="btn btn-small btn-primary btn-show-model" data-tf="1" style="margin-top:8px;">Show Model Answer</button>
+        <div class="model-answer" id="tf1-model">
+          <span class="label">Model Answer</span>
+          Identifies the root causes of the organisational problem (not just symptoms), supports each cause with at least two relevant theories, and explains how the causes interact to produce the observed outcomes.
+        </div>
+        <div class="self-rate" id="tf1-rate">
+          <span class="self-rate-label">How close?</span>
+          <button class="self-rate-btn green" data-rating="green" title="Nailed it"></button>
+          <button class="self-rate-btn amber" data-rating="amber" title="Getting there"></button>
+          <button class="self-rate-btn red" data-rating="red" title="Way off"></button>
+        </div>
+      </div>
+
+      <!-- Transform 2 -->
+      <div class="transform-box" id="tf-2">
+        <div class="transform-original">
+          <span class="label">Original (adverb-scaled)</span>
+          "Very good use of academic sources."
+        </div>
+        <textarea class="transform-input" placeholder="Rewrite this using observable language..." id="tf2-input"></textarea>
+        <button class="btn btn-small btn-primary btn-show-model" data-tf="2" style="margin-top:8px;">Show Model Answer</button>
+        <div class="model-answer" id="tf2-model">
+          <span class="label">Model Answer</span>
+          Integrates sources from multiple perspectives, including at least one that challenges the main argument; sources are synthesised (not just summarised) to build a coherent evidence base.
+        </div>
+        <div class="self-rate" id="tf2-rate">
+          <span class="self-rate-label">How close?</span>
+          <button class="self-rate-btn green" data-rating="green" title="Nailed it"></button>
+          <button class="self-rate-btn amber" data-rating="amber" title="Getting there"></button>
+          <button class="self-rate-btn red" data-rating="red" title="Way off"></button>
+        </div>
+      </div>
+
+      <!-- Transform 3 -->
+      <div class="transform-box" id="tf-3">
+        <div class="transform-original">
+          <span class="label">Original (adverb-scaled)</span>
+          "Provides satisfactory recommendations."
+        </div>
+        <textarea class="transform-input" placeholder="Rewrite this using observable language..." id="tf3-input"></textarea>
+        <button class="btn btn-small btn-primary btn-show-model" data-tf="3" style="margin-top:8px;">Show Model Answer</button>
+        <div class="model-answer" id="tf3-model">
+          <span class="label">Model Answer</span>
+          Proposes at least two recommendations that are connected to the analysis; recommendations are stated but not yet evaluated for feasibility or connected to broader implications.
+        </div>
+        <div class="self-rate" id="tf3-rate">
+          <span class="self-rate-label">How close?</span>
+          <button class="self-rate-btn green" data-rating="green" title="Nailed it"></button>
+          <button class="self-rate-btn amber" data-rating="amber" title="Getting there"></button>
+          <button class="self-rate-btn red" data-rating="red" title="Way off"></button>
+        </div>
+      </div>
+
+      <!-- Transform 4 -->
+      <div class="transform-box" id="tf-4">
+        <div class="transform-original">
+          <span class="label">Original (adverb-scaled)</span>
+          "Shows a good understanding of organisational behaviour theories."
+        </div>
+        <textarea class="transform-input" placeholder="Rewrite this using observable language..." id="tf4-input"></textarea>
+        <button class="btn btn-small btn-primary btn-show-model" data-tf="4" style="margin-top:8px;">Show Model Answer</button>
+        <div class="model-answer" id="tf4-model">
+          <span class="label">Model Answer</span>
+          Accurately defines and applies at least two OB theories to the case, explaining how each theory illuminates a different aspect of the turnover problem.
+        </div>
+        <div class="self-rate" id="tf4-rate">
+          <span class="self-rate-label">How close?</span>
+          <button class="self-rate-btn green" data-rating="green" title="Nailed it"></button>
+          <button class="self-rate-btn amber" data-rating="amber" title="Getting there"></button>
+          <button class="self-rate-btn red" data-rating="red" title="Way off"></button>
+        </div>
+      </div>
+
+      <!-- Transform 5 -->
+      <div class="transform-box" id="tf-5">
+        <div class="transform-original">
+          <span class="label">Original (adverb-scaled)</span>
+          "Adequate referencing throughout the work."
+        </div>
+        <textarea class="transform-input" placeholder="Rewrite this using observable language..." id="tf5-input"></textarea>
+        <button class="btn btn-small btn-primary btn-show-model" data-tf="5" style="margin-top:8px;">Show Model Answer</button>
+        <div class="model-answer" id="tf5-model">
+          <span class="label">Model Answer</span>
+          All claims are attributed to sources using APA 7 format; in-text citations match the reference list; minor formatting inconsistencies may be present but do not impede source identification.
+        </div>
+        <div class="self-rate" id="tf5-rate">
+          <span class="self-rate-label">How close?</span>
+          <button class="self-rate-btn green" data-rating="green" title="Nailed it"></button>
+          <button class="self-rate-btn amber" data-rating="amber" title="Getting there"></button>
+          <button class="self-rate-btn red" data-rating="red" title="Way off"></button>
+        </div>
+      </div>
+
+      <div class="emphasis-box" style="margin-top:24px;border-left-color:#4085C6;">
+        <p><strong>Key insight:</strong> There's no single right answer. But notice the patterns in the model answers: they use verbs (identifies, supports, integrates, proposes, applies, defines), they specify quantities or conditions where useful, and they describe things a marker can actually check in the student's work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: VERB BANK ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 2 of 4</div>
+    <h2 class="reveal">The Verb Bank</h2>
+    <p class="lead reveal">Click each card to reveal how a vague adjective-based phrase transforms into an observable, verb-based one. This is a reference you can return to in later modules.</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Before → After Explorer</div>
+      <p class="activity-instruction">Click to expand each pair. There are 12 transformations across four capability areas.</p>
+
+      <h3 style="color:#4085C6;">Analysis</h3>
+      <div class="verb-bank" id="vb-analysis">
+        <div class="verb-card">
+          <h4>Analysis</h4>
+          <div class="vc-before">❌ "Excellent critical analysis"</div>
+          <div class="vc-after">✓ "Identifies root causes, distinguishes symptoms from underlying issues, and explains causal relationships"</div>
+          <div class="vc-toggle">Click to reveal →</div>
+        </div>
+        <div class="verb-card">
+          <h4>Analysis</h4>
+          <div class="vc-before">❌ "Good analysis of the problem"</div>
+          <div class="vc-after">✓ "Identifies the main contributing factors and connects them to at least one relevant theory"</div>
+          <div class="vc-toggle">Click to reveal →</div>
+        </div>
+        <div class="verb-card">
+          <h4>Analysis</h4>
+          <div class="vc-before">❌ "Demonstrates thorough understanding"</div>
+          <div class="vc-after">✓ "Explains how multiple factors interact, providing evidence for each claimed relationship"</div>
+          <div class="vc-toggle">Click to reveal →</div>
+        </div>
+      </div>
+
+      <h3 style="color:#4085C6;">Evidence Use</h3>
+      <div class="verb-bank" id="vb-evidence">
+        <div class="verb-card">
+          <h4>Evidence</h4>
+          <div class="vc-before">❌ "Very good use of sources"</div>
+          <div class="vc-after">✓ "Synthesises across 3+ perspectives, including sources that challenge the argument"</div>
+          <div class="vc-toggle">Click to reveal →</div>
+        </div>
+        <div class="verb-card">
+          <h4>Evidence</h4>
+          <div class="vc-before">❌ "Adequate referencing"</div>
+          <div class="vc-after">✓ "Meets minimum source count; citations present for all major claims; minor formatting errors"</div>
+          <div class="vc-toggle">Click to reveal →</div>
+        </div>
+        <div class="verb-card">
+          <h4>Evidence</h4>
+          <div class="vc-before">❌ "Comprehensive literature review"</div>
+          <div class="vc-after">✓ "Draws on seminal works and recent research; identifies gaps or contradictions in the literature"</div>
+          <div class="vc-toggle">Click to reveal →</div>
+        </div>
+      </div>
+
+      <h3 style="color:#4085C6;">Application</h3>
+      <div class="verb-bank" id="vb-application">
+        <div class="verb-card">
+          <h4>Application</h4>
+          <div class="vc-before">❌ "Excellent application of theory"</div>
+          <div class="vc-after">✓ "Applies theories to specific details of the case (not generically), explaining what each theory reveals that others do not"</div>
+          <div class="vc-toggle">Click to reveal →</div>
+        </div>
+        <div class="verb-card">
+          <h4>Application</h4>
+          <div class="vc-before">❌ "Satisfactory recommendations"</div>
+          <div class="vc-after">✓ "Proposes actions connected to the analysis; recommendations are stated but not evaluated for feasibility"</div>
+          <div class="vc-toggle">Click to reveal →</div>
+        </div>
+        <div class="verb-card">
+          <h4>Application</h4>
+          <div class="vc-before">❌ "Outstanding problem-solving"</div>
+          <div class="vc-after">✓ "Identifies constraints, proposes solutions that account for trade-offs, and anticipates implementation challenges"</div>
+          <div class="vc-toggle">Click to reveal →</div>
+        </div>
+      </div>
+
+      <h3 style="color:#4085C6;">Communication</h3>
+      <div class="verb-bank" id="vb-communication">
+        <div class="verb-card">
+          <h4>Communication</h4>
+          <div class="vc-before">❌ "Excellent written expression"</div>
+          <div class="vc-after">✓ "Paragraphs develop a single idea with a clear topic sentence; transitions link ideas across sections"</div>
+          <div class="vc-toggle">Click to reveal →</div>
+        </div>
+        <div class="verb-card">
+          <h4>Communication</h4>
+          <div class="vc-before">❌ "Good presentation"</div>
+          <div class="vc-after">✓ "Follows a logical structure (intro → analysis → recommendations → conclusion); sections are signposted"</div>
+          <div class="vc-toggle">Click to reveal →</div>
+        </div>
+        <div class="verb-card">
+          <h4>Communication</h4>
+          <div class="vc-before">❌ "Very clear writing"</div>
+          <div class="vc-after">✓ "Uses discipline-appropriate terminology accurately; avoids jargon without definition; sentences are concise"</div>
+          <div class="vc-toggle">Click to reveal →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: DRAG MATCH ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 3 of 4</div>
+    <h2 class="reveal">Match the Rewrite</h2>
+    <p class="lead reveal">Six adjective-based phrases on the left, six observable rewrites on the right. Drag each original to its best matching rewrite.</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">Adjective → Verb Matching</div>
+      <p class="activity-instruction">Drag each red phrase to the green zone containing its observable equivalent. Some matches may be tricky — think about what each phrase is really asking for.</p>
+
+      <div class="drag-pool" id="drag-pool-a3" style="margin-bottom:20px;padding:12px;background:#fef5f5;border-radius:8px;border:1px solid #e6c3c3;">
+        <div class="drag-item" draggable="true" id="dm-1" style="background:#fef5f5;border-color:#e6c3c3;">Thorough understanding</div>
+        <div class="drag-item" draggable="true" id="dm-2" style="background:#fef5f5;border-color:#e6c3c3;">Excellent evaluation</div>
+        <div class="drag-item" draggable="true" id="dm-3" style="background:#fef5f5;border-color:#e6c3c3;">Adequate structure</div>
+        <div class="drag-item" draggable="true" id="dm-4" style="background:#fef5f5;border-color:#e6c3c3;">Good evidence use</div>
+        <div class="drag-item" draggable="true" id="dm-5" style="background:#fef5f5;border-color:#e6c3c3;">Very clear argument</div>
+        <div class="drag-item" draggable="true" id="dm-6" style="background:#fef5f5;border-color:#e6c3c3;">Outstanding recommendations</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div class="drag-zone-label" style="color:#2d8a2d;">Explains multiple factors and their interactions</div>
+          <div class="drag-zone" id="dz-1" style="min-height:50px;background:#f0faf0;border-color:#c3e6c3;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label" style="color:#2d8a2d;">Weighs strengths and limitations of each approach, justifying a preferred position</div>
+          <div class="drag-zone" id="dz-2" style="min-height:50px;background:#f0faf0;border-color:#c3e6c3;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label" style="color:#2d8a2d;">Follows a logical sequence with signposted sections</div>
+          <div class="drag-zone" id="dz-3" style="min-height:50px;background:#f0faf0;border-color:#c3e6c3;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label" style="color:#2d8a2d;">Cites relevant sources for each major claim; synthesises rather than lists</div>
+          <div class="drag-zone" id="dz-4" style="min-height:50px;background:#f0faf0;border-color:#c3e6c3;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label" style="color:#2d8a2d;">Each paragraph builds on the previous; explicit transitions connect ideas</div>
+          <div class="drag-zone" id="dz-5" style="min-height:50px;background:#f0faf0;border-color:#c3e6c3;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label" style="color:#2d8a2d;">Proposes actions that address root causes, with implementation steps and anticipated barriers</div>
+          <div class="drag-zone" id="dz-6" style="min-height:50px;background:#f0faf0;border-color:#c3e6c3;"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <button class="btn btn-primary" id="btn-check-a3">Check My Matches</button>
+        <button class="btn btn-secondary btn-small" id="btn-reset-a3" style="margin-left:8px;">Reset</button>
+      </div>
+
+      <div class="feedback neutral" id="a3-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: APPLY TO RUBRIC ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 4 of 4</div>
+    <h2 class="reveal">Apply It: Rewrite the HD Descriptor</h2>
+    <p class="lead reveal">Time to work on the actual MGTS2501 rubric. Take the "Analysis" criterion at HD level and rewrite it from adverb-scaled to observable.</p>
+
+    <div class="activity reveal" id="act-4">
+      <div class="activity-number">4</div>
+      <div class="activity-title">Your First Rubric Edit</div>
+
+      <div class="transform-box">
+        <div class="transform-original">
+          <span class="label">Current HD descriptor — Analysis (40%)</span>
+          "Demonstrates excellent critical analysis"
+        </div>
+
+        <p class="activity-instruction">Rewrite this descriptor so it describes what a HD-level student actually <em>does</em> in their case study analysis. Think about: What observable actions show HD-level critical analysis of a staff turnover case study?</p>
+
+        <textarea class="transform-input" id="tf-rubric-input" placeholder="Write your observable HD descriptor here..."></textarea>
+
+        <button class="btn btn-primary btn-show-model" id="btn-rubric-model" style="margin-top:8px;">Show Model Answer & Compare</button>
+
+        <div class="model-answer" id="rubric-model">
+          <span class="label">Model Answer</span>
+          Identifies both immediate and systemic causes of the turnover problem, distinguishing symptoms from root issues. Supports each cause with multiple relevant theories, explaining how they interact. Evaluates management's response against what the theories predict, identifying what was missed. Analysis moves beyond description to build an original, evidence-based interpretation of the case.
+        </div>
+
+        <div class="self-rate" id="tf-rubric-rate">
+          <span class="self-rate-label">How close?</span>
+          <button class="self-rate-btn green" data-rating="green" title="Nailed it"></button>
+          <button class="self-rate-btn amber" data-rating="amber" title="Getting there"></button>
+          <button class="self-rate-btn red" data-rating="red" title="Way off"></button>
+        </div>
+
+        <div class="side-by-side" style="margin-top:20px;display:none;" id="sbs-rubric">
+          <div class="sbs-panel before">
+            <span class="sbs-label before">Before</span>
+            Demonstrates excellent critical analysis
+          </div>
+          <div class="sbs-panel after">
+            <span class="sbs-label after">After (model)</span>
+            <span id="sbs-after-text"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="emphasis-box" style="margin-top:20px;border-left-color:#2EA836;">
+        <p><strong>Your rubric has been updated.</strong> The Analysis HD descriptor now uses observable language. You'll continue transforming the rest of the rubric in the coming modules — but this first edit demonstrates the fundamental shift from quality judgements to observable actions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RUBRIC STATE ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Your Rubric</div>
+    <h2 class="reveal">Progress So Far</h2>
+    <p class="lead reveal">One descriptor changed — but what a difference. The Analysis HD cell now tells students and markers exactly what HD-level work looks like.</p>
+    <div class="rubric-preview rubric-preview-auto reveal"></div>
+  </div>
+</section>
+
+<!-- ── COMPLETE & NAV ── -->
+<section class="module-section alt" style="padding-bottom:24px;">
+  <div class="section-inner" style="text-align:center;">
+    <button class="btn btn-primary btn-complete-module" disabled>Complete Module 3</button>
+    <p style="font-size:12px;color:#6b6460;margin-top:12px;">Complete all four activities to unlock this button.</p>
+  </div>
+</section>
+
+<nav class="module-nav">
+  <a href="module-02.html">← Module 2</a>
+  <a href="module-04.html" class="nav-next disabled" aria-disabled="true">Module 4: Capability-Based Criteria →</a>
+</nav>
+
+<footer class="module-cta">
+  <p class="cta-credit">UQ Business School Learning Design &middot; 2026</p>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+(function(){
+  const RC = window.RubricCourse;
+  const tracker = RC.ModuleTracker(3, 4);
+
+  /* ── Activity 1: Text Transform (5 items) ── */
+  (function(){
+    const models = [
+      'Identifies the root causes of the organisational problem (not just symptoms), supports each cause with at least two relevant theories, and explains how the causes interact to produce the observed outcomes.',
+      'Integrates sources from multiple perspectives, including at least one that challenges the main argument; sources are synthesised (not just summarised) to build a coherent evidence base.',
+      'Proposes at least two recommendations that are connected to the analysis; recommendations are stated but not yet evaluated for feasibility or connected to broader implications.',
+      'Accurately defines and applies at least two OB theories to the case, explaining how each theory illuminates a different aspect of the turnover problem.',
+      'All claims are attributed to sources using APA 7 format; in-text citations match the reference list; minor formatting inconsistencies may be present but do not impede source identification.'
+    ];
+
+    let ratedCount = 0;
+    const saved = RC.Exercises.get('m3-a1') || {};
+
+    for (let i = 1; i <= 5; i++) {
+      const input = document.getElementById('tf' + i + '-input');
+      const modelEl = document.getElementById('tf' + i + '-model');
+      const showBtn = document.querySelector('[data-tf="' + i + '"]');
+      const rates = document.querySelectorAll('#tf' + i + '-rate .self-rate-btn');
+
+      // Restore
+      if (saved['tf' + i]) {
+        if (saved['tf' + i].input) input.value = saved['tf' + i].input;
+        if (saved['tf' + i].revealed) { modelEl.classList.add('show'); showBtn.disabled = true; showBtn.textContent = 'Model Revealed ✓'; }
+        if (saved['tf' + i].rating) {
+          rates.forEach(r => { if (r.dataset.rating === saved['tf' + i].rating) r.classList.add('selected'); });
+          ratedCount++;
+        }
+      }
+
+      // Save on type
+      input.addEventListener('input', debounce(function(){
+        if (!saved['tf' + i]) saved['tf' + i] = {};
+        saved['tf' + i].input = input.value;
+        RC.Exercises.set('m3-a1', saved);
+      }, 500));
+
+      // Show model
+      showBtn.addEventListener('click', function(){
+        if (!input.value.trim()) { input.style.borderColor = '#d9534f'; setTimeout(() => input.style.borderColor = '', 1500); return; }
+        modelEl.classList.add('show');
+        if (!saved['tf' + i]) saved['tf' + i] = {};
+        saved['tf' + i].revealed = true;
+        RC.Exercises.set('m3-a1', saved);
+        showBtn.disabled = true;
+        showBtn.textContent = 'Model Revealed ✓';
+      });
+
+      // Self-rate
+      rates.forEach(btn => {
+        btn.addEventListener('click', function(){
+          const wasRated = !!document.querySelector('#tf' + i + '-rate .self-rate-btn.selected');
+          rates.forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          if (!saved['tf' + i]) saved['tf' + i] = {};
+          saved['tf' + i].rating = btn.dataset.rating;
+          RC.Exercises.set('m3-a1', saved);
+          if (!wasRated) { ratedCount++; if (ratedCount >= 5) tracker.markDone('act-1'); }
+        });
+      });
+    }
+  })();
+
+  /* ── Activity 2: Verb bank (click to expand) ── */
+  (function(){
+    const cards = document.querySelectorAll('.verb-card');
+    let opened = 0;
+
+    const saved = RC.Exercises.get('m3-a2') || { opened: [] };
+    if (saved.opened) {
+      saved.opened.forEach(idx => {
+        if (cards[idx]) { cards[idx].classList.add('open'); opened++; }
+      });
+      if (opened >= cards.length) tracker.markDone('act-2');
+    }
+
+    cards.forEach((card, idx) => {
+      card.addEventListener('click', () => {
+        if (!card.classList.contains('open')) {
+          card.classList.add('open');
+          card.querySelector('.vc-toggle').textContent = '';
+          opened++;
+          if (!saved.opened) saved.opened = [];
+          saved.opened.push(idx);
+          RC.Exercises.set('m3-a2', saved);
+          if (opened >= cards.length) tracker.markDone('act-2');
+        }
+      });
+    });
+  })();
+
+  /* ── Activity 3: Drag match ── */
+  (function(){
+    const container = document.getElementById('act-3');
+    const ds = RC.DragSort(container, {
+      pairs: [
+        { item: 'dm-1', zone: 'dz-1' },
+        { item: 'dm-2', zone: 'dz-2' },
+        { item: 'dm-3', zone: 'dz-3' },
+        { item: 'dm-4', zone: 'dz-4' },
+        { item: 'dm-5', zone: 'dz-5' },
+        { item: 'dm-6', zone: 'dz-6' }
+      ],
+      saveKey: 'm3-a3'
+    });
+
+    document.getElementById('btn-check-a3').addEventListener('click', function(){
+      const result = ds.check();
+      const fb = document.getElementById('a3-feedback');
+      if (result) {
+        fb.className = 'feedback show correct';
+        fb.innerHTML = '<p><strong>All correct!</strong> Each vague adjective maps to a specific, observable set of actions. Notice how the observable versions give you verbs (explains, weighs, follows, cites, builds, proposes) instead of adjectives (thorough, excellent, adequate, good, clear, outstanding).</p>';
+      } else {
+        fb.className = 'feedback show incorrect';
+        fb.innerHTML = '<p><strong>Some mismatches.</strong> Look at the verbs in each green zone — they\'re clues. "Thorough understanding" → "explains interactions" (because understanding is shown through explanation). "Excellent evaluation" → "weighs strengths and limitations" (because evaluation means weighing up).</p>';
+      }
+      tracker.markDone('act-3');
+    });
+
+    document.getElementById('btn-reset-a3').addEventListener('click', function(){
+      ds.reset();
+      document.getElementById('a3-feedback').className = 'feedback';
+    });
+  })();
+
+  /* ── Activity 4: Apply to rubric ── */
+  (function(){
+    const input = document.getElementById('tf-rubric-input');
+    const modelBtn = document.getElementById('btn-rubric-model');
+    const modelEl = document.getElementById('rubric-model');
+    const sbs = document.getElementById('sbs-rubric');
+    const rates = document.querySelectorAll('#tf-rubric-rate .self-rate-btn');
+    const modelText = 'Identifies both immediate and systemic causes of the turnover problem, distinguishing symptoms from root issues. Supports each cause with multiple relevant theories, explaining how they interact. Evaluates management\'s response against what the theories predict, identifying what was missed. Analysis moves beyond description to build an original, evidence-based interpretation of the case.';
+
+    const saved = RC.Exercises.get('m3-a4') || {};
+    if (saved.input) input.value = saved.input;
+    if (saved.revealed) {
+      modelEl.classList.add('show');
+      sbs.style.display = '';
+      document.getElementById('sbs-after-text').textContent = modelText;
+      modelBtn.disabled = true;
+      modelBtn.textContent = 'Compared ✓';
+    }
+    if (saved.rating) {
+      rates.forEach(r => { if (r.dataset.rating === saved.rating) r.classList.add('selected'); });
+    }
+
+    input.addEventListener('input', debounce(function(){
+      saved.input = input.value;
+      RC.Exercises.set('m3-a4', saved);
+    }, 500));
+
+    modelBtn.addEventListener('click', function(){
+      if (!input.value.trim()) { input.style.borderColor = '#d9534f'; setTimeout(() => input.style.borderColor = '', 1500); return; }
+      modelEl.classList.add('show');
+      sbs.style.display = '';
+      document.getElementById('sbs-after-text').textContent = modelText;
+      saved.revealed = true;
+      RC.Exercises.set('m3-a4', saved);
+      modelBtn.disabled = true;
+      modelBtn.textContent = 'Compared ✓';
+
+      // Update the persistent rubric
+      RC.Rubric.updateDescriptor(1, 'HD', modelText);
+      // Re-render preview
+      document.querySelectorAll('.rubric-preview-auto').forEach(el => RC.RubricPreview(el));
+    });
+
+    rates.forEach(btn => {
+      btn.addEventListener('click', function(){
+        rates.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        saved.rating = btn.dataset.rating;
+        RC.Exercises.set('m3-a4', saved);
+        tracker.markDone('act-4');
+      });
+    });
+  })();
+
+  function debounce(fn, ms) { let t; return function(...a){ clearTimeout(t); t = setTimeout(() => fn.apply(this, a), ms); }; }
+})();
+</script>
+
+</body>
+</html>

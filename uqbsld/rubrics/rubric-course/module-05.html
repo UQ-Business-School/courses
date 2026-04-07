@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5: Values of Inquiry — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.voi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0;}
+.voi-card{padding:14px;border:1px solid #e4dfd9;border-radius:8px;background:#fff;text-align:center;cursor:pointer;transition:all .2s;}
+.voi-card:hover{border-color:#51247A;transform:translateY(-1px);}
+.voi-card.expanded{border-color:#51247A;background:rgba(81,36,122,0.04);text-align:left;}
+.voi-card h4{font-size:14px;font-weight:700;color:#51247A;margin-bottom:4px;}
+.voi-card .voi-def{font-size:12px;color:#6b6460;display:none;}
+.voi-card .voi-obs{font-size:12px;color:#2d8a2d;display:none;margin-top:6px;padding-top:6px;border-top:1px solid #e4dfd9;}
+.voi-card.expanded .voi-def,.voi-card.expanded .voi-obs{display:block;}
+.voi-card .voi-hint{font-size:10px;color:#b0a8a0;}
+.voi-card.expanded .voi-hint{display:none;}
+@media(max-width:580px){.voi-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 5 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<section class="module-hero part-b">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part B · Frameworks &mdash; Module 5</div>
+    <h1>Values of Inquiry</h1>
+    <p class="hero-sub">Nine intellectual values that give you a precise vocabulary for what you actually mean when you write "thorough" or "clear" or "comprehensive."</p>
+    <span class="hero-time">&#9201; ~20 minutes</span>
+  </div>
+</section>
+
+<!-- ── INTRO ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">The Framework</div>
+    <h2 class="reveal">Why Do We Need This?</h2>
+    <p class="lead reveal">In Modules 2–3, you saw that adverbs like "excellent" and "thorough" are meaningless in rubrics. But when we strip them away, what do we replace them with? The Values of Inquiry framework gives us the answer: nine specific intellectual qualities that describe what we're actually looking for in academic work.</p>
+    <p class="reveal">Click each value below to learn its definition and how to spot it in student work.</p>
+
+    <div class="voi-grid reveal" id="voi-explorer">
+      <div class="voi-card" data-voi="clarity">
+        <h4>Clarity</h4>
+        <div class="voi-hint">Click to expand</div>
+        <div class="voi-def"><strong>Definition:</strong> Free from ambiguity. Key terms are defined; claims are unambiguous.</div>
+        <div class="voi-obs"><strong>Observable as:</strong> Precise terminology; defined key terms; unambiguous claims.</div>
+      </div>
+      <div class="voi-card" data-voi="accuracy">
+        <h4>Accuracy</h4>
+        <div class="voi-hint">Click to expand</div>
+        <div class="voi-def"><strong>Definition:</strong> Factually correct. Facts, figures, and citations are valid.</div>
+        <div class="voi-obs"><strong>Observable as:</strong> Correct facts and figures; valid theory application; accurate citations.</div>
+      </div>
+      <div class="voi-card" data-voi="precision">
+        <h4>Precision</h4>
+        <div class="voi-hint">Click to expand</div>
+        <div class="voi-def"><strong>Definition:</strong> The exact detail required for the context — specific rather than vague.</div>
+        <div class="voi-obs"><strong>Observable as:</strong> Specific claims; quantified where appropriate; avoids overgeneralisation.</div>
+      </div>
+      <div class="voi-card" data-voi="breadth">
+        <h4>Breadth</h4>
+        <div class="voi-hint">Click to expand</div>
+        <div class="voi-def"><strong>Definition:</strong> Multiple perspectives considered. Range of viewpoints acknowledged.</div>
+        <div class="voi-obs"><strong>Observable as:</strong> Multiple source types; alternative viewpoints; cross-disciplinary connections.</div>
+      </div>
+      <div class="voi-card" data-voi="depth">
+        <h4>Depth</h4>
+        <div class="voi-hint">Click to expand</div>
+        <div class="voi-def"><strong>Definition:</strong> Underlying complexity explored. Goes beneath the surface.</div>
+        <div class="voi-obs"><strong>Observable as:</strong> Root causes explored; assumptions examined; nuance and complexity present.</div>
+      </div>
+      <div class="voi-card" data-voi="relevance">
+        <h4>Relevance</h4>
+        <div class="voi-hint">Click to expand</div>
+        <div class="voi-def"><strong>Definition:</strong> All content pertains to the matter at hand. No tangential material.</div>
+        <div class="voi-obs"><strong>Observable as:</strong> Every section serves the argument; no padding; stays on topic.</div>
+      </div>
+      <div class="voi-card" data-voi="significance">
+        <h4>Significance</h4>
+        <div class="voi-hint">Click to expand</div>
+        <div class="voi-def"><strong>Definition:</strong> Addresses what matters most. Core issues prioritised over trivial ones.</div>
+        <div class="voi-obs"><strong>Observable as:</strong> Key issues given proportional weight; trivial points not overemphasised.</div>
+      </div>
+      <div class="voi-card" data-voi="coherence">
+        <h4>Coherence</h4>
+        <div class="voi-hint">Click to expand</div>
+        <div class="voi-def"><strong>Definition:</strong> Parts fit together into a consistent whole. No contradictions.</div>
+        <div class="voi-obs"><strong>Observable as:</strong> Clear structure; consistent argument throughout; no internal contradictions.</div>
+      </div>
+      <div class="voi-card" data-voi="cogency">
+        <h4>Cogency</h4>
+        <div class="voi-hint">Click to expand</div>
+        <div class="voi-def"><strong>Definition:</strong> Well-reasoned and persuasive. Evidence supports claims; logic is sound.</div>
+        <div class="voi-obs"><strong>Observable as:</strong> Claims supported by evidence; logical progression; conclusions follow from premises.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: VALUE IDENTIFICATION ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 1 of 4</div>
+    <h2 class="reveal">Identify the Value</h2>
+    <p class="lead reveal">Read each student work excerpt and select which VoI value it best demonstrates. Some are tricky — a single excerpt might show multiple values, but pick the <em>primary</em> one.</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">Which Value?</div>
+
+      <div id="voi-quiz"></div>
+
+      <div class="feedback neutral" id="a1-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: SUBSTITUTION TABLE ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 2 of 4</div>
+    <h2 class="reveal">The Substitution Table</h2>
+    <p class="lead reveal">Nine adverbs commonly found in rubrics. Match each to its VoI equivalent — the intellectual value the adverb was trying (poorly) to capture.</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Adverb → VoI Matching</div>
+      <p class="activity-instruction">Drag each adverb to the VoI value it maps to.</p>
+
+      <div class="drag-pool" id="drag-pool-a2" style="margin-bottom:16px;padding:12px;background:#fef5f5;border-radius:8px;border:1px solid #e6c3c3;">
+        <div class="drag-item" draggable="true" id="adv-1" style="background:#fef5f5;border-color:#e6c3c3;">clearly</div>
+        <div class="drag-item" draggable="true" id="adv-2" style="background:#fef5f5;border-color:#e6c3c3;">accurately</div>
+        <div class="drag-item" draggable="true" id="adv-3" style="background:#fef5f5;border-color:#e6c3c3;">precisely</div>
+        <div class="drag-item" draggable="true" id="adv-4" style="background:#fef5f5;border-color:#e6c3c3;">thoroughly</div>
+        <div class="drag-item" draggable="true" id="adv-5" style="background:#fef5f5;border-color:#e6c3c3;">deeply</div>
+        <div class="drag-item" draggable="true" id="adv-6" style="background:#fef5f5;border-color:#e6c3c3;">relevantly</div>
+        <div class="drag-item" draggable="true" id="adv-7" style="background:#fef5f5;border-color:#e6c3c3;">significantly</div>
+        <div class="drag-item" draggable="true" id="adv-8" style="background:#fef5f5;border-color:#e6c3c3;">coherently</div>
+        <div class="drag-item" draggable="true" id="adv-9" style="background:#fef5f5;border-color:#e6c3c3;">convincingly</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+        <div><div class="drag-zone-label" style="font-size:11px;color:#51247A;">Clarity</div><div class="drag-zone" id="vz-clarity" style="min-height:44px;"></div></div>
+        <div><div class="drag-zone-label" style="font-size:11px;color:#51247A;">Accuracy</div><div class="drag-zone" id="vz-accuracy" style="min-height:44px;"></div></div>
+        <div><div class="drag-zone-label" style="font-size:11px;color:#51247A;">Precision</div><div class="drag-zone" id="vz-precision" style="min-height:44px;"></div></div>
+        <div><div class="drag-zone-label" style="font-size:11px;color:#51247A;">Breadth</div><div class="drag-zone" id="vz-breadth" style="min-height:44px;"></div></div>
+        <div><div class="drag-zone-label" style="font-size:11px;color:#51247A;">Depth</div><div class="drag-zone" id="vz-depth" style="min-height:44px;"></div></div>
+        <div><div class="drag-zone-label" style="font-size:11px;color:#51247A;">Relevance</div><div class="drag-zone" id="vz-relevance" style="min-height:44px;"></div></div>
+        <div><div class="drag-zone-label" style="font-size:11px;color:#51247A;">Significance</div><div class="drag-zone" id="vz-significance" style="min-height:44px;"></div></div>
+        <div><div class="drag-zone-label" style="font-size:11px;color:#51247A;">Coherence</div><div class="drag-zone" id="vz-coherence" style="min-height:44px;"></div></div>
+        <div><div class="drag-zone-label" style="font-size:11px;color:#51247A;">Cogency</div><div class="drag-zone" id="vz-cogency" style="min-height:44px;"></div></div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <button class="btn btn-primary" id="btn-check-a2">Check My Matches</button>
+        <button class="btn btn-secondary btn-small" id="btn-reset-a2" style="margin-left:8px;">Reset</button>
+      </div>
+
+      <div class="feedback neutral" id="a2-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: BUILD A VoI DESCRIPTOR ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 3 of 4</div>
+    <h2 class="reveal">Build a VoI Descriptor</h2>
+    <p class="lead reveal">For the MGTS2501 "Critical Analysis" criterion at Distinction level, write a descriptor that specifically requires <strong>Breadth</strong> and <strong>Coherence</strong> but <em>not necessarily</em> Depth.</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">Write with VoI Precision</div>
+
+      <div class="emphasis-box" style="border-left-color:#51247A;">
+        <p><strong>Your brief:</strong> Write the Distinction-level descriptor for "Critical Analysis" in the MGTS2501 case study rubric. The descriptor must require <strong>Breadth</strong> (multiple perspectives) and <strong>Coherence</strong> (parts fit together), but should not require <strong>Depth</strong> (that's what distinguishes HD from D).</p>
+      </div>
+
+      <div class="transform-box">
+        <textarea class="transform-input" id="tf-voi-input" placeholder="Write your Distinction-level descriptor here..."></textarea>
+        <button class="btn btn-primary btn-show-model" id="btn-voi-model" style="margin-top:8px;">Show Model Answer</button>
+        <div class="model-answer" id="voi-model">
+          <span class="label">Model Answer</span>
+          Identifies multiple contributing factors to the turnover problem, drawing on at least two theoretical perspectives. Analysis connects these factors into a coherent explanation, showing how they relate to each other. Evaluates management's response against the theoretical framework. Does not yet examine underlying assumptions or systemic root causes (which would demonstrate Depth).
+        </div>
+        <div class="self-rate" id="tf-voi-rate">
+          <span class="self-rate-label">How close?</span>
+          <button class="self-rate-btn green" data-rating="green" title="Nailed it"></button>
+          <button class="self-rate-btn amber" data-rating="amber" title="Getting there"></button>
+          <button class="self-rate-btn red" data-rating="red" title="Way off"></button>
+        </div>
+      </div>
+
+      <div class="emphasis-box" style="margin-top:16px;border-left-color:#2EA836;">
+        <p><strong>Notice:</strong> The model answer explicitly names what the Distinction level does NOT require (Depth). This technique — using the absence of a VoI value to distinguish adjacent grades — is one of the most powerful tools in your rubric design toolkit. You'll use it extensively in later modules.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: VoI REFERENCE CARD ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 4 of 4</div>
+    <h2 class="reveal">Your VoI Reference Card</h2>
+    <p class="lead reveal">This reference card will appear as a sidebar tool in later modules. For now, review each value and its observable indicators — you'll need them when writing full descriptor sets.</p>
+
+    <div class="activity reveal" id="act-4">
+      <div class="activity-number">4</div>
+      <div class="activity-title">Review &amp; Confirm Understanding</div>
+      <p class="activity-instruction">Check off each value once you understand both its definition and how to spot it in student work.</p>
+
+      <div id="voi-checklist">
+        <div class="checkbox-row" id="ck-clarity"><div class="cb"></div><div class="cb-label"><strong>Clarity</strong> — Free from ambiguity. Observable: precise terms, defined concepts, unambiguous claims.</div></div>
+        <div class="checkbox-row" id="ck-accuracy"><div class="cb"></div><div class="cb-label"><strong>Accuracy</strong> — Factually correct. Observable: correct facts/figures, valid theory application.</div></div>
+        <div class="checkbox-row" id="ck-precision"><div class="cb"></div><div class="cb-label"><strong>Precision</strong> — Exact detail. Observable: specific claims, quantified where appropriate.</div></div>
+        <div class="checkbox-row" id="ck-breadth"><div class="cb"></div><div class="cb-label"><strong>Breadth</strong> — Multiple perspectives. Observable: range of sources, alternative viewpoints.</div></div>
+        <div class="checkbox-row" id="ck-depth"><div class="cb"></div><div class="cb-label"><strong>Depth</strong> — Underlying complexity. Observable: root causes, assumptions examined, nuance.</div></div>
+        <div class="checkbox-row" id="ck-relevance"><div class="cb"></div><div class="cb-label"><strong>Relevance</strong> — Pertains to the matter. Observable: all content serves the argument.</div></div>
+        <div class="checkbox-row" id="ck-significance"><div class="cb"></div><div class="cb-label"><strong>Significance</strong> — Addresses what matters. Observable: core issues prioritised.</div></div>
+        <div class="checkbox-row" id="ck-coherence"><div class="cb"></div><div class="cb-label"><strong>Coherence</strong> — Parts fit together. Observable: clear structure, consistent argument.</div></div>
+        <div class="checkbox-row" id="ck-cogency"><div class="cb"></div><div class="cb-label"><strong>Cogency</strong> — Well-reasoned. Observable: evidence supports claims, logic sound.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RUBRIC STATE ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Your Rubric</div>
+    <h2 class="reveal">VoI Language Added</h2>
+    <p class="lead reveal">Two descriptors now use VoI language — the Critical Analysis HD (from Module 3) and Distinction (from this module). The remaining cells will be filled as you learn more frameworks.</p>
+    <div class="rubric-preview rubric-preview-auto reveal"></div>
+  </div>
+</section>
+
+<section class="module-section" style="padding-bottom:24px;">
+  <div class="section-inner" style="text-align:center;">
+    <button class="btn btn-primary btn-complete-module" disabled>Complete Module 5</button>
+    <p style="font-size:12px;color:#6b6460;margin-top:12px;">Complete all four activities to unlock this button.</p>
+  </div>
+</section>
+
+<nav class="module-nav">
+  <a href="module-04.html">← Module 4</a>
+  <a href="module-06.html" class="nav-next disabled" aria-disabled="true">Module 6: SOLO Taxonomy →</a>
+</nav>
+
+<footer class="module-cta">
+  <p class="cta-credit">UQ Business School Learning Design &middot; 2026</p>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+(function(){
+  const RC = window.RubricCourse;
+  const tracker = RC.ModuleTracker(5, 4);
+
+  /* ── VoI explorer (expand cards) ── */
+  document.querySelectorAll('.voi-card').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('expanded'));
+  });
+
+  /* ── Activity 1: Value identification quiz ── */
+  (function(){
+    const questions = [
+      { text: '"The student draws on Herzberg, Maslow, and Adams\' equity theory to explain turnover from three distinct angles."', answer: 'breadth', explain: 'Three distinct theoretical perspectives = Breadth (multiple viewpoints).' },
+      { text: '"Each claim in the analysis is supported by a specific citation, and the conclusion logically follows from the evidence presented."', answer: 'cogency', explain: 'Evidence supports claims + logical conclusion = Cogency (well-reasoned).' },
+      { text: '"The student examines why salary increases failed by probing the assumptions behind management\'s decision."', answer: 'depth', explain: 'Probing underlying assumptions = Depth (beneath the surface).' },
+      { text: '"The argument flows from problem identification to analysis to recommendations without contradictions between sections."', answer: 'coherence', explain: 'Consistent flow, no contradictions = Coherence (parts fit together).' },
+      { text: '"Every paragraph directly addresses the turnover problem; there is no tangential discussion of unrelated HR issues."', answer: 'relevance', explain: 'All content serves the argument, nothing tangential = Relevance.' },
+      { text: '"The student correctly applies Herzberg\'s Two-Factor Theory, distinguishing hygiene factors from motivators without confusing the categories."', answer: 'accuracy', explain: 'Correct application of theory without errors = Accuracy.' },
+      { text: '"Rather than saying \'many employees left,\' the student specifies \'turnover increased from 12% to 28% over 18 months.\'"', answer: 'precision', explain: 'Specific numbers rather than vague claims = Precision.' },
+      { text: '"The student focuses on the two factors most responsible for turnover rather than listing every possible cause."', answer: 'significance', explain: 'Prioritising core issues over trivial ones = Significance.' },
+      { text: '"Key terms like \'organisational culture\' and \'psychological contract\' are explicitly defined before being used in the analysis."', answer: 'clarity', explain: 'Defined terms, unambiguous usage = Clarity.' }
+    ];
+
+    const container = document.getElementById('voi-quiz');
+    const fb = document.getElementById('a1-feedback');
+    let answeredCount = 0;
+    const saved = RC.Exercises.get('m5-a1') || { answers: {} };
+    const voiOptions = ['clarity','accuracy','precision','breadth','depth','relevance','significance','coherence','cogency'];
+
+    questions.forEach((q, i) => {
+      const div = document.createElement('div');
+      div.style.cssText = 'margin:14px 0;padding:14px;border:1px solid #e4dfd9;border-radius:8px;background:#fff;';
+      let optHtml = '<select id="voi-sel-' + i + '" style="padding:6px 10px;border:1px solid #e4dfd9;border-radius:6px;font-size:13px;margin-top:8px;width:100%;max-width:200px;"><option value="">Select a value...</option>';
+      voiOptions.forEach(v => { optHtml += '<option value="' + v + '">' + v.charAt(0).toUpperCase() + v.slice(1) + '</option>'; });
+      optHtml += '</select>';
+      div.innerHTML = '<p style="font-size:13px;line-height:1.6;font-style:italic;">' + q.text + '</p>' + optHtml + '<div class="feedback" id="voi-fb-' + i + '" style="margin-top:8px;"></div>';
+      container.appendChild(div);
+
+      const sel = div.querySelector('select');
+
+      if (saved.answers[i]) {
+        sel.value = saved.answers[i];
+        showResult(i, sel.value);
+        answeredCount++;
+      }
+
+      sel.addEventListener('change', function(){
+        if (!this.value) return;
+        saved.answers[i] = this.value;
+        RC.Exercises.set('m5-a1', saved);
+        showResult(i, this.value);
+        this.disabled = true;
+        answeredCount++;
+        if (answeredCount >= questions.length) {
+          tracker.markDone('act-1');
+          const correct = questions.filter((q, i) => saved.answers[i] === q.answer).length;
+          fb.className = 'feedback show neutral';
+          fb.innerHTML = '<p><strong>Score: ' + correct + '/' + questions.length + '</strong> — ' +
+            (correct >= 8 ? 'Excellent command of VoI!' : correct >= 6 ? 'Good work. Review the cards you missed.' : 'Keep practising — refer back to the VoI explorer above.') + '</p>';
+        }
+      });
+
+      function showResult(idx, val) {
+        const qfb = document.getElementById('voi-fb-' + idx);
+        const isCorrect = val === questions[idx].answer;
+        qfb.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+        qfb.textContent = (isCorrect ? '✓ ' : '✗ The answer is ' + questions[idx].answer.charAt(0).toUpperCase() + questions[idx].answer.slice(1) + '. ') + questions[idx].explain;
+      }
+    });
+  })();
+
+  /* ── Activity 2: Adverb → VoI drag ── */
+  (function(){
+    const container = document.getElementById('act-2');
+    const ds = RC.DragSort(container, {
+      pairs: [
+        { item: 'adv-1', zone: 'vz-clarity' },
+        { item: 'adv-2', zone: 'vz-accuracy' },
+        { item: 'adv-3', zone: 'vz-precision' },
+        { item: 'adv-4', zone: 'vz-breadth' },
+        { item: 'adv-5', zone: 'vz-depth' },
+        { item: 'adv-6', zone: 'vz-relevance' },
+        { item: 'adv-7', zone: 'vz-significance' },
+        { item: 'adv-8', zone: 'vz-coherence' },
+        { item: 'adv-9', zone: 'vz-cogency' }
+      ],
+      saveKey: 'm5-a2'
+    });
+
+    document.getElementById('btn-check-a2').addEventListener('click', () => {
+      const result = ds.check();
+      const fb = document.getElementById('a2-feedback');
+      fb.className = 'feedback show ' + (result ? 'correct' : 'incorrect');
+      fb.innerHTML = result
+        ? '<p><strong>All correct!</strong> Every common rubric adverb maps to a specific VoI value. Now when you\'re tempted to write "thoroughly analyses," you can ask yourself: do I mean Breadth (wide range)? Depth (underlying complexity)? Both? And then say exactly that.</p>'
+        : '<p><strong>Some mismatches.</strong> Key mappings: "thoroughly" → Breadth (looking widely); "deeply" → Depth (looking beneath); "convincingly" → Cogency (well-reasoned). The green items are correct.</p>';
+      tracker.markDone('act-2');
+    });
+
+    document.getElementById('btn-reset-a2').addEventListener('click', () => {
+      ds.reset();
+      document.getElementById('a2-feedback').className = 'feedback';
+    });
+  })();
+
+  /* ── Activity 3: Build VoI descriptor ── */
+  (function(){
+    const input = document.getElementById('tf-voi-input');
+    const modelBtn = document.getElementById('btn-voi-model');
+    const modelEl = document.getElementById('voi-model');
+    const rates = document.querySelectorAll('#tf-voi-rate .self-rate-btn');
+    const modelText = 'Identifies multiple contributing factors to the turnover problem, drawing on at least two theoretical perspectives. Analysis connects these factors into a coherent explanation, showing how they relate to each other. Evaluates management\'s response against the theoretical framework. Does not yet examine underlying assumptions or systemic root causes (which would demonstrate Depth).';
+
+    const saved = RC.Exercises.get('m5-a3') || {};
+    if (saved.input) input.value = saved.input;
+    if (saved.revealed) { modelEl.classList.add('show'); modelBtn.disabled = true; modelBtn.textContent = 'Model Revealed ✓'; }
+    if (saved.rating) rates.forEach(r => { if (r.dataset.rating === saved.rating) r.classList.add('selected'); });
+
+    input.addEventListener('input', debounce(() => {
+      saved.input = input.value;
+      RC.Exercises.set('m5-a3', saved);
+    }, 500));
+
+    modelBtn.addEventListener('click', () => {
+      if (!input.value.trim()) { input.style.borderColor = '#d9534f'; setTimeout(() => input.style.borderColor = '', 1500); return; }
+      modelEl.classList.add('show');
+      saved.revealed = true;
+      RC.Exercises.set('m5-a3', saved);
+      modelBtn.disabled = true;
+      modelBtn.textContent = 'Model Revealed ✓';
+      // Update rubric
+      RC.Rubric.updateDescriptor(0, 'D', modelText);
+      document.querySelectorAll('.rubric-preview-auto').forEach(el => RC.RubricPreview(el));
+    });
+
+    rates.forEach(btn => {
+      btn.addEventListener('click', () => {
+        rates.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        saved.rating = btn.dataset.rating;
+        RC.Exercises.set('m5-a3', saved);
+        tracker.markDone('act-3');
+      });
+    });
+  })();
+
+  /* ── Activity 4: Checklist ── */
+  (function(){
+    const items = document.querySelectorAll('#voi-checklist .checkbox-row');
+    let checked = new Set();
+    const saved = RC.Exercises.get('m5-a4') || { checked: [] };
+    if (saved.checked) saved.checked.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.classList.add('checked'); checked.add(id); }
+    });
+    if (checked.size >= 9) tracker.markDone('act-4');
+
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        item.classList.toggle('checked');
+        if (item.classList.contains('checked')) checked.add(item.id);
+        else checked.delete(item.id);
+        RC.Exercises.set('m5-a4', { checked: Array.from(checked) });
+        if (checked.size >= 9) tracker.markDone('act-4');
+      });
+    });
+  })();
+
+  function debounce(fn, ms) { let t; return function(...a){ clearTimeout(t); t = setTimeout(() => fn.apply(this, a), ms); }; }
+})();
+</script>
+
+</body>
+</html>

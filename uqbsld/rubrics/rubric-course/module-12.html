@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 12: Course Level Calibration — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.drag-sort-container{padding:20px;margin:16px 0;border:1px solid #e4dfd9;border-radius:8px;background:#fff;}
+.drag-sort-label{font-size:12px;font-weight:600;color:#51247A;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;display:block;}
+.drag-sort-item{padding:12px;margin:8px 0;background:#f9f8f6;border:1px solid #e4dfd9;border-radius:6px;cursor:move;user-select:none;font-size:13px;line-height:1.6;transition:all 0.2s;border-left:3px solid #e4dfd9;}
+.drag-sort-item:hover{border-color:#51247A;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.08);}
+.drag-sort-item.dragging{opacity:0.5;background:#e4dfd9;}
+.drag-sort-item.sorted{border-left-color:#2ea836;background:#f0faf0;color:#0f5132;}
+.drag-sort-zone{min-height:200px;padding:16px;margin:16px 0;border:2px dashed #e4dfd9;border-radius:8px;background:#f7f5f3;transition:all 0.2s;}
+.drag-sort-zone.active{border-color:#51247A;background:rgba(81,36,122,0.05);}
+
+.mc-grid{display:grid;grid-template-columns:1fr;gap:16px;margin:16px 0;}
+.mc-item{padding:14px;border:1px solid #e4dfd9;border-radius:6px;background:#fff;cursor:pointer;transition:all 0.2s;}
+.mc-item:hover{border-color:#51247A;background:#f9f8f6;}
+.mc-item.selected{border:2px solid #51247A;background:#f0f0fa;}
+.mc-item.selected input[type="radio"]{accent-color:#51247A;}
+.mc-item-label{display:flex;align-items:flex-start;gap:10px;cursor:pointer;}
+.mc-item-label input[type="radio"]{margin-top:4px;cursor:pointer;}
+
+.descriptor-version{padding:14px;margin:12px 0;border:1px solid #e4dfd9;border-radius:6px;background:#fff;font-size:13px;line-height:1.6;}
+.descriptor-version h4{font-size:11px;font-weight:700;color:#51247A;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+
+.side-by-side{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;}
+@media(max-width:768px){.side-by-side{grid-template-columns:1fr;}}
+
+.side-by-side-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin:16px 0;}
+@media(max-width:1000px){.side-by-side-3{grid-template-columns:1fr;}}
+
+.text-input-box{padding:12px;margin:12px 0;border:1px solid #e4dfd9;border-radius:6px;background:#fff;}
+.text-input-box label{display:block;font-size:12px;font-weight:600;color:#51247A;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.text-input-box textarea{width:100%;min-height:80px;padding:10px;border:1px solid #e4dfd9;border-radius:4px;font-size:13px;font-family:inherit;resize:vertical;}
+
+.form-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+.form-table th{background:#f7f5f3;border:1px solid #e4dfd9;padding:10px;text-align:left;font-weight:600;color:#51247A;}
+.form-table td{border:1px solid #e4dfd9;padding:12px;background:#fff;}
+.form-table select{width:100%;padding:8px;border:1px solid #e4dfd9;border-radius:4px;font-size:12px;font-family:inherit;}
+
+.comparison-box{padding:12px;margin:8px 0;border:1px solid #e4dfd9;border-radius:6px;background:#f9f8f6;font-size:13px;line-height:1.6;}
+.comparison-box strong{color:#51247A;display:block;margin-bottom:4px;}
+</style>
+</head>
+<body>
+
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 12 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<section class="module-hero part-c">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part C · Calibration &amp; Context — Module 12</div>
+    <h1>Course Level Calibration</h1>
+    <p class="hero-sub">The same criterion means different things at first-year, second-year, and postgraduate level. Learn to calibrate expectations by course level.</p>
+    <span class="hero-time">&#9201; ~15 minutes</span>
+  </div>
+</section>
+
+<!-- ── INTRO ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Calibration & Context</div>
+    <h2 class="reveal">Same Criterion, Different Standards</h2>
+    <p class="lead reveal">A first-year student who identifies two factors and applies one theory might deserve a Pass (P). A second-year student doing the same thing deserves a Credit (C). A postgraduate student doing the same thing deserves a Fail (F). The criterion is the same; the level of work expected is different.</p>
+
+    <div class="reveal" style="margin-top:20px;">
+      <div class="emphasis-box" style="border-left-color:#962A8B;">
+        <p><strong>First-year:</strong> Recognise and apply foundational knowledge. Show you understand the basics from course material.</p>
+      </div>
+      <div class="emphasis-box" style="border-left-color:#962A8B;margin-top:12px;">
+        <p><strong>Second-year:</strong> Synthesise and evaluate. Integrate multiple sources and perspectives, beginning independent thinking.</p>
+      </div>
+      <div class="emphasis-box" style="border-left-color:#962A8B;margin-top:12px;">
+        <p><strong>Postgraduate:</strong> Lead and innovate. Critically synthesise across traditions, challenge orthodoxies, propose original solutions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: LEVEL COMPARISON (DRAG SORT) ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Activity 1 of 4</div>
+    <h2 class="reveal">Activity 1: Level Comparison</h2>
+    <p class="lead reveal">The same criterion ("Critical Analysis" at HD) written for three course levels. Drag to sort them from <strong>least to most demanding</strong>.</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">Sort by Demand: Least to Most</div>
+
+      <div style="margin:20px 0;">
+        <label class="drag-sort-label">The criterion "Critical Analysis" at HD for three levels:</label>
+
+        <div id="drag-sort-pool" class="drag-sort-container">
+          <div class="drag-sort-item" draggable="true" data-level="second-year" data-order="2">
+            <strong>Second-year HD:</strong> Identifies root causes, supports each with multiple theories, and explains how they interact.
+          </div>
+          <div class="drag-sort-item" draggable="true" data-level="first-year" data-order="1">
+            <strong>First-year HD:</strong> Identifies at least two causes of the problem and connects each to a relevant theory from the course materials.
+          </div>
+          <div class="drag-sort-item" draggable="true" data-level="postgrad" data-order="3">
+            <strong>Postgraduate HD:</strong> Identifies systemic root causes by synthesising across theoretical traditions, questioning the assumptions of each framework and proposing how they might be reconciled.
+          </div>
+        </div>
+
+        <label class="drag-sort-label" style="margin-top:20px;">Drag to sort (least to most demanding):</label>
+        <div id="drag-sort-zone" class="drag-sort-zone">
+          <p style="font-size:12px;color:#6b6460;text-align:center;padding:40px 0;">Drop items here in order</p>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-check-a1" style="margin-top:16px;">Check Order</button>
+      <div class="feedback neutral" id="a1-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: SPOT THE MISMATCH ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Activity 2 of 4</div>
+    <h2 class="reveal">Activity 2: Spot the Mismatch</h2>
+    <p class="lead reveal">Four descriptors, each labelled with a course level. Two are correctly calibrated to their level. Two are mismatched. Identify the correct pairs.</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Which Descriptors Match Their Levels?</div>
+
+      <div id="mc-grid"></div>
+
+      <button class="btn btn-primary" id="btn-check-a2" style="margin-top:16px;">Check Answers</button>
+      <div class="feedback neutral" id="a2-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: RECALIBRATE EXERCISE ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Activity 3 of 4</div>
+    <h2 class="reveal">Activity 3: Recalibrate by Course Level</h2>
+    <p class="lead reveal">Your MGTS2501 Pass descriptor for "Critical Analysis" works for second-year. Rewrite it for a first-year course (MGTS1301) and a postgraduate course (MGTS7501).</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">Rewrite for Different Levels</div>
+
+      <div style="margin:20px 0;">
+        <div class="comparison-box">
+          <strong>Original (Second-year, MGTS2501):</strong> Identifies multiple causes or factors relevant to the problem, with reference to course theories. Explains how each factor contributes to the observed outcome. Shows understanding of at least two theoretical perspectives from the course material.
+        </div>
+      </div>
+
+      <div class="side-by-side">
+        <div class="text-input-box">
+          <label for="recal-a3-fy">First-year (MGTS1301) Pass:</label>
+          <textarea id="recal-a3-fy" placeholder="Simpler version for first-year students..."></textarea>
+        </div>
+        <div class="text-input-box">
+          <label for="recal-a3-pg">Postgraduate (MGTS7501) Pass:</label>
+          <textarea id="recal-a3-pg" placeholder="More demanding version for postgraduate students..."></textarea>
+        </div>
+      </div>
+
+      <div class="feedback neutral" id="a3-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: SOURCE & SCOPE EXPECTATIONS ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Activity 4 of 4</div>
+    <h2 class="reveal">Activity 4: Source and Scope Expectations</h2>
+    <p class="lead reveal">For the "Evidence Use" criterion, complete the table: what does adequate evidence use look like at first-year, second-year, and postgraduate? Fill in source counts and types.</p>
+
+    <div class="activity reveal" id="act-4">
+      <div class="activity-number">4</div>
+      <div class="activity-title">Define Expectations by Course Level</div>
+
+      <table class="form-table">
+        <thead>
+          <tr>
+            <th>Course Level</th>
+            <th>Pass: Source Count</th>
+            <th>Pass: Source Types</th>
+            <th>HD: Source Count</th>
+            <th>HD: Source Types</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>First-year</strong></td>
+            <td><select id="fy-pass-count" class="form-input"><option value="">Select...</option><option value="3-5">3–5</option><option value="5-8">5–8</option><option value="8-12">8–12</option><option value="12+">12+</option></select></td>
+            <td><select id="fy-pass-types" class="form-input"><option value="">Select...</option><option value="mostly course">Mostly course materials</option><option value="course + 1-2">Course materials + 1–2 others</option><option value="mixed">Mix of course and independent</option><option value="diverse">Diverse and current sources</option></select></td>
+            <td><select id="fy-hd-count" class="form-input"><option value="">Select...</option><option value="5-8">5–8</option><option value="8-12">8–12</option><option value="12-15">12–15</option><option value="15+">15+</option></select></td>
+            <td><select id="fy-hd-types" class="form-input"><option value="">Select...</option><option value="course + recent">Course materials + recent publications</option><option value="diverse">Diverse perspectives, seminal + contemporary</option><option value="cutting edge">Cutting-edge research and debates</option></select></td>
+          </tr>
+          <tr>
+            <td><strong>Second-year</strong></td>
+            <td><select id="sy-pass-count" class="form-input"><option value="">Select...</option><option value="3-5">3–5</option><option value="5-8">5–8</option><option value="8-12">8–12</option><option value="12+">12+</option></select></td>
+            <td><select id="sy-pass-types" class="form-input"><option value="">Select...</option><option value="mostly course">Mostly course materials</option><option value="course + 1-2">Course materials + 1–2 others</option><option value="mixed">Mix of course and independent</option><option value="diverse">Diverse and current sources</option></select></td>
+            <td><select id="sy-hd-count" class="form-input"><option value="">Select...</option><option value="5-8">5–8</option><option value="8-12">8–12</option><option value="12-15">12–15</option><option value="15+">15+</option></select></td>
+            <td><select id="sy-hd-types" class="form-input"><option value="">Select...</option><option value="course + recent">Course materials + recent publications</option><option value="diverse">Diverse perspectives, seminal + contemporary</option><option value="cutting edge">Cutting-edge research and debates</option></select></td>
+          </tr>
+          <tr>
+            <td><strong>Postgraduate</strong></td>
+            <td><select id="pg-pass-count" class="form-input"><option value="">Select...</option><option value="3-5">3–5</option><option value="5-8">5–8</option><option value="8-12">8–12</option><option value="12+">12+</option></select></td>
+            <td><select id="pg-pass-types" class="form-input"><option value="">Select...</option><option value="mostly course">Mostly course materials</option><option value="course + 1-2">Course materials + 1–2 others</option><option value="mixed">Mix of course and independent</option><option value="diverse">Diverse and current sources</option></select></td>
+            <td><select id="pg-hd-count" class="form-input"><option value="">Select...</option><option value="5-8">5–8</option><option value="8-12">8–12</option><option value="12-15">12–15</option><option value="15+">15+</option></select></td>
+            <td><select id="pg-hd-types" class="form-input"><option value="">Select...</option><option value="course + recent">Course materials + recent publications</option><option value="diverse">Diverse perspectives, seminal + contemporary</option><option value="cutting edge">Cutting-edge research and debates</option></select></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="btn btn-primary" id="btn-check-a4" style="margin-top:16px;">Check Answers</button>
+      <div class="feedback neutral" id="a4-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RUBRIC STATE ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#962A8B">Your Rubric</div>
+    <h2 class="reveal">Course-Level Calibrated</h2>
+    <p class="lead reveal">Your MGTS2501 rubric is now calibrated specifically for second-year. You understand how to adapt it for other course levels while maintaining consistent standards of rigor within each context.</p>
+    <div class="rubric-preview rubric-preview-auto reveal"></div>
+  </div>
+</section>
+
+<section class="module-section" style="padding-bottom:24px;">
+  <div class="section-inner" style="text-align:center;">
+    <button class="btn btn-primary btn-complete-module" disabled>Complete Module 12</button>
+    <p style="font-size:12px;color:#6b6460;margin-top:12px;">Complete all four activities to unlock.</p>
+  </div>
+</section>
+
+<nav class="module-nav">
+  <a href="module-11.html">← Module 11</a>
+  <a href="module-13.html" class="nav-next disabled" aria-disabled="true">Module 13 →</a>
+</nav>
+
+<footer class="module-cta"><p class="cta-credit">UQ Business School Learning Design &middot; 2026</p></footer>
+
+<script src="shared.js"></script>
+<script>
+(function(){
+  const RC = window.RubricCourse;
+  const tracker = RC.ModuleTracker(12, 4);
+
+  /* ── Activity 1: Drag Sort ── */
+  (function(){
+    const pool = document.getElementById('drag-sort-pool');
+    const zone = document.getElementById('drag-sort-zone');
+    const saved = RC.Exercises.get('m12-a1') || { order: [] };
+
+    let draggedEl = null;
+
+    pool.addEventListener('dragstart', (e) => {
+      if (e.target.classList.contains('drag-sort-item')) {
+        draggedEl = e.target;
+        e.dataTransfer.effectAllowed = 'move';
+        e.target.classList.add('dragging');
+      }
+    });
+
+    pool.addEventListener('dragend', () => {
+      if (draggedEl) draggedEl.classList.remove('dragging');
+    });
+
+    zone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      zone.classList.add('active');
+    });
+
+    zone.addEventListener('dragleave', () => {
+      zone.classList.remove('active');
+    });
+
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      zone.classList.remove('active');
+      if (draggedEl && draggedEl.classList.contains('drag-sort-item')) {
+        const clone = draggedEl.cloneNode(true);
+        clone.draggable = false;
+        clone.classList.add('sorted');
+        zone.appendChild(clone);
+        draggedEl.remove();
+        saved.order.push(draggedEl.dataset.level);
+        RC.Exercises.set('m12-a1', saved);
+        renderZone();
+      }
+    });
+
+    function renderZone() {
+      zone.innerHTML = '';
+      if (saved.order.length === 0) {
+        zone.innerHTML = '<p style="font-size:12px;color:#6b6460;text-align:center;padding:40px 0;">Drop items here in order</p>';
+      } else {
+        saved.order.forEach((level, idx) => {
+          const label = level === 'first-year' ? 'First-year' : (level === 'second-year' ? 'Second-year' : 'Postgraduate');
+          const div = document.createElement('div');
+          div.className = 'drag-sort-item sorted';
+          div.style.marginBottom = '8px';
+          div.innerHTML = '<strong style="color:#0f5132;">(' + (idx + 1) + ')</strong> ' + label + ' HD';
+          zone.appendChild(div);
+        });
+      }
+    }
+
+    renderZone();
+
+    document.getElementById('btn-check-a1').addEventListener('click', () => {
+      const correct = saved.order.length === 3 && saved.order[0] === 'first-year' && saved.order[1] === 'second-year' && saved.order[2] === 'postgrad';
+      const fb = document.getElementById('a1-feedback');
+      fb.className = 'feedback show ' + (correct ? 'correct' : 'incorrect');
+
+      if (correct) {
+        fb.innerHTML = '<p><strong>Perfect order!</strong> Notice the progression: First-year requires identifying two factors and connecting to <em>one</em> theory. Second-year requires multiple theories and explaining their <em>interaction</em>. Postgraduate requires synthesis <em>across traditions</em> and questioning <em>assumptions</em>. Same criterion, three different rigor levels.</p>';
+        tracker.markDone('act-1');
+      } else {
+        fb.innerHTML = '<p><strong>Not quite.</strong> Remember: First-year is foundational (identify + apply one theory). Second-year is integrative (multiple theories, show relationships). Postgraduate is critical (synthesise across traditions, question assumptions, propose reconciliation).</p>';
+      }
+    });
+  })();
+
+  /* ── Activity 2: Spot the Mismatch ── */
+  (function(){
+    const items = [
+      {
+        id: 1,
+        label: 'First-year HD',
+        desc: 'Synthesises across 5+ theoretical traditions including seminal and contemporary works.',
+        correct: false,
+        explanation: 'This is postgraduate-level work. First-year HD should aim for identifying and applying foundational theories from course material, not synthesising across multiple traditions.'
+      },
+      {
+        id: 2,
+        label: 'Postgraduate Pass',
+        desc: 'Identifies one relevant cause and mentions a theory.',
+        correct: false,
+        explanation: 'This is first-year level. Postgraduate Pass should require independent synthesis of at least multiple perspectives and critical evaluation, not just identifying one cause.'
+      },
+      {
+        id: 3,
+        label: 'Second-year Distinction',
+        desc: 'Identifies multiple factors and explains relationships between them.',
+        correct: true,
+        explanation: 'Correct! This is appropriately calibrated for second-year Distinction: moving beyond isolated factors to show how they interact.'
+      },
+      {
+        id: 4,
+        label: 'First-year Credit',
+        desc: 'Applies one or two theories from course readings to the main problem.',
+        correct: true,
+        explanation: 'Correct! This is appropriate for first-year Credit: students apply foundational knowledge from course material.'
+      }
+    ];
+
+    const container = document.getElementById('mc-grid');
+    const saved = RC.Exercises.get('m12-a2') || {};
+
+    items.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'mc-item' + (saved['item' + item.id] === 'correct' ? ' selected' : '');
+
+      const inputId = 'a2-item-' + item.id;
+      div.innerHTML = '<label class="mc-item-label" for="' + inputId + '">' +
+        '<input type="radio" id="' + inputId + '" name="mismatch" value="item' + item.id + '" ' + (saved['item' + item.id] === 'correct' ? 'checked' : '') + '>' +
+        '<div><strong>' + item.label + ':</strong> "' + item.desc + '"</div>' +
+        '</label>';
+
+      container.appendChild(div);
+
+      const radio = div.querySelector('input[type="radio"]');
+      radio.addEventListener('change', () => {
+        // Clear previous selections
+        document.querySelectorAll('#mc-grid .mc-item').forEach(el => el.classList.remove('selected'));
+        // Mark this as selected
+        div.classList.add('selected');
+        saved['item' + item.id] = 'correct';
+        RC.Exercises.set('m12-a2', saved);
+
+        // Show feedback for this item
+        const fb = document.getElementById('a2-feedback');
+        fb.className = 'feedback show ' + (item.correct ? 'correct' : 'incorrect');
+        fb.innerHTML = '<p><strong>' + (item.correct ? 'Correct!' : 'Not quite.') + '</strong> ' + item.explanation + '</p>';
+      });
+    });
+
+    document.getElementById('btn-check-a2').addEventListener('click', () => {
+      const correct = saved['item3'] === 'correct' && saved['item4'] === 'correct';
+      const fb = document.getElementById('a2-feedback');
+      fb.className = 'feedback show ' + (correct ? 'correct' : 'incorrect');
+
+      if (correct) {
+        fb.innerHTML = '<p><strong>Both correct pairs identified!</strong> The key to spotting mismatches is knowing the standard for each level. First-year = apply foundational knowledge. Second-year = integrate and evaluate. Postgraduate = synthesise critically and propose innovations.</p>';
+        tracker.markDone('act-2');
+      } else {
+        fb.innerHTML = '<p><strong>Keep checking.</strong> Remember: items 3 (Second-year Distinction) and 4 (First-year Credit) are the correctly calibrated ones.</p>';
+      }
+    });
+  })();
+
+  /* ── Activity 3: Recalibrate ── */
+  (function(){
+    const fyInput = document.getElementById('recal-a3-fy');
+    const pgInput = document.getElementById('recal-a3-pg');
+    const saved = RC.Exercises.get('m12-a3') || { fy: '', pg: '' };
+
+    fyInput.value = saved.fy;
+    pgInput.value = saved.pg;
+
+    function save() {
+      saved.fy = fyInput.value;
+      saved.pg = pgInput.value;
+      RC.Exercises.set('m12-a3', saved);
+    }
+
+    fyInput.addEventListener('input', debounce(save, 500));
+    pgInput.addEventListener('input', debounce(save, 500));
+
+    // Show model on blur if text entered
+    fyInput.addEventListener('blur', () => {
+      if (saved.fy.trim().length > 10) showModel();
+    });
+    pgInput.addEventListener('blur', () => {
+      if (saved.pg.trim().length > 10) showModel();
+    });
+
+    function showModel() {
+      const modelFy = 'Identifies one or two causes of the problem and explains how each relates to a theory from the course material.';
+      const modelPg = 'Identifies and critically evaluates multiple causes, synthesising across theoretical traditions to explain how they interact. Questions the assumptions underlying different frameworks.';
+
+      const fb = document.getElementById('a3-feedback');
+      fb.className = 'feedback show correct';
+      fb.innerHTML = '<p><strong>Model Answers:</strong></p>' +
+        '<p style="margin:10px 0;"><strong>First-year:</strong> ' + modelFy + '</p>' +
+        '<p style="margin:10px 0;"><strong>Postgraduate:</strong> ' + modelPg + '</p>' +
+        '<p style="margin-top:12px;font-size:12px;color:#6b6460;"><strong>Pattern:</strong> As level increases, the expectation shifts from <em>identifying</em> (FY) → <em>integrating</em> (2Y) → <em>synthesising critically</em> (PG). The criterion stays the same; the cognitive demand increases.</p>';
+
+      tracker.markDone('act-3');
+    }
+
+    if (saved.fy.trim().length > 10 && saved.pg.trim().length > 10) {
+      showModel();
+    }
+  })();
+
+  /* ── Activity 4: Form Fill ── */
+  (function(){
+    const saved = RC.Exercises.get('m12-a4') || {};
+
+    const fields = [
+      { id: 'fy-pass-count', level: 'fy', grade: 'pass', type: 'count' },
+      { id: 'fy-pass-types', level: 'fy', grade: 'pass', type: 'types' },
+      { id: 'fy-hd-count', level: 'fy', grade: 'hd', type: 'count' },
+      { id: 'fy-hd-types', level: 'fy', grade: 'hd', type: 'types' },
+      { id: 'sy-pass-count', level: 'sy', grade: 'pass', type: 'count' },
+      { id: 'sy-pass-types', level: 'sy', grade: 'pass', type: 'types' },
+      { id: 'sy-hd-count', level: 'sy', grade: 'hd', type: 'count' },
+      { id: 'sy-hd-types', level: 'sy', grade: 'hd', type: 'types' },
+      { id: 'pg-pass-count', level: 'pg', grade: 'pass', type: 'count' },
+      { id: 'pg-pass-types', level: 'pg', grade: 'pass', type: 'types' },
+      { id: 'pg-hd-count', level: 'pg', grade: 'hd', type: 'count' },
+      { id: 'pg-hd-types', level: 'pg', grade: 'hd', type: 'types' }
+    ];
+
+    const correctAnswers = {
+      'fy-pass-count': '5-8', 'fy-pass-types': 'mostly course', 'fy-hd-count': '8-12', 'fy-hd-types': 'course + recent',
+      'sy-pass-count': '8-12', 'sy-pass-types': 'mixed', 'sy-hd-count': '12-15', 'sy-hd-types': 'diverse',
+      'pg-pass-count': '12+', 'pg-pass-types': 'diverse', 'pg-hd-count': '15+', 'pg-hd-types': 'cutting edge'
+    };
+
+    fields.forEach(field => {
+      const el = document.getElementById(field.id);
+      el.value = saved[field.id] || '';
+
+      el.addEventListener('change', () => {
+        saved[field.id] = el.value;
+        RC.Exercises.set('m12-a4', saved);
+      });
+    });
+
+    document.getElementById('btn-check-a4').addEventListener('click', () => {
+      let correct = 0;
+      fields.forEach(field => {
+        if (saved[field.id] === correctAnswers[field.id]) correct++;
+      });
+
+      const fb = document.getElementById('a4-feedback');
+      fb.className = 'feedback show ' + (correct === fields.length ? 'correct' : 'incorrect');
+
+      if (correct === fields.length) {
+        fb.innerHTML = '<p><strong>Perfect!</strong> You\'ve mapped evidence expectations across all three course levels and all grades. Notice: as course level increases, students must bring more sources and more diverse perspectives. As grade increases within a level, sources become more cutting-edge and critical.</p>';
+        tracker.markDone('act-4');
+      } else {
+        fb.innerHTML = '<p><strong>' + correct + '/' + fields.length + ' correct.</strong> Check your selections: FY Pass uses mostly course materials (simpler); PG Pass uses diverse independent sources (more demanding). HD expectations are always higher than Pass.</p>';
+      }
+    });
+  })();
+
+  function debounce(fn, ms) { let t; return function(...a){ clearTimeout(t); t = setTimeout(() => fn.apply(this, a), ms); }; }
+})();
+</script>
+
+</body>
+</html>

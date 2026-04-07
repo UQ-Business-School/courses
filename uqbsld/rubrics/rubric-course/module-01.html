@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 1: What Makes a Rubric Work? — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 1 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="module-hero part-a">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part A · Foundations &mdash; Module 1</div>
+    <h1>What Makes a Rubric Work?</h1>
+    <p class="hero-sub">You already know rubrics are marking grids. But a rubric that truly works serves two very different audiences at the same time — and most don't.</p>
+    <span class="hero-time">&#9201; ~15 minutes</span>
+  </div>
+</section>
+
+<!-- ── SCENE SETTER ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">The Scenario</div>
+    <h2 class="reveal">Meet MGTS2501</h2>
+    <p class="lead reveal">Throughout this course, you'll work with a single fictional assessment — a case study analysis for MGTS2501 Organisational Behaviour. The rubric you'll see in a moment is typical of what many courses use. By the time you finish Module 20, you'll have transformed it into something genuinely useful.</p>
+
+    <div class="emphasis-box reveal">
+      <p><strong>The assessment:</strong> Assessment 2 — Case Study Analysis (30%). Students analyse a case study about a mid-size organisation experiencing high staff turnover. They must identify underlying causes using OB theory, evaluate management's response, and propose evidence-based recommendations. 2,000 words, minimum 8 peer-reviewed sources, APA 7 referencing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: ROLE-PLAY ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 1 of 3</div>
+    <h2 class="reveal">Two Audiences, One Document</h2>
+    <p class="lead reveal">A rubric must work for two very different people: the student trying to improve, and the marker trying to assign a fair grade. Let's see how well these descriptors serve each.</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">The Dual Audience Test</div>
+      <p class="activity-instruction">Below are three descriptors from different rubrics. First, read each <strong>as a student</strong> — how helpful is it for improving your work? Then read each <strong>as a marker</strong> — how confident would you be in assigning consistent grades?</p>
+
+      <!-- Descriptor A -->
+      <div style="margin-bottom:24px;">
+        <div class="emphasis-box" style="border-left-color:#4085C6;">
+          <p><strong>Descriptor A:</strong> "Demonstrates excellent critical analysis of the case study."</p>
+        </div>
+        <div class="slider-group">
+          <div class="slider-row">
+            <span class="slider-label">As a student (helpful?)</span>
+            <input type="range" min="1" max="5" value="3" class="slider-input" name="a1-descA-student" id="a1-descA-student">
+            <span class="slider-value">3</span>
+          </div>
+          <div class="slider-row">
+            <span class="slider-label">As a marker (consistent?)</span>
+            <input type="range" min="1" max="5" value="3" class="slider-input" name="a1-descA-marker" id="a1-descA-marker">
+            <span class="slider-value">3</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Descriptor B -->
+      <div style="margin-bottom:24px;">
+        <div class="emphasis-box" style="border-left-color:#4085C6;">
+          <p><strong>Descriptor B:</strong> "Identifies the root causes of the organisational problem, supports each with at least two relevant theories, and explains how they interact."</p>
+        </div>
+        <div class="slider-group">
+          <div class="slider-row">
+            <span class="slider-label">As a student (helpful?)</span>
+            <input type="range" min="1" max="5" value="3" class="slider-input" name="a1-descB-student" id="a1-descB-student">
+            <span class="slider-value">3</span>
+          </div>
+          <div class="slider-row">
+            <span class="slider-label">As a marker (consistent?)</span>
+            <input type="range" min="1" max="5" value="3" class="slider-input" name="a1-descB-marker" id="a1-descB-marker">
+            <span class="slider-value">3</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Descriptor C -->
+      <div style="margin-bottom:24px;">
+        <div class="emphasis-box" style="border-left-color:#4085C6;">
+          <p><strong>Descriptor C:</strong> "Good analysis with some relevant theory."</p>
+        </div>
+        <div class="slider-group">
+          <div class="slider-row">
+            <span class="slider-label">As a student (helpful?)</span>
+            <input type="range" min="1" max="5" value="3" class="slider-input" name="a1-descC-student" id="a1-descC-student">
+            <span class="slider-value">3</span>
+          </div>
+          <div class="slider-row">
+            <span class="slider-label">As a marker (consistent?)</span>
+            <input type="range" min="1" max="5" value="3" class="slider-input" name="a1-descC-marker" id="a1-descC-marker">
+            <span class="slider-value">3</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-show-a1-feedback">See What This Reveals →</button>
+
+      <div class="feedback neutral" id="a1-feedback">
+        <p><strong>What you probably noticed:</strong></p>
+        <p><strong>Descriptor B</strong> tends to score highest for both audiences. It tells the student exactly what to do (identify root causes, support with theories, explain interactions) and gives the marker clear, checkable criteria.</p>
+        <p><strong>Descriptors A and C</strong> share the same problem: they rely on vague quality words ("excellent," "good," "some") that mean different things to different people. A student reading "demonstrates excellent critical analysis" still doesn't know what excellent analysis looks like. A marker reading "good analysis with some relevant theory" has to decide what "good" and "some" mean — and their colleague might decide differently.</p>
+        <p style="margin-bottom:0;"><strong>The takeaway:</strong> The best rubric descriptors serve both audiences simultaneously by describing <em>observable actions</em> rather than <em>quality judgements</em>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: SORT ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 2 of 3</div>
+    <h2 class="reveal">Helpful or Useless?</h2>
+    <p class="lead reveal">Here are eight descriptor snippets. Drag each into the bucket where it belongs: does it help a student improve, or does it tell them nothing useful?</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Sort the Descriptors</div>
+      <p class="activity-instruction">Drag each snippet to the correct zone. There are 4 helpful and 4 unhelpful descriptors.</p>
+
+      <!-- Source pool -->
+      <div class="drag-pool" id="drag-pool-a2" style="margin-bottom:16px;padding:12px;background:#f7f5f3;border-radius:8px;min-height:48px;">
+        <div class="drag-item" draggable="true" id="di-1">Excellent use of evidence</div>
+        <div class="drag-item" draggable="true" id="di-2">Integrates at least 3 theoretical perspectives to explain the problem</div>
+        <div class="drag-item" draggable="true" id="di-3">Satisfactory discussion</div>
+        <div class="drag-item" draggable="true" id="di-4">Proposes recommendations that are feasible within the organisation's constraints</div>
+        <div class="drag-item" draggable="true" id="di-5">Very good presentation</div>
+        <div class="drag-item" draggable="true" id="di-6">Identifies both immediate and systemic causes, distinguishing between symptoms and root issues</div>
+        <div class="drag-item" draggable="true" id="di-7">Adequate referencing</div>
+        <div class="drag-item" draggable="true" id="di-8">Evaluates management's response by comparing its outcomes to what the theory would predict</div>
+      </div>
+
+      <!-- Drop zones -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <div class="drag-zone-label" style="color:#2d8a2d;">Helps Me Improve</div>
+          <div class="drag-zone" id="zone-helpful" style="min-height:140px;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label" style="color:#d9534f;">Tells Me Nothing</div>
+          <div class="drag-zone" id="zone-useless" style="min-height:140px;"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <button class="btn btn-primary" id="btn-check-a2">Check My Answers</button>
+        <button class="btn btn-secondary btn-small" id="btn-reset-a2" style="margin-left:8px;">Reset</button>
+      </div>
+
+      <div class="feedback neutral" id="a2-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: THE BAD RUBRIC ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 3 of 3</div>
+    <h2 class="reveal">The Rubric Reveal</h2>
+    <p class="lead reveal">Here's the actual rubric currently being used for the MGTS2501 case study. Take a good look — this is the "before" version you'll transform over the next 19 modules.</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">What Grade Would You Give?</div>
+      <p class="activity-instruction">Read the rubric below. Then imagine a student who: attended most classes, completed the readings, wrote a coherent 2,000-word case analysis with 8 sources, applied 2 theories reasonably well but didn't connect them deeply, and made some good recommendations but didn't fully justify them. Using this rubric, what grade would you give?</p>
+
+      <!-- The bad rubric -->
+      <div class="rubric-preview" style="margin:20px 0;">
+        <table>
+          <thead>
+            <tr><th>Criteria</th><th>HD</th><th>D</th><th>C</th><th>P</th><th>F</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="criteria-cell">Introduction (10%)</td>
+              <td>Excellent introduction</td>
+              <td>Very good introduction</td>
+              <td>Good introduction</td>
+              <td>Satisfactory introduction</td>
+              <td>Poor introduction</td>
+            </tr>
+            <tr>
+              <td class="criteria-cell">Analysis (40%)</td>
+              <td>Demonstrates excellent critical analysis</td>
+              <td>Demonstrates very good critical analysis</td>
+              <td>Demonstrates good critical analysis</td>
+              <td>Demonstrates satisfactory analysis</td>
+              <td>Does not demonstrate analysis</td>
+            </tr>
+            <tr>
+              <td class="criteria-cell">Recommendations (30%)</td>
+              <td>Provides excellent recommendations</td>
+              <td>Provides very good recommendations</td>
+              <td>Provides good recommendations</td>
+              <td>Provides satisfactory recommendations</td>
+              <td>Fails to provide recommendations</td>
+            </tr>
+            <tr>
+              <td class="criteria-cell">Referencing &amp; Presentation (20%)</td>
+              <td>Excellent referencing and presentation</td>
+              <td>Very good referencing and presentation</td>
+              <td>Good referencing and presentation</td>
+              <td>Satisfactory referencing and presentation</td>
+              <td>Poor referencing and presentation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="activity-instruction"><strong>Four markers graded the same student work using this rubric.</strong> What grade do you think the student deserves?</p>
+
+      <div class="mc-options" id="mc-a3">
+        <div class="mc-option" data-index="0">
+          <div class="mc-radio"></div>
+          <div><strong>High Distinction (HD)</strong> — The work is clearly excellent across all criteria.</div>
+        </div>
+        <div class="mc-option" data-index="1">
+          <div class="mc-radio"></div>
+          <div><strong>Distinction (D)</strong> — It's very good overall, just not quite top-tier.</div>
+        </div>
+        <div class="mc-option" data-index="2">
+          <div class="mc-radio"></div>
+          <div><strong>Credit (C)</strong> — It's solid but not exceptional work.</div>
+        </div>
+        <div class="mc-option" data-index="3">
+          <div class="mc-radio"></div>
+          <div><strong>Pass (P)</strong> — It meets the basic requirements but nothing more.</div>
+        </div>
+      </div>
+
+      <div class="feedback neutral" id="a3-feedback">
+        <p><strong>Here's the problem:</strong> All four answers are defensible. The student description we gave you maps plausibly onto Credit, Distinction, or even Pass — because the rubric descriptors don't tell you what any of those quality labels actually mean.</p>
+        <p>When four markers can't agree on whether the same work is a Pass or a Distinction, the rubric isn't doing its job. This isn't a marker quality problem — it's a rubric quality problem.</p>
+        <p>In fact, the four "markers" in this scenario gave: <strong>HD, D, C, and P</strong> — a three-grade spread for identical work. That's exactly what happens when descriptors are just adjectives.</p>
+        <p style="margin-bottom:0;">Over the next 19 modules, you'll learn exactly how to fix this. Let's start in Module 2 with the root cause: the <strong>Adverb Trap</strong>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── YOUR RUBRIC STATE ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Your Rubric</div>
+    <h2 class="reveal">The Starting Point</h2>
+    <p class="lead reveal">This is the rubric as it stands. You haven't changed anything yet — and that's the point. By the end of the course, every cell will be different.</p>
+    <div class="rubric-preview rubric-preview-auto reveal"></div>
+  </div>
+</section>
+
+<!-- ── COMPLETE & NAV ── -->
+<section class="module-section alt" style="padding-bottom:24px;">
+  <div class="section-inner" style="text-align:center;">
+    <button class="btn btn-primary btn-complete-module" disabled>Complete Module 1</button>
+    <p style="font-size:12px;color:#6b6460;margin-top:12px;">Complete all three activities to unlock this button.</p>
+  </div>
+</section>
+
+<nav class="module-nav">
+  <a href="index.html">← Course Map</a>
+  <a href="module-02.html" class="nav-next disabled" aria-disabled="true">Module 2: The Adverb Trap →</a>
+</nav>
+
+<!-- ── FOOTER ── -->
+<footer class="module-cta">
+  <p class="cta-credit">UQ Business School Learning Design &middot; 2026</p>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+(function(){
+  const RC = window.RubricCourse;
+  const tracker = RC.ModuleTracker(1, 3);
+
+  /* ── Activity 1: Slider ratings ── */
+  (function(){
+    const container = document.getElementById('act-1');
+    const sliders = container.querySelectorAll('input[type="range"]');
+    const valSpans = container.querySelectorAll('.slider-value');
+
+    // Restore saved
+    const saved = RC.Exercises.get('m1-a1');
+    if (saved && saved.values) {
+      sliders.forEach(s => {
+        if (saved.values[s.name] !== undefined) s.value = saved.values[s.name];
+      });
+      if (saved.revealed) {
+        document.getElementById('a1-feedback').classList.add('show');
+        tracker.markDone('act-1');
+      }
+    }
+
+    // Update display values
+    sliders.forEach((s, i) => {
+      valSpans[i].textContent = s.value;
+      s.addEventListener('input', function(){
+        valSpans[i].textContent = this.value;
+        const vals = {};
+        sliders.forEach(sl => { vals[sl.name] = parseInt(sl.value); });
+        RC.Exercises.set('m1-a1', { values: vals, revealed: document.getElementById('a1-feedback').classList.contains('show') });
+      });
+    });
+
+    container.querySelector('.btn-show-a1-feedback').addEventListener('click', function(){
+      document.getElementById('a1-feedback').classList.add('show');
+      RC.Exercises.setField('m1-a1', 'revealed', true);
+      tracker.markDone('act-1');
+      this.disabled = true;
+      this.textContent = 'Insight Revealed ✓';
+    });
+  })();
+
+  /* ── Activity 2: Drag sort ── */
+  (function(){
+    const container = document.getElementById('act-2');
+    const correctHelpful = ['di-2','di-4','di-6','di-8'];
+    const correctUseless = ['di-1','di-3','di-5','di-7'];
+
+    const ds = RC.DragSort(container, {
+      pairs: [
+        ...correctHelpful.map(id => ({item:id, zone:'zone-helpful'})),
+        ...correctUseless.map(id => ({item:id, zone:'zone-useless'}))
+      ],
+      saveKey: 'm1-a2'
+    });
+
+    document.getElementById('btn-check-a2').addEventListener('click', function(){
+      const result = ds.check();
+      const fb = document.getElementById('a2-feedback');
+      if (result) {
+        fb.className = 'feedback show correct';
+        fb.innerHTML = '<p><strong>All correct!</strong> The helpful descriptors all describe specific, observable actions — what the student actually does in their work. The unhelpful ones rely on vague quality words (excellent, satisfactory, adequate, very good) that don\'t tell you what the work looks like.</p>';
+      } else {
+        fb.className = 'feedback show incorrect';
+        fb.innerHTML = '<p><strong>Not quite.</strong> Look for the pattern: helpful descriptors describe <em>actions</em> (integrates, proposes, identifies, evaluates) while unhelpful ones describe <em>quality</em> (excellent, satisfactory, good, adequate). The green items are in the right place; red ones need moving.</p>';
+      }
+      tracker.markDone('act-2');
+    });
+
+    document.getElementById('btn-reset-a2').addEventListener('click', function(){
+      ds.reset();
+      document.getElementById('a2-feedback').className = 'feedback';
+    });
+  })();
+
+  /* ── Activity 3: Multiple choice ── */
+  (function(){
+    const container = document.getElementById('act-3');
+    // Any answer is "correct" — that's the point
+    RC.MultipleChoice(container, {
+      correctIndex: -1, // no single correct answer
+      saveKey: 'm1-a3',
+      onComplete: function(){ tracker.markDone('act-3'); }
+    });
+
+    // Override: any choice shows the feedback
+    const options = container.querySelectorAll('.mc-option');
+    let answered = false;
+    const saved = RC.Exercises.get('m1-a3');
+    if (saved && saved.selected !== undefined) {
+      answered = true;
+      options[saved.selected].classList.add('selected');
+      document.getElementById('a3-feedback').classList.add('show');
+      tracker.markDone('act-3');
+    }
+
+    options.forEach((opt, i) => {
+      opt.addEventListener('click', function(){
+        if (answered) return;
+        answered = true;
+        opt.classList.add('selected');
+        document.getElementById('a3-feedback').classList.add('show');
+        RC.Exercises.set('m1-a3', { selected: i });
+        tracker.markDone('act-3');
+      });
+    });
+  })();
+
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 9: Combining Frameworks — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.framework-select-group{margin:12px 0;padding:12px;background:#f9f7f5;border-radius:6px;}
+.framework-select-group label{display:block;font-size:12px;font-weight:600;color:#51247A;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
+.framework-select-group select{width:100%;padding:8px 10px;border:1px solid #e4dfd9;border-radius:4px;font-size:13px;background:#fff;color:#1a1714;}
+.framework-select-group select:focus{outline:none;border-color:#51247A;box-shadow:0 0 0 3px rgba(81,36,122,0.1);}
+
+.checkbox-group{margin:12px 0;padding:12px;background:#f9f7f5;border-radius:6px;}
+.checkbox-group label{display:block;font-size:12px;font-weight:600;color:#51247A;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;}
+.checkbox-group-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.checkbox-item{display:flex;align-items:center;}
+.checkbox-item input{margin-right:6px;cursor:pointer;}
+.checkbox-item label{font-size:13px;font-weight:400;color:#1a1714;margin:0;cursor:pointer;}
+
+.recipe-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;padding:16px;background:#fff;border:1px solid #e4dfd9;border-radius:8px;}
+.recipe-cell{padding:12px;border-left:3px solid #51247A;background:#f9f7f5;}
+.recipe-cell-label{font-size:11px;font-weight:700;color:#51247A;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
+.recipe-cell-content{font-size:13px;color:#1a1714;line-height:1.6;}
+
+.descriptor-grid{display:grid;grid-template-columns:1fr;gap:12px;margin:16px 0;}
+.descriptor-textarea{width:100%;min-height:80px;padding:12px;border:1px solid #e4dfd9;border-radius:6px;font-size:13px;font-family:inherit;resize:vertical;font-size:13px;line-height:1.6;}
+.descriptor-label{display:block;font-size:12px;font-weight:700;color:#51247A;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
+
+.triple-tag{padding:14px;border:1px solid #e4dfd9;border-radius:8px;background:#fff;margin-bottom:16px;}
+.triple-tag h4{font-size:13px;font-weight:700;color:#51247A;margin-bottom:12px;}
+
+.descriptor-display{padding:14px;background:#f9f7f5;border-left:3px solid #51247A;border-radius:4px;margin:12px 0;font-size:13px;line-height:1.7;color:#1a1714;}
+
+.comparison-columns{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;}
+.comparison-col{padding:14px;border:1px solid #e4dfd9;border-radius:8px;background:#fff;}
+.comparison-col h4{font-size:12px;font-weight:700;color:#51247A;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;}
+.comparison-col-content{font-size:13px;line-height:1.7;color:#1a1714;}
+
+.mc-option{padding:12px;margin:8px 0;border:1px solid #e4dfd9;border-radius:6px;background:#fff;cursor:pointer;transition:all .15s;}
+.mc-option input[type="radio"]{margin-right:8px;}
+.mc-option:hover{border-color:#51247A;background:#f9f7f5;}
+.mc-option.selected{border-color:#51247A;background:rgba(81,36,122,0.04);}
+
+.feedback.neutral{border-left-color:#51247A;background:rgba(81,36,122,0.04);}
+.feedback.success{border-left-color:#2ea836;background:rgba(46,168,54,0.04);}
+.feedback.warning{border-left-color:#d9534f;background:rgba(217,83,79,0.04);}
+
+@media(max-width:760px){
+  .recipe-grid{grid-template-columns:1fr;}
+  .comparison-columns{grid-template-columns:1fr;}
+  .checkbox-group-options{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 9 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<section class="module-hero part-b">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part B · Frameworks &mdash; Module 9</div>
+    <h1>Combining Frameworks</h1>
+    <p class="hero-sub">The capstone: bringing Values of Inquiry, SOLO, and the Three Levers together to design descriptors that are precise, research-informed, and practically applicable.</p>
+    <span class="hero-time">&#9201; ~20 minutes</span>
+  </div>
+</section>
+
+<!-- ── INTRO ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">The Framework</div>
+    <h2 class="reveal">Three Frameworks, One Descriptor</h2>
+    <p class="lead reveal">Across Part B, you've learned three powerful design tools: Values of Inquiry (what knowledge matters), SOLO (how deeply students understand), and the Three Levers (how to scale challenge). Now you'll apply all three simultaneously. They work in concert: VoI tells you what to assess, SOLO tells you the depth, and Levers tell you how to differentiate between grade levels.</p>
+
+    <div class="emphasis-box reveal" style="border-left-color:#51247A;">
+      <p><strong>The integration pattern:</strong></p>
+      <p style="margin-top:8px;font-size:13px;">VoI values (Clarity, Accuracy, Precision, Breadth, Depth, Relevance, Significance, Coherence, Cogency) define the content. SOLO levels (Unistructural through Extended Abstract) define cognitive progression. The Three Levers (Scope, Complexity, Autonomy) define which dimension you scale to differentiate between grade levels.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: FRAMEWORK DIAGNOSIS (TRIPLE TAGGING) ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 1 of 4</div>
+    <h2 class="reveal">Framework Diagnosis</h2>
+    <p class="lead reveal">Below is an HD-level descriptor. Your task: identify which VoI values it emphasises, which SOLO level it targets, and which primary Lever it relies on. Use the three dropdown menus to select your answers.</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">Triple Tagging</div>
+
+      <div class="triple-tag">
+        <h4>HD Descriptor: Recommendations</h4>
+        <div class="descriptor-display">
+          Identifies the root causes of the turnover problem by examining underlying assumptions and systemic factors. Synthesises across 3+ theoretical perspectives, resolving tensions between competing explanations. Abstracts principles that could apply to similar organisations in different industries.
+        </div>
+      </div>
+
+      <p style="font-size:13px;color:#6b6460;margin:16px 0;">Select the frameworks this descriptor emphasises:</p>
+
+      <div class="framework-select-group">
+        <label for="sel-voi">Primary VoI Value (What knowledge matters most?)</label>
+        <select id="sel-voi">
+          <option value="">-- Select --</option>
+          <option value="clarity">Clarity (clear communication of meaning)</option>
+          <option value="accuracy">Accuracy (factual correctness)</option>
+          <option value="precision">Precision (exact terminology and detail)</option>
+          <option value="breadth">Breadth (multiple perspectives)</option>
+          <option value="depth">Depth (examining underlying assumptions)</option>
+          <option value="relevance">Relevance (applicability to the case)</option>
+          <option value="significance">Significance (importance to practice)</option>
+          <option value="coherence">Coherence (logical consistency)</option>
+          <option value="cogency">Cogency (resolving tensions between explanations)</option>
+        </select>
+      </div>
+
+      <div class="framework-select-group">
+        <label for="sel-solo">SOLO Level (Cognitive Depth?)</label>
+        <select id="sel-solo">
+          <option value="">-- Select --</option>
+          <option value="unistructural">Unistructural (single idea)</option>
+          <option value="multistructural">Multistructural (multiple disconnected ideas)</option>
+          <option value="relational">Relational (ideas connected within context)</option>
+          <option value="extended-abstract">Extended Abstract (principles abstract beyond case)</option>
+        </select>
+      </div>
+
+      <div class="framework-select-group">
+        <label for="sel-lever">Primary Lever (Which dimension is being scaled?)</label>
+        <select id="sel-lever">
+          <option value="">-- Select --</option>
+          <option value="scope">Scope (breadth of inquiry — how wide did they look?)</option>
+          <option value="complexity">Complexity (depth of thinking — how deeply did they connect ideas?)</option>
+          <option value="autonomy">Autonomy (student independence — how freely did they work?)</option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary" id="btn-check-a1" style="margin-top:16px;">Check My Answers</button>
+      <button class="btn btn-secondary btn-small" id="btn-reset-a1" style="margin-left:8px;">Reset</button>
+
+      <div class="feedback neutral" id="a1-feedback" style="display:none;margin-top:16px;">
+        <span class="label" id="a1-label"></span>
+        <p id="a1-msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: THE RECIPE CARD ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 2 of 4</div>
+    <h2 class="reveal">The Recipe Card</h2>
+    <p class="lead reveal">Before writing descriptors, good rubric designers plan their framework choices. For the MGTS2501 "Recommendations" criterion, fill out this recipe card to declare what you'll assess at HD and P levels.</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Plan Before Writing</div>
+
+      <h3 style="font-size:14px;font-weight:600;margin:16px 0;color:#51247A;">HD Level</h3>
+
+      <div class="checkbox-group">
+        <label>Which VoI values are essential at HD? (Select all that apply)</label>
+        <div class="checkbox-group-options" id="chk-voi-hd" style="grid-template-columns:1fr 1fr 1fr;">
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-hd-clarity" value="Clarity">
+            <label for="chk-hd-clarity">Clarity</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-hd-accuracy" value="Accuracy">
+            <label for="chk-hd-accuracy">Accuracy</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-hd-precision" value="Precision">
+            <label for="chk-hd-precision">Precision</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-hd-breadth" value="Breadth">
+            <label for="chk-hd-breadth">Breadth</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-hd-depth" value="Depth">
+            <label for="chk-hd-depth">Depth</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-hd-relevance" value="Relevance">
+            <label for="chk-hd-relevance">Relevance</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-hd-significance" value="Significance">
+            <label for="chk-hd-significance">Significance</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-hd-coherence" value="Coherence">
+            <label for="chk-hd-coherence">Coherence</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-hd-cogency" value="Cogency">
+            <label for="chk-hd-cogency">Cogency</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="framework-select-group">
+        <label for="sel-solo-hd">SOLO Level at HD?</label>
+        <select id="sel-solo-hd">
+          <option value="">-- Select --</option>
+          <option value="unistructural">Unistructural</option>
+          <option value="multistructural">Multistructural</option>
+          <option value="relational">Relational</option>
+          <option value="extended-abstract">Extended Abstract</option>
+        </select>
+      </div>
+
+      <div class="framework-select-group">
+        <label for="sel-lever-hd">Primary Lever at HD?</label>
+        <select id="sel-lever-hd">
+          <option value="">-- Select --</option>
+          <option value="scope">Scope</option>
+          <option value="complexity">Complexity</option>
+          <option value="autonomy">Autonomy</option>
+        </select>
+      </div>
+
+      <h3 style="font-size:14px;font-weight:600;margin:20px 0 16px;color:#51247A;">P (Pass) Level</h3>
+
+      <div class="checkbox-group">
+        <label>Which VoI values are essential at P? (Select all that apply)</label>
+        <div class="checkbox-group-options" id="chk-voi-p" style="grid-template-columns:1fr 1fr 1fr;">
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-p-clarity" value="Clarity">
+            <label for="chk-p-clarity">Clarity</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-p-accuracy" value="Accuracy">
+            <label for="chk-p-accuracy">Accuracy</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-p-precision" value="Precision">
+            <label for="chk-p-precision">Precision</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-p-breadth" value="Breadth">
+            <label for="chk-p-breadth">Breadth</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-p-depth" value="Depth">
+            <label for="chk-p-depth">Depth</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-p-relevance" value="Relevance">
+            <label for="chk-p-relevance">Relevance</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-p-significance" value="Significance">
+            <label for="chk-p-significance">Significance</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-p-coherence" value="Coherence">
+            <label for="chk-p-coherence">Coherence</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk-p-cogency" value="Cogency">
+            <label for="chk-p-cogency">Cogency</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="framework-select-group">
+        <label for="sel-solo-p">SOLO Level at P?</label>
+        <select id="sel-solo-p">
+          <option value="">-- Select --</option>
+          <option value="unistructural">Unistructural</option>
+          <option value="multistructural">Multistructural (weak)</option>
+          <option value="relational">Relational</option>
+          <option value="extended-abstract">Extended Abstract</option>
+        </select>
+      </div>
+
+      <div class="framework-select-group">
+        <label for="sel-lever-p">Primary Lever at P?</label>
+        <select id="sel-lever-p">
+          <option value="">-- Select --</option>
+          <option value="scope">Scope</option>
+          <option value="complexity">Complexity</option>
+          <option value="autonomy">Autonomy</option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary" id="btn-show-model-a2" style="margin-top:16px;">Show Model Recipe Card</button>
+      <div class="model-answer" id="a2-model" style="display:none;margin-top:16px;">
+        <span class="label">Model Recipe Card</span>
+        <div class="recipe-grid">
+          <div class="recipe-cell">
+            <div class="recipe-cell-label">VoI at HD</div>
+            <div class="recipe-cell-content">Cogency, Significance, Precision</div>
+          </div>
+          <div class="recipe-cell">
+            <div class="recipe-cell-label">SOLO at HD</div>
+            <div class="recipe-cell-content">Extended Abstract</div>
+          </div>
+          <div class="recipe-cell">
+            <div class="recipe-cell-label">Lever at HD</div>
+            <div class="recipe-cell-content">Autonomy</div>
+          </div>
+          <div class="recipe-cell">
+            <div class="recipe-cell-label">VoI at P</div>
+            <div class="recipe-cell-content">Relevance</div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:#6b6460;margin-top:12px;"><strong>Rationale:</strong> At HD, we want students to resolve tensions (Cogency), judge what matters (Significance), and use exact language (Precision), reaching Extended Abstract by abstracting principles. Autonomy lets them choose which recommendation to develop and how to frame it. At P, we just need Relevance (recommendations connect to the case), at Multistructural level (ideas present but not integrated), with Scope as the primary lever (how many issues they address rather than how deeply).</p>
+      </div>
+
+      <button class="btn btn-primary" id="btn-check-a2" style="margin-top:12px;">Check My Recipe Card</button>
+      <button class="btn btn-secondary btn-small" id="btn-reset-a2" style="margin-left:8px;">Reset</button>
+
+      <div class="feedback neutral" id="a2-feedback" style="display:none;margin-top:16px;">
+        <span class="label" id="a2-label"></span>
+        <p id="a2-msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: FULL DESCRIPTOR WRITING ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 3 of 4</div>
+    <h2 class="reveal">Full Descriptor Writing</h2>
+    <p class="lead reveal">Using your recipe card, write all 7 grade levels for the "Recommendations" criterion. This is the big one: you're applying all three frameworks to create a complete, coherent rubric row.</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">Write All Seven Levels</div>
+
+      <p style="font-size:13px;color:#6b6460;margin:16px 0;">Write a descriptor for each grade. Remember: each level should reflect your recipe card choices for VoI, SOLO, and Lever.</p>
+
+      <div class="descriptor-grid">
+        <div>
+          <label class="descriptor-label" for="desc-hd">HD (Excellent)</label>
+          <textarea class="descriptor-textarea" id="desc-hd" placeholder="Recommendations that demonstrate..."></textarea>
+        </div>
+        <div>
+          <label class="descriptor-label" for="desc-d">D (Distinction)</label>
+          <textarea class="descriptor-textarea" id="desc-d" placeholder="Recommendations that demonstrate..."></textarea>
+        </div>
+        <div>
+          <label class="descriptor-label" for="desc-c">C (Credit)</label>
+          <textarea class="descriptor-textarea" id="desc-c" placeholder="Recommendations that demonstrate..."></textarea>
+        </div>
+        <div>
+          <label class="descriptor-label" for="desc-p">P (Pass)</label>
+          <textarea class="descriptor-textarea" id="desc-p" placeholder="Recommendations that demonstrate..."></textarea>
+        </div>
+        <div>
+          <label class="descriptor-label" for="desc-mf">MF (Marginal Fail)</label>
+          <textarea class="descriptor-textarea" id="desc-mf" placeholder="Recommendations that..."></textarea>
+        </div>
+        <div>
+          <label class="descriptor-label" for="desc-f">F (Fail)</label>
+          <textarea class="descriptor-textarea" id="desc-f" placeholder="Recommendations are..."></textarea>
+        </div>
+        <div>
+          <label class="descriptor-label" for="desc-lf">LF (Low Fail)</label>
+          <textarea class="descriptor-textarea" id="desc-lf" placeholder="Recommendations..."></textarea>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-show-model-a3" style="margin-top:16px;">Show Model Answer</button>
+
+      <div class="model-answer" id="a3-model" style="display:none;margin-top:16px;">
+        <span class="label">Model Descriptors</span>
+        <div style="margin-top:12px;">
+          <p style="margin:12px 0;"><strong>HD:</strong> Proposes recommendations that address root causes, with detailed implementation plans, anticipated barriers, and evaluation criteria. Recommendations are justified with evidence and demonstrate transferable principles applicable beyond this specific case.</p>
+          <p style="margin:12px 0;"><strong>D:</strong> Proposes recommendations that address both symptoms and root causes, with implementation steps and consideration of feasibility. Each recommendation is explicitly linked to the analysis.</p>
+          <p style="margin:12px 0;"><strong>C:</strong> Proposes recommendations connected to the identified problems. Implementation is mentioned but not detailed. Recommendations are reasonable but not prioritised or evaluated.</p>
+          <p style="margin:12px 0;"><strong>P:</strong> Proposes at least two recommendations relevant to the case. Recommendations are stated but not clearly linked to the analysis or evaluated for feasibility.</p>
+          <p style="margin:12px 0;"><strong>MF:</strong> Proposes a recommendation that has some connection to the case but is vague or generic, without clear links to the analysis.</p>
+          <p style="margin:12px 0;"><strong>F:</strong> Recommendations are absent or entirely disconnected from the analysis presented.</p>
+          <p style="margin:12px 0;"><strong>LF:</strong> No recommendations provided, or recommendations demonstrate fundamental misunderstanding of the case.</p>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-check-a3" style="margin-top:12px;">Compare to Model</button>
+      <button class="btn btn-secondary btn-small" id="btn-reset-a3" style="margin-left:8px;">Clear All</button>
+
+      <div class="feedback neutral" id="a3-feedback" style="display:none;margin-top:16px;">
+        <span class="label" id="a3-label"></span>
+        <p id="a3-msg"></p>
+      </div>
+
+      <div id="a3-comparison" style="display:none;margin-top:16px;">
+        <h3 style="font-size:14px;font-weight:600;margin-bottom:12px;">Your Work vs. Model</h3>
+        <div id="a3-comparison-content"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: PEER COMPARISON ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#51247A">Activity 4 of 4</div>
+    <h2 class="reveal">Peer Comparison</h2>
+    <p class="lead reveal">Below are two valid HD-level descriptors side by side: your model answer and an alternative good answer. Both reflect strong framework thinking but with different emphases. Which is clearer for markers?</p>
+
+    <div class="activity reveal" id="act-4">
+      <div class="activity-number">4</div>
+      <div class="activity-title">Which Version is Clearer?</div>
+
+      <div class="comparison-columns">
+        <div class="comparison-col">
+          <h4>Model Version</h4>
+          <div class="comparison-col-content">
+            Proposes recommendations that address root causes, with detailed implementation plans, anticipated barriers, and evaluation criteria. Recommendations are justified with evidence and demonstrate transferable principles applicable beyond this specific case.
+          </div>
+          <p style="font-size:11px;color:#6b6460;margin-top:8px;"><strong>Framework:</strong> Extended Abstract (abstracts principles), Cogency + Significance (justified, applicable beyond case)</p>
+        </div>
+
+        <div class="comparison-col" style="border-left:3px solid #d9534f;">
+          <h4>Alternative Version</h4>
+          <div class="comparison-col-content">
+            Designs an implementation strategy addressing root causes, sequencing recommendations by priority and resource requirements. Justifies each recommendation with specific evidence from the analysis. Critically evaluates potential unintended consequences.
+          </div>
+          <p style="font-size:11px;color:#6b6460;margin-top:8px;"><strong>Framework:</strong> Relational (evidence linked to analysis), Precision (specific), Complexity (sequencing, consequences)</p>
+        </div>
+      </div>
+
+      <h3 style="font-size:14px;font-weight:600;margin:20px 0 12px;color:#51247A;">Which descriptor is clearer for markers?</h3>
+
+      <div id="mc-options">
+        <div class="mc-option">
+          <input type="radio" id="mc-1" name="clarity" value="model">
+          <label for="mc-1"><strong>Model Version.</strong> The emphasis on transferability and evidence-based reasoning is easier to spot and check.</label>
+        </div>
+        <div class="mc-option">
+          <input type="radio" id="mc-2" name="clarity" value="alternative">
+          <label for="mc-2"><strong>Alternative Version.</strong> The focus on implementation sequencing and critical evaluation is more concrete and observable in student work.</label>
+        </div>
+        <div class="mc-option">
+          <input type="radio" id="mc-3" name="clarity" value="equally">
+          <label for="mc-3"><strong>Both are equally clear.</strong> They emphasise different frameworks, so the "right" choice depends on what the course prioritises.</label>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-submit-a4" style="margin-top:16px;">Submit Your Answer</button>
+      <button class="btn btn-secondary btn-small" id="btn-reset-a4" style="margin-left:8px;">Reset</button>
+
+      <div class="feedback neutral" id="a4-feedback" style="display:none;margin-top:16px;">
+        <span class="label" id="a4-label"></span>
+        <p id="a4-msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NAV ── -->
+<nav class="module-nav" style="max-width:680px;margin:40px auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;">
+  <a href="module-08.html">← Module 8</a>
+  <span style="font-size:12px;color:#6b6460;">Part B Capstone</span>
+  <a href="module-10.html" class="nav-next disabled" aria-disabled="true">Module 10 →</a>
+</nav>
+
+<!-- ── FOOTER ── -->
+<footer class="module-footer" style="background:#f7f5f3;padding:32px 24px;margin-top:64px;text-align:center;color:#6b6460;font-size:12px;">
+  <p>UQ Business School Learning Design · 2026</p>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  const SAVE_KEY = 'm9-data';
+  const MODULE_NUM = 9;
+  const TOTAL_ACTIVITIES = 4;
+
+  function saveTLS(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+  }
+  function loadTLS(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; }
+  }
+
+  // Activity 1: Framework Diagnosis
+  document.getElementById('btn-check-a1').addEventListener('click', () => {
+    const voiVal = document.getElementById('sel-voi').value;
+    const soloVal = document.getElementById('sel-solo').value;
+    const leverVal = document.getElementById('sel-lever').value;
+
+    // Model answers
+    const correctVoi = 'depth,breadth,cogency'; // any combination, but primary is Cogency
+    const correctSolo = 'extended-abstract';
+    const correctLever = 'complexity';
+
+    saveTLS(SAVE_KEY + '-a1', { voi: voiVal, solo: soloVal, lever: leverVal });
+
+    const fb = document.getElementById('a1-feedback');
+    const label = document.getElementById('a1-label');
+    const msg = document.getElementById('a1-msg');
+
+    let correct = 0;
+    let feedback = [];
+
+    if (voiVal === 'cogency') {
+      correct++;
+      feedback.push('<strong>VoI:</strong> Correct! Cogency is the primary value here (resolving tensions).');
+    } else {
+      feedback.push('<strong>VoI:</strong> The descriptor emphasises Cogency (resolving tensions between perspectives) most. Also present: Depth (examining assumptions) and Breadth (3+ perspectives).');
+    }
+
+    if (soloVal === correctSolo) {
+      correct++;
+      feedback.push('<strong>SOLO:</strong> Correct! Extended Abstract — students abstract principles beyond the case.');
+    } else {
+      feedback.push('<strong>SOLO:</strong> Extended Abstract is the target. Students abstract principles applicable to other organisations.');
+    }
+
+    if (leverVal === correctLever) {
+      correct++;
+      feedback.push('<strong>Lever:</strong> Correct! Complexity is the primary lever — it scales the depth of thinking required, from surface identification to resolving tensions across multiple theories.');
+    } else {
+      feedback.push('<strong>Lever:</strong> Complexity is the primary lever — the descriptor asks students to resolve tensions across multiple theories, requiring deep connection of ideas. Scope (breadth) is also present but secondary.');
+    }
+
+    fb.style.display = 'block';
+    if (correct === 3) {
+      fb.classList.remove('neutral', 'warning');
+      fb.classList.add('success');
+      label.textContent = 'Excellent!';
+    } else if (correct >= 2) {
+      fb.classList.remove('neutral', 'success');
+      fb.classList.add('warning');
+      label.textContent = 'Mostly there!';
+    } else {
+      fb.classList.remove('success', 'warning');
+      fb.classList.add('neutral');
+      label.textContent = 'Review these points:';
+    }
+    msg.innerHTML = feedback.join('<br>');
+  });
+
+  document.getElementById('btn-reset-a1').addEventListener('click', () => {
+    document.getElementById('sel-voi').value = '';
+    document.getElementById('sel-solo').value = '';
+    document.getElementById('sel-lever').value = '';
+    document.getElementById('a1-feedback').style.display = 'none';
+  });
+
+  // Activity 2: Recipe Card
+  document.getElementById('btn-show-model-a2').addEventListener('click', () => {
+    const model = document.getElementById('a2-model');
+    model.style.display = model.style.display === 'none' ? 'block' : 'none';
+  });
+
+  document.getElementById('btn-check-a2').addEventListener('click', () => {
+    // Collect selected checkboxes
+    const hdVoi = [];
+    const pVoi = [];
+    document.querySelectorAll('#chk-voi-hd input[type="checkbox"]:checked').forEach(cb => {
+      hdVoi.push(cb.value);
+    });
+    document.querySelectorAll('#chk-voi-p input[type="checkbox"]:checked').forEach(cb => {
+      pVoi.push(cb.value);
+    });
+
+    const soloHd = document.getElementById('sel-solo-hd').value;
+    const soloP = document.getElementById('sel-solo-p').value;
+    const leverHd = document.getElementById('sel-lever-hd').value;
+    const leverP = document.getElementById('sel-lever-p').value;
+
+    saveTLS(SAVE_KEY + '-a2', { hdVoi, pVoi, soloHd, soloP, leverHd, leverP });
+
+    const fb = document.getElementById('a2-feedback');
+    const label = document.getElementById('a2-label');
+    const msg = document.getElementById('a2-msg');
+
+    let correct = 0;
+    let feedback = [];
+
+    // HD checks
+    if (hdVoi.includes('Cogency') && hdVoi.includes('Significance') && hdVoi.includes('Precision')) {
+      correct++;
+      feedback.push('<strong>HD VoI values:</strong> Correct! Cogency (resolving tensions), Significance (what matters in practice), Precision (exact language).');
+    } else {
+      feedback.push('<strong>HD VoI values:</strong> Model answer: Cogency, Significance, Precision.');
+    }
+
+    if (soloHd === 'extended-abstract') {
+      correct++;
+      feedback.push('<strong>SOLO at HD:</strong> Correct! Extended Abstract — students abstract principles.');
+    } else {
+      feedback.push('<strong>SOLO at HD:</strong> Extended Abstract is the target.');
+    }
+
+    if (leverHd === 'autonomy') {
+      correct++;
+      feedback.push('<strong>Lever at HD:</strong> Correct! Autonomy lets students choose which recommendations to develop and how to frame them.');
+    } else {
+      feedback.push('<strong>Lever at HD:</strong> Model answer: Autonomy (student choice in framing recommendations).');
+    }
+
+    // P checks
+    if (pVoi.includes('Relevance')) {
+      correct++;
+      feedback.push('<strong>P VoI values:</strong> Correct! Relevance (recommendations connect to the case).');
+    } else {
+      feedback.push('<strong>P VoI values:</strong> Model answer: Relevance (connection to the case).');
+    }
+
+    if (soloP === 'multistructural') {
+      correct++;
+      feedback.push('<strong>SOLO at P:</strong> Correct! Multistructural (weak) — ideas present but not deeply integrated.');
+    } else {
+      feedback.push('<strong>SOLO at P:</strong> Model answer: Multistructural (weak).');
+    }
+
+    fb.style.display = 'block';
+    if (correct >= 5) {
+      fb.classList.remove('neutral', 'warning');
+      fb.classList.add('success');
+      label.textContent = 'Excellent recipe card!';
+    } else if (correct >= 3) {
+      fb.classList.remove('neutral', 'success');
+      fb.classList.add('warning');
+      label.textContent = 'Good start. Review:';
+    } else {
+      fb.classList.remove('success', 'warning');
+      fb.classList.add('neutral');
+      label.textContent = 'Model answer:';
+    }
+    msg.innerHTML = feedback.join('<br>');
+  });
+
+  document.getElementById('btn-reset-a2').addEventListener('click', () => {
+    document.querySelectorAll('#chk-voi-hd input[type="checkbox"]').forEach(cb => cb.checked = false);
+    document.querySelectorAll('#chk-voi-p input[type="checkbox"]').forEach(cb => cb.checked = false);
+    document.getElementById('sel-solo-hd').value = '';
+    document.getElementById('sel-solo-p').value = '';
+    document.getElementById('sel-lever-hd').value = '';
+    document.getElementById('sel-lever-p').value = '';
+    document.getElementById('a2-feedback').style.display = 'none';
+  });
+
+  // Activity 3: Full Descriptor Writing
+  document.getElementById('btn-show-model-a3').addEventListener('click', () => {
+    const model = document.getElementById('a3-model');
+    model.style.display = model.style.display === 'none' ? 'block' : 'none';
+  });
+
+  document.getElementById('btn-check-a3').addEventListener('click', () => {
+    const userDescriptors = {
+      hd: document.getElementById('desc-hd').value,
+      d: document.getElementById('desc-d').value,
+      c: document.getElementById('desc-c').value,
+      p: document.getElementById('desc-p').value,
+      mf: document.getElementById('desc-mf').value,
+      f: document.getElementById('desc-f').value,
+      lf: document.getElementById('desc-lf').value
+    };
+
+    const modelDescriptors = {
+      hd: 'Proposes recommendations that address root causes, with detailed implementation plans, anticipated barriers, and evaluation criteria. Recommendations are justified with evidence and demonstrate transferable principles applicable beyond this specific case.',
+      d: 'Proposes recommendations that address both symptoms and root causes, with implementation steps and consideration of feasibility. Each recommendation is explicitly linked to the analysis.',
+      c: 'Proposes recommendations connected to the identified problems. Implementation is mentioned but not detailed. Recommendations are reasonable but not prioritised or evaluated.',
+      p: 'Proposes at least two recommendations relevant to the case. Recommendations are stated but not clearly linked to the analysis or evaluated for feasibility.',
+      mf: 'Proposes a recommendation that has some connection to the case but is vague or generic, without clear links to the analysis.',
+      f: 'Recommendations are absent or entirely disconnected from the analysis presented.',
+      lf: 'No recommendations provided, or recommendations demonstrate fundamental misunderstanding of the case.'
+    };
+
+    saveTLS(SAVE_KEY + '-a3', userDescriptors);
+
+    const compDiv = document.getElementById('a3-comparison');
+    const compContent = document.getElementById('a3-comparison-content');
+    let html = '';
+
+    ['hd', 'd', 'c', 'p', 'mf', 'f', 'lf'].forEach(grade => {
+      const gradeLabel = grade.toUpperCase();
+      html += `<div style="margin:16px 0;padding:12px;border:1px solid #e4dfd9;border-radius:8px;background:#fff;">
+        <h4 style="font-size:12px;font-weight:700;color:#51247A;margin-bottom:8px;text-transform:uppercase;">${gradeLabel}</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <p style="font-size:11px;font-weight:600;color:#6b6460;margin-bottom:6px;">Your Answer:</p>
+            <p style="font-size:13px;line-height:1.6;color:#1a1714;">${userDescriptors[grade] || '(blank)'}</p>
+          </div>
+          <div>
+            <p style="font-size:11px;font-weight:600;color:#6b6460;margin-bottom:6px;">Model:</p>
+            <p style="font-size:13px;line-height:1.6;color:#1a1714;">${modelDescriptors[grade]}</p>
+          </div>
+        </div>
+      </div>`;
+    });
+
+    compContent.innerHTML = html;
+    compDiv.style.display = 'block';
+
+    const fb = document.getElementById('a3-feedback');
+    const label = document.getElementById('a3-label');
+    const msg = document.getElementById('a3-msg');
+    fb.style.display = 'block';
+    fb.classList.remove('success', 'warning');
+    fb.classList.add('neutral');
+    label.textContent = 'Your Work';
+    msg.innerHTML = '<p style="font-size:13px;">Compare your descriptors above. Key features to look for: HD should mention root causes, evidence, and transferability. P should focus on relevance and connection to the case. The progression should show increasing specificity and depth.</p>';
+  });
+
+  document.getElementById('btn-reset-a3').addEventListener('click', () => {
+    document.getElementById('desc-hd').value = '';
+    document.getElementById('desc-d').value = '';
+    document.getElementById('desc-c').value = '';
+    document.getElementById('desc-p').value = '';
+    document.getElementById('desc-mf').value = '';
+    document.getElementById('desc-f').value = '';
+    document.getElementById('desc-lf').value = '';
+    document.getElementById('a3-feedback').style.display = 'none';
+    document.getElementById('a3-comparison').style.display = 'none';
+  });
+
+  // Activity 4: Peer Comparison
+  document.getElementById('btn-submit-a4').addEventListener('click', () => {
+    const selected = document.querySelector('input[name="clarity"]:checked');
+    if (!selected) {
+      alert('Please select an option.');
+      return;
+    }
+
+    const answer = selected.value;
+    saveTLS(SAVE_KEY + '-a4', { answer });
+
+    const fb = document.getElementById('a4-feedback');
+    const label = document.getElementById('a4-label');
+    const msg = document.getElementById('a4-msg');
+
+    fb.style.display = 'block';
+    fb.classList.remove('neutral', 'warning');
+    fb.classList.add('success');
+    label.textContent = 'Good thinking!';
+
+    const feedback = {
+      model: 'The model version emphasises transferability and systematic reasoning, which are powerful for Extended Abstract thinking. This can be easier to calibrate for markers across different contexts.',
+      alternative: 'The alternative emphasises observable behaviours (sequencing, critical evaluation), which can be easier for markers to spot in student work. Both are valid.',
+      equally: 'Exactly! Both versions reflect strong framework thinking but with different emphases. The model prioritises Extended Abstract (abstraction), while the alternative prioritises Complexity (interconnected ideas) and Precision (specific evidence). The "right" choice depends on what your course values. This is why rubric design is professional judgement, not formula.'
+    };
+
+    msg.innerHTML = '<strong>Correct perspective!</strong> ' + feedback[answer] || feedback.equally;
+  });
+
+  document.getElementById('btn-reset-a4').addEventListener('click', () => {
+    document.querySelectorAll('input[name="clarity"]').forEach(rb => rb.checked = false);
+    document.getElementById('a4-feedback').style.display = 'none';
+  });
+
+  // Load and restore saved state
+  window.addEventListener('load', () => {
+    const saved = loadTLS(SAVE_KEY + '-a1', null);
+    if (saved) {
+      if (saved.voi) document.getElementById('sel-voi').value = saved.voi;
+      if (saved.solo) document.getElementById('sel-solo').value = saved.solo;
+      if (saved.lever) document.getElementById('sel-lever').value = saved.lever;
+    }
+  });
+
+  // Reveal animation
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    setTimeout(() => { el.style.opacity = '1'; }, i * 100);
+  });
+})();
+</script>
+
+</body>
+</html>

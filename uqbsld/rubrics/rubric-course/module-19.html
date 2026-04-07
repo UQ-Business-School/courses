@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 19: The Smush</title>
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .module-hero {
+            background: linear-gradient(135deg, #2EA836 0%, #1f7424 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .module-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .module-hero .module-meta {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .activity-container {
+            margin-bottom: 3rem;
+        }
+
+        .activity-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #2EA836;
+        }
+
+        .activity-number {
+            background: #2EA836;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .activity-header h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        /* MC Question */
+        .mc-question {
+            background: #f5f5f5;
+            border-left: 4px solid #2EA836;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+        }
+
+        .mc-question p {
+            margin: 0 0 1rem 0;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .mc-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .mc-option {
+            display: flex;
+            align-items: flex-start;
+            padding: 0.75rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mc-option:hover {
+            border-color: #2EA836;
+            background: #f0f8f2;
+        }
+
+        .mc-option input[type="radio"] {
+            margin-right: 0.75rem;
+            margin-top: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        .mc-option label {
+            cursor: pointer;
+            margin: 0;
+            flex: 1;
+        }
+
+        .mc-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .mc-feedback.show {
+            display: block;
+        }
+
+        .mc-feedback.correct {
+            background: #e8f5e9;
+            border-left: 3px solid #2EA836;
+            color: #2EA836;
+        }
+
+        .mc-feedback.incorrect {
+            background: #ffebee;
+            border-left: 3px solid #c62828;
+            color: #c62828;
+        }
+
+        /* Text input */
+        .text-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .text-input-group label {
+            font-weight: bold;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .text-input-group textarea {
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            min-height: 100px;
+            resize: vertical;
+            transition: border-color 0.2s ease;
+        }
+
+        .text-input-group textarea:focus {
+            outline: none;
+            border-color: #2EA836;
+            box-shadow: 0 0 0 3px rgba(46, 168, 54, 0.1);
+        }
+
+        .text-input-group textarea:disabled {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        /* Model answer */
+        .model-answer {
+            display: none;
+            margin-top: 1.5rem;
+            background: #f0f8f2;
+            padding: 1.5rem;
+            border-left: 4px solid #2EA836;
+            border-radius: 6px;
+        }
+
+        .model-answer.show {
+            display: block;
+        }
+
+        .model-answer p {
+            margin: 0.5rem 0;
+        }
+
+        .model-answer p:first-child {
+            margin-top: 0;
+            font-weight: bold;
+        }
+
+        /* Strategy selector */
+        .strategy-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .strategy-card:hover {
+            border-color: #2EA836;
+            box-shadow: 0 2px 8px rgba(46, 168, 54, 0.1);
+        }
+
+        .strategy-card h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .strategy-card p {
+            margin: 0.5rem 0;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .strategy-card.selected {
+            border-color: #2EA836;
+            background: #f0f8f2;
+        }
+
+        .strategy-selector {
+            margin-bottom: 1rem;
+        }
+
+        /* Slider calculator */
+        .slider-container {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+        }
+
+        .slider-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .slider-item label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .slider-item input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider-item input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #2EA836;
+            cursor: pointer;
+        }
+
+        .slider-item input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #2EA836;
+            cursor: pointer;
+            border: none;
+        }
+
+        .slider-summary {
+            background: white;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+
+        .slider-summary p {
+            margin: 0.5rem 0;
+            color: #333;
+        }
+
+        .ga-total {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #2EA836;
+        }
+
+        .ga-total.warning {
+            color: #f57c00;
+        }
+
+        .ga-total.success {
+            color: #2EA836;
+        }
+
+        /* Before/After comparison */
+        .comparison-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .comparison-column {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .comparison-header {
+            background: #2EA836;
+            color: white;
+            padding: 1rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .comparison-content {
+            padding: 1.5rem;
+            background: white;
+            min-height: 300px;
+        }
+
+        .comparison-text {
+            line-height: 1.7;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .comparison-text strong {
+            color: #2EA836;
+        }
+
+        .rubric-preview {
+            background: white;
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .rubric-preview th,
+        .rubric-preview td {
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .rubric-preview th {
+            background: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .rubric-preview td {
+            vertical-align: top;
+        }
+
+        /* Tracker */
+        .module-tracker {
+            background: white;
+            border: 2px solid #2EA836;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tracker-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .tracker-bars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tracker-item {
+            text-align: center;
+        }
+
+        .tracker-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .tracker-bar {
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+        }
+
+        .tracker-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2EA836, #1f7424);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .module-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #eee;
+        }
+
+        .nav-button {
+            padding: 0.75rem 1.5rem;
+            background: #2EA836;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .nav-button:hover {
+            background: #1f7424;
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .nav-center {
+            text-align: center;
+            color: #666;
+        }
+
+        /* Completion Badge */
+        .completion-badge {
+            display: none;
+            background: #2EA836;
+            color: white;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+
+        .completion-badge.show {
+            display: block;
+        }
+
+        /* Learning Path Box */
+        .learning-path {
+            background: #f0f8f2;
+            border: 1px solid #2EA836;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+        }
+
+        .learning-path h4 {
+            margin-top: 0;
+            color: #2EA836;
+        }
+
+        .learning-path ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .learning-path li {
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box {
+            background: #fffbf0;
+            border: 1px solid #f0ad4e;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            color: #856404;
+        }
+
+        .emphasis-box {
+            background: #e8f5e9;
+            border: 2px solid #2EA836;
+            padding: 1.5rem;
+            border-radius: 6px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .emphasis-box h3 {
+            margin-top: 0;
+            color: #2EA836;
+        }
+
+        .emphasis-box p {
+            color: #555;
+            margin: 0.5rem 0;
+        }
+
+        .button {
+            padding: 0.75rem 1.5rem;
+            background: #2EA836;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .button:hover {
+            background: #1f7424;
+        }
+
+        .button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .fill-blank {
+            background: white;
+            border-bottom: 2px solid #2EA836;
+            padding: 0.25rem 0.5rem;
+            min-width: 150px;
+            font-style: italic;
+            color: #666;
+        }
+
+        input.fill-blank {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-style: normal;
+        }
+
+        input.fill-blank:focus {
+            outline: none;
+            border-color: #2EA836;
+            box-shadow: 0 0 0 3px rgba(46, 168, 54, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="module-hero part-e">
+            <h1>The Smush</h1>
+            <p class="module-meta">Part E · GA Integration — Module 19</p>
+            <p class="module-meta">~15 minutes · 5 activities</p>
+        </div>
+
+        <div class="learning-path">
+            <h4>Practical Integration: Moving from Theory to Action</h4>
+            <p>So far you've learned to design rubrics (Modules 1–10), translate GA templates (Modules 11–18), and aligned them to your rubric. Now comes the practical integration: how do you actually embed GA criteria into your rubric?</p>
+            <ul>
+                <li>Module 9: Rubric integration patterns</li>
+                <li>Module 18: GA template translation</li>
+                <li>Module 19: Putting it all together—three integration strategies</li>
+            </ul>
+        </div>
+
+        <div class="module-tracker">
+            <div class="tracker-title">Module Progress</div>
+            <div class="tracker-bars">
+                <div class="tracker-item">
+                    <div class="tracker-label">Integration Strategy</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="1"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">Smush in Action</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="2"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">Weighting Check</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="3"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">Footer & Formatting</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="4"></div>
+                    </div>
+                </div>
+                <div class="tracker-item">
+                    <div class="tracker-label">Before & After</div>
+                    <div class="tracker-bar">
+                        <div class="tracker-fill" style="width: 0%" data-activity="5"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="completion-badge" id="completionBadge">
+            All activities completed! You now understand all three GA integration strategies and can apply them to your rubric.
+        </div>
+
+        <!-- Activity 1: Integration Strategy Selector -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">1</div>
+                <h2>Integration Strategy Selector</h2>
+            </div>
+            <p>GA criteria can be integrated into rubrics via three approaches. For each scenario, decide which strategy best fits:</p>
+
+            <div class="highlight-box">
+                <p><strong>Dedicated Row:</strong> Add a separate criterion just for the GA (e.g., "GA2: Critical Analysis" as its own row). <em>Use when there is no existing criterion that overlaps with the GA.</em></p>
+                <p><strong>Embedded (Smushed):</strong> Weave GA language into an existing criterion that overlaps perfectly (mark with *). <em>Use when a rubric criterion and GA sub-criterion assess the same competency.</em></p>
+                <p><strong>Hybrid:</strong> Some GAs as dedicated rows, others embedded in existing criteria. <em>Use when some GA outcomes overlap with existing criteria and others don't.</em></p>
+            </div>
+
+            <div class="learning-path" style="margin-bottom: 1.5rem;">
+                <h4>Decision Framework: How to Choose</h4>
+                <p style="margin-bottom: 0.75rem;">Ask yourself three questions:</p>
+                <ul>
+                    <li><strong>Does my rubric already measure this GA outcome?</strong> If yes → Embedded (smush it in, add the asterisk).</li>
+                    <li><strong>Does my rubric partially overlap?</strong> If yes → Hybrid (embed the overlapping part, add a dedicated row for the rest).</li>
+                    <li><strong>Is this GA outcome entirely separate from my existing criteria?</strong> If yes → Dedicated Row.</li>
+                </ul>
+                <p style="margin-top: 0.75rem; font-size: 0.9rem; color: #555;">The goal is to avoid double-counting (testing the same thing twice) while ensuring the GA is genuinely assessed, not just bolted on.</p>
+            </div>
+
+            <div id="strategyContainer"></div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity1Feedback">Complete all 4 scenarios to progress.</p>
+        </div>
+
+        <!-- Activity 2: The Smush in Action -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">2</div>
+                <h2>The Smush in Action: Text Transform</h2>
+            </div>
+            <p>Take the MGTS2501 "Critical Analysis" criterion and GA2 "Critical Analysis" sub-criterion—they overlap perfectly. Combine them into a single descriptor that covers both the assessment criterion AND the GA requirements. Add the asterisk (*).</p>
+
+            <div class="highlight-box">
+                <p><strong>Model answer:</strong> "Critical Analysis* — Identifies both immediate and systemic causes of the turnover problem, distinguishing symptoms from root issues. Supports each cause with multiple relevant theories, explaining how they interact. Evaluates management's response against what the theories predict, identifying assumptions, biases, and gaps in the analysis. Analysis moves beyond description to build an original, evidence-based interpretation."</p>
+            </div>
+
+            <div class="text-input-group">
+                <label>Your smushed descriptor for Critical Analysis (include asterisk):</label>
+                <textarea id="a2Input" placeholder="Combine the rubric criterion and GA requirement into one observable descriptor..."></textarea>
+            </div>
+
+            <button class="button" id="a2CheckBtn">Check Answer</button>
+            <div id="a2Feedback" style="margin-top: 1rem;"></div>
+
+            <div id="a2Model" class="model-answer">
+                <p>Model Answer:</p>
+                <p>"Critical Analysis* — Identifies both immediate and systemic causes of the turnover problem, distinguishing symptoms from root issues. Supports each cause with multiple relevant theories, explaining how they interact. Evaluates management's response against what the theories predict, identifying assumptions, biases, and gaps in the analysis. Analysis moves beyond description to build an original, evidence-based interpretation."</p>
+            </div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity2Feedback">Complete your answer to progress.</p>
+        </div>
+
+        <!-- Activity 3: Weighting Check -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">3</div>
+                <h2>Weighting Check: Slider Calculator</h2>
+            </div>
+            <p>Verify that GA criteria collectively account for <strong>≥10% of marks</strong>. Adjust weightings using the sliders below. The running total shows your GA-weighted marks.</p>
+
+            <div class="slider-container">
+                <h3 style="margin-top: 0;">MGTS2501 Assessment Rubric Criteria</h3>
+
+                <div class="slider-item">
+                    <label>
+                        <span>Problem Identification</span>
+                        <span id="w1Val">10%</span>
+                    </label>
+                    <input type="range" id="w1Slider" min="5" max="25" value="10" step="5">
+                </div>
+
+                <div class="slider-item">
+                    <label>
+                        <span>Critical Analysis* (GA2)</span>
+                        <span id="w2Val">35%</span>
+                    </label>
+                    <input type="range" id="w2Slider" min="20" max="50" value="35" step="5">
+                </div>
+
+                <div class="slider-item">
+                    <label>
+                        <span>Evidence Integration</span>
+                        <span id="w3Val">25%</span>
+                    </label>
+                    <input type="range" id="w3Slider" min="15" max="35" value="25" step="5">
+                </div>
+
+                <div class="slider-item">
+                    <label>
+                        <span>Structure & Clarity</span>
+                        <span id="w4Val">20%</span>
+                    </label>
+                    <input type="range" id="w4Slider" min="10" max="30" value="20" step="5">
+                </div>
+
+                <div class="slider-item">
+                    <label>
+                        <span>Reflection & Limitations</span>
+                        <span id="w5Val">10%</span>
+                    </label>
+                    <input type="range" id="w5Slider" min="5" max="25" value="10" step="5">
+                </div>
+
+                <div class="slider-summary">
+                    <p><strong>Total Marks:</strong> <span id="totalMarks">100</span>%</p>
+                    <p><strong>GA-Weighted Marks:</strong> <span id="gaMarks" class="ga-total success">35%</span></p>
+                    <p id="gaStatusMsg" style="color: #2EA836; font-weight: bold;">✓ Meets ≥10% GA weighting requirement</p>
+                </div>
+            </div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity3Feedback">Adjust weightings to meet the ≥10% GA requirement, then proceed.</p>
+        </div>
+
+        <!-- Activity 4: Footer and Formatting -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">4</div>
+                <h2>Footer and Formatting: Fill in the Blank</h2>
+            </div>
+            <p>Add the asterisk explanation and GA attribution footer. Complete the following fill-in-the-blank exercises:</p>
+
+            <div class="text-input-group">
+                <label>1. "* Denotes criterion mapped to Graduate Attribute <input type="text" class="fill-blank" id="a4q1" placeholder="e.g., GA2"></label>
+            </div>
+
+            <div class="text-input-group">
+                <label>2. "Sub-criteria assessed: <input type="text" class="fill-blank" id="a4q2" placeholder="Criterion 1"> and <input type="text" class="fill-blank" id="a4q3" placeholder="Criterion 2"></label>
+            </div>
+
+            <div class="text-input-group">
+                <label>3. File naming convention: MGTS2501_A2_Rubric_GA<input type="text" class="fill-blank" id="a4q4" placeholder="2">_<input type="text" class="fill-blank" id="a4q5" placeholder="Sem1_2026">.docx</label>
+            </div>
+
+            <button class="button" id="a4CheckBtn">Check Answer</button>
+            <div id="a4Feedback" style="margin-top: 1rem;"></div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity4Feedback">Complete all blanks to progress.</p>
+        </div>
+
+        <!-- Activity 5: Before and After -->
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="activity-number">5</div>
+                <h2>Before and After: Visual Celebration</h2>
+            </div>
+            <p>See the complete journey—the original rubric from Module 1 alongside the final, GA-integrated version.</p>
+
+            <div class="comparison-container">
+                <div class="comparison-column">
+                    <div class="comparison-header">BEFORE: Module 1</div>
+                    <div class="comparison-content">
+                        <table class="rubric-preview">
+                            <thead>
+                                <tr>
+                                    <th>Criterion</th>
+                                    <th style="width: 40%;">High Distinction</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Introduction</strong></td>
+                                    <td>Excellent introduction to the case, clearly states problem.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Analysis</strong></td>
+                                    <td>Deeply analyses the problem from multiple angles. Very good job integrating theories.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Evidence</strong></td>
+                                    <td>Uses relevant sources and applies them well to support conclusions.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Writing</strong></td>
+                                    <td>Well-structured and clearly written. Professional tone throughout.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="margin-top: 1.5rem; color: #c62828; font-size: 0.85rem;"><strong>Issues:</strong> Vague adverbs ("deeply", "well"), no GA alignment, no observable criteria, weak assessment language.</p>
+                    </div>
+                </div>
+
+                <div class="comparison-column">
+                    <div class="comparison-header">AFTER: Module 19</div>
+                    <div class="comparison-content">
+                        <table class="rubric-preview">
+                            <thead>
+                                <tr>
+                                    <th>Criterion</th>
+                                    <th style="width: 40%;">High Distinction</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Problem Identification</strong><br><small>(10%)</small></td>
+                                    <td>Identifies both immediate and systemic causes of the turnover problem, distinguishing symptoms from root issues.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Critical Analysis*</strong><br><small>(35%, GA2)</small></td>
+                                    <td>Supports each cause with multiple relevant theories, explaining how they interact. Evaluates management's response against what the theories predict, identifying assumptions, biases, and gaps in the analysis. Analysis moves beyond description to build an original, evidence-based interpretation.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Evidence Integration</strong><br><small>(25%)</small></td>
+                                    <td>Selects evidence from case data and scholarly sources that directly supports each theoretical argument. Explains the relevance of evidence to the specific context.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Structure & Clarity</strong><br><small>(20%)</small></td>
+                                    <td>Argument is logically sequenced. Transitions between ideas are explicit. Writing is clear, concise, and maintains professional register throughout.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="margin-top: 1.5rem; color: #2EA836; font-size: 0.85rem;"><strong>Improvement:</strong> Observable criteria, GA-mapped (marked with *), transparent weightings, no vague adverbs, clear for marking.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+                <p><strong>Identify three specific improvements</strong> from the "Before" to the "After" rubric. Select all that apply:</p>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem; margin: 1rem 0;">
+                    <label class="mc-option" style="display:flex;align-items:flex-start;">
+                        <input type="checkbox" id="a5c1" style="margin-right:0.75rem;margin-top:0.2rem;">
+                        <span>Section-based criteria (Introduction, Analysis) replaced with capability-based criteria (Problem Identification, Critical Analysis)</span>
+                    </label>
+                    <label class="mc-option" style="display:flex;align-items:flex-start;">
+                        <input type="checkbox" id="a5c2" style="margin-right:0.75rem;margin-top:0.2rem;">
+                        <span>Vague adverbs ("excellent", "very good") replaced with observable language (specific verbs and actions)</span>
+                    </label>
+                    <label class="mc-option" style="display:flex;align-items:flex-start;">
+                        <input type="checkbox" id="a5c3" style="margin-right:0.75rem;margin-top:0.2rem;">
+                        <span>GA2 is now mapped to Critical Analysis with an asterisk (*) and transparent weighting</span>
+                    </label>
+                    <label class="mc-option" style="display:flex;align-items:flex-start;">
+                        <input type="checkbox" id="a5c4" style="margin-right:0.75rem;margin-top:0.2rem;">
+                        <span>The font was changed from Times New Roman to Arial</span>
+                    </label>
+                </div>
+            </div>
+
+            <button class="button" id="a5CheckBtn">Check My Selections</button>
+            <div id="a5Feedback" style="margin-top: 1rem; display: none; padding: 1rem; border-radius: 4px;"></div>
+
+            <p style="color: #666; font-size: 0.9rem;" id="activity5Feedback">Click the button to complete this activity.</p>
+        </div>
+
+        <!-- Module Navigation -->
+        <nav class="module-nav">
+            <a href="module-18.html">← Module 18</a>
+            <div class="nav-center">Module 19 of 20</div>
+            <a href="module-20.html" class="nav-next disabled" aria-disabled="true" id="nextBtn">Module 20 →</a>
+        </nav>
+    </div>
+
+    <script src="shared.js"></script>
+    <script>
+        const MODULE_ID = 19;
+        const ACTIVITY_COUNT = 5;
+
+        // Activity 1: Integration Strategy Selector
+        function initActivity1() {
+            const scenarios = [
+                {
+                    id: 'q1',
+                    scenario: 'GA2 Critical Analysis maps to a rubric that already has a "Critical Analysis" criterion.',
+                    correct: 'embedded',
+                    explanation: 'Perfect overlap—weave GA language into the existing criterion.'
+                },
+                {
+                    id: 'q2',
+                    scenario: 'GA5 Written Communication maps to a rubric with no communication criterion.',
+                    correct: 'dedicated',
+                    explanation: 'No existing overlap—create a dedicated row for this GA.'
+                },
+                {
+                    id: 'q3',
+                    scenario: 'GA3 Ethical Engagement maps to a rubric with "Professional Practice" (partial overlap) and also needs to assess societal awareness.',
+                    correct: 'hybrid',
+                    explanation: 'Partial overlap suggests embedding, but societal awareness needs a separate focus.'
+                },
+                {
+                    id: 'q4',
+                    scenario: 'GA1 Disciplinary Knowledge maps to a rubric where every criterion already requires knowledge application.',
+                    correct: 'embedded',
+                    explanation: 'Distributed across criteria—mark the primary criterion with * and note that GA1 is assessed throughout.'
+                }
+            ];
+
+            const container = document.getElementById('strategyContainer');
+            let completed = 0;
+
+            scenarios.forEach(s => {
+                const div = document.createElement('div');
+                div.className = 'mc-question';
+                div.innerHTML = `
+                    <p><strong>Scenario ${scenarios.indexOf(s) + 1}:</strong> ${s.scenario}</p>
+                    <div class="mc-options">
+                        <label class="mc-option">
+                            <input type="radio" name="${s.id}" value="dedicated">
+                            <label>Dedicated Row</label>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="${s.id}" value="embedded">
+                            <label>Embedded (Smushed)</label>
+                        </label>
+                        <label class="mc-option">
+                            <input type="radio" name="${s.id}" value="hybrid">
+                            <label>Hybrid</label>
+                        </label>
+                    </div>
+                    <div class="mc-feedback" id="feedback${s.id}"></div>
+                `;
+                container.appendChild(div);
+
+                div.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.addEventListener('change', () => {
+                        const feedback = document.getElementById(`feedback${s.id}`);
+                        feedback.classList.add('show');
+                        if (radio.value === s.correct) {
+                            feedback.classList.remove('incorrect');
+                            feedback.classList.add('correct');
+                            feedback.textContent = 'Correct! ' + s.explanation;
+                            radio.parentElement.classList.add('selected');
+                            completed = document.querySelectorAll('[type="radio"]:checked').length;
+                            if (completed === 4) {
+                                updateActivity1Progress();
+                            }
+                        } else {
+                            feedback.classList.remove('correct');
+                            feedback.classList.add('incorrect');
+                            feedback.textContent = 'Not quite. ' + s.explanation;
+                            radio.parentElement.classList.remove('selected');
+                        }
+                    });
+                });
+            });
+        }
+
+        function updateActivity1Progress() {
+            const tracker = document.querySelector('[data-activity="1"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('activity1Feedback').textContent = '✓ All scenarios completed! Move to Activity 2.';
+            document.getElementById('activity1Feedback').style.color = '#2EA836';
+            checkModuleCompletion();
+        }
+
+        // Activity 2: Smush in Action
+        function initActivity2() {
+            document.getElementById('a2CheckBtn').addEventListener('click', () => {
+                const userAnswer = document.getElementById('a2Input').value.trim();
+                const feedback = document.getElementById('a2Feedback');
+                const model = document.getElementById('a2Model');
+
+                const hasAsterisk = userAnswer.includes('*');
+                const hasCritAnalysis = /critical analysis/i.test(userAnswer);
+                const hasObservable = /identif|analys|evaluat|examin|explain|support|synthesise|synthesiz/i.test(userAnswer);
+                const isLongEnough = userAnswer.length > 100;
+
+                const issues = [];
+                if (!hasAsterisk) issues.push('Include the asterisk (*) to mark this as a GA-mapped criterion.');
+                if (!hasCritAnalysis) issues.push('Reference "Critical Analysis" — this is the criterion being smushed.');
+                if (!hasObservable) issues.push('Use observable verbs (identifies, analyses, evaluates, explains, synthesises) instead of adverbs.');
+                if (!isLongEnough) issues.push('Your descriptor needs more detail — aim for at least 2-3 sentences covering both the rubric criterion and the GA requirement.');
+
+                if (issues.length === 0) {
+                    feedback.innerHTML = '<div style="background: #e8f5e9; padding: 1rem; border-radius: 4px; color: #2EA836;"><strong>✓ Excellent!</strong> You\'ve combined the criterion and GA requirement with observable language and the asterisk marker. Compare with the model answer below.</div>';
+                    model.classList.add('show');
+                    updateActivity2Progress();
+                } else {
+                    feedback.innerHTML = '<div style="background: #fff3e0; padding: 1rem; border-radius: 4px; color: #f57c00;"><strong>Nearly there.</strong> Check these points:<ul style="margin:8px 0 0 16px;">' + issues.map(i => '<li>' + i + '</li>').join('') + '</ul></div>';
+                }
+            });
+        }
+
+        function updateActivity2Progress() {
+            const tracker = document.querySelector('[data-activity="2"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('activity2Feedback').textContent = '✓ Activity 2 complete! Move to Activity 3.';
+            document.getElementById('activity2Feedback').style.color = '#2EA836';
+            checkModuleCompletion();
+        }
+
+        // Activity 3: Weighting Check
+        function initActivity3() {
+            const sliders = ['w1Slider', 'w2Slider', 'w3Slider', 'w4Slider', 'w5Slider'];
+            const valueSpans = ['w1Val', 'w2Val', 'w3Val', 'w4Val', 'w5Val'];
+            const gaIndicators = [false, true, false, false, false];
+
+            function updateWeights() {
+                let total = 0;
+                let gaTotal = 0;
+                sliders.forEach((id, idx) => {
+                    const slider = document.getElementById(id);
+                    const val = parseInt(slider.value);
+                    total += val;
+                    if (gaIndicators[idx]) gaTotal += val;
+                    document.getElementById(valueSpans[idx]).textContent = val + '%';
+                });
+
+                document.getElementById('totalMarks').textContent = total;
+                document.getElementById('gaMarks').textContent = gaTotal + '%';
+
+                const gaMarksSpan = document.getElementById('gaMarks');
+                const statusMsg = document.getElementById('gaStatusMsg');
+                if (gaTotal >= 10) {
+                    gaMarksSpan.classList.remove('warning');
+                    gaMarksSpan.classList.add('success');
+                    statusMsg.textContent = '✓ Meets ≥10% GA weighting requirement';
+                    statusMsg.style.color = '#2EA836';
+                    updateActivity3Progress();
+                } else {
+                    gaMarksSpan.classList.add('warning');
+                    gaMarksSpan.classList.remove('success');
+                    statusMsg.textContent = '⚠ Increase GA weighting to meet ≥10% requirement';
+                    statusMsg.style.color = '#f57c00';
+                }
+            }
+
+            sliders.forEach(id => {
+                document.getElementById(id).addEventListener('input', updateWeights);
+            });
+
+            updateWeights();
+        }
+
+        function updateActivity3Progress() {
+            const tracker = document.querySelector('[data-activity="3"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('activity3Feedback').textContent = '✓ Weighting meets requirement! Move to Activity 4.';
+            document.getElementById('activity3Feedback').style.color = '#2EA836';
+            checkModuleCompletion();
+        }
+
+        // Activity 4: Fill in the Blank
+        function initActivity4() {
+            document.getElementById('a4CheckBtn').addEventListener('click', () => {
+                const q1 = document.getElementById('a4q1').value.trim().toUpperCase();
+                const q2 = document.getElementById('a4q2').value.trim();
+                const q3 = document.getElementById('a4q3').value.trim();
+                const q4 = document.getElementById('a4q4').value.trim().toUpperCase();
+                const q5 = document.getElementById('a4q5').value.trim();
+
+                const feedback = document.getElementById('a4Feedback');
+
+                if (q1.includes('2') && q2.length > 0 && q3.length > 0 && q4.includes('2') && q5.length > 0) {
+                    feedback.innerHTML = '<div style="background: #e8f5e9; padding: 1rem; border-radius: 4px; color: #2EA836;"><strong>✓ Perfect!</strong> You\'ve completed the footer and formatting section. Your rubric is now fully documented.</div>';
+                    updateActivity4Progress();
+                } else {
+                    feedback.innerHTML = '<div style="background: #fff3e0; padding: 1rem; border-radius: 4px; color: #f57c00;">Fill in all blanks. Expected answers: GA2, Critical Analysis, Creative Problem Solving, 2, Sem1_2026 (or similar).</div>';
+                }
+            });
+        }
+
+        function updateActivity4Progress() {
+            const tracker = document.querySelector('[data-activity="4"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('activity4Feedback').textContent = '✓ Activity 4 complete! Move to the final activity.';
+            document.getElementById('activity4Feedback').style.color = '#2EA836';
+            checkModuleCompletion();
+        }
+
+        // Activity 5: Before and After (interactive identification)
+        function initActivity5() {
+            document.getElementById('a5CheckBtn').addEventListener('click', () => {
+                const c1 = document.getElementById('a5c1').checked; // correct
+                const c2 = document.getElementById('a5c2').checked; // correct
+                const c3 = document.getElementById('a5c3').checked; // correct
+                const c4 = document.getElementById('a5c4').checked; // distractor
+
+                const feedback = document.getElementById('a5Feedback');
+                feedback.style.display = 'block';
+
+                if (c1 && c2 && c3 && !c4) {
+                    feedback.style.background = '#e8f5e9';
+                    feedback.style.color = '#2EA836';
+                    feedback.innerHTML = '<strong>✓ Perfect!</strong> You identified all three real improvements: capability-based criteria, observable language, and GA integration with the asterisk. The font change is a formatting detail, not a substantive rubric design improvement. You\'re ready for the final quality check in Module 20.';
+                    updateActivity5Progress();
+                } else if (c4) {
+                    feedback.style.background = '#fff3e0';
+                    feedback.style.color = '#f57c00';
+                    feedback.innerHTML = '<strong>Nearly.</strong> The font change is a formatting detail — not one of the substantive rubric design improvements we\'ve been working on. Focus on changes to criteria structure, descriptor language, and GA integration.';
+                } else {
+                    const missing = [];
+                    if (!c1) missing.push('capability-based criteria');
+                    if (!c2) missing.push('observable language');
+                    if (!c3) missing.push('GA integration');
+                    feedback.style.background = '#fff3e0';
+                    feedback.style.color = '#f57c00';
+                    feedback.innerHTML = '<strong>You\'re missing:</strong> ' + missing.join(', ') + '. Look at both rubrics again — what changed in the criteria names, the descriptor language, and the GA marking?';
+                }
+            });
+        }
+
+        function updateActivity5Progress() {
+            const tracker = document.querySelector('[data-activity="5"]');
+            tracker.style.width = '100%';
+            tracker.textContent = '1';
+            document.getElementById('activity5Feedback').textContent = '✓ Activity 5 complete! Module finished.';
+            document.getElementById('activity5Feedback').style.color = '#2EA836';
+
+            localStorage.setItem('m19-complete', JSON.stringify({ completed: true, timestamp: Date.now() }));
+
+            checkModuleCompletion();
+        }
+
+        // Module completion check
+        function checkModuleCompletion() {
+            const a1Done = document.querySelectorAll('[type="radio"]:checked').length === 4;
+            const a2Done = document.getElementById('a2Model').classList.contains('show');
+            const a3Done = document.getElementById('gaMarks').classList.contains('success');
+            const a4Done = document.getElementById('a4Feedback').textContent.includes('Perfect');
+            const a5Done = document.getElementById('a5Feedback').style.display !== 'none';
+
+            if (a1Done && a2Done && a3Done && a4Done && a5Done) {
+                document.getElementById('completionBadge').classList.add('show');
+                const next = document.querySelector('.nav-next');
+                if (next) {
+                    next.classList.remove('disabled');
+                    next.removeAttribute('aria-disabled');
+                }
+                localStorage.setItem('m19-complete', JSON.stringify({ completed: true, timestamp: Date.now() }));
+            }
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initActivity1();
+            initActivity2();
+            initActivity3();
+            initActivity4();
+            initActivity5();
+        });
+    </script>
+</body>
+</html>

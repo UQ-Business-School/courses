@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 4: Capability-Based Criteria — Rubric Design Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.criteria-tag{display:inline-block;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:600;margin:2px;}
+.criteria-tag.section{background:#fef5f5;color:#d9534f;border:1px solid #e6c3c3;}
+.criteria-tag.skill{background:#f0faf0;color:#2d8a2d;border:1px solid #c3e6c3;}
+.criteria-tag.distractor{background:#f7f5f3;color:#6b6460;border:1px solid #e4dfd9;}
+.checkbox-row{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;margin:6px 0;border:1px solid #e4dfd9;border-radius:8px;cursor:pointer;transition:background .2s,border-color .2s;}
+.checkbox-row:hover{background:rgba(81,36,122,0.02);border-color:#51247A;}
+.checkbox-row.checked{border-color:#2EA836;background:#f0faf0;}
+.checkbox-row .cb{width:20px;height:20px;border:2px solid #d0c9c2;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:1px;}
+.checkbox-row.checked .cb{border-color:#2EA836;background:#2EA836;color:#fff;}
+.checkbox-row.checked .cb::after{content:'✓';font-size:13px;font-weight:700;}
+.checkbox-row .cb-label{font-size:14px;line-height:1.5;}
+</style>
+</head>
+<body>
+
+<header class="course-header">
+  <div class="header-left">
+    <span class="header-school">UQ Business School</span>
+    <span class="header-module">Module 4 of 20</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html">← Course Map</a>
+    <div class="header-progress">
+      <div class="header-progress-bar"><div class="header-progress-fill" style="width:0%"></div></div>
+      <span class="header-progress-text">0%</span>
+    </div>
+  </div>
+</header>
+
+<section class="module-hero part-a">
+  <div class="module-hero-inner">
+    <div class="module-hero-tag">Part A · Foundations &mdash; Module 4</div>
+    <h1>Capability-Based Criteria</h1>
+    <p class="hero-sub">Academics naturally structure rubrics like assignments — Introduction, Body, Conclusion. This module breaks that habit.</p>
+    <span class="hero-time">&#9201; ~20 minutes</span>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: DIAGNOSIS ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 1 of 4</div>
+    <h2 class="reveal">Section or Skill?</h2>
+    <p class="lead reveal">Look at the four criteria in the MGTS2501 rubric. For each, decide: does it describe a <strong>skill</strong> the student is developing, or a <strong>section</strong> of the assignment?</p>
+
+    <div class="activity reveal" id="act-1">
+      <div class="activity-number">1</div>
+      <div class="activity-title">Classify Each Criterion</div>
+      <p class="activity-instruction">Click each criterion to toggle between "Section" (red) and "Skill" (green). Then check your answers.</p>
+
+      <div id="criteria-classify">
+        <div class="checkbox-row" data-criterion="intro" data-answer="section">
+          <div class="cb"></div>
+          <div class="cb-label"><strong>Introduction (10%)</strong> — Does this describe a skill or an assignment section?</div>
+        </div>
+        <div class="checkbox-row" data-criterion="analysis" data-answer="skill">
+          <div class="cb"></div>
+          <div class="cb-label"><strong>Analysis (40%)</strong> — Does this describe a skill or an assignment section?</div>
+        </div>
+        <div class="checkbox-row" data-criterion="recs" data-answer="skill">
+          <div class="cb"></div>
+          <div class="cb-label"><strong>Recommendations (30%)</strong> — Does this describe a skill or an assignment section?</div>
+        </div>
+        <div class="checkbox-row" data-criterion="refs" data-answer="section">
+          <div class="cb"></div>
+          <div class="cb-label"><strong>Referencing &amp; Presentation (20%)</strong> — Does this describe a skill or an assignment section?</div>
+        </div>
+      </div>
+
+      <p style="font-size:12px;color:#6b6460;margin:12px 0;">Click once = Section (red) · Click twice = Skill (green) · Click again = reset</p>
+
+      <button class="btn btn-primary" id="btn-check-a1">Check My Answers</button>
+
+      <div class="feedback neutral" id="a1-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: SAME WORK, TWO RUBRICS ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 2 of 4</div>
+    <h2 class="reveal">Same Work, Two Rubrics</h2>
+    <p class="lead reveal">Here's a short excerpt of student work. Grade it against the section-based rubric, then against a capability-based rubric. Notice which gives you more useful information.</p>
+
+    <div class="activity reveal" id="act-2">
+      <div class="activity-number">2</div>
+      <div class="activity-title">Compare Two Approaches</div>
+
+      <div class="emphasis-box" style="border-left-color:#4085C6;">
+        <p style="font-style:italic;font-size:13px;line-height:1.7;">"TechFlow's turnover is driven by a combination of poor management communication (Herzberg) and a lack of developmental opportunities (Maslow). While management's salary increase addresses Herzberg's hygiene factors, it ignores motivational factors entirely. I recommend implementing a mentoring programme, creating visible promotion pathways, and conducting regular staff feedback surveys. However, these recommendations assume resources that a mid-size company may not have, so a phased approach starting with the lowest-cost intervention would be prudent."</p>
+      </div>
+
+      <div class="side-by-side" style="margin:20px 0;">
+        <div class="sbs-panel before">
+          <span class="sbs-label before">Section-Based Rubric</span>
+          <p style="font-size:12px;margin:4px 0;"><strong>Introduction:</strong> C — Good introduction</p>
+          <p style="font-size:12px;margin:4px 0;"><strong>Analysis:</strong> D — Very good analysis</p>
+          <p style="font-size:12px;margin:4px 0;"><strong>Recommendations:</strong> C — Good recommendations</p>
+          <p style="font-size:12px;margin:4px 0;"><strong>Referencing:</strong> P — Satisfactory</p>
+          <p style="font-size:12px;margin-top:8px;color:#d9534f;"><em>What does this tell the student? Almost nothing.</em></p>
+        </div>
+        <div class="sbs-panel after">
+          <span class="sbs-label after">Capability-Based Rubric</span>
+          <p style="font-size:12px;margin:4px 0;"><strong>Problem Identification:</strong> D — Identifies both immediate and systemic factors</p>
+          <p style="font-size:12px;margin:4px 0;"><strong>Critical Analysis:</strong> C — Applies theories but doesn't explain their interaction</p>
+          <p style="font-size:12px;margin:4px 0;"><strong>Evidence Integration:</strong> P — Cites theories but doesn't synthesise across sources</p>
+          <p style="font-size:12px;margin:4px 0;"><strong>Recommendations:</strong> D — Feasibility-aware; considers implementation</p>
+          <p style="font-size:12px;margin:4px 0;"><strong>Academic Communication:</strong> C — Clear structure; minor referencing gaps</p>
+          <p style="font-size:12px;margin-top:8px;color:#2d8a2d;"><em>Now the student knows exactly where to improve.</em></p>
+        </div>
+      </div>
+
+      <div class="mc-options" id="mc-a2">
+        <div class="mc-option" data-index="0"><div class="mc-radio"></div><div>The section-based rubric tells me more about what to improve</div></div>
+        <div class="mc-option" data-index="1"><div class="mc-radio"></div><div>The capability-based rubric tells me more about what to improve</div></div>
+        <div class="mc-option" data-index="2"><div class="mc-radio"></div><div>Both tell me the same amount — just organised differently</div></div>
+      </div>
+
+      <div class="feedback neutral" id="a2-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: REBUILD ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 3 of 4</div>
+    <h2 class="reveal">Rebuild the Criteria</h2>
+    <p class="lead reveal">Here are eight possible criterion names and eight descriptions. Match each name to its description. Two are distractors — section-based criteria that shouldn't be in a capability-based rubric.</p>
+
+    <div class="activity reveal" id="act-3">
+      <div class="activity-number">3</div>
+      <div class="activity-title">Name → Description Matching</div>
+      <p class="activity-instruction">Drag each criterion name to its matching description. The two distractors should go in the "Distractor" zone.</p>
+
+      <div class="drag-pool" id="drag-pool-a3" style="margin-bottom:20px;padding:12px;background:#f7f5f3;border-radius:8px;">
+        <div class="drag-item" draggable="true" id="cn-1">Problem Identification</div>
+        <div class="drag-item" draggable="true" id="cn-2">Critical Analysis</div>
+        <div class="drag-item" draggable="true" id="cn-3">Evidence Integration</div>
+        <div class="drag-item" draggable="true" id="cn-4">Application of Theory</div>
+        <div class="drag-item" draggable="true" id="cn-5">Recommendations</div>
+        <div class="drag-item" draggable="true" id="cn-6">Academic Communication</div>
+        <div class="drag-item" draggable="true" id="cn-7">Introduction</div>
+        <div class="drag-item" draggable="true" id="cn-8">Literature Review</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr;gap:10px;">
+        <div>
+          <div class="drag-zone-label">Recognises and articulates the core issue and contributing factors</div>
+          <div class="drag-zone" id="cz-1" style="min-height:44px;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label">Evaluates information using logic and evidence; questions assumptions</div>
+          <div class="drag-zone" id="cz-2" style="min-height:44px;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label">Locates, selects, and synthesises scholarly sources to support an argument</div>
+          <div class="drag-zone" id="cz-3" style="min-height:44px;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label">Connects theoretical concepts to specific aspects of the case</div>
+          <div class="drag-zone" id="cz-4" style="min-height:44px;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label">Proposes evidence-based solutions with consideration of feasibility</div>
+          <div class="drag-zone" id="cz-5" style="min-height:44px;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label">Presents ideas clearly using appropriate structure, language, and referencing</div>
+          <div class="drag-zone" id="cz-6" style="min-height:44px;"></div>
+        </div>
+        <div>
+          <div class="drag-zone-label" style="color:#d9534f;">Distractor — this is a section, not a capability</div>
+          <div class="drag-zone" id="cz-dist" style="min-height:44px;border-color:#e6c3c3;"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <button class="btn btn-primary" id="btn-check-a3">Check My Matches</button>
+        <button class="btn btn-secondary btn-small" id="btn-reset-a3" style="margin-left:8px;">Reset</button>
+      </div>
+
+      <div class="feedback neutral" id="a3-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: CHOOSE CRITERIA + WEIGHTING ── -->
+<section class="module-section alt">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Activity 4 of 4</div>
+    <h2 class="reveal">Choose Your Criteria</h2>
+    <p class="lead reveal">For the MGTS2501 case study, select 4–5 capability-based criteria and assign weightings that total 100%. Then compare your choices to a model answer.</p>
+
+    <div class="activity reveal" id="act-4">
+      <div class="activity-number">4</div>
+      <div class="activity-title">Build the Criteria Structure</div>
+      <p class="activity-instruction">Toggle criteria on/off and adjust their weightings. Your total must equal 100%.</p>
+
+      <div id="criteria-selector">
+        <div class="checkbox-row" data-crit="problem-id" style="margin-bottom:0;border-radius:8px 8px 0 0;">
+          <div class="cb"></div>
+          <div class="cb-label" style="flex:1;"><strong>Problem Identification</strong></div>
+          <div style="display:flex;align-items:center;gap:8px;min-width:140px;">
+            <input type="range" min="0" max="40" value="15" class="slider-input" name="w-problem-id" style="flex:1;" disabled>
+            <span class="slider-value" style="min-width:32px;">15%</span>
+          </div>
+        </div>
+        <div class="checkbox-row" data-crit="critical-analysis" style="margin-bottom:0;border-radius:0;">
+          <div class="cb"></div>
+          <div class="cb-label" style="flex:1;"><strong>Critical Analysis</strong></div>
+          <div style="display:flex;align-items:center;gap:8px;min-width:140px;">
+            <input type="range" min="0" max="50" value="35" class="slider-input" name="w-critical-analysis" style="flex:1;" disabled>
+            <span class="slider-value" style="min-width:32px;">35%</span>
+          </div>
+        </div>
+        <div class="checkbox-row" data-crit="evidence" style="margin-bottom:0;border-radius:0;">
+          <div class="cb"></div>
+          <div class="cb-label" style="flex:1;"><strong>Evidence Integration</strong></div>
+          <div style="display:flex;align-items:center;gap:8px;min-width:140px;">
+            <input type="range" min="0" max="30" value="15" class="slider-input" name="w-evidence" style="flex:1;" disabled>
+            <span class="slider-value" style="min-width:32px;">15%</span>
+          </div>
+        </div>
+        <div class="checkbox-row" data-crit="theory" style="margin-bottom:0;border-radius:0;">
+          <div class="cb"></div>
+          <div class="cb-label" style="flex:1;"><strong>Application of Theory</strong></div>
+          <div style="display:flex;align-items:center;gap:8px;min-width:140px;">
+            <input type="range" min="0" max="30" value="15" class="slider-input" name="w-theory" style="flex:1;" disabled>
+            <span class="slider-value" style="min-width:32px;">15%</span>
+          </div>
+        </div>
+        <div class="checkbox-row" data-crit="recs" style="margin-bottom:0;border-radius:0;">
+          <div class="cb"></div>
+          <div class="cb-label" style="flex:1;"><strong>Recommendations</strong></div>
+          <div style="display:flex;align-items:center;gap:8px;min-width:140px;">
+            <input type="range" min="0" max="30" value="20" class="slider-input" name="w-recs" style="flex:1;" disabled>
+            <span class="slider-value" style="min-width:32px;">20%</span>
+          </div>
+        </div>
+        <div class="checkbox-row" data-crit="communication" style="margin-bottom:0;border-radius:0 0 8px 8px;">
+          <div class="cb"></div>
+          <div class="cb-label" style="flex:1;"><strong>Academic Communication</strong></div>
+          <div style="display:flex;align-items:center;gap:8px;min-width:140px;">
+            <input type="range" min="0" max="25" value="10" class="slider-input" name="w-communication" style="flex:1;" disabled>
+            <span class="slider-value" style="min-width:32px;">10%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slider-total" id="weighting-total" style="margin-top:8px;">Total: 0%</div>
+
+      <div style="margin-top:16px;">
+        <button class="btn btn-primary" id="btn-check-a4">Compare to Model →</button>
+      </div>
+
+      <div class="feedback neutral" id="a4-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RUBRIC STATE ── -->
+<section class="module-section">
+  <div class="section-inner">
+    <div class="section-tag" style="--section-color:#4085C6">Your Rubric</div>
+    <h2 class="reveal">Restructured</h2>
+    <p class="lead reveal">Your rubric now has capability-based criteria instead of section-based ones. The descriptors still need work — that's what Part B (Frameworks) is for.</p>
+    <div class="rubric-preview rubric-preview-auto reveal"></div>
+  </div>
+</section>
+
+<!-- ── COMPLETE & NAV ── -->
+<section class="module-section alt" style="padding-bottom:24px;">
+  <div class="section-inner" style="text-align:center;">
+    <button class="btn btn-primary btn-complete-module" disabled>Complete Module 4</button>
+    <p style="font-size:12px;color:#6b6460;margin-top:12px;">Complete all four activities to unlock this button.</p>
+  </div>
+</section>
+
+<nav class="module-nav">
+  <a href="module-03.html">← Module 3</a>
+  <a href="module-05.html" class="nav-next disabled" aria-disabled="true">Module 5: Values of Inquiry →</a>
+</nav>
+
+<footer class="module-cta">
+  <p class="cta-credit">UQ Business School Learning Design &middot; 2026</p>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+(function(){
+  const RC = window.RubricCourse;
+  const tracker = RC.ModuleTracker(4, 4);
+
+  /* ── Activity 1: Section/Skill classification ── */
+  (function(){
+    const rows = document.querySelectorAll('#criteria-classify .checkbox-row');
+    const states = {}; // 0=unset, 1=section, 2=skill
+
+    const saved = RC.Exercises.get('m4-a1') || {};
+    rows.forEach(r => {
+      const c = r.dataset.criterion;
+      states[c] = saved[c] || 0;
+      applyState(r, states[c]);
+    });
+
+    rows.forEach(row => {
+      row.addEventListener('click', () => {
+        const c = row.dataset.criterion;
+        states[c] = (states[c] + 1) % 3;
+        applyState(row, states[c]);
+        RC.Exercises.set('m4-a1', { ...states });
+      });
+    });
+
+    function applyState(row, state) {
+      row.classList.remove('checked');
+      row.style.borderColor = '';
+      row.style.background = '';
+      const cb = row.querySelector('.cb');
+      cb.style.borderColor = '';
+      cb.style.background = '';
+      cb.innerHTML = '';
+      if (state === 1) { // section
+        row.style.borderColor = '#d9534f';
+        row.style.background = '#fef5f5';
+        cb.style.borderColor = '#d9534f';
+        cb.style.background = '#d9534f';
+        cb.innerHTML = '<span style="color:#fff;font-size:11px;font-weight:700;">S</span>';
+      } else if (state === 2) { // skill
+        row.classList.add('checked');
+        cb.innerHTML = '<span style="color:#fff;font-size:11px;font-weight:700;">K</span>';
+      }
+    }
+
+    document.getElementById('btn-check-a1').addEventListener('click', () => {
+      const answers = { intro: 1, analysis: 2, recs: 2, refs: 1 };
+      let correct = 0;
+      rows.forEach(r => {
+        const c = r.dataset.criterion;
+        if (states[c] === answers[c]) correct++;
+      });
+      const fb = document.getElementById('a1-feedback');
+      if (correct === 4) {
+        fb.className = 'feedback show correct';
+        fb.innerHTML = '<p><strong>All correct!</strong></p><p>"Introduction" is a section of the assignment — it doesn\'t name a capability. "Referencing &amp; Presentation" bundles a formatting requirement with a vague quality label. "Analysis" and "Recommendations" are closer to capabilities, but they\'re still named after what the student produces rather than the skill they demonstrate.</p><p>The key shift: instead of "Introduction" → <strong>Problem Identification</strong>. Instead of "Referencing &amp; Presentation" → <strong>Academic Communication</strong> (the skill) plus requirements embedded at specific grade levels.</p>';
+      } else {
+        fb.className = 'feedback show incorrect';
+        fb.innerHTML = '<p><strong>' + correct + '/4 correct.</strong> The test: does the criterion name a <em>transferable skill</em> or an <em>assignment section</em>? "Introduction" is a section — you wouldn\'t assess "introduction" in a presentation or viva. "Analysis" names a cognitive skill. "Recommendations" names a capability. "Referencing &amp; Presentation" bundles a section label with a formatting requirement — it\'s neither a clean skill nor a clean section.</p>';
+      }
+      tracker.markDone('act-1');
+    });
+  })();
+
+  /* ── Activity 2: MC comparison ── */
+  (function(){
+    RC.MultipleChoice(document.getElementById('act-2'), {
+      correctIndex: 1,
+      feedback: {
+        correct: '<p><strong>Exactly.</strong> The capability-based rubric pinpoints where the student is strong (problem identification, recommendations) and where they need to improve (evidence integration — they cite but don\'t synthesise). The section-based rubric just says "good" or "very good" without telling the student what to do differently.</p>',
+        incorrect: '<p><strong>Look again.</strong> The section-based rubric tells you the analysis is "very good" — but gives no guidance on improving. The capability-based rubric tells you exactly what\'s working (feasibility-aware recommendations) and what\'s not (evidence is cited but not synthesised). That\'s actionable feedback vs quality labels.</p>'
+      },
+      saveKey: 'm4-a2',
+      onComplete: () => tracker.markDone('act-2')
+    });
+  })();
+
+  /* ── Activity 3: Drag match ── */
+  (function(){
+    const container = document.getElementById('act-3');
+    const ds = RC.DragSort(container, {
+      pairs: [
+        { item: 'cn-1', zone: 'cz-1' },
+        { item: 'cn-2', zone: 'cz-2' },
+        { item: 'cn-3', zone: 'cz-3' },
+        { item: 'cn-4', zone: 'cz-4' },
+        { item: 'cn-5', zone: 'cz-5' },
+        { item: 'cn-6', zone: 'cz-6' },
+        { item: 'cn-7', zone: 'cz-dist' },
+        { item: 'cn-8', zone: 'cz-dist' }
+      ],
+      saveKey: 'm4-a3'
+    });
+
+    document.getElementById('btn-check-a3').addEventListener('click', () => {
+      const result = ds.check();
+      const fb = document.getElementById('a3-feedback');
+      if (result) {
+        fb.className = 'feedback show correct';
+        fb.innerHTML = '<p><strong>All correct!</strong> "Introduction" and "Literature Review" are sections of an assignment, not capabilities. Every other criterion names a transferable skill that can be assessed across different assessment types.</p>';
+      } else {
+        fb.className = 'feedback show incorrect';
+        fb.innerHTML = '<p><strong>Some mismatches.</strong> Remember: "Introduction" is a section (you wouldn\'t assess it in a presentation). "Literature Review" is also a section — the underlying capability is "Evidence Integration." Green items are correctly placed.</p>';
+      }
+      tracker.markDone('act-3');
+    });
+
+    document.getElementById('btn-reset-a3').addEventListener('click', () => {
+      ds.reset();
+      document.getElementById('a3-feedback').className = 'feedback';
+    });
+  })();
+
+  /* ── Activity 4: Criteria selection + weighting ── */
+  (function(){
+    const rows = document.querySelectorAll('#criteria-selector .checkbox-row');
+    const totalEl = document.getElementById('weighting-total');
+    const selected = new Set();
+
+    const saved = RC.Exercises.get('m4-a4') || { selected: [], weights: {} };
+    if (saved.selected) saved.selected.forEach(c => selected.add(c));
+
+    rows.forEach(row => {
+      const crit = row.dataset.crit;
+      const slider = row.querySelector('input[type="range"]');
+      const valEl = row.querySelector('.slider-value');
+
+      if (selected.has(crit)) {
+        row.classList.add('checked');
+        slider.disabled = false;
+      }
+      if (saved.weights && saved.weights[crit] !== undefined) {
+        slider.value = saved.weights[crit];
+      }
+      valEl.textContent = slider.value + '%';
+
+      row.addEventListener('click', (e) => {
+        if (e.target.closest('input')) return;
+        if (selected.has(crit)) {
+          selected.delete(crit);
+          row.classList.remove('checked');
+          slider.disabled = true;
+        } else {
+          selected.add(crit);
+          row.classList.add('checked');
+          slider.disabled = false;
+        }
+        updateTotal();
+        saveState();
+      });
+
+      slider.addEventListener('input', () => {
+        valEl.textContent = slider.value + '%';
+        updateTotal();
+        saveState();
+      });
+    });
+
+    function getTotal() {
+      let sum = 0;
+      rows.forEach(r => {
+        if (selected.has(r.dataset.crit)) {
+          sum += parseInt(r.querySelector('input[type="range"]').value);
+        }
+      });
+      return sum;
+    }
+
+    function updateTotal() {
+      const t = getTotal();
+      totalEl.textContent = 'Total: ' + t + '%';
+      totalEl.className = 'slider-total ' + (t === 100 ? 'valid' : 'invalid');
+      if (t !== 100) totalEl.textContent += ' (must equal 100%)';
+    }
+
+    function saveState() {
+      const weights = {};
+      rows.forEach(r => {
+        weights[r.dataset.crit] = parseInt(r.querySelector('input[type="range"]').value);
+      });
+      RC.Exercises.set('m4-a4', { selected: Array.from(selected), weights });
+    }
+
+    updateTotal();
+
+    document.getElementById('btn-check-a4').addEventListener('click', () => {
+      const fb = document.getElementById('a4-feedback');
+      const total = getTotal();
+
+      if (selected.size < 4) {
+        fb.className = 'feedback show incorrect';
+        fb.innerHTML = '<p>Select at least 4 criteria before checking.</p>';
+        return;
+      }
+
+      // Model answer criteria
+      const modelCriteria = [
+        { name: 'Critical Analysis', weighting: 35, isGA: false, gaRef: null, descriptors: { HD:'', D:'', C:'', P:'', MF:'', F:'', LF:'' }, lever: null, voiValues: [], soloTarget: {} },
+        { name: 'Problem Identification', weighting: 15, isGA: false, gaRef: null, descriptors: { HD:'', D:'', C:'', P:'', MF:'', F:'', LF:'' }, lever: null, voiValues: [], soloTarget: {} },
+        { name: 'Evidence Integration', weighting: 15, isGA: false, gaRef: null, descriptors: { HD:'', D:'', C:'', P:'', MF:'', F:'', LF:'' }, lever: null, voiValues: [], soloTarget: {} },
+        { name: 'Recommendations', weighting: 20, isGA: false, gaRef: null, descriptors: { HD:'', D:'', C:'', P:'', MF:'', F:'', LF:'' }, lever: null, voiValues: [], soloTarget: {} },
+        { name: 'Academic Communication', weighting: 15, isGA: false, gaRef: null, descriptors: { HD:'', D:'', C:'', P:'', MF:'', F:'', LF:'' }, lever: null, voiValues: [], soloTarget: {} }
+      ];
+
+      // Preserve any existing HD descriptor from Module 3
+      const existingAnalysisHD = RC.Rubric.data.criteria.find(c => c.name === 'Analysis');
+      if (existingAnalysisHD && existingAnalysisHD.descriptors.HD) {
+        modelCriteria[0].descriptors.HD = existingAnalysisHD.descriptors.HD;
+      }
+
+      // Update persistent rubric
+      RC.Rubric.replaceCriteria(modelCriteria);
+
+      fb.className = 'feedback show neutral';
+      let html = '<p><strong>Model answer:</strong> Critical Analysis (35%), Problem Identification (15%), Evidence Integration (15%), Recommendations (20%), Academic Communication (15%).</p>';
+
+      if (total !== 100) {
+        html += '<p style="color:#d9534f;">Your weightings don\'t total 100% yet, but the model criteria have been applied to your rubric.</p>';
+      }
+
+      const hasAnalysis = selected.has('critical-analysis');
+      const hasEvidence = selected.has('evidence');
+      if (!hasAnalysis) html += '<p><strong>Note:</strong> Critical Analysis is the core skill for a case study — it should almost always be included and heavily weighted.</p>';
+      if (!hasEvidence) html += '<p><strong>Note:</strong> Evidence Integration is separate from Analysis — a student can analyse well but cite poorly, or cite beautifully but analyse superficially. Separating them gives more useful feedback.</p>';
+      if (selected.has('theory') && selected.has('critical-analysis')) {
+        html += '<p><strong>Note:</strong> "Application of Theory" overlaps significantly with "Critical Analysis" for a case study. The model merges them under Critical Analysis to avoid double-counting the same skill.</p>';
+      }
+
+      html += '<p>Your rubric has been updated with the model criteria. Scroll down to see the new structure.</p>';
+      fb.innerHTML = html;
+
+      // Re-render preview
+      document.querySelectorAll('.rubric-preview-auto').forEach(el => RC.RubricPreview(el));
+
+      tracker.markDone('act-4');
+    });
+  })();
+
+})();
+</script>
+
+</body>
+</html>
