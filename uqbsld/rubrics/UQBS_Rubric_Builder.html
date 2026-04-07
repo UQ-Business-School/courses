@@ -1954,11 +1954,13 @@ function parseAssessments() {
     const text = appState.ecpText.toLowerCase();
     appState.assessments = [];
 
-    // Simple regex patterns for assessment extraction
+    // Regex patterns for assessment extraction (multiple ECP formats)
     const patterns = [
-        /assessment\s+(\d+)[:\s]+([^(\n]+)(?:\(([0-9]+)%?\))?/gi,
-        /assessment\s+task\s+(\d+)\s*[-–]\s*([^(\n]+)(?:\(([0-9]+)%?\))?/gi,
-        /task\s+(\d+)[:\s]+([^(\n]+)(?:\(([0-9]+)%?\))?/gi
+        /assessment\s+(?:item\s+)?(\d+)[:\s]+([^(\n]+?)(?:\s*\(([0-9]+)%?\))?(?:\s|$)/gi,
+        /assessment\s+(?:item\s+)?(\d+)\s*[-–—]\s*([^(\n]+?)(?:\s*\(([0-9]+)%?\))?(?:\s|$)/gi,
+        /assessment\s+task\s+(\d+)\s*[-–—:]\s*([^(\n]+?)(?:\s*\(([0-9]+)%?\))?(?:\s|$)/gi,
+        /task\s+(\d+)[:\s]+([^(\n]+?)(?:\s*\(([0-9]+)%?\))?(?:\s|$)/gi,
+        /(?:^|\n)\s*(\d+)\.\s+([A-Z][^(\n]{3,50})(?:\s*\(?([0-9]+)%?\)?)?/gm
     ];
 
     const found = new Set();
@@ -2620,7 +2622,31 @@ CORE METHODOLOGY:
     "Creative solution" → "Proposes approach not derived from course materials; justifies against alternatives"
     "Clearly justifies" → "Each recommendation justified with evidence (not opinion)"
     "Deeply analyses" → "Examines underlying assumptions; explores root causes"
-    The pattern: replace ADJECTIVE/ADVERB with OBSERVABLE ACTION or STRUCTURAL FEATURE.`;
+    The pattern: replace ADJECTIVE/ADVERB with OBSERVABLE ACTION or STRUCTURAL FEATURE.
+
+13. DESCRIPTOR HIERARCHY — EACH GRADE MUST BE A SUBSET OF THE ONE ABOVE:
+    NEVER include detail, specificity, or observable behaviours at a lower grade that are absent from every higher grade.
+    HD is the ceiling — the most complete, most specific descriptor. D must be a narrower version of HD. C a narrower version of D. And so on down to LF.
+    If C says "connects to organisational context" then D and HD MUST also address context — and go further.
+    Before finalising: read descriptors top-down from HD to LF. At each step, check: does this grade introduce anything new that the grade above doesn't mention? If yes, either move that detail up or remove it. No grade should surprise the marker with content that wasn't present at a higher level.
+
+14. BANNED VAGUE TERMS — these are adverb traps in disguise:
+    NEVER use: "general", "basic", "obvious", "simple", "limited", "some", "reasonable", "appropriate", "suitable", "sufficient", "relevant" as standalone qualifiers.
+    BAD: "Identifies basic issues" / "Shows general understanding" / "Uses relevant theory"
+    GOOD: "Identifies one issue stated in the case" / "Restates the core concept without application" / "Uses theory from the course to frame the analysis"
+    These words feel concrete but tell the marker nothing — they are just softer adverbs. Replace with quantity, structure, or scope.
+
+15. SYNONYM SWAPPING IS NOT DIFFERENTIATION:
+    Verbs like "captures / documents / records", "identifies / recognises / notes", "discusses / addresses / considers" are SYNONYMS — swapping between grade levels creates an illusion of difference with no real distinction.
+    BAD: HD "captures key themes" → D "documents key themes" → C "records key themes"
+    GOOD: HD "identifies themes across sources and explains how they interact" → D "identifies themes and connects them to the case context" → C "identifies themes stated in the brief"
+    The change between grades must be in WHAT the student does (scope, complexity, autonomy) — not which synonym describes the same action.
+
+16. SPINE STABILITY — CHANGE THE DISTINGUISHER, NOT THE SENTENCE:
+    Between grade levels, the sentence STRUCTURE should remain as stable as possible. Only the qualitative content (the distinguisher) should change.
+    BAD: HD "Analysis synthesises multiple perspectives to build a layered argument" → D "The student provides a well-structured analysis of the topic" → C "A basic analysis is attempted"
+    GOOD: HD "Analysis connects multiple perspectives and explains tensions between them" → D "Analysis connects factors to the broader context" → C "Analysis addresses factors stated in the case"
+    The spine ("Analysis...") stays constant. Only what follows changes. A marker scanning left to right should see the SAME sentence skeleton with different qualitative content.`;
 }
 
 function buildInputMessage() {
@@ -2986,25 +3012,29 @@ function renderQualityChecks(data) {
 function performQualityChecks(data) {
     const checks = [];
 
-    // Adverb scan
-    const adverbFlags = ['thoroughly', 'adequately', 'clearly', 'effectively', 'excellent', 'good use of', 'highly developed', 'well developed', 'comprehensive', 'cogently', 'demonstrates excellent'];
+    // Adverb scan — checks for intensity adverbs used as lazy differentiators between grade levels
+    const adverbFlags = ['thoroughly', 'adequately', 'clearly', 'effectively', 'excellent', 'good use of', 'highly developed', 'well developed', 'comprehensive', 'cogently', 'demonstrates excellent', 'general', 'basic', 'obvious', 'simple', 'sufficient', 'appropriate'];
     let adverbCount = 0;
+    const adverbExamples = [];
     data.criteria.forEach(criterion => {
-        Object.values(criterion.descriptors).forEach(descriptor => {
+        Object.entries(criterion.descriptors).forEach(([grade, descriptor]) => {
             adverbFlags.forEach(adverb => {
                 if (descriptor.toLowerCase().includes(adverb)) {
                     adverbCount++;
+                    if (adverbExamples.length < 3) {
+                        adverbExamples.push(`"${adverb}" in ${criterion.name} [${grade}]`);
+                    }
                 }
             });
         });
     });
 
     if (adverbCount === 0) {
-        checks.push({ status: 'pass', message: 'Adverb scan: No intensity adverbs detected' });
+        checks.push({ status: 'pass', message: 'Adverb scan: No intensity adverbs or vague qualifiers detected' });
     } else if (adverbCount <= 3) {
-        checks.push({ status: 'warn', message: `Adverb scan: ${adverbCount} potential intensity adverbs found (review for trap descriptors)` });
+        checks.push({ status: 'warn', message: `Adverb scan: ${adverbCount} potential intensity adverb(s) found — ${adverbExamples.join('; ')}. These words tell markers nothing specific; consider replacing with observable actions or VoI qualities.` });
     } else {
-        checks.push({ status: 'fail', message: `Adverb scan: ${adverbCount} intensity adverbs detected (revise using VoI instead)` });
+        checks.push({ status: 'fail', message: `Adverb scan: ${adverbCount} intensity adverbs detected — e.g. ${adverbExamples.join('; ')}. Descriptors may be differentiating by adjective intensity rather than qualitative difference. Revise using Values of Inquiry.` });
     }
 
     // Weightings total
