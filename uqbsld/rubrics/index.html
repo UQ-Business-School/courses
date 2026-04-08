@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rubric Design Fundamentals — UQ Business School Learning Design</title>
+<title>Rubric Design Fundamentals — Cube Mockup v3</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -11,6 +11,7 @@
 body{
   font-family:'Roboto',Arial,Helvetica,sans-serif;
   color:#1a1714;background:#ffffff;line-height:1.8;
+  overflow-x:hidden;
 }
 
 /* ── HERO ── */
@@ -44,88 +45,139 @@ body{
   color:rgba(255,255,255,0.85);max-width:580px;
 }
 
-/* ── SECTION ── */
-.section{padding:56px 32px}
-.section-alt{background:#f7f5f3}
-.section-inner{max-width:720px;margin:0 auto}
-
-.section-label{
-  font-size:10px;font-weight:500;letter-spacing:.16em;
-  text-transform:uppercase;color:#6b6460;margin-bottom:24px;
-  display:flex;align-items:center;gap:10px;
+/* ── CUBE FACE SECTION ── */
+.cube-section{
+  padding:72px 32px 64px;
+  display:flex;flex-direction:column;align-items:center;
+  background:linear-gradient(180deg, #f7f5f3 0%, #ffffff 100%);
 }
-.section-label::before{
-  content:'';display:block;width:18px;height:1.5px;
-  background:#d0c9c2;flex-shrink:0;
+.cube-intro{
+  text-align:center;max-width:560px;margin-bottom:48px;
 }
-
-.section-title{
-  font-size:28px;font-weight:700;line-height:1.2;
-  margin-bottom:12px;
+.cube-intro h2{
+  font-size:28px;font-weight:700;line-height:1.2;margin-bottom:12px;
 }
-.section-desc{
+.cube-intro p{
   font-size:15px;color:#6b6460;line-height:1.8;
-  max-width:560px;margin-bottom:32px;
 }
 
-/* ── CARDS ── */
-.cards{
-  display:grid;grid-template-columns:1fr;gap:20px;
+/* ── 3×3 GRID ── */
+.cube-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  max-width:660px;
+  width:100%;
+  background:linear-gradient(145deg, #1a1714, #2a2520);
+  border-radius:20px;
+  padding:10px;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.15),
+    0 12px 40px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.06);
 }
-.card{
-  background:#fff;border:1px solid #e4dfd9;
-  border-radius:10px;padding:28px 28px 24px;
-  border-left:3.5px solid var(--accent,#51247A);
-  transition:transform .2s ease,box-shadow .2s ease;
+
+/* ── TILE (shared) ── */
+.tile{
+  aspect-ratio:1;
+  border-radius:12px;
+  position:relative;
+  overflow:hidden;
   display:flex;flex-direction:column;
+  justify-content:flex-end;
+  padding:24px;
+  transition:transform .25s cubic-bezier(.25,.46,.45,.94), box-shadow .25s ease;
 }
-.card:hover{
-  transform:translateY(-2px);
-  box-shadow:0 6px 20px rgba(0,0,0,0.06);
-}
-.section-alt .card{background:#fff}
 
-.card-tag{
+/* Interactive tiles */
+a.tile{
+  text-decoration:none;color:#fff;
+  cursor:pointer;
+  justify-content:center;
+}
+a.tile:hover{
+  transform:scale(1.03);
+  box-shadow:0 8px 28px rgba(0,0,0,0.3);
+  z-index:2;
+}
+a.tile:active{
+  transform:scale(0.98);
+}
+
+/* Bevel / gloss */
+.tile::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(
+    155deg,
+    rgba(255,255,255,0.2) 0%,
+    rgba(255,255,255,0.05) 35%,
+    transparent 55%
+  );
+  border-radius:12px;
+  pointer-events:none;z-index:1;
+}
+/* Inner shadow for depth */
+.tile::after{
+  content:'';position:absolute;inset:0;
+  border-radius:12px;
+  box-shadow:inset 0 -2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.12);
+  pointer-events:none;z-index:1;
+}
+
+/* ── TILE COLOURS ── */
+.tile-blue     { background:linear-gradient(145deg, #4a94d4, #3574ad); }
+.tile-purple   { background:linear-gradient(145deg, #6030a0, #4a1d7a); }
+.tile-magenta  { background:linear-gradient(145deg, #a83599, #7a2270); }
+.tile-green    { background:linear-gradient(145deg, #38c040, #258a2c); }
+.tile-gold     { background:linear-gradient(145deg, #c8aa72, #a68a52); }
+.tile-red      { background:linear-gradient(145deg, #f03050, #c41d38); }
+
+/* Blank tiles — just solid coloured squares */
+.tile-blank{
+  cursor:default;
+  padding:0;
+}
+
+/* ── TILE CONTENT ── */
+.tile-tag{
   font-size:9px;font-weight:700;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--accent,#51247A);
-  margin-bottom:10px;
-}
-.card-title{
-  font-size:18px;font-weight:700;line-height:1.3;
-  margin-bottom:8px;color:#1a1714;
-}
-.card-byline{
-  font-size:12px;color:#6b6460;font-style:italic;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.6);
   margin-bottom:8px;
+  position:relative;z-index:2;
 }
-.card-body{
-  font-size:14px;color:#6b6460;line-height:1.7;
-  margin-bottom:16px;flex:1;
+.tile-title{
+  font-size:19px;font-weight:700;line-height:1.25;
+  color:#fff;margin-bottom:6px;
+  position:relative;z-index:2;
 }
-.card-formats{
-  display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;
-  padding-top:14px;border-top:1px solid #e4dfd9;
+.tile-desc{
+  font-size:12px;color:rgba(255,255,255,0.85);
+  line-height:1.55;
+  position:relative;z-index:2;
+  max-height:0;
+  opacity:0;
+  overflow:hidden;
+  transition:max-height .35s cubic-bezier(.25,.46,.45,.94), opacity .3s ease, margin .3s ease;
+  margin-top:0;
 }
-.card-link{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:12px;font-weight:500;text-decoration:none;
-  color:var(--accent,#51247A);
-  padding:6px 14px;border-radius:20px;
-  border:1px solid var(--accent,#51247A);
-  transition:background .2s,color .2s;
+a.tile:hover .tile-desc{
+  max-height:80px;
+  opacity:1;
+  margin-top:6px;
 }
-.card-link:hover{
-  background:var(--accent,#51247A);color:#fff;
+.tile-arrow{
+  position:absolute;top:20px;right:20px;
+  width:28px;height:28px;border-radius:50%;
+  background:rgba(255,255,255,0.12);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:rgba(255,255,255,0.7);
+  z-index:2;
+  transition:background .2s, color .2s;
 }
-.card-link-muted{
-  display:inline-flex;align-items:center;gap:5px;
-  font-size:12px;font-weight:400;text-decoration:none;
-  color:#6b6460;padding:6px 14px;border-radius:20px;
-  border:1px solid #d0c9c2;
-  transition:background .2s,color .2s,border-color .2s;
-}
-.card-link-muted:hover{
-  border-color:#6b6460;color:#1a1714;
+a.tile:hover .tile-arrow{
+  background:rgba(255,255,255,0.25);
+  color:#fff;
 }
 
 /* ── FOOTER ── */
@@ -141,19 +193,39 @@ body{
 .footer-text a:hover{text-decoration:underline}
 
 /* ── REVEAL ── */
-.reveal{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
 .reveal.v{opacity:1;transform:translateY(0)}
+
+.tile-reveal{
+  opacity:0;
+  transform:scale(0.85) rotateX(8deg);
+  transition:opacity .45s ease, transform .45s cubic-bezier(.25,.46,.45,.94);
+}
+.tile-reveal.v{
+  opacity:1;
+  transform:scale(1) rotateX(0deg);
+}
 
 /* ── RESPONSIVE ── */
 @media(min-width:640px){
-  .cards{grid-template-columns:1fr 1fr 1fr}
   .hero{padding:88px 40px 72px}
-  .section{padding:64px 40px}
+  .cube-section{padding:80px 40px 72px}
 }
 @media(max-width:639px){
   .hero-title{font-size:32px}
-  .section-title{font-size:24px}
-  .card{padding:22px 22px 20px}
+  .cube-intro h2{font-size:24px}
+  .cube-grid{max-width:100%;gap:5px;padding:7px;border-radius:14px;}
+  .tile{padding:14px;border-radius:8px;}
+  .tile::before,.tile::after{border-radius:8px}
+  .tile-title{font-size:14px}
+  .tile-desc{font-size:10px;}
+  .tile-tag{font-size:8px}
+  .tile-arrow{width:22px;height:22px;top:10px;right:10px;font-size:11px}
+  /* Touch: reveal desc on focus/active */
+  a.tile:active .tile-desc,
+  a.tile:focus .tile-desc{
+    max-height:60px;opacity:1;margin-top:4px;
+  }
 }
 </style>
 </head>
@@ -168,103 +240,79 @@ body{
   </div>
 </header>
 
-<!-- ── RESOURCES ── -->
-<section class="section section-alt">
-  <div class="section-inner">
-    <div class="section-label">Resources</div>
-    <h2 class="section-title reveal">Choose your starting point</h2>
-    <p class="section-desc reveal">Three guides, each designed for a different need. Start with the quick overview, dive into the full interactive experience, or go straight to GA integration — whatever suits where you're at.</p>
-
-    <div class="cards">
-
-      <!-- Card 1: Core Principles -->
-      <div class="card reveal" style="--accent:#4085C6">
-        <span class="card-tag">Start Here</span>
-        <h3 class="card-title">Core Principles</h3>
-        <p class="card-body">The three principles that make the biggest difference to rubric quality — observable descriptors, spine-and-distinguisher structure, and capability-based criteria. A quick read for any assessment type.</p>
-        <div class="card-formats">
-          <a href="UQBS_Writing_Better_Rubrics.html" class="card-link">Read Online →</a>
-        </div>
-      </div>
-
-      <!-- Card 2: Build a Better Rubric -->
-      <div class="card reveal" style="--accent:#51247A">
-        <span class="card-tag">Comprehensive Guide</span>
-        <h3 class="card-title">Build a Better Rubric</h3>
-
-        <p class="card-body">A six-part interactive experience covering Values of Inquiry, SOLO Taxonomy, observable descriptors, structural design, and accessibility. Includes a live rubric that transforms as you read.</p>
-        <div class="card-formats">
-          <a href="UQBS_Rubric%20Design%20Fundamentals_FINAL.html" class="card-link">Explore →</a>
-        </div>
-      </div>
-
-      <!-- Card 3: GA & AoL Explained -->
-      <div class="card reveal" style="--accent:#962A8B">
-        <span class="card-tag">GA Integration</span>
-        <h3 class="card-title">GA &amp; AoL Explained</h3>
-        <p class="card-body">How UQ Graduate Attributes are being integrated into assessment rubrics across the Business School — the six GAs, the two-tier approach, and what it means for your course.</p>
-        <div class="card-formats">
-          <a href="UQBS_GA_Mapping_Guide.html" class="card-link">Read Online →</a>
-        </div>
-      </div>
-
-    </div>
+<!-- ── CUBE FACE GRID ── -->
+<section class="cube-section">
+  <div class="cube-intro">
+    <h2 class="reveal">Explore the toolkit</h2>
+    <p class="reveal">Six resources. Pick a tile to dive in.</p>
   </div>
-</section>
 
-<!-- ── INTERACTIVE COURSE ── -->
-<section class="section">
-  <div class="section-inner">
-    <div class="section-label">Learn by Doing</div>
-    <h2 class="section-title reveal">Interactive course</h2>
-    <p class="section-desc reveal">A hands-on learning experience that takes you from zero to mastery — building a real rubric as you go.</p>
+  <div class="cube-grid">
 
-    <div class="cards">
+    <!--
+      LAYOUT:
+      Row 1:  [blank gold]       [Core Principles blue]    [blank green]
+      Row 2:  [Build Purple]     [blank red]               [GA&AoL Magenta]
+      Row 3:  [Masterclass Green][Rubric Builder Gold]      [Eval Outputs Red]
 
-      <!-- Card: Interactive Course -->
-      <div class="card reveal" style="--accent:#2EA836">
-        <span class="card-tag">20 Modules · 5–6 Hours</span>
-        <h3 class="card-title">Rubric Design Masterclass</h3>
-        <p class="card-body">Twenty interactive modules covering every aspect of rubric design — from diagnosing the adverb trap to integrating Graduate Attributes. No lectures, just doing. Build a complete rubric piece by piece using a fictional case study. Progress saves between sessions.</p>
-        <div class="card-formats">
-          <a href="rubric-course/index.html" class="card-link">Start the Course →</a>
-        </div>
-      </div>
+      Colour adjacency check — no same colours touch:
+        Gold ↔ Blue ↔ Green
+        Gold ↔ Purple   Blue ↔ Red   Green ↔ Magenta
+        Purple ↔ Red ↔ Magenta
+        Purple ↔ Green   Red ↔ Gold   Magenta ↔ Red  ✓
+    -->
 
-    </div>
-  </div>
-</section>
+    <!-- Row 1 -->
+    <div class="tile tile-blank tile-gold tile-reveal" style="transition-delay:.05s"></div>
 
-<!-- ── TOOLS ── -->
-<section class="section">
-  <div class="section-inner">
-    <div class="section-label">Tools</div>
-    <h2 class="section-title reveal">Build and download</h2>
-    <p class="section-desc reveal">Practical tools to support your rubric design workflow.</p>
+    <a href="UQBS_Writing_Better_Rubrics.html" class="tile tile-blue tile-reveal" style="transition-delay:.1s">
+      <span class="tile-arrow">&rarr;</span>
+      <span class="tile-tag">Start Here</span>
+      <div class="tile-title">Core Principles</div>
+      <p class="tile-desc">Observable descriptors, spine-and-distinguisher structure, and capability-based criteria.</p>
+    </a>
 
-    <div class="cards">
+    <div class="tile tile-blank tile-green tile-reveal" style="transition-delay:.15s"></div>
 
-      <!-- Tool: Rubric Builder -->
-      <div class="card reveal" style="--accent:#2EA836">
-        <span class="card-tag">Tool</span>
-        <h3 class="card-title">Rubric Builder</h3>
-        <p class="card-body">Upload a course profile and existing rubric, select Graduate Attributes, and generate a fully structured criterion-referenced rubric with .docx export.</p>
-        <div class="card-formats">
-          <a href="UQBS_Rubric_Builder.html" class="card-link">Launch →</a>
-        </div>
-      </div>
+    <!-- Row 2 -->
+    <a href="UQBS_Rubric%20Design%20Fundamentals_FINAL.html" class="tile tile-purple tile-reveal" style="transition-delay:.2s">
+      <span class="tile-arrow">&rarr;</span>
+      <span class="tile-tag">Comprehensive Guide</span>
+      <div class="tile-title">Build a Better Rubric</div>
+      <p class="tile-desc">Six-part interactive experience covering SOLO Taxonomy, observable descriptors, and structural design.</p>
+    </a>
 
-      <!-- Tool: Evaluation Guide -->
-      <div class="card reveal" style="--accent:#962A8B">
-        <span class="card-tag">Quality Assurance</span>
-        <h3 class="card-title">Evaluating Rubric Outputs</h3>
-        <p class="card-body">A structured checklist for reviewing rubrics — covering GA accuracy, constructive alignment, language clarity, and practical usability. Includes downloadable AI prompt templates.</p>
-        <div class="card-formats">
-          <a href="UQBS_Rubric_Evaluation_Guide.html" class="card-link">Review Guide →</a>
-        </div>
-      </div>
+    <div class="tile tile-blank tile-red tile-reveal" style="transition-delay:.25s"></div>
 
-    </div>
+    <a href="UQBS_GA_Mapping_Guide.html" class="tile tile-magenta tile-reveal" style="transition-delay:.3s">
+      <span class="tile-arrow">&rarr;</span>
+      <span class="tile-tag">GA Integration</span>
+      <div class="tile-title">GA &amp; AoL Explained</div>
+      <p class="tile-desc">The six GAs, the two-tier approach, and what it means for your course.</p>
+    </a>
+
+    <!-- Row 3 -->
+    <a href="rubric-course/index.html" class="tile tile-green tile-reveal" style="transition-delay:.35s">
+      <span class="tile-arrow">&rarr;</span>
+      <span class="tile-tag">20 Modules · 5–6 Hours</span>
+      <div class="tile-title">Design Masterclass</div>
+      <p class="tile-desc">Twenty interactive modules. No lectures, just doing. Build a complete rubric piece by piece.</p>
+    </a>
+
+    <a href="UQBS_Rubric_Builder.html" class="tile tile-gold tile-reveal" style="transition-delay:.4s">
+      <span class="tile-arrow">&rarr;</span>
+      <span class="tile-tag">Tool</span>
+      <div class="tile-title">Rubric Builder</div>
+      <p class="tile-desc">Upload a course profile, select Graduate Attributes, and generate a structured rubric.</p>
+    </a>
+
+    <a href="UQBS_Rubric_Evaluation_Guide.html" class="tile tile-red tile-reveal" style="transition-delay:.45s">
+      <span class="tile-arrow">&rarr;</span>
+      <span class="tile-tag">Quality Assurance</span>
+      <div class="tile-title">Evaluating Outputs</div>
+      <p class="tile-desc">Structured checklist — GA accuracy, constructive alignment, language clarity, and usability.</p>
+    </a>
+
   </div>
 </section>
 
@@ -277,10 +325,15 @@ body{
 </footer>
 
 <script>
-const obs=new IntersectionObserver(es=>{
-  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target)}})
-},{threshold:0.15});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('v');
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal, .tile-reveal').forEach(el => obs.observe(el));
 </script>
 
 </body>
