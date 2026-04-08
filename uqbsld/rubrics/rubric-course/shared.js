@@ -65,9 +65,8 @@
       if (mod > this.data.currentModule) this.data.currentModule = mod;
       this.save();
     },
-    isAvailable(mod) {
-      if (mod === 1) return true;
-      return this.isCompleted(mod - 1);
+    isAvailable(/* mod */) {
+      return true;   // free navigation — no gates
     },
     reset() {
       this._data = { ...defaultProgress, modules: {} };
@@ -161,7 +160,9 @@
       options = options || {};
       const grades = ['HD','D','C','P','MF','F','LF'];
       const criteria = this.data.criteria;
-      let html = '<table><thead><tr><th>Criteria</th><th>Weight</th>';
+      let html = '<table><colgroup><col style="width:12%"><col style="width:5%">';
+      grades.forEach(() => { html += '<col>'; });
+      html += '</colgroup><thead><tr><th>Criteria</th><th>Weight</th>';
       grades.forEach(g => { html += '<th>' + g + '</th>'; });
       html += '</tr></thead><tbody>';
       criteria.forEach(c => {
@@ -170,7 +171,11 @@
         html += '</td><td>' + c.weighting + '%</td>';
         grades.forEach(g => {
           const d = (c.descriptors && c.descriptors[g]) || '';
-          html += '<td>' + esc(d) + '</td>';
+          if (d) {
+            html += '<td>' + esc(d) + '</td>';
+          } else {
+            html += '<td style="color:#b8b0a8;font-style:italic;background:#f5f2ef;">No descriptor</td>';
+          }
         });
         html += '</tr>';
       });
@@ -271,21 +276,21 @@
       return ready;
     }
 
+    // Always enable next-module navigation (free navigation)
+    const next = $('.nav-next');
+    if (next) {
+      next.classList.remove('disabled');
+      next.removeAttribute('aria-disabled');
+    }
+
     if (completeBtn) {
       completeBtn.addEventListener('click', function () {
         if (completed.size >= totalActivities) {
           Progress.completeModule(moduleNum);
           updateHeaderProgress();
-          // visual celebration
           completeBtn.textContent = 'Module Complete ✓';
           completeBtn.disabled = true;
           completeBtn.classList.add('btn-success');
-          // enable next nav
-          const next = $('.nav-next');
-          if (next) {
-            next.classList.remove('disabled');
-            next.removeAttribute('aria-disabled');
-          }
         }
       });
       // If already completed, update button
@@ -293,8 +298,6 @@
         completeBtn.textContent = 'Module Complete ✓';
         completeBtn.disabled = true;
         completeBtn.classList.add('btn-success');
-        const next = $('.nav-next');
-        if (next) { next.classList.remove('disabled'); next.removeAttribute('aria-disabled'); }
       }
     }
 
@@ -816,6 +819,12 @@
     Exercises.load();
     initReveal();
     updateHeaderProgress();
+
+    // Free navigation: remove all nav gates on page load
+    $$('.nav-next.disabled').forEach(el => {
+      el.classList.remove('disabled');
+      el.removeAttribute('aria-disabled');
+    });
 
     // Auto-init any rubric preview containers
     $$('.rubric-preview-auto').forEach(el => RubricPreview(el));
