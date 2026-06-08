@@ -374,6 +374,24 @@ function programRolesFor(code, taxonomy) {
   return taxonomy.course_programs[code] || [];
 }
 
+// Stable colour (hue 0-360) per program, so chips are consistent for a program
+// and visually distinct between programs. Curated hues for the main programs;
+// a spread hash covers anything else.
+const PROGRAM_HUE = {
+  BBusMan: 210, BCom: 280, BAB: 330, BAFE: 165, BTHEM: 30,
+  MBA: 0, MBus: 48, MCom: 190, MBusAn: 100, MEI: 255,
+  BBusManHons: 225, BComHons: 295, MFIM: 140, MTHEM: 15,
+  GCBus: 60, GCFIM: 120, GCTHEM: 45, GCBusAn: 85, GCBusAdmin: 200,
+  GCCom: 300, GCEI: 240,
+};
+function hueForProgram(code) {
+  if (PROGRAM_HUE[code] != null) return PROGRAM_HUE[code];
+  let h = 0;
+  const s = String(code);
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return Math.round((h * 137.508) % 360);
+}
+
 // ---- export helpers -------------------------------------------------------
 
 // Convert incidental HTML (from scraper-stripped fields) to plain text.
@@ -835,7 +853,7 @@ async function initBrowser() {
     bindControls();
     render();
   } catch (err) {
-    $body.innerHTML = `<tr><td colspan="11" class="error">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
+    $body.innerHTML = `<tr><td colspan="10" class="error">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
     console.error(err);
   }
 }
@@ -1108,7 +1126,7 @@ function render() {
   $count.textContent = courses.length;
 
   if (courses.length === 0) {
-    $body.innerHTML = `<tr><td colspan="11" class="empty">No courses match the current filters.</td></tr>`;
+    $body.innerHTML = `<tr><td colspan="10" class="empty">No courses match the current filters.</td></tr>`;
     updateSortIndicators();
     refreshSelectionUI();
     return;
@@ -1117,18 +1135,12 @@ function render() {
   const taxonomy = STORE.taxonomy;
   const rows = courses.map(c => {
     const roles = taxonomy ? programRolesFor(c.course_code, taxonomy) : [];
-    const progChips = roles.slice(0, 3).map(r => {
-      const isCore = (r.role || "").toLowerCase() === "core";
-      const cls = isCore ? "chip role-core" : "chip";
-      return `<span class="${cls}" title="${escapeHtml(r.program_name || r.program)} — ${escapeHtml(r.role || "")}">${escapeHtml(r.program)}</span>`;
-    }).join("");
-    const more = roles.length > 3 ? `<span class="chip muted">+${roles.length - 3}</span>` : "";
-    // Where the course lives in each program: "Core", or the major/list name.
-    const roleChips = roles.slice(0, 3).map(r => {
-      const isCore = (r.role || "").toLowerCase() === "core";
-      return `<span class="chip ${isCore ? "role-core" : "role-major"}" title="${escapeHtml(r.program_name || r.program)}">${escapeHtml(r.role || "")}</span>`;
-    }).join("");
-    const roleMore = roles.length > 3 ? `<span class="chip muted">+${roles.length - 3}</span>` : "";
+    // One chip per program: "Program: role", coloured consistently by program.
+    const progChips = roles.slice(0, 4).map(r => {
+      const hue = hueForProgram(r.program);
+      return `<span class="chip" style="--chip-hue:${hue}" title="${escapeHtml(r.program_name || r.program)} — ${escapeHtml(r.role || "")}">${escapeHtml(r.program)}: ${escapeHtml(r.role || "")}</span>`;
+    }).join(" ");
+    const more = roles.length > 4 ? `<span class="chip muted">+${roles.length - 4}</span>` : "";
     const levelClass = (c.study_level || "").toLowerCase().includes("post") ? "level-pill pg" : "level-pill";
     const fullCode = c.full_course_code || [c.course_code, c.class_code, c.semester_code].filter(Boolean).join("-");
     const pfx = coursePrefix(c.course_code);
@@ -1149,7 +1161,6 @@ function render() {
         <td>${escapeHtml(c.attendance_mode || "")}</td>
         <td>${escapeHtml(c.location || "")}</td>
         <td>${progChips}${more}</td>
-        <td>${roleChips}${roleMore}</td>
         <td class="aol-col">${aolCell}</td>
       </tr>`;
   }).join("");
@@ -2037,6 +2048,45 @@ const MODE_LABELS = { auto: "Auto", light: "Light", dark: "Dark", fun: "Fun" };
 const MODE_ICONS = { auto: "☾", light: "☀", dark: "●", fun: "✦" };
 const MODE_STORAGE_KEY = "uqbs-mode";
 
+// Synthwave neon pairs [primary, secondary]. Fun rolls one of these each time
+// it's selected, so the accent colours vary while the look stays coherent.
+const FUN_PALETTES = [
+  ["#ff4fd8", "#2de2e6"], // pink + cyan
+  ["#b16bff", "#5cf08a"], // violet + green
+  ["#ff9f45", "#45c8ff"], // orange + sky
+  ["#2de2e6", "#ff4fd8"], // cyan + pink
+  ["#c08cff", "#34e7e7"], // violet + cyan
+  ["#ff5e5e", "#4d9fff"], // coral + blue
+  ["#5cf08a", "#b16bff"], // green + violet
+  ["#ffd23f", "#ff4fd8"], // gold + pink
+];
+const FUN_PALETTE_KEY = "uqbs-fun-palette";
+
+function applyFunPalette(i) {
+  const n = FUN_PALETTES.length;
+  const p = FUN_PALETTES[((i % n) + n) % n];
+  const r = document.documentElement;
+  r.style.setProperty("--neon-1", p[0]);
+  r.style.setProperty("--neon-2", p[1]);
+}
+function clearFunPalette() {
+  const r = document.documentElement;
+  r.style.removeProperty("--neon-1");
+  r.style.removeProperty("--neon-2");
+}
+function rollFunPalette() {
+  const i = Math.floor(Math.random() * FUN_PALETTES.length);
+  try { localStorage.setItem(FUN_PALETTE_KEY, String(i)); } catch (_) { /* ignore */ }
+  applyFunPalette(i);
+}
+function storedFunPalette() {
+  try {
+    const v = parseInt(localStorage.getItem(FUN_PALETTE_KEY), 10);
+    if (!isNaN(v)) { applyFunPalette(v); return; }
+  } catch (_) { /* ignore */ }
+  rollFunPalette();
+}
+
 function getMode() {
   try {
     const stored = localStorage.getItem(MODE_STORAGE_KEY);
@@ -2053,10 +2103,12 @@ function applyMode(mode) {
   if (mode === "fun") {
     root.setAttribute("data-theme", "fun");
     root.removeAttribute("data-color-mode");
+    rollFunPalette();   // new neon pair each time Fun is chosen
   } else {
     root.setAttribute("data-theme", "classic");
     if (mode === "light" || mode === "dark") root.setAttribute("data-color-mode", mode);
     else root.removeAttribute("data-color-mode");
+    clearFunPalette();
   }
   try { localStorage.setItem(MODE_STORAGE_KEY, mode); } catch (_) { /* ignore */ }
   updateModeButton(mode);
@@ -2075,7 +2127,9 @@ function updateModeButton(mode) {
 }
 
 function initMode() {
-  updateModeButton(getMode());
+  const mode = getMode();
+  if (mode === "fun") storedFunPalette();  // keep the chosen pair stable across pages
+  updateModeButton(mode);
   const $btn = document.getElementById("mode-toggle");
   if ($btn && !$btn.dataset.modeBound) {
     $btn.dataset.modeBound = "1";

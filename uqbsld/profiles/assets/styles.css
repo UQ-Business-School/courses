@@ -68,24 +68,26 @@
 
 /* Fun theme — dark neon (self-contained; ignores light/dark colour mode) ---- */
 :root[data-theme="fun"] {
-  --uq-purple: #c08cff;
+  --neon-1: #c08cff;   /* primary neon — JS randomises this per Fun session */
+  --neon-2: #34e7e7;   /* secondary neon — JS randomises this per Fun session */
+  --uq-purple: var(--neon-1);
   --uq-purple-dark: #d9b8ff;
   --uq-purple-light: #1c1730;
-  --uq-gold: #34e7e7;
+  --uq-gold: var(--neon-2);
 
   --ink: #e9e6f2;
   --ink-muted: #968fad;
   --ink-faint: #6f6889;
-  --rule: #221c33;
-  --bg: #0e0c16;
-  --bg-card: #16121f;
-  --header-bg: #15111f;
-  --header-ink: #f1ebff;
-  --header-accent: #c08cff;
+  --rule: #241a3a;
+  --bg: #0c0a1a;
+  --bg-card: #161227;
+  --header-bg: linear-gradient(120deg, #2a0e52 0%, #7a2ff2 52%, #c4279e 100%);
+  --header-ink: #ffffff;
+  --header-accent: var(--neon-1);
 
   --chip-bg: #1d1730;
   --chip-ink: #c9b3ff;
-  --accent: #c08cff;
+  --accent: var(--neon-1);
   --accent-soft: #1d1730;
   --accent-ink: #0e0c16;
 
@@ -98,6 +100,18 @@
   --radius-lg: 14px;
   --shadow: 0 0 0 1px #221c33, 0 4px 18px rgba(0,0,0,0.5);
   --shadow-lg: 0 0 0 1px #2a2140, 0 10px 34px rgba(0,0,0,0.6);
+
+  /* Neon discipline palette — course codes glow by faculty prefix */
+  --fac-acct: #ffd23f;
+  --fac-finm: #5cf08a;
+  --fac-mgts: #4d9fff;
+  --fac-mktg: #ff4fd8;
+  --fac-tims: #2de2e6;
+  --fac-laws: #ff5e5e;
+  --fac-busn: #b16bff;
+  --fac-econ: #ff9f45;
+  --fac-leis: #3cffb0;
+  --fac-tour: #45c8ff;
 }
 
 /* Dark mode -----------------------------------------------------------
@@ -795,24 +809,24 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 20px 0; }
 /* FUN THEME — magazine / editorial tweaks                          */
 /* ============================================================== */
 
-/* ---- Fun (dark neon) component touches -------------------------------- */
+/* ---- Fun (dark neon) component touches; colours driven by --neon-1/2 --- */
 [data-theme="fun"] header.site {
-  box-shadow: 0 1px 0 #2a2140, 0 2px 14px rgba(192,140,255,0.18);
+  box-shadow: 0 1px 0 #2a2140, 0 2px 16px color-mix(in srgb, var(--neon-1) 24%, transparent);
 }
 [data-theme="fun"] header.site h1 {
-  color: var(--accent);
-  text-shadow: 0 0 14px rgba(192,140,255,0.45);
+  color: #fff;
+  text-shadow: 0 0 18px rgba(255,255,255,0.4);
 }
-[data-theme="fun"] header.site nav a.active { border-bottom-color: var(--accent); }
+[data-theme="fun"] header.site nav a.active { border-bottom-color: #fff; }
 [data-theme="fun"] .mode-toggle {
-  border-color: #34e7e7;
-  box-shadow: 0 0 10px rgba(52,231,231,0.35);
+  border-color: var(--neon-2);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--neon-2) 45%, transparent);
 }
 
-/* Links glow cyan */
-[data-theme="fun"] a { color: #34e7e7; }
+/* Links glow in the secondary neon */
+[data-theme="fun"] a { color: var(--neon-2); }
 [data-theme="fun"] td.code a,
-[data-theme="fun"] table.courses a { color: #34e7e7; font-weight: 600; }
+[data-theme="fun"] table.courses a { color: var(--neon-2); font-weight: 600; }
 
 /* Surfaces lift on the dark base */
 [data-theme="fun"] .card,
@@ -823,29 +837,72 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 20px 0; }
 [data-theme="fun"] .edition-card {
   border: 1px solid #2a2140;
 }
-[data-theme="fun"] table.courses tbody tr:nth-child(even) td { background: rgba(192,140,255,0.05); }
-[data-theme="fun"] table.courses tbody tr:hover td { background: rgba(52,231,231,0.07); }
+[data-theme="fun"] table.courses tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--neon-1) 6%, transparent); }
+[data-theme="fun"] table.courses tbody tr:hover td { background: color-mix(in srgb, var(--neon-2) 10%, transparent); }
 
-/* Chips / pills as neon outlines */
+/* Chips: neutral by default, Core pops in the secondary neon */
 [data-theme="fun"] .chip { background: #1d1730; color: #c9b3ff; border: 1px solid #3a2f55; }
+[data-theme="fun"] .chip.role-core {
+  background: color-mix(in srgb, var(--neon-2) 16%, transparent);
+  color: var(--neon-2);
+  border-color: var(--neon-2);
+}
 [data-theme="fun"] .level-pill { border: 1px solid #3a2f55; }
 
 /* Download / action buttons: neon outline that fills on hover */
 [data-theme="fun"] .dl-btn {
-  background: transparent; border: 1px solid var(--accent); color: var(--accent);
+  background: transparent; border: 1px solid var(--neon-1); color: var(--neon-1);
 }
 [data-theme="fun"] .dl-btn:hover,
 [data-theme="fun"] .dl-btn:focus-visible {
-  background: var(--accent); color: var(--accent-ink);
-  box-shadow: 0 0 12px rgba(192,140,255,0.5);
+  background: var(--neon-1); color: var(--accent-ink);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--neon-1) 55%, transparent);
 }
 
 /* Landing edition cards */
 [data-theme="fun"] .edition-card:hover {
-  border-color: #34e7e7;
-  box-shadow: 0 0 0 1px #34e7e7, 0 8px 28px rgba(0,0,0,0.6);
+  border-color: var(--neon-2);
+  box-shadow: 0 0 0 1px var(--neon-2), 0 8px 28px rgba(0,0,0,0.6);
 }
-[data-theme="fun"] .ec-go { color: #34e7e7; }
+[data-theme="fun"] .ec-go { color: var(--neon-2); }
+
+/* Course codes glow by discipline (synthwave colour-coding) */
+[data-theme="fun"] td.code.prefix-ACCT a { color: var(--fac-acct); }
+[data-theme="fun"] td.code.prefix-FINM a { color: var(--fac-finm); }
+[data-theme="fun"] td.code.prefix-MGTS a { color: var(--fac-mgts); }
+[data-theme="fun"] td.code.prefix-MKTG a { color: var(--fac-mktg); }
+[data-theme="fun"] td.code.prefix-TIMS a { color: var(--fac-tims); }
+[data-theme="fun"] td.code.prefix-LAWS a { color: var(--fac-laws); }
+[data-theme="fun"] td.code.prefix-BUSN a { color: var(--fac-busn); }
+[data-theme="fun"] td.code.prefix-ECON a { color: var(--fac-econ); }
+[data-theme="fun"] td.code.prefix-LEIS a { color: var(--fac-leis); }
+[data-theme="fun"] td.code.prefix-TOUR a { color: var(--fac-tour); }
+[data-theme="fun"] td.code a { text-shadow: 0 0 10px currentColor; }
+
+/* Program-coloured chips — hue passed inline as --chip-hue, themed per mode */
+.chip[style*="--chip-hue"] {
+  color: hsl(var(--chip-hue) 55% 32%);
+  background: hsl(var(--chip-hue) 72% 95%);
+  border: 1px solid hsl(var(--chip-hue) 50% 72%);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-color-mode="light"]) .chip[style*="--chip-hue"] {
+    color: hsl(var(--chip-hue) 85% 75%);
+    background: hsl(var(--chip-hue) 55% 15%);
+    border-color: hsl(var(--chip-hue) 65% 48%);
+  }
+}
+:root[data-color-mode="dark"] .chip[style*="--chip-hue"] {
+  color: hsl(var(--chip-hue) 85% 75%);
+  background: hsl(var(--chip-hue) 55% 15%);
+  border-color: hsl(var(--chip-hue) 65% 48%);
+}
+[data-theme="fun"] .chip[style*="--chip-hue"] {
+  color: hsl(var(--chip-hue) 95% 72%);
+  background: hsl(var(--chip-hue) 80% 13%);
+  border-color: hsl(var(--chip-hue) 90% 60%);
+  text-shadow: 0 0 8px hsl(var(--chip-hue) 95% 60% / 0.4);
+}
 
 
 /* Print stylesheet -------------------------------------------------- */
