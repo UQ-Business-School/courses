@@ -832,6 +832,13 @@ async function initBrowser() {
         .map(([k, v]) => ({ value: k, label: `${v.name} (${k})` }));
       populateSelect("filter-program", progOpts);
     }
+    if (taxonomy && taxonomy.course_programs) {
+      const majors = new Set();
+      for (const lst of Object.values(taxonomy.course_programs)) {
+        for (const r of lst) majors.add(`${r.program}: ${r.role || ""}`);
+      }
+      populateSelect("filter-major", [...majors].sort().map(m => ({ value: m, label: m })));
+    }
 
     // Populate semester filter and default to most recent
     const semCodes = uniqueSorted(courses.map(c => c.semester_code));
@@ -870,7 +877,7 @@ function populateSelect(id, options) {
 }
 
 function bindControls() {
-  for (const id of ["search", "filter-semester", "filter-level", "filter-mode", "filter-location", "filter-program"]) {
+  for (const id of ["search", "filter-semester", "filter-level", "filter-mode", "filter-location", "filter-program", "filter-major"]) {
     const el = document.getElementById(id);
     if (el) el.addEventListener("input", render);
   }
@@ -1087,6 +1094,7 @@ function applyFilters(courses) {
   const mode = document.getElementById("filter-mode")?.value;
   const loc = document.getElementById("filter-location")?.value;
   const prog = document.getElementById("filter-program")?.value;
+  const major = document.getElementById("filter-major")?.value;
 
   return courses.filter(c => {
     if (q) {
@@ -1100,6 +1108,10 @@ function applyFilters(courses) {
     if (prog && STORE.taxonomy && STORE.taxonomy.course_programs) {
       const roles = STORE.taxonomy.course_programs[c.course_code] || [];
       if (!roles.some(r => r.program === prog)) return false;
+    }
+    if (major && STORE.taxonomy && STORE.taxonomy.course_programs) {
+      const roles = STORE.taxonomy.course_programs[c.course_code] || [];
+      if (!roles.some(r => `${r.program}: ${r.role || ""}` === major)) return false;
     }
     return true;
   });
