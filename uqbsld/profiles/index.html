@@ -9,15 +9,16 @@
     // Apply saved theme + colour mode before first paint to avoid FOUC
     (function () {
       try {
-        var t = localStorage.getItem("uqbs-theme") || "classic";
-        document.documentElement.setAttribute("data-theme", t);
+        var m = localStorage.getItem("uqbs-mode") || "auto";
+        var root = document.documentElement;
+        if (m === "fun") { root.setAttribute("data-theme", "fun"); }
+        else {
+          root.setAttribute("data-theme", "classic");
+          if (m === "light" || m === "dark") root.setAttribute("data-color-mode", m);
+        }
       } catch (e) {
         document.documentElement.setAttribute("data-theme", "classic");
       }
-      try {
-        var m = localStorage.getItem("uqbs-color-mode") || "auto";
-        if (m !== "auto") document.documentElement.setAttribute("data-color-mode", m);
-      } catch (e) { /* ignore */ }
     })();
   </script>
 </head>
@@ -25,13 +26,7 @@
   <header class="site">
     <h1>UQ Course Profiles</h1>
     <nav>
-      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme"
-              title="Switch between Classic and Fun themes">
-        <span class="tt-icon" aria-hidden="true">◐</span>
-        <span class="tt-label">Classic</span>
-      </button>
-      <button id="mode-toggle" class="mode-toggle" type="button" aria-label="Switch colour mode"
-              title="Switch between Auto, Light, and Dark">
+      <button id="mode-toggle" class="mode-toggle" type="button" aria-label="Display mode">
         <span class="mt-icon" aria-hidden="true">☾</span>
         <span class="mt-label">Auto</span>
       </button>
@@ -40,25 +35,22 @@
 
   <main class="landing">
     <section class="landing-intro">
-      <p class="lead">One home for UQ's course profiles — more complete than the published
-      Drupal pages, easier to navigate than Jac, with a couple of extra features to boot.
-      Every current course, plus the back catalogue to 2009.</p>
-      <p>Search across the lot, compare any two offerings side by side to see what changed
-      between years, and download in bulk. Pick a view to start.</p>
+      <p class="lead">Every UQ course profile in one place. Search, compare across years,
+      and download in bulk.</p>
     </section>
 
     <section class="edition-cards">
       <a id="btn-uqbs" class="edition-card" href="business.html">
         <span class="ec-title">Strictly Business</span>
-        <span class="ec-sub">UQBS courses. Assurance-of-learning and graduate-attribute mapping are coming soon.</span>
+        <span class="ec-sub">UQBS courses, with assurance-of-learning and graduate-attribute mapping (coming soon).</span>
         <span class="ec-note">For UQBS staff.</span>
         <span class="ec-go">Open →</span>
       </a>
 
       <a id="btn-all" class="edition-card" href="browse-all.html">
         <span class="ec-title">All of UQ</span>
-        <span class="ec-sub">Every UQ course profile, current and historical.</span>
-        <span class="ec-note">The same explorer, without the UQBS-only mapping fields.</span>
+        <span class="ec-sub">All faculties, current and back to 2009.</span>
+        <span class="ec-note">Without the UQBS-only fields.</span>
         <span class="ec-go">Open →</span>
       </a>
     </section>
@@ -71,9 +63,8 @@
   <script src="./assets/site-config.js"></script>
   <script src="./assets/app.js"></script>
   <script>
-    // Theme controls, and point the two buttons at the configured edition URLs.
-    window.UQBS.initTheme();
-    window.UQBS.initColorMode();
+    // Display-mode control, and point the two buttons at the configured edition URLs.
+    window.UQBS.initMode();
     (function () {
       var s = window.SITE || {};
       var u = document.getElementById("btn-uqbs");

@@ -2020,36 +2020,66 @@ function renderProgramDetail($root, progKey, taxonomy, courses) {
 }
 
 // =========================================================================
-// Theme toggle (Classic ⇄ Fun), shared across all pages
+// Display mode — one control cycling Auto → Light → Dark → Fun.
+// "Fun" is the dark-neon theme; Auto/Light/Dark are the classic theme with the
+// matching palette. Shared across all pages and both editions.
 // =========================================================================
-const THEMES = ["classic", "fun"];
-const THEME_LABELS = { classic: "Classic", fun: "Fun" };
-const THEME_ICONS = { classic: "◐", fun: "✦" };
-const THEME_STORAGE_KEY = "uqbs-theme";
+const MODES = ["auto", "light", "dark", "fun"];
+const MODE_LABELS = { auto: "Auto", light: "Light", dark: "Dark", fun: "Fun" };
+const MODE_ICONS = { auto: "☾", light: "☀", dark: "●", fun: "✦" };
+const MODE_STORAGE_KEY = "uqbs-mode";
 
-function getCurrentTheme() {
-  const t = document.documentElement.getAttribute("data-theme");
-  return THEMES.includes(t) ? t : "classic";
+function getMode() {
+  try {
+    const stored = localStorage.getItem(MODE_STORAGE_KEY);
+    if (MODES.includes(stored)) return stored;
+  } catch (_) { /* ignore */ }
+  if (document.documentElement.getAttribute("data-theme") === "fun") return "fun";
+  const cm = document.documentElement.getAttribute("data-color-mode");
+  return MODES.includes(cm) ? cm : "auto";
 }
 
-function applyTheme(theme) {
-  if (!THEMES.includes(theme)) theme = "classic";
-  document.documentElement.setAttribute("data-theme", theme);
-  try { localStorage.setItem(THEME_STORAGE_KEY, theme); } catch (_) { /* ignore */ }
-  updateThemeToggleLabel(theme);
+function applyMode(mode) {
+  if (!MODES.includes(mode)) mode = "auto";
+  const root = document.documentElement;
+  if (mode === "fun") {
+    root.setAttribute("data-theme", "fun");
+    root.removeAttribute("data-color-mode");
+  } else {
+    root.setAttribute("data-theme", "classic");
+    if (mode === "light" || mode === "dark") root.setAttribute("data-color-mode", mode);
+    else root.removeAttribute("data-color-mode");
+  }
+  try { localStorage.setItem(MODE_STORAGE_KEY, mode); } catch (_) { /* ignore */ }
+  updateModeButton(mode);
 }
 
-function updateThemeToggleLabel(theme) {
-  const $btn = document.getElementById("theme-toggle");
+function updateModeButton(mode) {
+  const $btn = document.getElementById("mode-toggle");
   if (!$btn) return;
-  // Button shows the theme you'll switch TO, to make it obvious what happens
-  const next = theme === "classic" ? "fun" : "classic";
-  const $label = $btn.querySelector(".tt-label");
-  const $icon = $btn.querySelector(".tt-icon");
-  if ($label) $label.textContent = THEME_LABELS[next];
-  if ($icon) $icon.textContent = THEME_ICONS[next];
-  $btn.setAttribute("aria-pressed", theme === "fun" ? "true" : "false");
-  $btn.title = `Switch to ${THEME_LABELS[next]} theme`;
+  const $label = $btn.querySelector(".mt-label");
+  const $icon = $btn.querySelector(".mt-icon");
+  if ($label) $label.textContent = MODE_LABELS[mode];
+  if ($icon) $icon.textContent = MODE_ICONS[mode];
+  const next = MODES[(MODES.indexOf(mode) + 1) % MODES.length];
+  $btn.title = `Display: ${MODE_LABELS[mode]} (click for ${MODE_LABELS[next]})`;
+  $btn.setAttribute("aria-label", `Display mode: ${MODE_LABELS[mode]}. Click to switch to ${MODE_LABELS[next]}.`);
+}
+
+function initMode() {
+  updateModeButton(getMode());
+  const $btn = document.getElementById("mode-toggle");
+  if ($btn && !$btn.dataset.modeBound) {
+    $btn.dataset.modeBound = "1";
+    $btn.addEventListener("click", () => {
+      const cur = getMode();
+      applyMode(MODES[(MODES.indexOf(cur) + 1) % MODES.length]);
+    });
+  }
+}
+
+if (typeof document !== "undefined") {
+  initMode();
 }
 
 // =========================================================================
@@ -2192,93 +2222,6 @@ function renderAolDashboard($root, aol, taxonomy, courses) {
   }
 
   $root.innerHTML = parts.join("");
-}
-
-function initTheme() {
-  // The inline <script> in <head> has already applied the data-theme attribute
-  // for FOUC prevention. Here we just wire the toggle button.
-  const current = getCurrentTheme();
-  updateThemeToggleLabel(current);
-  const $btn = document.getElementById("theme-toggle");
-  if ($btn && !$btn.dataset.themeBound) {
-    $btn.dataset.themeBound = "1";
-    $btn.addEventListener("click", () => {
-      const next = getCurrentTheme() === "classic" ? "fun" : "classic";
-      applyTheme(next);
-    });
-  }
-}
-
-// Call theme init immediately once the script runs (DOM is ready because
-// this script is at end of body), and also again inside each page-init in
-// case the button is added dynamically.
-if (typeof document !== "undefined") {
-  initTheme();
-}
-
-// =========================================================================
-// Colour-mode toggle (Auto ⇄ Light ⇄ Dark), independent of theme
-// =========================================================================
-const COLOR_MODES = ["auto", "light", "dark"];
-const COLOR_MODE_LABELS = { auto: "Auto", light: "Light", dark: "Dark" };
-const COLOR_MODE_ICONS = { auto: "☾", light: "☀", dark: "●" };
-const COLOR_MODE_STORAGE_KEY = "uqbs-color-mode";
-
-function getCurrentColorMode() {
-  // The <head> FOUC script only sets the attribute when mode is light/dark;
-  // "auto" is represented by the attribute being absent. Fall back to
-  // localStorage so the button label stays accurate across pages.
-  const attr = document.documentElement.getAttribute("data-color-mode");
-  if (COLOR_MODES.includes(attr)) return attr;
-  try {
-    const stored = localStorage.getItem(COLOR_MODE_STORAGE_KEY);
-    if (COLOR_MODES.includes(stored)) return stored;
-  } catch (_) { /* ignore */ }
-  return "auto";
-}
-
-function applyColorMode(mode) {
-  if (!COLOR_MODES.includes(mode)) mode = "auto";
-  if (mode === "auto") {
-    document.documentElement.removeAttribute("data-color-mode");
-  } else {
-    document.documentElement.setAttribute("data-color-mode", mode);
-  }
-  try { localStorage.setItem(COLOR_MODE_STORAGE_KEY, mode); } catch (_) { /* ignore */ }
-  updateColorModeToggleLabel(mode);
-}
-
-function updateColorModeToggleLabel(mode) {
-  const $btn = document.getElementById("mode-toggle");
-  if (!$btn) return;
-  const $label = $btn.querySelector(".mt-label");
-  const $icon = $btn.querySelector(".mt-icon");
-  if ($label) $label.textContent = COLOR_MODE_LABELS[mode];
-  if ($icon) $icon.textContent = COLOR_MODE_ICONS[mode];
-  // Show the NEXT mode in the tooltip so users know what a click will do
-  const nextIdx = (COLOR_MODES.indexOf(mode) + 1) % COLOR_MODES.length;
-  const next = COLOR_MODES[nextIdx];
-  $btn.title = `Colour mode: ${COLOR_MODE_LABELS[mode]} (click for ${COLOR_MODE_LABELS[next]})`;
-  $btn.setAttribute("aria-label", `Colour mode: ${COLOR_MODE_LABELS[mode]}. Click to switch to ${COLOR_MODE_LABELS[next]}.`);
-}
-
-function initColorMode() {
-  const current = getCurrentColorMode();
-  // Don't re-apply if already set — avoids a flash on page load
-  updateColorModeToggleLabel(current);
-  const $btn = document.getElementById("mode-toggle");
-  if ($btn && !$btn.dataset.modeBound) {
-    $btn.dataset.modeBound = "1";
-    $btn.addEventListener("click", () => {
-      const cur = getCurrentColorMode();
-      const idx = (COLOR_MODES.indexOf(cur) + 1) % COLOR_MODES.length;
-      applyColorMode(COLOR_MODES[idx]);
-    });
-  }
-}
-
-if (typeof document !== "undefined") {
-  initColorMode();
 }
 
 // =========================================================================
@@ -2434,10 +2377,8 @@ window.UQBS = {
   initCourseDetail,
   initProgram,
   initAol,
-  initTheme,
-  applyTheme,
-  initColorMode,
-  applyColorMode,
+  initMode,
+  applyMode,
   // exposed for tests
   offeringChronKey,
   buildCourseTimeline,
