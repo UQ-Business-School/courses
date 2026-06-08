@@ -4,6 +4,6 @@ window.SITE = {
   "dataBase": "https://uqsmitc6.github.io/uqbs-course-profiles",
   "repoUrl": "https://github.com/UQ-Business-School/courses",
   "uqbsUrl": "business.html",
-  "allUrl": "https://uqsmitc6.github.io/uqbs-course-profiles/browse-all.html",
+  "allUrl": "browse-all.html",
   "reportEmail": "uqsmitc6@uq.edu.au"
 };

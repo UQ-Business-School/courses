@@ -13,6 +13,7 @@ const STORE = {
   manifestAll: null,
   manifestLegacy: null,
   taxonomy: null,
+  taxonomyAll: null,
   aol: null,
   loOverrides: null,
   teachingPeriods: null,
@@ -44,7 +45,8 @@ const DATA_PATHS = {
   manifest: "./assets/manifest.json",                      // primary index — ships with each edition
   manifestAll: dataUrl("assets/manifest-all.json"),        // bulk/shared
   manifestLegacy: dataUrl("assets/manifest-legacy.json"),  // bulk/shared
-  taxonomy: EDITION === "all" ? "./taxonomy/all-programs.json" : "./taxonomy/uqbs-programs.json",
+  taxonomy: "./taxonomy/uqbs-programs.json",       // UQBS dashboard (clean, UQBS-scoped)
+  taxonomyAll: "./taxonomy/all-programs.json",     // All-UQ dashboard (all faculties)
   aol: "./taxonomy/aol-status.json",
   loOverrides: "./taxonomy/lo-overrides.json",
   teachingPeriods: "./taxonomy/teaching-periods.json",
@@ -97,6 +99,15 @@ async function loadTaxonomy() {
   if (!res.ok) throw new Error(`Could not load taxonomy: ${res.status}`);
   STORE.taxonomy = await res.json();
   return STORE.taxonomy;
+}
+
+// All-of-UQ program taxonomy (all-programs.json) for the All-UQ dashboard.
+async function loadTaxonomyAll() {
+  if (STORE.taxonomyAll) return STORE.taxonomyAll;
+  const res = await fetch(DATA_PATHS.taxonomyAll, { cache: "no-cache" });
+  if (!res.ok) throw new Error(`Could not load all-UQ taxonomy: ${res.status}`);
+  STORE.taxonomyAll = await res.json();
+  return STORE.taxonomyAll;
 }
 
 async function loadAol() {
@@ -1202,7 +1213,7 @@ async function initCourseDetail() {
   }
   try {
     const [course, manifest, manifestLegacy, taxonomy, aol] = await Promise.all([
-      loadCourseJson(filePath), loadManifest(), loadManifestLegacy().catch(() => ({ periods: {} })), loadTaxonomy().catch(() => null), loadAol().catch(() => null), loadLoOverrides().catch(() => null), loadTeachingPeriods().catch(() => null)
+      loadCourseJson(filePath), loadManifest(), loadManifestLegacy().catch(() => ({ periods: {} })), loadTaxonomyAll().catch(() => null), loadAol().catch(() => null), loadLoOverrides().catch(() => null), loadTeachingPeriods().catch(() => null)
     ]);
     STORE.currentCourse = course;
     STORE.currentTaxonomy = taxonomy;
@@ -2306,7 +2317,7 @@ async function initAllBrowser() {
   const $count = document.getElementById("course-count");
   const $meta = document.getElementById("meta-info");
   try {
-    const [manifest, taxonomy] = await Promise.all([loadManifestAll(), loadTaxonomy().catch(() => null), loadTeachingPeriods().catch(() => null)]);
+    const [manifest, taxonomy] = await Promise.all([loadManifestAll(), loadTaxonomyAll().catch(() => null), loadTeachingPeriods().catch(() => null)]);
     const courses = getAllCourses(manifest);
     STORE.allCourses = courses;
     STORE.taxonomy = taxonomy;   // all-UQ program/major taxonomy (all-programs.json)
@@ -2496,11 +2507,14 @@ function renderNav() {
   const nav = document.querySelector("header.site nav");
   if (!nav) return;
   const repoUrl = SITE.repoUrl || "https://github.com/uqsmitc6/uqbs-course-profiles";
-  const home = EDITION === "uqbs" ? ["business.html", "UQBS"] : ["browse-all.html", "All UQ"];
-  const links = [["index.html", "⌂ Editions", "_editions"], [home[0], home[1], "home"]];
-  if (EDITION === "uqbs") {
-    links.push(["program.html", "Programs", "programs"], ["aol.html", "AoL", "aol"]);
-  }
+  // One site, both dashboards as sub-pages.
+  const links = [
+    ["index.html", "⌂ Home", "_home"],
+    ["business.html", "UQBS", "home"],
+    ["browse-all.html", "All UQ", "all"],
+    ["program.html", "Programs", "programs"],
+    ["aol.html", "AoL", "aol"],
+  ];
   const html = links
     .map(([href, label, key]) => `<a href="${href}"${key === page ? ' class="active"' : ""}>${escapeHtml(label)}</a>`)
     .join("\n      ")
