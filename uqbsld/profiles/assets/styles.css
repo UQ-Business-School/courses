@@ -811,7 +811,11 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 20px 0; }
 
 /* ---- Fun (dark neon) component touches; colours driven by --neon-1/2 --- */
 [data-theme="fun"] header.site {
-  box-shadow: 0 1px 0 #2a2140, 0 2px 16px color-mix(in srgb, var(--neon-1) 24%, transparent);
+  background:
+    radial-gradient(130% 150% at 50% 140%, color-mix(in srgb, var(--neon-1) 55%, transparent) 0%, transparent 58%),
+    linear-gradient(180deg, #190a33 0%, #260c4a 100%);
+  border-bottom: 2px solid color-mix(in srgb, var(--neon-2) 70%, transparent);
+  box-shadow: 0 0 22px color-mix(in srgb, var(--neon-2) 30%, transparent);
 }
 [data-theme="fun"] header.site h1 {
   color: #fff;
@@ -902,6 +906,33 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 20px 0; }
   background: hsl(var(--chip-hue) 80% 13%);
   border-color: hsl(var(--chip-hue) 90% 60%);
   text-shadow: 0 0 8px hsl(var(--chip-hue) 95% 60% / 0.4);
+}
+
+/* ---- Synthwave scene (Fun only): starfield + perspective grid, behind all - */
+[data-theme="fun"] body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 18% 28%, rgba(255,255,255,0.55), transparent),
+    radial-gradient(1.5px 1.5px at 68% 18%, rgba(255,255,255,0.45), transparent),
+    radial-gradient(1.5px 1.5px at 42% 62%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 84% 46%, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1px 1px at 56% 12%, rgba(255,255,255,0.45), transparent),
+    radial-gradient(1px 1px at 30% 78%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 92% 70%, rgba(255,255,255,0.3), transparent);
+}
+[data-theme="fun"] body::after {
+  content: "";
+  position: fixed; left: 50%; bottom: 0; z-index: -1; pointer-events: none;
+  width: 240vw; height: 42vh;
+  transform: translateX(-50%) perspective(280px) rotateX(62deg);
+  transform-origin: bottom center;
+  background-image:
+    repeating-linear-gradient(to right, color-mix(in srgb, var(--neon-2) 55%, transparent) 0 1px, transparent 1px 58px),
+    repeating-linear-gradient(to bottom, color-mix(in srgb, var(--neon-2) 55%, transparent) 0 1px, transparent 1px 58px);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, rgba(0,0,0,0.55) 35%, transparent 78%);
+  mask-image: linear-gradient(to top, #000 0%, rgba(0,0,0,0.55) 35%, transparent 78%);
+  opacity: 0.45;
 }
 
 
