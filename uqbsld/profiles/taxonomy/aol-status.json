@@ -1,0 +1,103 @@
+{
+  "_metadata": {
+    "description": "UQBS Assurance of Learning status overlay",
+    "last_updated": "2026-04-15 15:03",
+    "generated_from": "taxonomy/aol-template.csv",
+    "statuses": {
+      "tbd": "Course needs AoL mapping but no specific GA+assessment match identified yet",
+      "identified": "Team has flagged a good course+GA+assessment match",
+      "rubric_in_dev": "Rubric is being built or revised to integrate GA criteria",
+      "active": "Rubric built and being used in a live semester offering",
+      "established": "Rubric used, data collected and reviewed — loop closed"
+    },
+    "graduate_attributes": {
+      "GA1": "Accomplished Scholars",
+      "GA2": "Courageous Thinkers",
+      "GA3": "Connected Citizens",
+      "GA4": "Culturally Capable",
+      "GA5": "Influential Communicators",
+      "GA6": "Respectful Leaders"
+    }
+  },
+  "semesters": {
+    "7620": {
+      "label": "Semester 1, 2026",
+      "entries": [
+        {
+          "course_code": "ACCT1101",
+          "ga": "GA1",
+          "assessment_title": "Final Examination",
+          "status": "established",
+          "rubric_url": "https://uqbs.sharepoint.com/rubrics/ACCT1101-GA1-FinalExam.docx",
+          "notes": "Data collected and reviewed — loop closed"
+        },
+        {
+          "course_code": "ACCT1101",
+          "ga": "GA2",
+          "assessment_title": "Case Study Analysis",
+          "status": "active",
+          "rubric_url": "https://uqbs.sharepoint.com/rubrics/ACCT1101-GA2-CaseStudy.docx",
+          "notes": "First semester of use"
+        },
+        {
+          "course_code": "ECON1011",
+          "ga": "GA1",
+          "assessment_title": "Problem Set Portfolio",
+          "status": "identified",
+          "notes": "Exploring fit with coordinator"
+        },
+        {
+          "course_code": "MGTS1601",
+          "ga": "GA3",
+          "assessment_title": "Team Evaluation Report",
+          "status": "active",
+          "rubric_url": "https://uqbs.sharepoint.com/rubrics/MGTS1601-GA3-TeamEval.docx",
+          "notes": "Rubric integrated Sem 1 2026"
+        },
+        {
+          "course_code": "MGTS1601",
+          "ga": "GA6",
+          "assessment_title": "Final Examination",
+          "status": "rubric_in_dev",
+          "notes": "Rubric being developed with course coordinator"
+        },
+        {
+          "course_code": "MGTS2604",
+          "ga": "GA4",
+          "assessment_title": "Cultural Analysis Essay",
+          "status": "identified",
+          "notes": "Good candidate — aligns with GA4 naturally"
+        },
+        {
+          "course_code": "MGTS2604",
+          "ga": "GA5",
+          "assessment_title": "Group Presentation",
+          "status": "identified",
+          "notes": "Team discussing with coordinator"
+        },
+        {
+          "course_code": "MGTS3601",
+          "ga": "GA3",
+          "assessment_title": "Stakeholder Engagement Report",
+          "status": "active",
+          "rubric_url": "https://uqbs.sharepoint.com/rubrics/MGTS3601-GA3-Stakeholder.docx",
+          "notes": "Second semester of use"
+        },
+        {
+          "course_code": "MGTS3601",
+          "ga": "GA6",
+          "assessment_title": "Leadership Portfolio",
+          "status": "rubric_in_dev",
+          "notes": "Draft rubric reviewed by LD team"
+        },
+        {
+          "course_code": "MKTG1501",
+          "ga": "GA5",
+          "assessment_title": "Marketing Plan Presentation",
+          "status": "rubric_in_dev",
+          "notes": "Rubric nearly finalised"
+        }
+      ]
+    }
+  }
+}

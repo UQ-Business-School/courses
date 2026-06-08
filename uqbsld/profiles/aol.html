@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assurance of Learning — UQBS Course Profile Viewer</title>
+  <link rel="stylesheet" href="./assets/styles.css">
+  <script>
+    // Apply saved theme + colour mode before first paint to avoid FOUC
+    (function () {
+      try {
+        var t = localStorage.getItem("uqbs-theme") || "classic";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "classic");
+      }
+      try {
+        var m = localStorage.getItem("uqbs-color-mode") || "auto";
+        if (m !== "auto") document.documentElement.setAttribute("data-color-mode", m);
+      } catch (e) { /* ignore */ }
+    })();
+  </script>
+</head>
+<body data-page="aol">
+  <header class="site">
+    <h1>UQBS Course Profile Viewer</h1>
+    <nav>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme"
+              title="Switch between Classic and Fun themes">
+        <span class="tt-icon" aria-hidden="true">◐</span>
+        <span class="tt-label">Classic</span>
+      </button>
+      <button id="mode-toggle" class="mode-toggle" type="button" aria-label="Switch colour mode"
+              title="Switch between Auto, Light, and Dark">
+        <span class="mt-icon" aria-hidden="true">☾</span>
+        <span class="mt-label">Auto</span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="aol-root">
+    <div class="loading">Loading AoL data…</div>
+  </main>
+
+  <footer class="site">
+    UQBS Course Profile Viewer · Assurance of Learning Dashboard · Data maintained via taxonomy/aol-template.csv
+  </footer>
+
+  <script src="./assets/site-config.js"></script>
+  <script src="./assets/app.js"></script>
+  <script>window.UQBS.initAol();</script>
+</body>
+</html>
