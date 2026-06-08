@@ -44,7 +44,7 @@ const DATA_PATHS = {
   manifest: "./assets/manifest.json",                      // primary index — ships with each edition
   manifestAll: dataUrl("assets/manifest-all.json"),        // bulk/shared
   manifestLegacy: dataUrl("assets/manifest-legacy.json"),  // bulk/shared
-  taxonomy: "./taxonomy/uqbs-programs.json",
+  taxonomy: EDITION === "all" ? "./taxonomy/all-programs.json" : "./taxonomy/uqbs-programs.json",
   aol: "./taxonomy/aol-status.json",
   loOverrides: "./taxonomy/lo-overrides.json",
   teachingPeriods: "./taxonomy/teaching-periods.json",
@@ -2306,11 +2306,10 @@ async function initAllBrowser() {
   const $count = document.getElementById("course-count");
   const $meta = document.getElementById("meta-info");
   try {
-    const [manifest] = await Promise.all([loadManifestAll(), loadTeachingPeriods().catch(() => null)]);
+    const [manifest, taxonomy] = await Promise.all([loadManifestAll(), loadTaxonomy().catch(() => null), loadTeachingPeriods().catch(() => null)]);
     const courses = getAllCourses(manifest);
     STORE.allCourses = courses;
-    // No taxonomy or AoL for all-of-UQ view
-    STORE.taxonomy = null;
+    STORE.taxonomy = taxonomy;   // all-UQ program/major taxonomy (all-programs.json)
     STORE.aol = null;
     $meta.innerHTML = `<span>Scrape generated</span> <b>${escapeHtml(fmtDate(manifest.generated_at))}</b> <span>· ${manifest.total_profiles} profiles</span>`;
 
@@ -2319,6 +2318,13 @@ async function initAllBrowser() {
     populateSelect("filter-mode", uniqueSorted(courses.map(c => c.attendance_mode)));
     populateSelect("filter-location", uniqueSorted(courses.map(c => c.location)));
     populateSelect("filter-school", uniqueSorted(courses.map(c => c.coordinating_unit)));
+    if (taxonomy && taxonomy.course_programs) {
+      const progs = new Set();
+      for (const lst of Object.values(taxonomy.course_programs)) {
+        for (const r of lst) progs.add(r.program);
+      }
+      populateSelect("filter-program", [...progs].sort().map(p => ({ value: p, label: p })));
+    }
 
     // Populate semester filter and default to most recent
     const semCodes = uniqueSorted(courses.map(c => c.semester_code));
@@ -2339,13 +2345,13 @@ async function initAllBrowser() {
     bindAllBrowserControls();
     renderAllBrowser();
   } catch (err) {
-    $body.innerHTML = `<tr><td colspan="9" class="error">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
+    $body.innerHTML = `<tr><td colspan="10" class="error">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
     console.error(err);
   }
 }
 
 function bindAllBrowserControls() {
-  for (const id of ["search", "filter-semester", "filter-level", "filter-mode", "filter-location", "filter-school"]) {
+  for (const id of ["search", "filter-semester", "filter-level", "filter-mode", "filter-location", "filter-school", "filter-program"]) {
     const el = document.getElementById(id);
     if (el) el.addEventListener("input", renderAllBrowser);
   }
@@ -2377,6 +2383,7 @@ function applyAllFilters(courses) {
   const mode = document.getElementById("filter-mode")?.value;
   const loc = document.getElementById("filter-location")?.value;
   const school = document.getElementById("filter-school")?.value;
+  const prog = document.getElementById("filter-program")?.value;
 
   return courses.filter(c => {
     if (q) {
@@ -2388,6 +2395,10 @@ function applyAllFilters(courses) {
     if (mode && c.attendance_mode !== mode) return false;
     if (loc && c.location !== loc) return false;
     if (school && c.coordinating_unit !== school) return false;
+    if (prog && STORE.taxonomy && STORE.taxonomy.course_programs) {
+      const roles = STORE.taxonomy.course_programs[c.course_code] || [];
+      if (!roles.some(r => r.program === prog)) return false;
+    }
     return true;
   });
 }
@@ -2400,18 +2411,27 @@ function renderAllBrowser() {
   $count.textContent = courses.length;
 
   if (courses.length === 0) {
-    $body.innerHTML = `<tr><td colspan="9" class="empty">No courses match the current filters.</td></tr>`;
+    $body.innerHTML = `<tr><td colspan="10" class="empty">No courses match the current filters.</td></tr>`;
     updateSortIndicators();
     refreshSelectionUI();
     return;
   }
 
+  const taxonomy = STORE.taxonomy;
   const rows = courses.map(c => {
     const levelClass = (c.study_level || "").toLowerCase().includes("post") ? "level-pill pg" : "level-pill";
     const pfx = coursePrefix(c.course_code);
     const codeCls = pfx ? `code prefix-${pfx}` : "code";
     const semLabel = semesterLabel(c);
     const school = c.coordinating_unit || "";
+    const roles = taxonomy ? programRolesFor(c.course_code, taxonomy) : [];
+    const progChips = roles.slice(0, 3).map(r => {
+      const hue = hueForProgram(r.program);
+      const label = r.role ? `${r.program}: ${r.role}` : r.program;
+      const title = `${r.program_name || r.program}${r.role ? " — " + r.role : ""}`;
+      return `<span class="chip" style="--chip-hue:${hue}" title="${escapeHtml(title)}">${escapeHtml(label)}</span>`;
+    }).join(" ");
+    const progMore = roles.length > 3 ? `<span class="chip muted">+${roles.length - 3}</span>` : "";
     return `
       <tr>
         ${selCell(c)}
@@ -2423,6 +2443,7 @@ function renderAllBrowser() {
         <td>${escapeHtml(c.attendance_mode || "")}</td>
         <td>${escapeHtml(c.location || "")}</td>
         <td class="school-col">${escapeHtml(school)}</td>
+        <td>${progChips}${progMore}</td>
       </tr>`;
   }).join("");
   $body.innerHTML = rows;
