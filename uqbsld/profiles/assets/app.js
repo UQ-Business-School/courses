@@ -825,7 +825,8 @@ async function initBrowser() {
     // Default to most recent semester
     const $semFilter = document.getElementById("filter-semester");
     if ($semFilter && semCodes.length) {
-      $semFilter.value = semCodes[semCodes.length - 1];
+      // Default to S1 2026 (7620) when present, else the most recent semester.
+      $semFilter.value = semCodes.includes("7620") ? "7620" : semCodes[semCodes.length - 1];
     }
 
     // Initial render
@@ -834,7 +835,7 @@ async function initBrowser() {
     bindControls();
     render();
   } catch (err) {
-    $body.innerHTML = `<tr><td colspan="10" class="error">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
+    $body.innerHTML = `<tr><td colspan="11" class="error">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
     console.error(err);
   }
 }
@@ -1107,7 +1108,7 @@ function render() {
   $count.textContent = courses.length;
 
   if (courses.length === 0) {
-    $body.innerHTML = `<tr><td colspan="10" class="empty">No courses match the current filters.</td></tr>`;
+    $body.innerHTML = `<tr><td colspan="11" class="empty">No courses match the current filters.</td></tr>`;
     updateSortIndicators();
     refreshSelectionUI();
     return;
@@ -1122,6 +1123,12 @@ function render() {
       return `<span class="${cls}" title="${escapeHtml(r.program_name || r.program)} — ${escapeHtml(r.role || "")}">${escapeHtml(r.program)}</span>`;
     }).join("");
     const more = roles.length > 3 ? `<span class="chip muted">+${roles.length - 3}</span>` : "";
+    // Where the course lives in each program: "Core", or the major/list name.
+    const roleChips = roles.slice(0, 3).map(r => {
+      const isCore = (r.role || "").toLowerCase() === "core";
+      return `<span class="chip ${isCore ? "role-core" : "role-major"}" title="${escapeHtml(r.program_name || r.program)}">${escapeHtml(r.role || "")}</span>`;
+    }).join("");
+    const roleMore = roles.length > 3 ? `<span class="chip muted">+${roles.length - 3}</span>` : "";
     const levelClass = (c.study_level || "").toLowerCase().includes("post") ? "level-pill pg" : "level-pill";
     const fullCode = c.full_course_code || [c.course_code, c.class_code, c.semester_code].filter(Boolean).join("-");
     const pfx = coursePrefix(c.course_code);
@@ -1142,6 +1149,7 @@ function render() {
         <td>${escapeHtml(c.attendance_mode || "")}</td>
         <td>${escapeHtml(c.location || "")}</td>
         <td>${progChips}${more}</td>
+        <td>${roleChips}${roleMore}</td>
         <td class="aol-col">${aolCell}</td>
       </tr>`;
   }).join("");
@@ -2255,7 +2263,8 @@ async function initAllBrowser() {
     populateSelect("filter-semester", semOpts);
     const $semFilter = document.getElementById("filter-semester");
     if ($semFilter && semCodes.length) {
-      $semFilter.value = semCodes[semCodes.length - 1];
+      // Default to S1 2026 (7620) when present, else the most recent semester.
+      $semFilter.value = semCodes.includes("7620") ? "7620" : semCodes[semCodes.length - 1];
     }
 
     // Initial render
