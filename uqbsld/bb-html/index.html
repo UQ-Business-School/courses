@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On-brand HTML in Blackboard Ultra — UQ Business School</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap');
+
+:root{
+  --uq-purple:#51247a; --uq-purple-50:#eee9f2; --uq-purple-light:#962a8b;
+  --uq-grey-900:#3b383e; --uq-grey-200:#dcdcdd; --uq-grey-50:#f3f3f4;
+  --uq-white:#fff; --uq-black:#19151c;
+  --uq-info:#0d6dcd;    --uq-info-50:#e7f0fa;
+  --uq-success:#4aa74e; --uq-success-50:#edf6ed;
+  --uq-warning:#f7ba1e; --uq-warning-50:#fef8e8;
+  --uq-error:#d62929;   --uq-error-50:#fbeaea;
+  --uq-font-body:'Roboto','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --uq-font-head:'Montserrat',Helvetica,Arial,sans-serif;
+  --uq-s-xs:4px; --uq-s-s:8px; --uq-s-m:16px; --uq-s-l:24px; --uq-s-xl:32px;
+  --uq-radius:4px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--uq-grey-50);color:var(--uq-grey-900);
+  font-family:var(--uq-font-body);font-size:16px;line-height:1.6;}
+a{color:var(--uq-purple);}
+:focus-visible{outline:2px solid var(--uq-info);outline-offset:2px;}
+
+/* ---- page shell ---- */
+.page{max-width:940px;margin:0 auto;padding:var(--uq-s-l);}
+.content{background:#fff;border:1px solid var(--uq-grey-200);border-radius:var(--uq-radius);
+  padding:clamp(20px,4vw,52px);}
+.pagehead{background:linear-gradient(135deg,var(--uq-purple),var(--uq-purple-light));color:#fff;
+  padding:clamp(28px,5vw,56px);border-radius:var(--uq-radius);margin:0 0 var(--uq-s-l);}
+.pagehead h1{font-family:var(--uq-font-head);font-size:clamp(28px,5vw,40px);line-height:1.1;margin:0 0 var(--uq-s-s);}
+.pagehead p{font-size:clamp(16px,2.5vw,19px);margin:0;max-width:60ch;opacity:.95;}
+.toc{border:1px solid var(--uq-grey-200);border-radius:var(--uq-radius);background:var(--uq-grey-50);
+  padding:var(--uq-s-l);margin:0 0 var(--uq-s-xl);}
+.toc p{font-family:var(--uq-font-head);font-weight:600;color:var(--uq-purple);margin:0 0 var(--uq-s-s);}
+.toc ol{margin:0;padding-left:1.3em;columns:2;column-gap:var(--uq-s-xl);}
+.toc li{margin-bottom:var(--uq-s-xs);}
+@media (max-width:560px){.toc ol{columns:1;}}
+.eyebrow{font-family:var(--uq-font-head);font-weight:600;font-size:13px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--uq-purple-light);margin:var(--uq-s-xl) 0 0;}
+
+/* ---- house-style typography ---- */
+.uqbs{font-family:var(--uq-font-body);color:var(--uq-grey-900);}
+.uqbs h2,.uqbs h3,.uqbs h4{font-family:var(--uq-font-head);color:var(--uq-purple);line-height:1.2;margin:0 0 var(--uq-s-m);}
+.uqbs h2{font-size:28px;margin-top:var(--uq-s-s);}
+.uqbs h3{font-size:22px;margin-top:var(--uq-s-xl);}
+.uqbs h4{font-size:19px;}
+.uqbs p{margin:0 0 var(--uq-s-m);}
+.uqbs ul,.uqbs ol{margin:0 0 var(--uq-s-m);padding-left:1.3em;}
+.uqbs li{margin-bottom:var(--uq-s-xs);}
+.uqbs p a,.uqbs li a,.uqbs figcaption a{color:var(--uq-purple);}
+.uqbs code.inline{background:var(--uq-grey-50);border:1px solid var(--uq-grey-200);border-radius:3px;
+  padding:1px 5px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em;}
+hr.rule{border:0;border-top:1px solid var(--uq-grey-200);margin:var(--uq-s-xl) 0;}
+
+/* ---- statement / quote ---- */
+.uqbs-statement{font-family:var(--uq-font-head);font-size:22px;line-height:1.4;color:var(--uq-purple);margin:var(--uq-s-l) 0;}
+.uqbs-quote{border-left:4px solid var(--uq-purple);background:var(--uq-purple-50);padding:var(--uq-s-l);
+  margin:var(--uq-s-l) 0;border-radius:0 var(--uq-radius) var(--uq-radius) 0;}
+.uqbs-quote p{font-size:18px;font-style:italic;color:var(--uq-purple);margin:0 0 var(--uq-s-s);}
+.uqbs-quote cite{font-style:normal;font-size:14px;color:var(--uq-grey-900);}
+
+/* ---- callout ---- */
+.uqbs-callout{display:flex;gap:var(--uq-s-m);padding:var(--uq-s-l);border-radius:var(--uq-radius);
+  border-left:4px solid var(--uq-info);background:var(--uq-info-50);margin:var(--uq-s-l) 0;color:var(--uq-grey-900);}
+.uqbs-callout__icon{flex:0 0 24px;width:24px;height:24px;margin-top:2px;color:var(--uq-info);}
+.uqbs-callout__title{font-family:var(--uq-font-head);font-weight:600;font-size:18px;margin:0 0 var(--uq-s-s);}
+.uqbs-callout p:last-child{margin-bottom:0;}
+.uqbs-callout--success{border-left-color:var(--uq-success);background:var(--uq-success-50);}
+.uqbs-callout--success .uqbs-callout__icon{color:var(--uq-success);}
+.uqbs-callout--warning{border-left-color:var(--uq-warning);background:var(--uq-warning-50);}
+.uqbs-callout--warning .uqbs-callout__icon{color:var(--uq-warning);}
+.uqbs-callout--error{border-left-color:var(--uq-error);background:var(--uq-error-50);}
+.uqbs-callout--error .uqbs-callout__icon{color:var(--uq-error);}
+
+/* ---- button ---- */
+.uqbs-btn{display:inline-flex;align-items:center;gap:var(--uq-s-s);background:var(--uq-purple);
+  border:2px solid var(--uq-purple);border-radius:var(--uq-radius);color:#fff;font-family:var(--uq-font-body);
+  font-size:16px;font-weight:500;line-height:1;padding:16px 24px;text-decoration:none;cursor:pointer;
+  transition:background .2s ease-out,color .2s ease-out;}
+.uqbs-btn:hover{background:#fff;color:var(--uq-purple);text-decoration:underline;}
+
+/* ---- accordion ---- */
+.uqbs-accordion{margin:var(--uq-s-l) 0;}
+.uqbs-accordion details{background:#fff;border:1px solid var(--uq-grey-200);border-radius:2px;margin-bottom:var(--uq-s-s);}
+.uqbs-accordion summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+  gap:var(--uq-s-m);padding:var(--uq-s-m);font-size:20px;font-weight:500;color:var(--uq-grey-900);}
+.uqbs-accordion summary::-webkit-details-marker{display:none;}
+.uqbs-accordion summary::after{content:'';flex:0 0 20px;width:20px;height:20px;transition:transform .2s;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%2351247a' stroke-width='2'/%3E%3C/svg%3E") no-repeat center/contain;}
+.uqbs-accordion details[open] summary::after{transform:rotate(180deg);}
+.uqbs-accordion__body{padding:0 var(--uq-s-m) var(--uq-s-m);}
+
+/* ---- tabs ---- */
+.uqbs-tabs{margin:var(--uq-s-l) 0;}
+.uqbs-tabs input{position:absolute;width:1px;height:1px;opacity:0;}
+.uqbs-tabs label{display:inline-block;padding:12px 16px;cursor:pointer;background:var(--uq-grey-50);
+  color:var(--uq-purple);border-radius:4px 4px 0 0;margin-right:4px;font-weight:500;}
+.uqbs-tabs input:checked + label{background:var(--uq-purple);color:#fff;}
+.uqbs-tabs input:focus-visible + label{outline:2px solid var(--uq-info);outline-offset:2px;}
+.uqbs-tab-panel{display:none;padding:var(--uq-s-l);border:2px solid var(--uq-purple);border-radius:0 4px 4px 4px;}
+#dt1:checked ~ #dp1, #dt2:checked ~ #dp2, #dt3:checked ~ #dp3{display:block;}
+
+/* ---- cards / columns / figure / table ---- */
+.uqbs-card{display:block;background:#fff;border:1px solid var(--uq-grey-200);border-radius:var(--uq-radius);
+  overflow:hidden;text-decoration:none;color:inherit;transition:box-shadow .2s,transform .2s;}
+.uqbs-card:hover{box-shadow:0 6px 18px rgba(25,21,28,.12);transform:translateY(-2px);}
+.uqbs-card__body{padding:var(--uq-s-l);}
+.uqbs-card__title{font-family:var(--uq-font-head);color:var(--uq-purple);font-size:20px;margin:0 0 var(--uq-s-s);}
+.uqbs-card__body p{margin:0;color:var(--uq-grey-900);}
+.uqbs-cols{display:flex;flex-wrap:wrap;gap:var(--uq-s-l);margin:var(--uq-s-l) 0;}
+.uqbs-cols > *{flex:1 1 260px;}
+.uqbs-figure{margin:var(--uq-s-l) 0;}
+.uqbs-figure img{display:block;width:100%;height:auto;border-radius:0 var(--uq-s-l) 0 0;}
+.uqbs-figure figcaption{font-size:14px;color:var(--uq-grey-900);margin-top:var(--uq-s-s);}
+.uqbs table{border-collapse:collapse;width:100%;margin:var(--uq-s-l) 0;font-size:15px;}
+.uqbs th,.uqbs td{border:1px solid var(--uq-grey-200);padding:8px 12px;text-align:left;vertical-align:top;}
+.uqbs th{background:var(--uq-purple);color:#fff;font-family:var(--uq-font-head);font-weight:600;}
+.uqbs tbody tr:nth-child(even){background:var(--uq-grey-50);}
+
+/* ---- demo + code affordances (page chrome, not house style) ---- */
+.demo{border:1px dashed var(--uq-grey-200);border-radius:var(--uq-radius);
+  padding:var(--uq-s-l);margin:var(--uq-s-m) 0 var(--uq-s-s);background:#fff;}
+.demo > :first-child{margin-top:0;}
+.demo > :last-child{margin-bottom:0;}
+.snippet{position:relative;margin:0 0 var(--uq-s-l);}
+.snippet pre{background:var(--uq-grey-50);border:1px solid var(--uq-grey-200);border-radius:var(--uq-radius);
+  padding:var(--uq-s-m);padding-top:38px;overflow-x:auto;margin:0;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.55;white-space:pre;}
+.snippet .copy{position:absolute;top:8px;right:8px;background:#fff;border:1px solid var(--uq-grey-200);
+  border-radius:3px;color:var(--uq-purple);font-family:var(--uq-font-body);font-size:12px;font-weight:600;
+  padding:5px 10px;cursor:pointer;}
+.snippet .copy:hover{background:var(--uq-purple);color:#fff;border-color:var(--uq-purple);}
+details.code{margin:0 0 var(--uq-s-l);}
+details.code > summary{cursor:pointer;color:var(--uq-purple);font-weight:600;font-size:14px;margin-bottom:var(--uq-s-s);}
+
+/* ---- downloads hero ---- */
+.dl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--uq-s-l);margin:var(--uq-s-l) 0;}
+@media (max-width:720px){.dl-grid{grid-template-columns:1fr;}}
+.dl-card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--uq-grey-200);
+  border-top:4px solid var(--uq-purple);border-radius:var(--uq-radius);padding:var(--uq-s-l);}
+.dl-card h3{font-family:var(--uq-font-head);color:var(--uq-purple);font-size:20px;margin:0 0 var(--uq-s-s);}
+.dl-card p{color:var(--uq-grey-900);}
+.dl-card .dl-kicker{font-family:var(--uq-font-head);font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--uq-purple-light);font-weight:600;margin:0 0 var(--uq-s-xs);}
+.dl-card .uqbs-btn{margin-top:auto;align-self:flex-start;}
+.dl-further{font-size:14px;color:var(--uq-grey-900);}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{transition:none !important;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="content uqbs">
+
+  <header class="pagehead">
+    <h1>On-brand HTML in Blackboard Ultra</h1>
+    <p>A house style for UQ Business School, and how to have a language model write it for you.</p>
+  </header>
+
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <ol>
+      <li><a href="#before">Before you start</a></li>
+      <li><a href="#downloads">Get the files</a></li>
+      <li><a href="#pieces">How it fits together</a></li>
+      <li><a href="#llm">Getting good output from a model</a></li>
+      <li><a href="#library">The component library</a></li>
+      <li><a href="#byhand">Authoring by hand</a></li>
+    </ol>
+  </nav>
+
+  <section id="before">
+    <p>Blackboard Ultra renders custom HTML in one place: an Add HTML block inside an Ultra Document. That single surface is enough for most of what a course needs, all styled on the UQ brand. Two things to take on board before you start.</p>
+
+    <div class="uqbs-callout uqbs-callout--warning">
+      <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+      <div>
+        <p class="uqbs-callout__title">Not officially supported</p>
+        <p>Central eLearning does not support the use of custom HTML in Blackboard. This is a Business School approach. It renders reliably inside Ultra Documents and everything on this page has been tested there, but because it sits outside central support, you own what you build with it. For anything a student absolutely must not miss, keep a plain-text version in the page as well.</p>
+      </div>
+    </div>
+
+    <div class="uqbs-callout uqbs-callout--error">
+      <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm5 13.6L15.6 17 12 13.4 8.4 17 7 15.6 10.6 12 7 8.4 8.4 7 12 10.6 15.6 7 17 8.4 13.4 12 17 15.6z"/></svg>
+      <div>
+        <p class="uqbs-callout__title">Only put public material into general tools</p>
+        <p>Treat anything you paste into a language model as though someone else could read it. Only put publicly available material into general-purpose tools like ChatGPT or Claude. For anything not already public, course content, student information, or unpublished work, use Copilot, which is the University's supported tool and keeps your data within UQ's protections.</p>
+      </div>
+    </div>
+    <p>The brand files below are all public, so they are fine to paste anywhere. It is the course material you feed alongside them that the rule is about. One honest note on Copilot: it is the right call on the data question, but it follows a long, detailed brand specification loosely at best, so expect to correct more by hand than you would with a more capable model. Use a more capable tool when your inputs are public and you want the full house style held, and Copilot when the material itself cannot leave UQ's protections.</p>
+  </section>
+
+  <section id="downloads">
+    <h2>Get the files</h2>
+    <p>These three files do the work. Take the prompt file to have a model write on-brand HTML for you, the skill if you use Claude, or the component library to build by hand.</p>
+    <div class="dl-grid">
+      <div class="dl-card">
+        <p class="dl-kicker">Add to your prompt</p>
+        <h3>The prompt file</h3>
+        <p>Paste the whole file into ChatGPT, Claude or Copilot before you describe what you want. It carries the full house style, so the model hands back HTML you can paste straight into an Ultra Document.</p>
+        <a class="uqbs-btn" href="uqbs-blackboard-prompt.md" download>Download the prompt file</a>
+      </div>
+      <div class="dl-card">
+        <p class="dl-kicker">For Claude users</p>
+        <h3>The Claude skill</h3>
+        <p>The same house style packaged as a Claude skill. Add it to your account once and it applies on its own, with nothing to paste each time.</p>
+        <a class="uqbs-btn" href="uqbs-blackboard-skill.md" download>Download the skill</a>
+      </div>
+      <div class="dl-card">
+        <p class="dl-kicker">Build by hand</p>
+        <h3>The component library</h3>
+        <p>Every component with its markup, ready to lift into an Ultra Document. The same building blocks shown live further down this page.</p>
+        <a class="uqbs-btn" href="uqbs-components.html" download>Download the components</a>
+      </div>
+    </div>
+    <p class="dl-further">Further reading: the <a href="uqbs-blackboard-aesthetics.md" download>house style guide</a> explains the thinking behind the components, the colours, and the accessibility choices.</p>
+  </section>
+
+  <section id="pieces">
+    <h2>The three pieces</h2>
+    <p>Three things do the work. The <strong>instructions file</strong> is a single document you paste into a language model so it writes HTML in this style. The <strong>component library</strong> is the set of tested building blocks further down this page. And the <strong>media host</strong> is where images and the shared stylesheet live, on the school server, so a page keeps working after a course is copied to a new semester.</p>
+    <p>That last point matters more than it looks. Blackboard only re-links files it manages through its own editor. Images referenced from raw HTML are invisible to it, so on a course copy their links would break unless they point somewhere course-independent. Hosting them on the school server, at a fixed address that never mentions the course, is what keeps them working year to year.</p>
+  </section>
+
+  <section id="llm">
+    <h2>Getting good output from a model</h2>
+    <p>With the prompt file pasted in, ask for a specific component and give it real content, and you get back a self-contained HTML fragment ready for an Add HTML block. The model has been told to return a fragment rather than a whole web page, to use only the sanctioned components and UQ colours, and to point images at hosted URLs rather than embedding them. You review it, paste it, and refresh the Ultra page to see it render.</p>
+
+    <h3>Getting a good result</h3>
+    <p>A few habits make the difference between output you can paste and output you have to argue with:</p>
+    <ul>
+      <li>Name the component. "Put this in an accordion" works; "make this look nice" does not.</li>
+      <li>Give it the real content and let it style what you provide. It should not be inventing course material.</li>
+      <li>Ask for one fragment per Ultra Document, not a full web page.</li>
+      <li>If a page uses tabs more than once, tell it to give each set its own unique ids, or the tabs will interfere with each other.</li>
+      <li>Paste, save, then refresh. Ultra renders these blocks a moment late, so a first look before refreshing can mislead you into thinking something is broken.</li>
+    </ul>
+
+    <h3>Before and after</h3>
+    <p>Here is the kind of thing the instructions file fixes. Below left is what a general model tends to produce unprompted: inline colours, no brand, a box that fights the page. Below right is the same message asked for as a house-style callout.</p>
+    <div class="uqbs-cols">
+      <div>
+        <p style="font-family:var(--uq-font-head);font-size:13px;color:var(--uq-purple-light);font-weight:600;margin-bottom:var(--uq-s-s);">BEFORE</p>
+        <div style="background:#fff3cd;border:2px solid #ffc107;border-radius:12px;padding:16px;color:#664d03;font-family:Arial,sans-serif;">
+          <p style="margin:0 0 6px;font-weight:bold;font-size:17px;">⚠️ Important!!</p>
+          <p style="margin:0;">The assignment is due on Friday. Don't forget to submit before 5pm!!!</p>
+        </div>
+      </div>
+      <div>
+        <p style="font-family:var(--uq-font-head);font-size:13px;color:var(--uq-purple-light);font-weight:600;margin-bottom:var(--uq-s-s);">AFTER</p>
+        <div class="uqbs-callout uqbs-callout--warning" style="margin:0;">
+          <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+          <div>
+            <p class="uqbs-callout__title">Assignment due Friday</p>
+            <p>Submit through the assignment link before 5:00pm on Friday.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p>Same information, but the second one belongs to the page. The colour carries meaning from the UQ palette, the icon does not rely on an emoji, and the type matches everything around it.</p>
+  </section>
+
+  <hr class="rule">
+
+  <section id="library">
+    <h2>The component library</h2>
+    <p>Every component below is rendered live from the house-style stylesheet. If it works here, it works in an Ultra Document. Grab the code with the copy button on each block. The stylesheet goes in once per HTML block, before the components; the model route includes it for you automatically.</p>
+
+    <p class="eyebrow">Foundation</p>
+    <h3>The stylesheet</h3>
+    <p>This <code class="inline">&lt;style&gt;</code> block defines the brand tokens and every component class. Paste it once at the top of each Add HTML block, then add components underneath it. It is long, so it is tucked away here.</p>
+    <details class="code">
+      <summary>Show the foundation stylesheet</summary>
+      <div class="snippet">
+        <button class="copy" type="button">Copy</button>
+        <pre><code>&lt;style&gt;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&amp;family=Roboto:wght@400;500;700&amp;display=swap');
+.uqbs{
+  --uq-purple:#51247a; --uq-purple-50:#eee9f2; --uq-purple-light:#962a8b;
+  --uq-grey-900:#3b383e; --uq-grey-200:#dcdcdd; --uq-grey-50:#f3f3f4;
+  --uq-info:#0d6dcd; --uq-info-50:#e7f0fa;
+  --uq-success:#4aa74e; --uq-success-50:#edf6ed;
+  --uq-warning:#f7ba1e; --uq-warning-50:#fef8e8;
+  --uq-error:#d62929; --uq-error-50:#fbeaea;
+  --uq-font-body:'Roboto',Helvetica,Arial,sans-serif;
+  --uq-font-head:'Montserrat',Helvetica,Arial,sans-serif;
+  --uq-s-xs:4px; --uq-s-s:8px; --uq-s-m:16px; --uq-s-l:24px; --uq-s-xl:32px;
+  --uq-radius:4px;
+  font-family:var(--uq-font-body); font-size:16px; line-height:1.6; color:var(--uq-grey-900);
+}
+/* Full component rules continue in the instructions file. */
+&lt;/style&gt;</code></pre>
+      </div>
+    </details>
+    <p style="font-size:14px;color:var(--uq-grey-900);">The block above is trimmed for reading. The complete stylesheet, with every component rule, lives in the instructions file and in the component library file next to this page.</p>
+
+    <p class="eyebrow">Messages</p>
+    <h3>Callouts</h3>
+    <p>Four states, each carrying meaning from the UQ palette: information, success, warning, and important. Always pair the colour with an icon and a title so meaning never rests on colour alone.</p>
+    <div class="demo">
+      <div class="uqbs-callout">
+        <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        <div><p class="uqbs-callout__title">Information</p><p>Neutral, helpful context for students.</p></div>
+      </div>
+      <div class="uqbs-callout uqbs-callout--success">
+        <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1.2 14.2l-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7.6z"/></svg>
+        <div><p class="uqbs-callout__title">Success</p><p>Confirmation, such as a completed step.</p></div>
+      </div>
+      <div class="uqbs-callout uqbs-callout--warning">
+        <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+        <div><p class="uqbs-callout__title">Warning</p><p>Something to be careful about, like a deadline.</p></div>
+      </div>
+      <div class="uqbs-callout uqbs-callout--error">
+        <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm5 13.6L15.6 17 12 13.4 8.4 17 7 15.6 10.6 12 7 8.4 8.4 7 12 10.6 15.6 7 17 8.4 13.4 12 17 15.6z"/></svg>
+        <div><p class="uqbs-callout__title">Important</p><p>A critical message students must not miss.</p></div>
+      </div>
+    </div>
+    <div class="snippet">
+      <button class="copy" type="button">Copy</button>
+      <pre><code>&lt;div class="uqbs-callout uqbs-callout--warning"&gt;
+  &lt;svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"&gt;&lt;path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/&gt;&lt;/svg&gt;
+  &lt;div&gt;
+    &lt;p class="uqbs-callout__title"&gt;Assignment due Friday&lt;/p&gt;
+    &lt;p&gt;Submit through the assignment link before 5:00pm.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- swap the modifier for the state you need:
+     (none) = info, --success, --warning, --error --&gt;</code></pre>
+    </div>
+
+    <p class="eyebrow">Emphasis</p>
+    <h3>Statement and quote</h3>
+    <p>A statement lifts a single line into large brand type. A quote sets attributed text apart. Use both sparingly; their effect comes from being rare on a page.</p>
+    <div class="demo">
+      <p class="uqbs-statement">Assessment in this course rewards judgement, not recall.</p>
+      <blockquote class="uqbs-quote">
+        <p>The point of the case method is to be wrong in a room where it is safe to be wrong.</p>
+        <cite>Course convenor</cite>
+      </blockquote>
+    </div>
+    <div class="snippet">
+      <button class="copy" type="button">Copy</button>
+      <pre><code>&lt;p class="uqbs-statement"&gt;Assessment in this course rewards judgement, not recall.&lt;/p&gt;
+
+&lt;blockquote class="uqbs-quote"&gt;
+  &lt;p&gt;The point of the case method is to be wrong in a room where it is safe to be wrong.&lt;/p&gt;
+  &lt;cite&gt;Course convenor&lt;/cite&gt;
+&lt;/blockquote&gt;</code></pre>
+    </div>
+
+    <p class="eyebrow">Disclosure</p>
+    <h3>Accordion</h3>
+    <p>For content students can reveal as needed, like FAQs or optional detail. Built on native <code class="inline">details</code> and <code class="inline">summary</code>, so it is keyboard operable with no JavaScript. Prefer this over tabs for anything important, since it is the more reliable pattern for screen readers.</p>
+    <div class="demo">
+      <div class="uqbs-accordion">
+        <details open>
+          <summary>What is covered in this module?</summary>
+          <div class="uqbs-accordion__body"><p>Open by default. The chevron rotates on toggle.</p></div>
+        </details>
+        <details>
+          <summary>How is the assessment weighted?</summary>
+          <div class="uqbs-accordion__body"><p>Closed by default, and operable by keyboard out of the box.</p></div>
+        </details>
+      </div>
+    </div>
+    <div class="snippet">
+      <button class="copy" type="button">Copy</button>
+      <pre><code>&lt;div class="uqbs-accordion"&gt;
+  &lt;details open&gt;
+    &lt;summary&gt;What is covered in this module?&lt;/summary&gt;
+    &lt;div class="uqbs-accordion__body"&gt;&lt;p&gt;Open by default.&lt;/p&gt;&lt;/div&gt;
+  &lt;/details&gt;
+  &lt;details&gt;
+    &lt;summary&gt;How is the assessment weighted?&lt;/summary&gt;
+    &lt;div class="uqbs-accordion__body"&gt;&lt;p&gt;Closed by default.&lt;/p&gt;&lt;/div&gt;
+  &lt;/details&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <p class="eyebrow">Disclosure</p>
+    <h3>Tabs</h3>
+    <p>For parallel content in a small space. This version is CSS-only, built on radio buttons and the <code class="inline">:checked</code> selector.</p>
+    <div class="demo">
+      <div class="uqbs-tabs">
+        <input type="radio" name="demo-tabs" id="dt1" checked><label for="dt1">Overview</label>
+        <input type="radio" name="demo-tabs" id="dt2"><label for="dt2">Details</label>
+        <input type="radio" name="demo-tabs" id="dt3"><label for="dt3">Assessment</label>
+        <div class="uqbs-tab-panel" id="dp1"><p>Overview panel. Switching tabs needs no JavaScript.</p></div>
+        <div class="uqbs-tab-panel" id="dp2"><p>Details panel, built on radio buttons and the checked selector.</p></div>
+        <div class="uqbs-tab-panel" id="dp3"><p>Assessment panel.</p></div>
+      </div>
+    </div>
+    <div class="uqbs-callout">
+      <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      <div><p class="uqbs-callout__title">Two things to watch</p><p>A screen reader announces these as radio buttons rather than tabs, so for content a student must not miss, use an accordion instead. And every tab set on a page needs its own unique ids and its own line in the checked rule, or two sets will fight.</p></div>
+    </div>
+    <div class="snippet">
+      <button class="copy" type="button">Copy</button>
+      <pre><code>&lt;style&gt;#t1:checked ~ #p1, #t2:checked ~ #p2{display:block;}&lt;/style&gt;
+&lt;div class="uqbs-tabs"&gt;
+  &lt;input type="radio" name="set1" id="t1" checked&gt;&lt;label for="t1"&gt;Overview&lt;/label&gt;
+  &lt;input type="radio" name="set1" id="t2"&gt;&lt;label for="t2"&gt;Details&lt;/label&gt;
+  &lt;div class="uqbs-tab-panel" id="p1"&gt;&lt;p&gt;Overview panel.&lt;/p&gt;&lt;/div&gt;
+  &lt;div class="uqbs-tab-panel" id="p2"&gt;&lt;p&gt;Details panel.&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- give the next set on the page different ids: t3/p3, t4/p4, and a new rule --&gt;</code></pre>
+    </div>
+
+    <p class="eyebrow">Layout</p>
+    <h3>Cards and columns</h3>
+    <p>The column layout wraps on its own, so three across on a laptop becomes a single stack on a phone with no media query. Cards are whole-area links with a subtle lift on hover.</p>
+    <div class="demo">
+      <div class="uqbs-cols">
+        <a class="uqbs-card" href="#library"><div class="uqbs-card__body"><p class="uqbs-card__title">Module one</p><p>The whole card is one link.</p></div></a>
+        <a class="uqbs-card" href="#library"><div class="uqbs-card__body"><p class="uqbs-card__title">Module two</p><p>Three across on desktop.</p></div></a>
+        <a class="uqbs-card" href="#library"><div class="uqbs-card__body"><p class="uqbs-card__title">Module three</p><p>Stacking on narrow screens.</p></div></a>
+      </div>
+    </div>
+    <div class="snippet">
+      <button class="copy" type="button">Copy</button>
+      <pre><code>&lt;div class="uqbs-cols"&gt;
+  &lt;a class="uqbs-card" href="#"&gt;
+    &lt;div class="uqbs-card__body"&gt;
+      &lt;p class="uqbs-card__title"&gt;Module one&lt;/p&gt;
+      &lt;p&gt;Short description.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/a&gt;
+  &lt;!-- repeat for each card --&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <p class="eyebrow">Media and data</p>
+    <h3>Figure and table</h3>
+    <p>Images take one rounded corner, per the UQ image style, and always carry alt text and an optional caption. Point the <code class="inline">src</code> at a hosted URL on the school server, never a link back into a course. Tables use a purple header row and zebra striping.</p>
+    <div class="demo">
+      <figure class="uqbs-figure">
+        <img alt="Purple placeholder panel with a white label" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 240'%3E%3Crect width='800' height='240' fill='%2351247a'/%3E%3Ctext x='400' y='130' font-family='sans-serif' font-size='26' fill='white' text-anchor='middle'%3EHosted image%3C/text%3E%3C/svg%3E">
+        <figcaption>Figure 1. Caption text sits below the image.</figcaption>
+      </figure>
+      <table>
+        <thead><tr><th>Assessment</th><th>Weight</th><th>Due</th></tr></thead>
+        <tbody>
+          <tr><td>Case analysis</td><td>40%</td><td>Week 6</td></tr>
+          <tr><td>Group project</td><td>35%</td><td>Week 11</td></tr>
+          <tr><td>Reflection</td><td>25%</td><td>Week 13</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="snippet">
+      <button class="copy" type="button">Copy</button>
+      <pre><code>&lt;figure class="uqbs-figure"&gt;
+  &lt;img alt="Describe the image here"
+       src="https://teach.business.uq.edu.au/ld/uqbsld/.../image.jpg"&gt;
+  &lt;figcaption&gt;Figure 1. Caption text.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Assessment&lt;/th&gt;&lt;th&gt;Weight&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+  &lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Case analysis&lt;/td&gt;&lt;td&gt;40%&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+    </div>
+
+    <p class="eyebrow">Action</p>
+    <h3>Button</h3>
+    <p>A link styled as a UQ button, for a single clear action. It inverts to white with a purple border on hover.</p>
+    <div class="demo">
+      <a class="uqbs-btn" href="#start">Back to the top</a>
+    </div>
+    <div class="snippet">
+      <button class="copy" type="button">Copy</button>
+      <pre><code>&lt;a class="uqbs-btn" href="https://example.uq.edu.au"&gt;Read the brief&lt;/a&gt;</code></pre>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section id="byhand">
+    <h2>Authoring by hand</h2>
+    <p>If you are pasting components yourself rather than going through a model, a handful of rules keep things predictable:</p>
+    <ul>
+      <li>One HTML block per Ultra Document. Put the stylesheet once at the top of that block, then the components under it.</li>
+      <li>Everything sits inside a single <code class="inline">&lt;div class="uqbs"&gt;</code> wrapper so the brand styles apply.</li>
+      <li>Use only the components here and only UQ colours. Restraint reads as brand; a rainbow of coloured boxes does not.</li>
+      <li>Point every image at a hosted URL on the school server, so it survives a course copy.</li>
+      <li>Give repeated tab sets unique ids.</li>
+      <li>Save, then refresh the page before you judge the result.</li>
+    </ul>
+    <p>The instructions file and the full component library file live alongside this page. If a component renders oddly, refresh first, then check you pasted into an Add HTML block inside an Ultra Document rather than a basic item. Anything still stuck, or a component you wish existed, is worth a note to the Business School learning design team.</p>
+  </section>
+
+</div>
+</div>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var code = btn.parentElement.querySelector('code').innerText;
+    navigator.clipboard.writeText(code).then(function(){
+      var original = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(function(){ btn.textContent = original; }, 1500);
+    });
+  });
+});
+</script>
+</body>
+</html>

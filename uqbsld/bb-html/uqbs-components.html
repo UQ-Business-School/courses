@@ -1,0 +1,152 @@
+<!-- UQBS Component Library — UQ Design System adapted for Blackboard Ultra (CSS-only, no JavaScript) -->
+<!-- Paste this whole fragment into a single Add HTML block inside an Ultra Document. -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap');
+
+.uqbs{
+  /* Brand */
+  --uq-purple:#51247a; --uq-purple-50:#eee9f2; --uq-purple-light:#962a8b;
+  /* Neutrals */
+  --uq-grey-900:#3b383e; --uq-grey-200:#dcdcdd; --uq-grey-50:#f3f3f4;
+  --uq-white:#fff; --uq-black:#19151c;
+  /* Semantic state colours (UQ Design System) */
+  --uq-info:#0d6dcd;    --uq-info-50:#e7f0fa;
+  --uq-success:#4aa74e; --uq-success-50:#edf6ed;
+  --uq-warning:#f7ba1e; --uq-warning-50:#fef8e8;
+  --uq-error:#d62929;   --uq-error-50:#fbeaea;
+  /* Type */
+  --uq-font-body:'Roboto','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --uq-font-head:'Montserrat',Helvetica,Arial,sans-serif;
+  /* Spacing (8px system) */
+  --uq-s-xs:4px; --uq-s-s:8px; --uq-s-m:16px; --uq-s-l:24px; --uq-s-xl:32px;
+  --uq-radius:4px;
+  font-family:var(--uq-font-body); font-size:16px; line-height:1.6; color:var(--uq-grey-900);
+}
+.uqbs *{box-sizing:border-box;}
+.uqbs h2,.uqbs h3,.uqbs h4{font-family:var(--uq-font-head);color:var(--uq-purple);line-height:1.2;margin:0 0 var(--uq-s-m);}
+.uqbs h2{font-size:32px;} .uqbs h3{font-size:24px;margin-top:var(--uq-s-xl);} .uqbs h4{font-size:20px;}
+.uqbs p{margin:0 0 var(--uq-s-m);}
+.uqbs p a,.uqbs li a,.uqbs figcaption a{color:var(--uq-purple);}
+.uqbs :focus-visible{outline:2px solid var(--uq-info);outline-offset:2px;}
+
+/* Callout / alert */
+.uqbs-callout{display:flex;gap:var(--uq-s-m);padding:var(--uq-s-l);border-radius:var(--uq-radius);
+  border-left:4px solid var(--uq-info);background:var(--uq-info-50);margin:var(--uq-s-l) 0;color:var(--uq-grey-900);}
+.uqbs-callout__icon{flex:0 0 24px;width:24px;height:24px;margin-top:2px;color:var(--uq-info);}
+.uqbs-callout__title{font-family:var(--uq-font-head);font-weight:600;font-size:18px;margin:0 0 var(--uq-s-s);}
+.uqbs-callout p:last-child{margin-bottom:0;}
+.uqbs-callout--success{border-left-color:var(--uq-success);background:var(--uq-success-50);}
+.uqbs-callout--success .uqbs-callout__icon{color:var(--uq-success);}
+.uqbs-callout--warning{border-left-color:var(--uq-warning);background:var(--uq-warning-50);}
+.uqbs-callout--warning .uqbs-callout__icon{color:var(--uq-warning);}
+.uqbs-callout--error{border-left-color:var(--uq-error);background:var(--uq-error-50);}
+.uqbs-callout--error .uqbs-callout__icon{color:var(--uq-error);}
+
+/* Button (link styled as UQ button) */
+.uqbs-btn{display:inline-flex;align-items:center;gap:var(--uq-s-s);background:var(--uq-purple);
+  border:2px solid var(--uq-purple);border-radius:var(--uq-radius);color:#fff;font-family:var(--uq-font-body);
+  font-size:16px;font-weight:500;line-height:1;padding:16px 24px;text-decoration:none;cursor:pointer;
+  transition:background .2s ease-out,color .2s ease-out;}
+.uqbs-btn:hover{background:#fff;color:var(--uq-purple);text-decoration:underline;}
+
+/* Accordion (native details/summary) */
+.uqbs-accordion{margin:var(--uq-s-l) 0;}
+.uqbs-accordion details{background:#fff;border:1px solid var(--uq-grey-200);border-radius:2px;margin-bottom:var(--uq-s-s);}
+.uqbs-accordion summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+  gap:var(--uq-s-m);padding:var(--uq-s-m);font-size:20px;font-weight:500;color:var(--uq-grey-900);}
+.uqbs-accordion summary::-webkit-details-marker{display:none;}
+.uqbs-accordion summary::after{content:'';flex:0 0 20px;width:20px;height:20px;transition:transform .2s;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%2351247a' stroke-width='2'/%3E%3C/svg%3E") no-repeat center/contain;}
+.uqbs-accordion details[open] summary::after{transform:rotate(180deg);}
+.uqbs-accordion__body{padding:0 var(--uq-s-m) var(--uq-s-m);}
+
+/* Tabs (CSS-only, radio + :checked) */
+.uqbs-tabs{margin:var(--uq-s-l) 0;}
+.uqbs-tabs input{position:absolute;width:1px;height:1px;opacity:0;}
+.uqbs-tabs label{display:inline-block;padding:12px 16px;cursor:pointer;background:var(--uq-grey-50);
+  color:var(--uq-purple);border-radius:4px 4px 0 0;margin-right:4px;font-weight:500;}
+.uqbs-tabs input:checked + label{background:var(--uq-purple);color:#fff;}
+.uqbs-tabs input:focus-visible + label{outline:2px solid var(--uq-info);outline-offset:2px;}
+.uqbs-tab-panel{display:none;padding:var(--uq-s-l);border:2px solid var(--uq-purple);border-radius:0 4px 4px 4px;}
+/* instance-specific: one line per tabbed block */
+#dt1:checked ~ #dp1, #dt2:checked ~ #dp2, #dt3:checked ~ #dp3{display:block;}
+
+/* Card */
+.uqbs-card{display:block;background:#fff;border:1px solid var(--uq-grey-200);border-radius:var(--uq-radius);
+  overflow:hidden;text-decoration:none;color:inherit;transition:box-shadow .2s,transform .2s;}
+.uqbs-card:hover{box-shadow:0 6px 18px rgba(25,21,28,.12);transform:translateY(-2px);}
+.uqbs-card img{display:block;width:100%;height:auto;}
+.uqbs-card__body{padding:var(--uq-s-l);}
+.uqbs-card__title{font-family:var(--uq-font-head);color:var(--uq-purple);font-size:20px;margin:0 0 var(--uq-s-s);}
+.uqbs-card__body p{margin:0;color:var(--uq-grey-900);}
+
+/* Two-column layout (wraps to single column on narrow screens, no media query needed) */
+.uqbs-cols{display:flex;flex-wrap:wrap;gap:var(--uq-s-l);margin:var(--uq-s-l) 0;}
+.uqbs-cols > *{flex:1 1 280px;}
+
+/* Figure with caption (one rounded corner, per UQ image style) */
+.uqbs-figure{margin:var(--uq-s-l) 0;}
+.uqbs-figure img{display:block;width:100%;height:auto;border-radius:0 var(--uq-s-l) 0 0;}
+.uqbs-figure figcaption{font-size:14px;color:var(--uq-grey-900);margin-top:var(--uq-s-s);}
+</style>
+
+<div class="uqbs">
+  <h2>UQBS component library</h2>
+  <p>Every component below is CSS-only and styled on the UQ Design System. If it renders here, it works in a Blackboard Ultra Document.</p>
+
+  <h3>Callouts</h3>
+  <div class="uqbs-callout">
+    <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+    <div><p class="uqbs-callout__title">Information</p><p>Neutral, helpful context for students. Icon plus text, never colour alone.</p></div>
+  </div>
+  <div class="uqbs-callout uqbs-callout--success">
+    <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1.2 14.2l-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7.6z"/></svg>
+    <div><p class="uqbs-callout__title">Success</p><p>Confirmation or a positive note, for example a completed step.</p></div>
+  </div>
+  <div class="uqbs-callout uqbs-callout--warning">
+    <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+    <div><p class="uqbs-callout__title">Warning</p><p>Something to be careful about, such as an upcoming deadline.</p></div>
+  </div>
+  <div class="uqbs-callout uqbs-callout--error">
+    <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm5 13.6L15.6 17 12 13.4 8.4 17 7 15.6 10.6 12 7 8.4 8.4 7 12 10.6 15.6 7 17 8.4 13.4 12 17 15.6z"/></svg>
+    <div><p class="uqbs-callout__title">Important</p><p>A critical message that students must not miss.</p></div>
+  </div>
+
+  <h3>Button</h3>
+  <a class="uqbs-btn" href="#">Primary action</a>
+
+  <h3>Accordion</h3>
+  <div class="uqbs-accordion">
+    <details open>
+      <summary>What is covered in this module?</summary>
+      <div class="uqbs-accordion__body"><p>Open by default. The chevron rotates on toggle, and the whole thing works with no JavaScript.</p></div>
+    </details>
+    <details>
+      <summary>How is the assessment weighted?</summary>
+      <div class="uqbs-accordion__body"><p>Closed by default. Keyboard operable out of the box, since it uses native details and summary elements.</p></div>
+    </details>
+  </div>
+
+  <h3>Tabs</h3>
+  <div class="uqbs-tabs">
+    <input type="radio" name="demo-tabs" id="dt1" checked><label for="dt1">Overview</label>
+    <input type="radio" name="demo-tabs" id="dt2"><label for="dt2">Details</label>
+    <input type="radio" name="demo-tabs" id="dt3"><label for="dt3">Assessment</label>
+    <div class="uqbs-tab-panel" id="dp1"><p>Overview panel. Switching tabs needs no JavaScript.</p></div>
+    <div class="uqbs-tab-panel" id="dp2"><p>Details panel. Built on radio buttons and the :checked selector.</p></div>
+    <div class="uqbs-tab-panel" id="dp3"><p>Assessment panel. See the accessibility note in the guide before using tabs for critical content.</p></div>
+  </div>
+
+  <h3>Cards</h3>
+  <div class="uqbs-cols">
+    <a class="uqbs-card" href="#"><div class="uqbs-card__body"><p class="uqbs-card__title">Module one</p><p>Hover to see the lift. The whole card is one link.</p></div></a>
+    <a class="uqbs-card" href="#"><div class="uqbs-card__body"><p class="uqbs-card__title">Module two</p><p>Three across on desktop, stacking on narrow screens.</p></div></a>
+    <a class="uqbs-card" href="#"><div class="uqbs-card__body"><p class="uqbs-card__title">Module three</p><p>No media query needed, the row wraps on its own.</p></div></a>
+  </div>
+
+  <h3>Figure</h3>
+  <figure class="uqbs-figure">
+    <img alt="Purple placeholder image with white label" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 280'%3E%3Crect width='800' height='280' fill='%2351247a'/%3E%3Ctext x='400' y='150' font-family='sans-serif' font-size='28' fill='white' text-anchor='middle'%3EUQ image placeholder%3C/text%3E%3C/svg%3E">
+    <figcaption>Figure 1. Caption text, with one rounded corner on the image per UQ brand style.</figcaption>
+  </figure>
+</div>
