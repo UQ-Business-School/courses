@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- REPLACE: one unique title per page, most specific part first -->
+<title>Page title — UQ Business School</title>
+<!-- REPLACE: one-sentence description of this page -->
+<meta name="description" content="What this page is for, in one sentence.">
+
+<!-- No favicon or logo artwork ships with this template. Approved UQ artwork
+     comes only through the UQ DAM; the masthead uses a text wordmark until
+     then. See the Masthead section of uqbs-web-standard.md. -->
+
+<!-- Shared stylesheet. This URL is canonical: absolute, course-independent,
+     never moved. -->
+<link rel="stylesheet" href="https://teach.business.uq.edu.au/ld/uqbs/uqbs.css">
+
+<!-- Survival core: enough that this page stays legible and recognisably UQ
+     if the shared stylesheet is ever unreachable. Same values as uqbs.css,
+     so it changes nothing when both load. Keep it small; do not grow it into
+     a second stylesheet. -->
+<style>
+:root{
+  --uq-purple:#51247a; --uq-purple-light:#962a8b;
+  --uq-grey-900:#3b383e; --uq-grey-200:#dcdcdd; --uq-grey-50:#f3f3f4;
+  --uq-info:#0d6dcd;
+  --uq-font-body:'Roboto','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --uq-font-head:'Montserrat',Helvetica,Arial,sans-serif;
+}
+body{margin:0;background:var(--uq-grey-50);color:var(--uq-grey-900);
+  font-family:var(--uq-font-body);font-size:16px;line-height:1.6;}
+body a{color:var(--uq-purple);}
+body :focus-visible{outline:2px solid var(--uq-info);outline-offset:2px;}
+h1,h2,h3,h4{font-family:var(--uq-font-head);color:var(--uq-purple);line-height:1.2;}
+.uqweb-masthead{background:#fff;border-bottom:4px solid var(--uq-purple);}
+.uqweb-masthead__inner,.uqweb-page,.uqweb-footer__inner{max-width:940px;margin:0 auto;padding:16px 24px;}
+.uqweb-masthead__inner{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;}
+.uqweb-masthead__wordmark{font-family:var(--uq-font-head);font-weight:700;font-size:20px;color:var(--uq-purple);text-decoration:none;line-height:1;}
+.uqweb-masthead__wordmark span{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--uq-purple-light);margin-top:3px;}
+.uqweb-masthead__site{margin-left:auto;font-family:var(--uq-font-head);font-weight:600;color:var(--uq-grey-900);text-decoration:none;font-size:15px;}
+.uqweb-content{background:#fff;border:1px solid var(--uq-grey-200);padding:24px;}
+.uqweb-footer{background:var(--uq-purple);color:#fff;margin-top:32px;}
+.uqweb-footer a{color:#fff;}
+.uqweb-pagehead{background:var(--uq-purple);color:#fff;padding:32px;margin-bottom:24px;}
+.uqweb-pagehead h1,.uqweb-pagehead p{color:#fff;margin:0 0 8px;}
+</style>
+</head>
+<body>
+
+<a class="uqweb-skip" href="#main">Skip to main content</a>
+
+<header class="uqweb-masthead">
+  <div class="uqweb-masthead__inner">
+    <!-- Text wordmark, not artwork: styled text holds up with or without the
+         shared stylesheet and needs no logo file. No lockup or shield until
+         DAM supplies approved artwork. -->
+    <a class="uqweb-masthead__wordmark" href="https://www.uq.edu.au" aria-label="The University of Queensland home">UQ<span>Business School</span></a>
+    <a class="uqweb-masthead__site" href="./">
+      <!-- REPLACE: the site or module name -->
+      Site name
+    </a>
+  </div>
+</header>
+
+<main id="main" class="uqweb-page">
+  <div class="uqweb-content uqbs">
+
+    <header class="uqweb-pagehead">
+      <!-- Full pages own their h1 (unlike Blackboard fragments, which start at h2) -->
+      <h1>Page title</h1>
+      <p>One or two sentences on what this page covers.</p>
+    </header>
+
+    <!-- Optional on-page navigation for long pages
+    <nav class="uqweb-toc" aria-label="On this page">
+      <p>On this page</p>
+      <ol>
+        <li><a href="#section-one">Section one</a></li>
+        <li><a href="#section-two">Section two</a></li>
+      </ol>
+    </nav>
+    -->
+
+    <section id="section-one">
+      <h2>Section heading</h2>
+      <p>Body content. Every uqbs component from the shared library works here unchanged: callouts, accordions, cards, accent panels, tabs, flashcards, the quiz and the copy block.</p>
+
+      <div class="uqbs-callout">
+        <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        <div><p class="uqbs-callout__title">Information</p><p>A house-style callout, identical to the one in Blackboard.</p></div>
+      </div>
+    </section>
+
+    <section id="section-two">
+      <h2>Interactive components work too</h2>
+      <div class="uqbs-tabs" data-uqbs="tabs" aria-label="Example tabs">
+        <div class="uqbs-tabs__panel" data-label="One"><p>The shared script wires these on load.</p></div>
+        <div class="uqbs-tabs__panel" data-label="Two"><p>Delete this section if the page has no interactive components.</p></div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="uqweb-footer">
+  <div class="uqweb-footer__inner">
+    <p class="uqweb-footer__ack">The University of Queensland (UQ) acknowledges the Traditional Owners and their custodianship of the lands on which UQ operates. We pay our respects to their Ancestors and their descendants, who continue cultural and spiritual connections to Country.</p>
+    <p class="uqweb-footer__meta">&copy; The University of Queensland &middot; CRICOS Provider 00025B &middot; TEQSA Provider PRV12080</p>
+    <p class="uqweb-footer__links">
+      <a href="https://www.uq.edu.au/terms-of-use/">Terms of use</a>
+      <a href="https://policies.uq.edu.au/document/view-current.php?id=101">Privacy</a>
+      <a href="mailto:CONTACT_EMAIL@uq.edu.au">Contact</a><!-- REPLACE: the owning team's address -->
+    </p>
+  </div>
+</footer>
+
+<!-- Shared interaction pack (canonical URL). Needed only if the page uses an
+     interactive component; harmless if left in. No other scripts: analytics
+     and third-party tags are not permitted without named approval. -->
+<script src="https://teach.business.uq.edu.au/ld/uqbs/uqbs.js" defer></script>
+
+</body>
+</html>
