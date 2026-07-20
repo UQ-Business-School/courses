@@ -21,7 +21,7 @@ When converting a document, slide deck, old Rise module or notes, map the meanin
 
 ## Hard rules: must not break
 
-1. **No JavaScript.** Blackboard strips it. No `<script>`, no inline `onclick`. Use the CSS-only components.
+1. **No JavaScript.** It's unreliable in a Blackboard HTML block: it sometimes runs, sometimes doesn't, and can stop after a course copy. Build everything CSS-only. No `<script>`, no inline `onclick`, and don't host a script elsewhere and call it from the block. Use the CSS-only components.
 2. **No frameworks or external CSS.** No Bootstrap, Tailwind, CDN links or `<link rel="stylesheet">`. All styling comes from the foundation `<style>` block.
 3. **Fragment, not a page.** Never emit `<!DOCTYPE>`, `<html>`, `<head>` or `<body>`.
 4. **Self-contained.** The block is an isolated iframe that inherits nothing. Wrap content in `<div class="uqbs">` and include the foundation stylesheet.

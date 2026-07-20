@@ -11,8 +11,10 @@ Five rules govern the whole system:
 1. Build rich content as an Ultra Document, then add an HTML block.
 2. Each HTML block is its own isolated iframe. It inherits nothing from the page or from other blocks, so paste the foundation stylesheet once at the top of every block that uses these components.
 3. Wrap your content in `<div class="uqbs">…</div>` so the tokens and base styles apply.
-4. No JavaScript. It's stripped on save, so every component here is CSS-only by design.
+4. No JavaScript. It's unreliable: it sometimes runs and sometimes doesn't, and can stop after a course copy. Every component here is CSS-only for that reason, so nothing depends on a script.
 5. Purple leads. The state colours (blue, green, yellow, red) carry meaning in callouts; they aren't decoration.
+
+**A note on JavaScript.** You may see JavaScript work inside a Blackboard HTML block; it can run there. But it doesn't run reliably. Whether it survives depends on the block, the browser and how the content was added, and it can stop after a course copy. So nothing here depends on it, and you shouldn't build anything that does. If something must be interactive, make sure it still reads as complete content when the script doesn't run. Some authors work around this by hosting a script elsewhere and calling it from the block. We don't recommend it: it moves the fragile part off UQ servers and breaks the self-contained rule that keeps this content alive across course copies. If you genuinely need interactivity, talk to Learning Design.
 
 A note on the fonts, since someone will ask. The print brand guide names Gotham for headings, but Gotham is licensed and won't load on the open web. UQ's own Design System uses Montserrat as the web stand-in for Gotham, with Roboto for body. This guide follows the Design System, so the type matches UQ's actual websites rather than the print specification.
 
@@ -260,7 +262,7 @@ Universities carry a legal obligation here, so treat this as a floor, not a nice
 - **Visible focus.** The foundation puts a blue focus ring on every interactive element. Keep it.
 - **Alt text.** Every meaningful image needs a description. Decorative images take `alt=""`.
 - **Link text.** Describe the destination. Avoid "click here".
-- **Tabs versus accordions.** The CSS-only tabs are keyboard operable, but a screen reader announces them as radio buttons rather than as a tab set, because proper tab semantics need JavaScript and Blackboard strips it. For content a student must not miss, use an accordion, which is natively accessible.
+- **Tabs versus accordions.** The CSS-only tabs are keyboard operable, but a screen reader announces them as radio buttons rather than as a tab set, because proper tab semantics need JavaScript, which isn't reliable in Blackboard. For content a student must not miss, use an accordion, which is natively accessible.
 
 ## Status
 

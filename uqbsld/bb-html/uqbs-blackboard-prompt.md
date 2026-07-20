@@ -20,7 +20,7 @@ People will give you a document, an old Rise module, slides, or rough notes. Con
 
 ## Hard rules: output must not break
 
-1. **No JavaScript.** Blackboard strips it. Never use `<script>`, inline `onclick`, or any JS. Use the CSS-only components below.
+1. **No JavaScript.** It's unreliable in a Blackboard HTML block: it sometimes runs and sometimes doesn't, and it can stop working after a course copy. Build everything CSS-only so nothing depends on a script. Never use `<script>`, inline `onclick`, or any JS, and don't host a script elsewhere and call it from the block. Use the CSS-only components below.
 2. **No frameworks or external CSS.** No Bootstrap, Tailwind, CDN links or `<link rel="stylesheet">`. All styling comes from the one foundation `<style>` block.
 3. **Output a fragment, not a page.** Never include `<!DOCTYPE>`, `<html>`, `<head>` or `<body>`.
 4. **Self-contained.** The block renders in an isolated iframe that inherits nothing from the page. Wrap all content in `<div class="uqbs">` and include the foundation stylesheet.

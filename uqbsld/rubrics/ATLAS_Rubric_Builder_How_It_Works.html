@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>How the ATLAS Rubric Builder Works — UQ Business School</title>
+<meta name="description" content="A guide to how the ATLAS rubric builder drafts and revises marking rubrics: the three jobs it does, the walk through the tool, the validate-and-repair pipeline, and the design methodology behind the descriptors.">
+
+<link rel="stylesheet" href="https://teach.business.uq.edu.au/ld/uqbs/uqbs.css">
+<script src="https://teach.business.uq.edu.au/ld/uqbs/uqbs.js" defer></script>
+
+<!-- Survival core: mirrors the shared stylesheet so the page stays legible and
+     recognisably UQ if the shared file is unreachable. -->
+<style>
+:root{
+  --uq-purple:#51247a; --uq-purple-light:#962a8b;
+  --uq-grey-900:#3b383e; --uq-grey-200:#dcdcdd; --uq-grey-50:#f3f3f4;
+  --uq-info:#0d6dcd;
+  --uq-font-body:'Roboto','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --uq-font-head:'Montserrat',Helvetica,Arial,sans-serif;
+  /* page-scoped support for the lock badge below (not part of the shared core) */
+  --uq-purple-50:#eee9f2;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--uq-grey-50);color:var(--uq-grey-900);font-family:var(--uq-font-body);font-size:16px;line-height:1.6;}
+body a{color:var(--uq-purple);}
+body :focus-visible{outline:2px solid var(--uq-info);outline-offset:2px;}
+h1,h2,h3,h4{font-family:var(--uq-font-head);color:var(--uq-purple);line-height:1.2;}
+
+.uqweb-skip{position:absolute;left:-999px;top:0;background:var(--uq-purple);color:#fff;padding:12px 16px;z-index:10;}
+.uqweb-skip:focus{left:0;}
+.uqweb-masthead{background:#fff;border-bottom:4px solid var(--uq-purple);}
+.uqweb-masthead__inner,.uqweb-page,.uqweb-footer__inner{max-width:940px;margin:0 auto;padding:16px 24px;}
+.uqweb-masthead__inner{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;}
+.uqweb-masthead__wordmark{font-family:var(--uq-font-head);font-weight:700;font-size:20px;color:var(--uq-purple);text-decoration:none;line-height:1;}
+.uqweb-masthead__wordmark span{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--uq-purple-light);margin-top:3px;}
+.uqweb-masthead__site{margin-left:auto;font-family:var(--uq-font-head);font-weight:600;color:var(--uq-grey-900);text-decoration:none;font-size:15px;}
+.uqweb-content{background:#fff;border:1px solid var(--uq-grey-200);padding:clamp(20px,4vw,40px);}
+.uqweb-pagehead{background:var(--uq-purple);color:#fff;padding:clamp(28px,5vw,44px);margin-bottom:24px;}
+.uqweb-pagehead .rdf-eyebrow{font-family:var(--uq-font-head);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);margin:0 0 14px;}
+.uqweb-pagehead h1{color:#fff;font-size:clamp(28px,5vw,42px);margin:0 0 12px;}
+.uqweb-pagehead p{color:rgba(255,255,255,.9);font-size:clamp(15px,2.2vw,18px);margin:0;max-width:62ch;}
+.uqweb-footer{background:var(--uq-purple);color:#fff;margin-top:32px;}
+.uqweb-footer a{color:#fff;}
+
+/* Page-scoped plain bullet list (base list styling comes from the shared uqbs.css) */
+.rdf-plain{margin:0 0 16px;padding-left:0;list-style:none;}
+.rdf-plain li{position:relative;padding-left:24px;margin-bottom:12px;}
+.rdf-plain li::before{content:'';position:absolute;left:4px;top:10px;width:8px;height:8px;border-radius:50%;background:var(--uq-purple-light);}
+
+/* Ghost button — light-background variant (pairs with the shared .uqbs-btn base) */
+.rdf-btn-ghost{background:transparent;color:var(--uq-purple);border-color:var(--uq-purple);}
+.rdf-btn-ghost:hover{background:var(--uq-purple);color:#fff;}
+
+.rdf-meta{font-size:14px;color:var(--uq-grey-900);font-style:italic;margin:0 0 8px;}
+.rdf-lock{display:inline-flex;align-items:center;gap:7px;font-family:var(--uq-font-head);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--uq-purple);background:var(--uq-purple-50);padding:5px 10px;border-radius:2px;margin:0 0 14px;}
+.rdf-lock svg{width:14px;height:14px;}
+
+/* Numbered steps */
+.rdf-steps{margin:20px 0;list-style:none;padding:0;counter-reset:st;}
+.rdf-steps>li{display:flex;gap:16px;margin-bottom:18px;align-items:flex-start;}
+.rdf-steps>li::before{counter-increment:st;content:counter(st);flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--uq-purple);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--uq-font-head);font-size:14px;font-weight:700;margin-top:2px;}
+.rdf-steps__body{flex:1;}
+.rdf-steps__body h3{margin:2px 0 6px;font-size:18px;}
+.rdf-steps__body p{margin:0;font-size:15px;}
+
+.rdf-reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease;}
+.rdf-reveal.is-in{opacity:1;transform:translateY(0);}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}*{transition:none !important;}.rdf-reveal{opacity:1;transform:none;}}
+</style>
+</head>
+<body>
+
+<a class="uqweb-skip" href="#main">Skip to main content</a>
+
+<header class="uqweb-masthead">
+  <div class="uqweb-masthead__inner">
+    <a class="uqweb-masthead__wordmark" href="https://www.uq.edu.au" aria-label="The University of Queensland home">UQ<span>Business School</span></a>
+    <a class="uqweb-masthead__site" href="index.html">Rubric Design Fundamentals</a>
+  </div>
+</header>
+
+<main id="main" class="uqweb-page">
+  <div class="uqweb-content uqbs">
+
+    <header class="uqweb-pagehead">
+      <p class="rdf-eyebrow">Rubric Design Fundamentals · Reference</p>
+      <h1>How the ATLAS Rubric Builder Works</h1>
+      <p>A guide for anyone new to the tool: what it does, the walk through each step, what happens behind the scenes, and the methodology the descriptors follow.</p>
+    </header>
+
+    <p class="rdf-meta">Written July 2026, current as of the v14k build.</p>
+    <p class="rdf-lock">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm-3 8V6a3 3 0 0 1 6 0v3H9z"/></svg>
+      Behind UQ login
+    </p>
+    <p>
+      <a class="uqbs-btn" href="https://teach.business.uq.edu.au/ld/uqbsld/atlas/">Launch ATLAS &rarr;</a>
+      <a class="uqbs-btn rdf-btn-ghost" href="UQBS_Rubric_Builder.html" style="margin-left:8px;">Back to the overview</a>
+    </p>
+
+    <h2>What it is and why it exists</h2>
+    <p>The rubric builder is one of the tools inside ATLAS, the UQ Business School learning design platform. It drafts and revises assessment marking rubrics: the tables that tell markers what a High Distinction looks like against a Pass, criterion by criterion.</p>
+    <p>It exists for two reasons. The first is quality. Most rubrics in circulation differentiate grades by swapping adjectives (excellent analysis, good analysis, satisfactory analysis), which gives markers nothing to look for and students nothing to aim at. The tool drafts rubrics that describe what the work actually does differently at each grade.</p>
+    <p>The second reason is accreditation. The School is embedding UQ's six Graduate Attributes into assessment rubrics so that, for nominated courses, ordinary marking doubles as the evidence AACSB requires for Assurance of Learning. That only works if the GA criteria in those rubrics follow strict rules. The tool's most important job is making those rules impossible to break.</p>
+
+    <h2>Who uses it</h2>
+    <p>Learning designers drive the tool. Course coordinators review and approve what it produces. That order matters: the tool drafts, the learning designer shapes and checks, the coordinator decides. Nothing goes near a student or a marker without two humans having judged it.</p>
+    <p class="uqbs-statement">When a coordinator already has a rubric, the guiding principle is remix rather than scrap.</p>
+    <p>The tool diagnoses the existing rubric, keeps what works, and makes every change traceable to a design principle, so the coordinator recognises their own rubric in the result rather than finding it replaced.</p>
+
+    <h2>The three jobs it can do</h2>
+    <p>When you set up a build, the tool asks what the rubric needs to do. There are three answers, and two of them are set by policy rather than preference.</p>
+    <p>A <strong>general build or revision</strong> is a plain rubric job: capability criteria, observable descriptors, the UQ seven-point scale, no Graduate Attribute involved.</p>
+    <p><strong>Curriculum uplift</strong> applies when the course sits in a mapped major and a GA is being woven into the assessment. At least two of the GA's three traits (all three where they align naturally) are worked into the rubric's existing criteria. Each criterion carrying a trait is asterisked, the trait stays identifiable inside it, and the GA-carrying criteria together hold at least 10% of the marks.</p>
+    <p>An <strong>AoL designated assessment</strong> is the accreditation case: this specific assessment has been nominated to collect a program's evidence for a GA. Here all three traits are required, each as its own distinct asterisked row, never merged and never folded into a task criterion, together worth at least 10%. This is the tier where the rules are hard, because accreditation reviewers map the rubric scores directly to each trait.</p>
+    <p>You never choose how the GA sits in the rubric. Older versions of the tool offered fold-in, separate-rows and mixed options as a free choice, and that caused more confusion than it solved. Now the integration style follows from the tier: AoL always means separate rows, uplift always means weaving. The only choices left are ones a fact can answer.</p>
+
+    <h3>How the tool knows which tier applies</h3>
+    <p>When you enter a course code, the tool looks it up in a snapshot of the School's official GA mapping and AoL nomination sheets. If the course has an AoL nomination, the tool shows it (the GA, the nominated assessment, the program it reports for) with a one-click setup. If the course is GA-mapped but not nominated, it suggests uplift instead.</p>
+    <div class="uqbs-callout uqbs-callout--warning">
+      <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+      <div>
+        <p class="uqbs-callout__title">Treat the snapshot as a suggestion, never as ground truth</p>
+        <p>The mapping is a point-in-time copy and is not consistently updated, so nothing applies until you click it, and the caveat is printed right under the suggestion. Where a course sits in more than one major, its AoL home can be ambiguous; confirm against the current mapping sheets before relying on it.</p>
+      </div>
+    </div>
+
+    <h2>The walk through the tool</h2>
+    <ol class="rdf-steps rdf-reveal">
+      <li><div class="rdf-steps__body"><h3>What we are working with</h3><p>You point the tool at the course, either from the published profile feed (which brings the outcomes and assessment list with it) or by hand. You add whatever material you have: the existing rubric or rubrics, the task sheet, marking notes. More material means a sharper result, but only the assessment itself is essential. If there is no existing rubric you say so, and the tool builds fresh.</p></div></li>
+      <li><div class="rdf-steps__body"><h3>What the rubric needs to do</h3><p>You pick the assessment, confirm the course's AQF level (derived from the course code, correctable if the derivation is wrong), and set the job as above.</p></div></li>
+      <li><div class="rdf-steps__body"><h3>Review the analysis</h3><p>The tool's analyst move comes back with a diagnosis of the existing rubric, an account of what the task actually asks students to do, and a proposed set of criteria with weightings. Nothing is written yet. This screen is where you edit the structure: rename criteria, adjust weights, add or remove rows. A live meter tracks whether the weights reach 100 and whether the GA criteria clear the 10% floor. Only when you are satisfied does the tool write descriptors.</p></div></li>
+      <li><div class="rdf-steps__body"><h3>The rubric</h3><p>The full table, every cell editable in place. You can redraft any single criterion, ask for a design rationale (a short account of what was preserved and why things changed, written for the coordinator), run the quality checks, and download the Word document.</p></div></li>
+    </ol>
+
+    <h2>What happens behind the scenes</h2>
+    <p>The tool makes three kinds of model call. An <strong>analyst</strong> parses everything you supplied, diagnoses the existing rubric and plans the criteria. A <strong>writer</strong> then drafts the seven grade descriptors for one criterion at a time, so a long rubric cannot outrun a single response and any one failure is recoverable on its own. A <strong>rationale</strong> move writes the design summary at the end.</p>
+    <p>The important part is what sits between the model and you: a validate-and-repair pipeline that runs in code, not in the prompt.</p>
+    <p>When the analyst proposes a plan, the server checks it deterministically before any descriptor is written. For an AoL build that means: exactly three GA-mapped rows, one per trait, no trait merged into another, no trait folded into a task criterion, no trait left unmapped; the GA rows together at or above 10%; weightings totalling exactly 100; and a referencing/compliance row present as its own row. The 10% floor and the weighting checks apply to uplift builds too. If a check fails, the server sends the plan back to the model with the exact violations named, and re-validates what comes back. It will do this twice; if the plan still breaks the rules, you get a specific error saying what broke rather than a rubric that would not stand as evidence. Two kinds of drift are corrected silently because they need no judgement: a weighting sum off by a point or two is adjusted on the heaviest task row (never a GA row, so the floor cannot be eroded), and a missing GA label is restored.</p>
+    <p>The descriptors get the same treatment. Every criterion is checked for all seven grade levels, for banned language (grade-by-adverb scaling, vague quality adjectives, culturally loaded delivery cues like eye contact), and for identity drift: if the model quietly renames a criterion or changes its weighting, the values you approved are restored. Missing grade levels go back for repair; a stubborn adverb that survives repair is downgraded to a warning rather than stranding the build.</p>
+    <div class="uqbs-callout uqbs-callout--success">
+      <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+      <div>
+        <p class="uqbs-callout__title">The practical effect</p>
+        <p>The accreditation rules are guarantees, not requests. The model is used for what it is good at — reading a task and writing calibrated descriptors — and never trusted to remember constraints.</p>
+      </div>
+    </div>
+
+    <h2>The design methodology the descriptors follow</h2>
+    <p>Everything the writer produces is governed by the School's rubric methodology, drawn from the staff design guides.</p>
+    <ul class="rdf-plain">
+      <li><strong>Capabilities, not sections.</strong> Criteria are things like Critical Analysis or Evidence Integration, never Introduction, Body, Conclusion. A section-based row assesses the same capability in several places and cannot be marked cleanly.</li>
+      <li><strong>Observable descriptors.</strong> Each cell describes what the student demonstrably does at that level. Two tests: could a student use it to improve before submitting, and would two markers reach the same grade independently.</li>
+      <li><strong>SOLO as the backbone.</strong> The climb from Fail to High Distinction is a qualitative shift in thinking (listing, then connecting, then integrating, then going beyond the given), not more of the same done more thoroughly.</li>
+      <li><strong>Values of Inquiry as the language of quality.</strong> Clarity, accuracy, depth, breadth, relevance, significance, coherence and cogency replace the vague adjectives, and only where genuinely relevant to the criterion.</li>
+      <li><strong>A consistent spine.</strong> Each row keeps a steady sentence stem across the seven levels so a marker can scan horizontally; what changes between cells is the distinguisher.</li>
+      <li><strong>AQF calibration.</strong> The same criterion means different things at different levels. HD in a first-year course is relational thinking, not the extended-abstract synthesis expected of a masters student. The level comes from the course code and you can override it.</li>
+      <li><strong>Differentiated fail grades.</strong> Marginal Fail is one identifiable gap from a pass; Fail has multiple significant problems; Low Fail does not engage. Each is described, none collapse into a generic "fail".</li>
+      <li><strong>CALD accessibility.</strong> Plain direct language, no idioms, no confident-delivery or eye-contact criteria, and language quality assessed only in its own criterion, never inside a content criterion.</li>
+      <li><strong>Requirements embedded.</strong> Word counts and source minimums live in the criterion where the marker checks them, with the minimum at Pass or Credit, not in a row of their own beyond the compliance criterion.</li>
+    </ul>
+
+    <p>Grades always sit on the UQ seven-point scale.</p>
+    <table>
+      <thead><tr><th>Grade</th><th>Level</th><th>Range</th></tr></thead>
+      <tbody>
+        <tr><td>High Distinction</td><td>7</td><td>85–100%</td></tr>
+        <tr><td>Distinction</td><td>6</td><td>75–84%</td></tr>
+        <tr><td>Credit</td><td>5</td><td>65–74%</td></tr>
+        <tr><td>Pass</td><td>4</td><td>50–64%</td></tr>
+        <tr><td>Marginal Fail</td><td>3</td><td>47–49%</td></tr>
+        <tr><td>Fail</td><td>2</td><td>30–46%</td></tr>
+        <tr><td>Low Fail</td><td>1</td><td>0–29%</td></tr>
+      </tbody>
+    </table>
+
+    <div class="uqbs-callout">
+      <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11 7h2v2h-2V7zm0 4h2v6h-2v-6zm1-9a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/></svg>
+      <div>
+        <p class="uqbs-callout__title">Two different 10% thresholds</p>
+        <p>The assessment a GA is tied to must itself be worth at least 10% of the course grade; that is a mapping decision made before the tool runs. The tool enforces the other one: within the rubric, the GA criteria must together carry at least 10% of that assessment's marks.</p>
+      </div>
+    </div>
+
+    <h2>The export</h2>
+    <p>The Word download follows the School's convention: a header with the course code and name, semester, assessment number and name, and weighting; the purple header row with grade names and percentage ranges; alternating row shading; criterion names with weightings; asterisks on every GA criterion and a footer note explaining what the asterisk means and which GA is being assessed. The file is named <code>[CourseCode]_A[Number]_Rubric_[GA]</code> (for example <code>TOUR7050_A2_Rubric_GA2.doc</code>). Where the tool does not know a part, such as the assessment number for a hand-entered task, it leaves that part out rather than guessing.</p>
+
+    <h2>What the tool does not do</h2>
+    <p>It does not decide which courses are AoL-nominated or which GAs a course carries; that is the School's mapping, and the tool only reads a copy of it. It does not approve anything; the coordinator owns the assessment and the final call. It does not mark student work. And it does not claim its checks are judgement: the automated quality checks are counts and scans, useful for catching the mechanical failures, and the screen says exactly that. Whether a descriptor is fair to this cohort, whether a weighting reflects what the coordinator values, whether the rubric will survive contact with three hundred submissions in week 13 — those calls stay with people.</p>
+
+    <h2>Where the rules come from</h2>
+    <p>The trait names and template rubrics come from the six official 2026 Assurance of Learning guides (one per Graduate Attribute), which are the source of truth; the tool's data is regenerated directly from those PDFs. The methodology comes from the School's rubric design guides, and the quality checks operationalise the School's rubric evaluation guide. Where anything in this document and those sources disagree, the sources win.</p>
+    <p>If something looks wrong, or the mapping snapshot disagrees with what you know to be current, tell the Learning Design team rather than working around it.</p>
+
+    <p style="margin-top:28px;">
+      <a class="uqbs-btn" href="https://teach.business.uq.edu.au/ld/uqbsld/atlas/">Launch ATLAS &rarr;</a>
+      <a class="uqbs-btn rdf-btn-ghost" href="UQBS_Rubric_Builder.html" style="margin-left:8px;">&larr; Builder overview</a>
+    </p>
+
+  </div>
+</main>
+
+<footer class="uqweb-footer">
+  <div class="uqweb-footer__inner">
+    <p class="uqweb-footer__ack">The University of Queensland (UQ) acknowledges the Traditional Owners and their custodianship of the lands on which UQ operates. We pay our respects to their Ancestors and their descendants, who continue cultural and spiritual connections to Country.</p>
+    <p class="uqweb-footer__meta">&copy; The University of Queensland &middot; CRICOS Provider 00025B &middot; TEQSA Provider PRV12080</p>
+    <p class="uqweb-footer__links">
+      <a href="https://www.uq.edu.au/terms-of-use/">Terms of use</a> &middot;
+      <a href="https://policies.uq.edu.au/document/view-current.php?id=101">Privacy</a> &middot;
+      <a href="mailto:learningdesign@business.uq.edu.au">Contact the Learning Design team</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var els=document.querySelectorAll('.rdf-reveal');
+  if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('is-in');});return;}
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-in');obs.unobserve(e.target);}});
+  },{threshold:.1});
+  els.forEach(function(el){obs.observe(el);});
+})();
+</script>
+
+</body>
+</html>

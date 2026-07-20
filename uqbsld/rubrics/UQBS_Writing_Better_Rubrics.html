@@ -1,876 +1,265 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-AU">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Core Principles — Rubric Design Fundamentals | UQ Business School</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Roboto', Arial, Helvetica, sans-serif;
-            color: #1a1714;
-            background-color: #ffffff;
-            line-height: 1.6;
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 56px;
-            background-color: #ffffff;
-            border-bottom: 1px solid #e4dfd9;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 24px;
-            z-index: 1000;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-        }
-
-        .header-left {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .header-school {
-            font-size: 11px;
-            font-weight: 400;
-            color: #6b6460;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .header-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #1a1714;
-        }
-
-        .header-right a {
-            font-size: 14px;
-            font-weight: 500;
-            color: #51247A;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .header-right a:hover {
-            color: #962A8B;
-        }
-
-        /* Main content */
-        main {
-            margin-top: 56px;
-            width: 100%;
-        }
-
-        .container {
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: #51247A;
-            color: #ffffff;
-            padding: 72px 32px 64px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 680px;
-            margin: 0 auto;
-        }
-
-        .hero-tag {
-            font-size: 11px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: rgba(255,255,255,0.55);
-            margin-bottom: 20px;
-        }
-
-        .hero h1 {
-            font-size: 44px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            line-height: 1.1;
-        }
-
-        .hero .subtitle {
-            font-size: 16px;
-            font-weight: 300;
-            margin-bottom: 16px;
-            line-height: 1.75;
-            color: rgba(255,255,255,0.85);
-            max-width: 580px;
-        }
-
-        .hero .intro-para {
-            font-size: 15px;
-            font-weight: 400;
-            line-height: 1.75;
-            color: rgba(255,255,255,0.85);
-            max-width: 580px;
-        }
-
-        /* Sections */
-        section {
-            padding: 80px 24px;
-        }
-
-        section:nth-child(even) {
-            background-color: #f7f5f3;
-        }
-
-        section:nth-child(odd):not(.hero) {
-            background-color: #ffffff;
-        }
-
-        /* Emphasis box */
-        .emphasis-box {
-            background: #f7f5f3;
-            border-left: 4px solid #51247A;
-            padding: 40px 24px;
-        }
-
-        .emphasis-inner {
-            max-width: 680px;
-            margin: 0 auto;
-        }
-
-        .emphasis-inner p {
-            font-size: 17px;
-            font-weight: 400;
-            line-height: 1.7;
-            color: #1a1714;
-            font-style: italic;
-        }
-
-        .section-container {
-            max-width: 680px;
-            margin: 0 auto;
-        }
-
-        .section-tag {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-tag::before {
-            content: '';
-            display: inline-block;
-            width: 18px;
-            height: 1.5px;
-            background-color: currentColor;
-        }
-
-        section:nth-child(3) .section-tag {
-            color: #4085C6;
-        }
-
-        section:nth-child(4) .section-tag {
-            color: #51247A;
-        }
-
-        section:nth-child(5) .section-tag {
-            color: #962A8B;
-        }
-
-        section:nth-child(6) .section-tag {
-            color: #962A8B;
-        }
-
-        section:nth-child(7) .section-tag {
-            color: #962A8B;
-        }
-
-        h2 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            line-height: 1.3;
-            color: #1a1714;
-        }
-
-        h3 {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 32px 0 16px 0;
-            color: #1a1714;
-        }
-
-        p {
-            font-size: 15px;
-            margin-bottom: 16px;
-            line-height: 1.7;
-            color: #1a1714;
-        }
-
-        /* Example Boxes */
-        .example-box {
-            border: 1px solid #e4dfd9;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 24px 0;
-            background-color: #ffffff;
-        }
-
-        section:nth-child(even) .example-box {
-            background-color: #eeebe8;
-        }
-
-        .example-label {
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #6b6460;
-            margin-bottom: 16px;
-            display: block;
-        }
-
-        .example-label.before {
-            color: #d9534f;
-        }
-
-        .example-label.after {
-            color: #5cb85c;
-        }
-
-        /* Word highlighting */
-        .hl-bad {
-            background: rgba(217, 83, 79, 0.2);
-            color: #d9534f;
-            padding: 1px 4px;
-            border-radius: 3px;
-            font-weight: 500;
-        }
-
-        .hl-good {
-            background: rgba(92, 184, 92, 0.15);
-            color: #2d8a2d;
-            padding: 1px 4px;
-            border-radius: 3px;
-            font-weight: 500;
-        }
-
-        .example-box p {
-            font-size: 14px;
-            margin-bottom: 12px;
-            margin-top: 0;
-        }
-
-        /* Comparison cards */
-        .comparison-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin: 24px 0;
-        }
-
-        .comparison-card {
-            border: 1px solid #e4dfd9;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .comparison-grade {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            padding: 8px 16px;
-            background: #f7f5f3;
-            color: #51247A;
-            border-bottom: 1px solid #e4dfd9;
-        }
-
-        .comparison-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .comparison-cell {
-            padding: 14px 16px;
-            font-size: 14px;
-            line-height: 1.6;
-            color: #1a1714;
-        }
-
-        .comparison-cell.before {
-            background: #fff;
-            border-right: 1px solid #e4dfd9;
-        }
-
-        .comparison-cell.after {
-            background: #fafff9;
-        }
-
-        .comparison-label {
-            display: block;
-            font-size: 9px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            margin-bottom: 6px;
-        }
-
-        .comparison-label.before {
-            color: #d9534f;
-        }
-
-        .comparison-label.after {
-            color: #2d8a2d;
-        }
-
-        @media (max-width: 580px) {
-            .comparison-row {
-                grid-template-columns: 1fr;
-            }
-            .comparison-cell.before {
-                border-right: none;
-                border-bottom: 1px solid #e4dfd9;
-            }
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 16px 0;
-            font-size: 13px;
-        }
-
-        thead {
-            background-color: #f7f5f3;
-        }
-
-        th {
-            padding: 12px;
-            text-align: left;
-            font-weight: 600;
-            border: 1px solid #e4dfd9;
-            color: #1a1714;
-        }
-
-        td {
-            padding: 12px;
-            border: 1px solid #e4dfd9;
-            color: #1a1714;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #fafaf8;
-        }
-
-        .problem-note {
-            font-size: 13px;
-            color: #6b6460;
-            font-style: italic;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid #d0c9c2;
-        }
-
-        /* Spine Visual */
-        .spine-visual {
-            margin: 24px 0;
-        }
-
-        .spine-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 12px;
-            align-items: flex-start;
-        }
-
-        .spine-grade {
-            min-width: 45px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #6b6460;
-            padding-top: 4px;
-        }
-
-        .spine-text {
-            flex: 1;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .spine {
-            font-weight: 600;
-            background-color: rgba(81, 36, 122, 0.08);
-            padding: 2px 6px;
-            border-radius: 3px;
-            color: #51247A;
-        }
-
-        .distinguisher {
-            color: #6b6460;
-        }
-
-        .spine-note {
-            font-size: 13px;
-            color: #6b6460;
-            font-style: italic;
-            margin-top: 16px;
-            padding: 12px;
-            background-color: #f7f5f3;
-            border-left: 3px solid #51247A;
-            border-radius: 4px;
-        }
-
-        /* Checklist */
-        .checklist {
-            margin: 24px 0;
-        }
-
-        .checklist-intro {
-            font-size: 15px;
-            margin-bottom: 24px;
-            color: #1a1714;
-        }
-
-        .checklist-item {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 16px;
-            align-items: flex-start;
-        }
-
-        .checklist-number {
-            min-width: 21px;
-            width: 21px;
-            height: 21px;
-            border: 1.5px solid #51247A;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
-            color: #51247A;
-            flex-shrink: 0;
-            margin-top: 3px;
-        }
-
-        .checklist-text {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #1a1714;
-            padding-top: 2px;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            background: linear-gradient(135deg, #51247A 0%, #962A8B 100%);
-            color: #ffffff;
-            padding: 60px 24px;
-            text-align: center;
-        }
-
-        .cta-content {
-            max-width: 640px;
-            margin: 0 auto;
-        }
-
-        .cta-section p {
-            color: #ffffff;
-            font-size: 16px;
-            margin-bottom: 28px;
-            line-height: 1.7;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 32px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 12px 24px;
-            border-radius: 24px;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border: 2px solid #ffffff;
-        }
-
-        .cta-button.primary {
-            background-color: #ffffff;
-            color: #51247A;
-        }
-
-        .cta-button.primary:hover {
-            background-color: rgba(255, 255, 255, 0.9);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .cta-button.secondary {
-            background-color: transparent;
-            color: #ffffff;
-        }
-
-        .cta-button.secondary:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .cta-credit {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-top: 24px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            padding-top: 24px;
-        }
-
-        /* Animations */
-        .reveal {
-            opacity: 0;
-            transform: translateY(14px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            header {
-                padding: 0 16px;
-            }
-
-            .header-left {
-                min-width: 0;
-            }
-
-            .header-title {
-                font-size: 14px;
-            }
-
-            .header-right a {
-                font-size: 12px;
-            }
-
-            .container,
-            section {
-                padding: 0 16px;
-            }
-
-            section {
-                padding-top: 60px;
-                padding-bottom: 60px;
-            }
-
-            .hero {
-                padding: 80px 16px;
-            }
-
-            .hero h1 {
-                font-size: 32px;
-            }
-
-            .hero .subtitle,
-            .hero .intro-para {
-                font-size: 14px;
-            }
-
-            h2 {
-                font-size: 24px;
-            }
-
-            h3 {
-                font-size: 16px;
-            }
-
-            p {
-                font-size: 14px;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
-
-            .cta-button {
-                width: 100%;
-            }
-
-            table {
-                font-size: 12px;
-            }
-
-            th,
-            td {
-                padding: 10px 8px;
-            }
-
-            .spine-row {
-                flex-direction: column;
-                gap: 4px;
-            }
-
-            .spine-grade {
-                min-width: auto;
-            }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Core Principles — Rubric Design Fundamentals — UQ Business School</title>
+<meta name="description" content="Three principles that make the biggest difference to rubric quality: observable descriptors, spine-and-distinguisher structure, and capability-based criteria.">
+
+<link rel="stylesheet" href="https://teach.business.uq.edu.au/ld/uqbs/uqbs.css">
+<script src="https://teach.business.uq.edu.au/ld/uqbs/uqbs.js" defer></script>
+
+<!-- Survival core: mirrors the shared stylesheet so the page stays legible and
+     recognisably UQ if the shared file is unreachable. Same values as uqbs.css,
+     so it changes nothing when both load. The page-scoped teaching components
+     that follow (principle eyebrows, before/after cards, spine, checklist, CTA)
+     live only on this page. -->
+<style>
+:root{
+  --uq-purple:#51247a; --uq-purple-50:#eee9f2; --uq-purple-light:#962a8b;
+  --uq-grey-900:#3b383e; --uq-grey-200:#dcdcdd; --uq-grey-50:#f3f3f4;
+  --uq-info:#0d6dcd;
+  --uq-font-body:'Roboto','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --uq-font-head:'Montserrat',Helvetica,Arial,sans-serif;
+  --uq-accent-blue:#3574ad; --uq-accent-green:#258a2c; --uq-accent-red:#c41d38;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--uq-grey-50);color:var(--uq-grey-900);font-family:var(--uq-font-body);font-size:16px;line-height:1.6;}
+body a{color:var(--uq-purple);}
+body :focus-visible{outline:2px solid var(--uq-info);outline-offset:2px;}
+h1,h2,h3,h4{font-family:var(--uq-font-head);color:var(--uq-purple);line-height:1.2;}
+
+.uqweb-skip{position:absolute;left:-999px;top:0;background:var(--uq-purple);color:#fff;padding:12px 16px;z-index:10;}
+.uqweb-skip:focus{left:0;}
+.uqweb-masthead{background:#fff;border-bottom:4px solid var(--uq-purple);}
+.uqweb-masthead__inner,.uqweb-page,.uqweb-footer__inner{max-width:940px;margin:0 auto;padding:16px 24px;}
+.uqweb-masthead__inner{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;}
+.uqweb-masthead__wordmark{font-family:var(--uq-font-head);font-weight:700;font-size:20px;color:var(--uq-purple);text-decoration:none;line-height:1;}
+.uqweb-masthead__wordmark span{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--uq-purple-light);margin-top:3px;}
+.uqweb-masthead__site{margin-left:auto;font-family:var(--uq-font-head);font-weight:600;color:var(--uq-grey-900);text-decoration:none;font-size:15px;}
+.uqweb-content{background:#fff;border:1px solid var(--uq-grey-200);padding:24px;}
+.uqweb-pagehead{background:var(--uq-purple);color:#fff;padding:clamp(28px,5vw,44px);margin-bottom:24px;}
+.uqweb-pagehead .rdf-eyebrow{font-family:var(--uq-font-head);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);margin:0 0 14px;}
+.uqweb-pagehead h1{color:#fff;font-size:clamp(28px,5vw,42px);margin:0 0 12px;}
+.uqweb-pagehead p{color:rgba(255,255,255,.9);font-size:clamp(15px,2.2vw,18px);margin:0;max-width:62ch;}
+.uqweb-footer{background:var(--uq-purple);color:#fff;margin-top:32px;}
+.uqweb-footer a{color:#fff;}
+
+/* Eyebrow with coloured rule — the meaningful colour that keeps the set lively */
+.rdf-principle{font-family:var(--uq-font-head);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;gap:10px;margin:0 0 6px;}
+.rdf-principle::before{content:'';width:20px;height:2px;background:currentColor;display:inline-block;}
+.rdf-c-blue{color:var(--uq-accent-blue);}
+.rdf-c-purple{color:var(--uq-purple);}
+.rdf-c-magenta{color:var(--uq-purple-light);}
+
+/* Before / after highlight spans */
+.hl-bad{background:rgba(196,29,56,.14);color:#c0392b;padding:1px 4px;border-radius:3px;font-weight:500;}
+.hl-good{background:rgba(37,138,44,.14);color:#2d8a2d;padding:1px 4px;border-radius:3px;font-weight:500;}
+
+/* Before / after comparison cards */
+.rdf-compare{display:flex;flex-direction:column;gap:12px;margin:24px 0;}
+.rdf-card{border:1px solid var(--uq-grey-200);overflow:hidden;}
+.rdf-card__grade{font-family:var(--uq-font-head);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:8px 16px;background:var(--uq-grey-50);color:var(--uq-purple);border-bottom:1px solid var(--uq-grey-200);}
+.rdf-card__row{display:grid;grid-template-columns:1fr 1fr;}
+.rdf-card__cell{padding:14px 16px;font-size:14px;line-height:1.6;}
+.rdf-card__cell--before{border-right:1px solid var(--uq-grey-200);}
+.rdf-card__cell--after{background:#fbfdfb;}
+.rdf-cell-label{display:block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px;}
+.rdf-cell-label--before{color:#d62929;}
+.rdf-cell-label--after{color:#4aa74e;}
+.rdf-note{font-size:13px;color:var(--uq-grey-900);font-style:italic;margin-top:12px;padding-top:12px;border-top:1px solid var(--uq-grey-200);}
+
+/* Spine visual */
+.rdf-spine{margin:24px 0;}
+.rdf-spine__row{display:flex;gap:12px;margin-bottom:10px;align-items:flex-start;}
+.rdf-spine__grade{min-width:44px;font-family:var(--uq-font-head);font-size:12px;font-weight:700;text-transform:uppercase;color:var(--uq-grey-900);padding-top:3px;}
+.rdf-spine__text{flex:1;font-size:14px;line-height:1.6;}
+.rdf-spine__stem{font-weight:600;background:var(--uq-purple-50);padding:2px 6px;border-radius:3px;color:var(--uq-purple);}
+.rdf-spine__note{font-size:13px;color:var(--uq-grey-900);font-style:italic;margin-top:14px;padding:12px 16px;background:var(--uq-grey-50);border-left:3px solid var(--uq-purple);}
+
+/* Checklist */
+.rdf-check{margin:20px 0;list-style:none;padding:0;counter-reset:rdf;}
+.rdf-check li{display:flex;gap:16px;margin-bottom:16px;align-items:flex-start;}
+.rdf-check li::before{counter-increment:rdf;content:counter(rdf);flex-shrink:0;width:24px;height:24px;border:1.5px solid var(--uq-purple);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--uq-font-head);font-size:12px;font-weight:700;color:var(--uq-purple);margin-top:2px;}
+.rdf-check span{font-size:15px;line-height:1.6;}
+
+/* CTA band */
+.rdf-cta{background:linear-gradient(135deg,var(--uq-purple),var(--uq-purple-light));color:#fff;padding:36px clamp(20px,4vw,40px);margin:32px 0 0;}
+.rdf-cta p{color:#fff;font-size:17px;line-height:1.6;margin:0 0 22px;max-width:60ch;}
+.rdf-cta__btns{display:flex;flex-wrap:wrap;gap:12px;}
+.rdf-cta__credit{font-size:12px;color:rgba(255,255,255,.8);margin:24px 0 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.25);}
+/* Ghost button variant (page-scoped; base .uqbs-btn comes from the shared stylesheet) */
+.rdf-btn-ghost{background:transparent;color:#fff;border-color:#fff;}
+.rdf-btn-ghost:hover{background:#fff;color:var(--uq-purple);}
+
+/* Reveal-on-scroll */
+.rdf-reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease;}
+.rdf-reveal.is-in{opacity:1;transform:translateY(0);}
+
+@media (max-width:580px){
+  .rdf-card__row{grid-template-columns:1fr;}
+  .rdf-card__cell--before{border-right:none;border-bottom:1px solid var(--uq-grey-200);}
+  .rdf-spine__row{flex-direction:column;gap:2px;}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}*{transition:none !important;}.rdf-reveal{opacity:1;transform:none;}}
+</style>
 </head>
 <body>
-    <header>
-        <div class="header-left">
-            <div class="header-school">UQ Business School</div>
-            <div class="header-title">Core Principles</div>
-        </div>
-        <div class="header-right">
-            <a href="index.html">← Rubric Design Fundamentals</a>
-        </div>
+
+<a class="uqweb-skip" href="#main">Skip to main content</a>
+
+<header class="uqweb-masthead">
+  <div class="uqweb-masthead__inner">
+    <a class="uqweb-masthead__wordmark" href="https://www.uq.edu.au" aria-label="The University of Queensland home">UQ<span>Business School</span></a>
+    <a class="uqweb-masthead__site" href="index.html">Rubric Design Fundamentals</a>
+  </div>
+</header>
+
+<main id="main" class="uqweb-page">
+  <div class="uqweb-content uqbs">
+
+    <header class="uqweb-pagehead">
+      <p class="rdf-eyebrow">Rubric Design Fundamentals · Quick guide</p>
+      <h1>Core Principles</h1>
+      <p>Three principles that make the biggest difference to rubric quality. They apply to any assessment type — essays, presentations, group work or professional artefacts.</p>
     </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-content">
-                <div class="hero-tag">Rubric Design Fundamentals · Quick Guide</div>
-                <h1>Core Principles</h1>
-                <p class="subtitle">Three principles that make the biggest difference to rubric quality. They apply to any assessment type — essays, presentations, group work, or professional artefacts.</p>
-            </div>
-        </section>
+    <p class="uqbs-statement">A good rubric does two things: it helps students understand what they are aiming for before they submit, and it helps markers reach consistent grades independently. If your rubric cannot do both, it is not doing its job.</p>
 
-        <!-- Emphasis box -->
-        <div class="emphasis-box">
-            <div class="emphasis-inner">
-                <p>A good rubric does two things: it helps students understand what they're aiming for before they submit, and it helps markers reach consistent grades independently. If your rubric can't do both, it's not doing its job.</p>
-            </div>
+    <!-- Principle One -->
+    <section class="rdf-reveal">
+      <p class="rdf-principle rdf-c-blue">Principle one</p>
+      <h2>Replace adverb scaling with observable descriptors</h2>
+      <p>The most common rubric problem is what we call adverb scaling — differentiating grades by swapping adjectives (excellent, then very good, then good, then satisfactory) rather than describing what the student actually does differently at each level. The assessment literature calls this vague or evaluative language, and it creates rubrics where markers disagree and students cannot improve.</p>
+
+      <h3>Before and after: critical analysis in a case study report</h3>
+
+      <div class="rdf-compare">
+        <div class="rdf-card">
+          <div class="rdf-card__grade">HD (7) · 85–100%</div>
+          <div class="rdf-card__row">
+            <div class="rdf-card__cell rdf-card__cell--before"><span class="rdf-cell-label rdf-cell-label--before">Before</span>Demonstrates <span class="hl-bad">excellent</span> critical analysis of the case with <span class="hl-bad">outstanding</span> depth</div>
+            <div class="rdf-card__cell rdf-card__cell--after"><span class="rdf-cell-label rdf-cell-label--after">After</span><span class="hl-good">Integrates theory to explain why</span> issues occur; <span class="hl-good">connects factors to show how they reinforce each other;</span> identifies limitations in the theory applied</div>
+          </div>
         </div>
+        <div class="rdf-card">
+          <div class="rdf-card__grade">D (6) · 75–84%</div>
+          <div class="rdf-card__row">
+            <div class="rdf-card__cell rdf-card__cell--before"><span class="rdf-cell-label rdf-cell-label--before">Before</span>Demonstrates <span class="hl-bad">very good</span> critical analysis of the case with <span class="hl-bad">considerable</span> depth</div>
+            <div class="rdf-card__cell rdf-card__cell--after"><span class="rdf-cell-label rdf-cell-label--after">After</span><span class="hl-good">Applies theory to explain</span> issues; <span class="hl-good">identifies relationships</span> between factors; analysis is coherent and well structured</div>
+          </div>
+        </div>
+        <div class="rdf-card">
+          <div class="rdf-card__grade">C (5) · 65–74%</div>
+          <div class="rdf-card__row">
+            <div class="rdf-card__cell rdf-card__cell--before"><span class="rdf-cell-label rdf-cell-label--before">Before</span>Demonstrates <span class="hl-bad">good</span> critical analysis of the case with <span class="hl-bad">adequate</span> depth</div>
+            <div class="rdf-card__cell rdf-card__cell--after"><span class="rdf-cell-label rdf-cell-label--after">After</span><span class="hl-good">Applies relevant theory</span> to the case; addresses multiple factors but <span class="hl-good">treats them somewhat independently</span></div>
+          </div>
+        </div>
+        <div class="rdf-card">
+          <div class="rdf-card__grade">P (4) · 50–64%</div>
+          <div class="rdf-card__row">
+            <div class="rdf-card__cell rdf-card__cell--before"><span class="rdf-cell-label rdf-cell-label--before">Before</span>Demonstrates <span class="hl-bad">satisfactory</span> critical analysis of the case with <span class="hl-bad">basic</span> depth</div>
+            <div class="rdf-card__cell rdf-card__cell--after"><span class="rdf-cell-label rdf-cell-label--after">After</span><span class="hl-good">Links case to theory</span> but connections are surface level; <span class="hl-good">factors listed rather than analysed</span></div>
+          </div>
+        </div>
+      </div>
 
-        <!-- Section 1: Replace Adverb Scaling -->
-        <section class="reveal">
-            <div class="section-container">
-                <div class="section-tag" style="color: #4085C6;">Principle One</div>
-                <h2>Replace Adverb Scaling with Observable Descriptors</h2>
-                <p>The most common rubric problem is what we call adverb scaling — differentiating grades by swapping adjectives (excellent → very good → good → satisfactory) rather than describing what the student actually does differently at each level. The assessment literature calls this 'vague descriptors' or 'evaluative language' — and it creates rubrics where markers disagree and students can't improve.</p>
+      <p class="rdf-note">The "before" descriptors change only the adverb, so a student cannot tell what to do differently. The "after" descriptors describe qualitatively different actions at each level: listing factors, then treating them independently, then identifying relationships, then explaining causal mechanisms. A student can read this and know exactly how to improve.</p>
+    </section>
 
-                <h3>Before and After: Critical Analysis in a Case Study Report</h3>
+    <!-- Principle Two -->
+    <section class="rdf-reveal">
+      <p class="rdf-principle rdf-c-purple">Principle two</p>
+      <h2>Use a spine-and-distinguisher structure</h2>
+      <p>Strong descriptors share a spine — a common sentence structure that stays consistent across grade levels — with distinguishers that change to mark the qualitative shift. You may know this as parallel construction; we find the spine-and-distinguisher label makes the technique easier to apply. It makes the differences immediately visible to both markers and students.</p>
 
-                <div class="comparison-stack">
-                    <!-- HD -->
-                    <div class="comparison-card">
-                        <div class="comparison-grade">HD (7) · 85–100%</div>
-                        <div class="comparison-row">
-                            <div class="comparison-cell before">
-                                <span class="comparison-label before">Before</span>
-                                Demonstrates <span class="hl-bad">excellent</span> critical analysis of the case with <span class="hl-bad">outstanding</span> depth
-                            </div>
-                            <div class="comparison-cell after">
-                                <span class="comparison-label after">After</span>
-                                <span class="hl-good">Integrates theory to explain why</span> issues occur; <span class="hl-good">connects factors to show how they reinforce each other;</span> identifies limitations in the theory applied
-                            </div>
-                        </div>
-                    </div>
+      <div class="rdf-spine">
+        <div class="rdf-spine__row"><div class="rdf-spine__grade">HD</div><div class="rdf-spine__text"><span class="rdf-spine__stem">Identifies issues</span> at multiple levels; distinguishes symptoms from root causes; prioritises by impact</div></div>
+        <div class="rdf-spine__row"><div class="rdf-spine__grade">D</div><div class="rdf-spine__text"><span class="rdf-spine__stem">Identifies issues</span> accurately and connects them to the broader organisational context</div></div>
+        <div class="rdf-spine__row"><div class="rdf-spine__grade">C</div><div class="rdf-spine__text"><span class="rdf-spine__stem">Identifies issues</span> stated in the case within the relevant context</div></div>
+        <div class="rdf-spine__row"><div class="rdf-spine__grade">P</div><div class="rdf-spine__text"><span class="rdf-spine__stem">Identifies issues</span> stated in the case, though without contextualisation</div></div>
+      </div>
 
-                    <!-- D -->
-                    <div class="comparison-card">
-                        <div class="comparison-grade">D (6) · 75–84%</div>
-                        <div class="comparison-row">
-                            <div class="comparison-cell before">
-                                <span class="comparison-label before">Before</span>
-                                Demonstrates <span class="hl-bad">very good</span> critical analysis of the case with <span class="hl-bad">considerable</span> depth
-                            </div>
-                            <div class="comparison-cell after">
-                                <span class="comparison-label after">After</span>
-                                <span class="hl-good">Applies theory to explain</span> issues; <span class="hl-good">identifies relationships</span> between factors; analysis is coherent and well-structured
-                            </div>
-                        </div>
-                    </div>
+      <p class="rdf-spine__note">The spine ("Identifies issues") anchors the reader. The distinguishers show what changes: scope (case only versus multiple levels), depth (listing versus distinguishing symptoms from causes), and sophistication (accepting context versus prioritising by impact).</p>
+    </section>
 
-                    <!-- C -->
-                    <div class="comparison-card">
-                        <div class="comparison-grade">C (5) · 65–74%</div>
-                        <div class="comparison-row">
-                            <div class="comparison-cell before">
-                                <span class="comparison-label before">Before</span>
-                                Demonstrates <span class="hl-bad">good</span> critical analysis of the case with <span class="hl-bad">adequate</span> depth
-                            </div>
-                            <div class="comparison-cell after">
-                                <span class="comparison-label after">After</span>
-                                <span class="hl-good">Applies relevant theory</span> to the case; addresses multiple factors but <span class="hl-good">treats them somewhat independently</span>
-                            </div>
-                        </div>
-                    </div>
+    <!-- Principle Three -->
+    <section class="rdf-reveal">
+      <p class="rdf-principle rdf-c-magenta">Principle three</p>
+      <h2>Design criteria around capabilities, not sections</h2>
+      <p>A common structural issue is organising rubric rows by sections of the assessment (Introduction, Literature Review, Analysis, Conclusion) rather than by the capabilities the student is demonstrating (Critical Analysis, Application to Practice, Academic Communication).</p>
+      <p>Section-based criteria create problems: the same capability, like critical analysis, gets assessed in several rows, which makes it hard to hold a consistent standard. They also anchor students to a rigid structure rather than rewarding the quality of their thinking.</p>
+      <p>Capability-based criteria ask a simpler question: what can the student do? Each row assesses a distinct skill, weighted by importance. This makes rubrics more versatile across different assessment formats and easier to align with program-level learning outcomes.</p>
+    </section>
 
-                    <!-- P -->
-                    <div class="comparison-card">
-                        <div class="comparison-grade">P (4) · 50–64%</div>
-                        <div class="comparison-row">
-                            <div class="comparison-cell before">
-                                <span class="comparison-label before">Before</span>
-                                Demonstrates <span class="hl-bad">satisfactory</span> critical analysis of the case with <span class="hl-bad">basic</span> depth
-                            </div>
-                            <div class="comparison-cell after">
-                                <span class="comparison-label after">After</span>
-                                <span class="hl-good">Links case to theory</span> but connections are surface-level; <span class="hl-good">factors listed rather than analysed</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- Self-check -->
+    <section class="rdf-reveal">
+      <p class="rdf-principle rdf-c-magenta">Self-check</p>
+      <h2>Quick self-check</h2>
+      <p>Hold your rubric against these five questions. If you answer "no" to two or more, it is worth revisiting.</p>
+      <ol class="rdf-check">
+        <li><span>Could a student use this rubric to improve their work before submission? If your descriptors say "excellent" and "satisfactory", the student has no concrete guidance.</span></li>
+        <li><span>Would two markers independently reach the same grade using this rubric? If the descriptors rely on subjective terms, markers will interpret them differently.</span></li>
+        <li><span>Does each grade level describe a qualitatively different action? Moving from "good" to "very good" is not a qualitative shift. Moving from "lists factors" to "explains how factors interact" is.</span></li>
+        <li><span>Are your rubric rows organised by capability rather than by section? If rows mirror assessment headings, consider restructuring around what students demonstrate.</span></li>
+        <li><span>Can you read across a row and see a clear progression? Use the spine-and-distinguisher test: underline the common structure, and the parts that change should tell a coherent story of increasing sophistication.</span></li>
+      </ol>
+    </section>
 
-                <div class="problem-note">The "before" descriptors change only the adverb — a student can't tell what to do differently. The "after" descriptors describe qualitatively different actions at each level: listing factors → treating them independently → identifying relationships → explaining causal mechanisms. A student can read this and know exactly how to improve.</div>
-            </div>
-        </section>
+    <!-- Fail grades -->
+    <section class="rdf-reveal">
+      <p class="rdf-principle rdf-c-magenta">Grade distributions</p>
+      <h2>Do not forget fail grades and grade distributions</h2>
+      <p>Rubrics should include differentiated fail descriptors. A single "Fail" column cannot capture the difference between work that is one gap short of a pass and work that does not engage at all.</p>
+      <div class="uqbs-callout uqbs-callout--warning">
+        <svg class="uqbs-callout__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+        <div>
+          <p class="uqbs-callout__title">Two UQ checks worth building in</p>
+          <p>Under UQ's Assessment Procedures, students receiving a grade 3 (45–49%) are eligible for supplementary assessment; those with a 1 or 2 are not, so your fail descriptors need to draw that line. Separately, if your grade profile sits outside UQ expectations (no more than 35% at 6–7, the majority at 4–5, no more than 20% failing), review both the rubric and the task.</p>
+        </div>
+      </div>
+    </section>
 
-        <!-- Section 2: Spine and Distinguisher -->
-        <section class="reveal">
-            <div class="section-container">
-                <div class="section-tag" style="color: #51247A;">Principle Two</div>
-                <h2>Use a Spine-and-Distinguisher Structure</h2>
-                <p>Strong descriptors share a spine — a common sentence structure that stays consistent across grade levels — with distinguishers that change to indicate the qualitative shift. (You may know this as 'parallel construction' — we find the spine-and-distinguisher label makes the technique easier to apply.) This makes differences immediately visible to both markers and students.</p>
+    <!-- CTA -->
+    <section class="rdf-cta rdf-reveal">
+      <p>Want to go deeper? <em>Build a Better Rubric</em> covers the Values of Inquiry framework, SOLO taxonomy, worked examples across assessment types, and a step-by-step process for writing descriptors.</p>
+      <div class="rdf-cta__btns">
+        <a href="UQBS_Rubric%20Design%20Fundamentals_FINAL.html" class="uqbs-btn">Build a Better Rubric &rarr;</a>
+        <a href="https://uq.sharepoint.com/:b:/t/bs3u7kls/IQAlScwR7sxoSbW0fOJQu3iXAWVDml-efYLwDhYOFEeQwJU?e=bJMvaH" class="uqbs-btn rdf-btn-ghost">Core Principles PDF</a>
+        <a href="https://uq.sharepoint.com/:b:/t/bs3u7kls/IQD8u5RHvYi4SqIgvadC_AlyAZNeETgYIbKpIy4XEmiUahQ?e=oX57RG" class="uqbs-btn rdf-btn-ghost">Full guide PDF</a>
+        <a href="index.html" class="uqbs-btn rdf-btn-ghost">&larr; All resources</a>
+      </div>
+      <p class="rdf-cta__credit">Prepared by UQ Business School Learning Design · 2026</p>
+    </section>
 
-                <div class="spine-visual">
-                    <div class="spine-row">
-                        <div class="spine-grade">HD</div>
-                        <div class="spine-text"><span class="spine">Identifies issues</span> <span class="distinguisher">at multiple levels; distinguishes symptoms from root causes; prioritises by impact</span></div>
-                    </div>
-                    <div class="spine-row">
-                        <div class="spine-grade">D</div>
-                        <div class="spine-text"><span class="spine">Identifies issues</span> <span class="distinguisher">accurately and connects them to the broader organisational context</span></div>
-                    </div>
-                    <div class="spine-row">
-                        <div class="spine-grade">C</div>
-                        <div class="spine-text"><span class="spine">Identifies issues</span> <span class="distinguisher">stated in the case within the relevant context</span></div>
-                    </div>
-                    <div class="spine-row">
-                        <div class="spine-grade">P</div>
-                        <div class="spine-text"><span class="spine">Identifies issues</span> <span class="distinguisher">stated in the case, though without contextualisation</span></div>
-                    </div>
-                </div>
+  </div>
+</main>
 
-                <div class="spine-note">The spine ('Identifies issues') anchors the reader. The distinguishers show what changes: scope (case only vs. multiple levels), depth (listing vs. distinguishing symptoms from causes), and sophistication (accepting context vs. prioritising by impact).</div>
-            </div>
-        </section>
+<footer class="uqweb-footer">
+  <div class="uqweb-footer__inner">
+    <p class="uqweb-footer__ack">The University of Queensland (UQ) acknowledges the Traditional Owners and their custodianship of the lands on which UQ operates. We pay our respects to their Ancestors and their descendants, who continue cultural and spiritual connections to Country.</p>
+    <p class="uqweb-footer__meta">&copy; The University of Queensland &middot; CRICOS Provider 00025B &middot; TEQSA Provider PRV12080</p>
+    <p class="uqweb-footer__links">
+      <a href="https://www.uq.edu.au/terms-of-use/">Terms of use</a> &middot;
+      <a href="https://policies.uq.edu.au/document/view-current.php?id=101">Privacy</a> &middot;
+      <a href="mailto:learningdesign@business.uq.edu.au">Contact the Learning Design team</a>
+    </p>
+  </div>
+</footer>
 
-        <!-- Section 3: Design Around Capabilities -->
-        <section class="reveal">
-            <div class="section-container">
-                <div class="section-tag" style="color: #962A8B;">Principle Three</div>
-                <h2>Design Criteria Around Capabilities, Not Sections</h2>
-                <p>A common structural issue is organising rubric rows by sections of the assessment (e.g., Introduction, Literature Review, Analysis, Conclusion) rather than by capabilities the student is demonstrating (e.g., Critical Analysis, Application to Practice, Academic Communication).</p>
-                <p>Section-based criteria create problems: the same capability (like critical analysis) gets assessed in multiple rows, making it hard to maintain consistent standards. They also anchor students to a rigid structure rather than rewarding the quality of their thinking.</p>
-                <p>Capability-based criteria ask: what can the student do? Each row assesses a distinct skill, weighted by importance. This makes rubrics more versatile across different assessment formats and easier to align with program-level learning outcomes.</p>
-            </div>
-        </section>
+<script>
+(function(){
+  var els=document.querySelectorAll('.rdf-reveal');
+  if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('is-in');});return;}
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-in');obs.unobserve(e.target);}});
+  },{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+  els.forEach(function(el){obs.observe(el);});
+})();
+</script>
 
-        <!-- Section 4: Self-Check -->
-        <section class="reveal">
-            <div class="section-container">
-                <div class="section-tag" style="color: #962A8B;">Self-Check</div>
-                <h2>Quick Self-Check</h2>
-                <p class="checklist-intro">Hold your rubric against these five questions. If you answer 'no' to two or more, it's worth revisiting.</p>
-
-                <div class="checklist">
-                    <div class="checklist-item">
-                        <div class="checklist-number">1</div>
-                        <div class="checklist-text">Could a student use this rubric to improve their work before submission? If your descriptors say "excellent" and "satisfactory," the student has no concrete guidance.</div>
-                    </div>
-                    <div class="checklist-item">
-                        <div class="checklist-number">2</div>
-                        <div class="checklist-text">Would two markers independently reach the same grade using this rubric? If the descriptors rely on subjective terms, markers will interpret them differently.</div>
-                    </div>
-                    <div class="checklist-item">
-                        <div class="checklist-number">3</div>
-                        <div class="checklist-text">Does each grade level describe a qualitatively different action? Moving from "good" to "very good" is not a qualitative shift. Moving from "lists factors" to "explains how factors interact" is.</div>
-                    </div>
-                    <div class="checklist-item">
-                        <div class="checklist-number">4</div>
-                        <div class="checklist-text">Are your rubric rows organised by capability rather than by section? If rows mirror assessment headings (Introduction, Body, Conclusion), consider restructuring around what students demonstrate.</div>
-                    </div>
-                    <div class="checklist-item">
-                        <div class="checklist-number">5</div>
-                        <div class="checklist-text">Can you read across a row and see a clear progression? Use the spine-and-distinguisher test: if you underline the common structure, the parts that change should tell a coherent story of increasing sophistication.</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 5: Fail Grades -->
-        <section class="reveal">
-            <div class="section-container">
-                <div class="section-tag" style="color: #962A8B;">Grade Distributions</div>
-                <h2>Don't Forget Fail Grades and Grade Distributions</h2>
-                <p>Rubrics should include differentiated fail descriptors. Under UQ's Assessment Procedures, students receiving a grade 3 (45–49%) are eligible for supplementary assessment; those with a 1 or 2 are not. A single 'Fail' column cannot make this distinction. Separately, if your grade profile sits outside UQ expectations (no more than 35% at 6–7; majority at 4–5; no more than 20% failing), review both the rubric and the task.</p>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="cta-section reveal">
-            <div class="cta-content">
-                <p>Want to go deeper? <em>Build a Better Rubric</em> covers the Values of Inquiry framework, SOLO Taxonomy, worked examples across assessment types, and a step-by-step process for writing descriptors.</p>
-                <div class="cta-buttons">
-                    <a href="UQBS_Rubric%20Design%20Fundamentals_FINAL.html" class="cta-button primary">Build a Better Rubric →</a>
-                    <a href="https://uq.sharepoint.com/:b:/t/bs3u7kls/IQAlScwR7sxoSbW0fOJQu3iXAWVDml-efYLwDhYOFEeQwJU?e=bJMvaH" class="cta-button secondary">↓ Core Principles PDF</a>
-                    <a href="https://uq.sharepoint.com/:b:/t/bs3u7kls/IQD8u5RHvYi4SqIgvadC_AlyAZNeETgYIbKpIy4XEmiUahQ?e=oX57RG" class="cta-button secondary">↓ Full Guide PDF</a>
-                    <a href="index.html" class="cta-button secondary">← Rubric Design Fundamentals</a>
-                </div>
-                <div class="cta-credit">Prepared by UQ Business School Learning Design · 2026</div>
-            </div>
-        </section>
-    </main>
-
-    <script>
-        // IntersectionObserver for reveal-on-scroll animations
-        const revealElements = document.querySelectorAll('.reveal');
-
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        revealElements.forEach(el => {
-            observer.observe(el);
-        });
-    </script>
 </body>
 </html>

@@ -1,339 +1,229 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-AU">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rubric Design Fundamentals — Cube Mockup v3</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Rubric Design Fundamentals — UQ Business School</title>
+<meta name="description" content="Guides, frameworks and tools for designing effective, criterion-referenced assessment rubrics at UQ Business School.">
+
+<link rel="stylesheet" href="https://teach.business.uq.edu.au/ld/uqbs/uqbs.css">
+<script src="https://teach.business.uq.edu.au/ld/uqbs/uqbs.js" defer></script>
+
+<!-- Survival core: keeps the page legible and recognisably UQ if the shared
+     stylesheet is unreachable. Same values as the shared file, so it changes
+     nothing when both load. The cube grid below is a page-scoped component. -->
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --uq-purple:#51247a; --uq-purple-light:#962a8b;
+  --uq-grey-900:#3b383e; --uq-grey-200:#dcdcdd; --uq-grey-50:#f3f3f4; --uq-info:#0d6dcd;
+  --uq-font-body:'Roboto','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --uq-font-head:'Montserrat',Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--uq-grey-50);color:var(--uq-grey-900);font-family:var(--uq-font-body);font-size:16px;line-height:1.6;}
+body a{color:var(--uq-purple);}
+body :focus-visible{outline:2px solid var(--uq-info);outline-offset:2px;}
+h1,h2,h3,h4{font-family:var(--uq-font-head);color:var(--uq-purple);line-height:1.2;}
+.uqweb-skip{position:absolute;left:-999px;top:0;background:var(--uq-purple);color:#fff;padding:12px 16px;z-index:10;}
+.uqweb-skip:focus{left:0;}
+.uqweb-masthead{background:#fff;border-bottom:4px solid var(--uq-purple);}
+.uqweb-masthead__inner,.uqweb-page,.uqweb-footer__inner{max-width:940px;margin:0 auto;padding:16px 24px;}
+.uqweb-masthead__inner{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;}
+.uqweb-masthead__wordmark{font-family:var(--uq-font-head);font-weight:700;font-size:20px;color:var(--uq-purple);text-decoration:none;line-height:1;}
+.uqweb-masthead__wordmark span{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--uq-purple-light);margin-top:3px;}
+.uqweb-masthead__site{margin-left:auto;font-family:var(--uq-font-head);font-weight:600;color:var(--uq-grey-900);text-decoration:none;font-size:15px;}
+.uqweb-content{background:#fff;border:1px solid var(--uq-grey-200);padding:24px;}
+.uqweb-pagehead{background:var(--uq-purple);color:#fff;padding:32px;margin-bottom:24px;}
+.uqweb-pagehead h1,.uqweb-pagehead p{color:#fff;margin:0 0 8px;}
+.uqweb-footer{background:var(--uq-purple);color:#fff;margin-top:32px;}
+.uqweb-footer a{color:#fff;}
 
-body{
-  font-family:'Roboto',Arial,Helvetica,sans-serif;
-  color:#1a1714;background:#ffffff;line-height:1.8;
-  overflow-x:hidden;
+/* ── Page hero: purple, with optional brand texture that falls back to flat purple ── */
+.rdf-hero{
+  background:var(--uq-purple);
+  background-image:linear-gradient(105deg,#51247a 30%,rgba(81,36,122,.55) 72%,rgba(150,42,139,.35) 100%),url('gd_full.png');
+  background-size:cover,auto 100%;
+  background-position:center,right center;
+  background-repeat:no-repeat,no-repeat;
+  padding:44px 32px;
 }
+.rdf-hero .rdf-eyebrow{
+  font-family:var(--uq-font-head);font-size:12px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(255,255,255,.7);margin:0 0 14px;
+}
+.rdf-hero h1{color:#fff;font-size:clamp(30px,5vw,44px);margin:0 0 12px;}
+.rdf-hero p{color:rgba(255,255,255,.9);font-size:clamp(15px,2.2vw,18px);margin:0;max-width:62ch;}
 
-/* ── HERO ── */
-.hero{
-  background:#51247A;
-  background-image:url('gd_full.png');
-  background-size:auto 100%;
-  background-position:right center;
-  background-repeat:no-repeat;
-  color:#fff;padding:72px 32px 64px;
-  position:relative;overflow:hidden;
-}
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to right,#51247A 30%,rgba(81,36,122,0.6) 70%,transparent 100%);
-  pointer-events:none;z-index:0;
-}
-.hero-inner{
-  max-width:720px;margin:0 auto;position:relative;z-index:1;
-}
-.hero-eyebrow{
-  font-size:11px;font-weight:500;letter-spacing:.18em;
-  text-transform:uppercase;color:rgba(255,255,255,0.55);
-  margin-bottom:20px;
-}
-.hero-title{
-  font-size:44px;font-weight:700;line-height:1.1;margin-bottom:16px;
-}
-.hero-sub{
-  font-size:16px;font-weight:300;line-height:1.75;
-  color:rgba(255,255,255,0.85);max-width:580px;
-}
+/* ── CUBE ── */
+.rdf-cube-intro{text-align:center;max-width:560px;margin:8px auto 32px;}
+.rdf-cube-intro h2{font-size:26px;margin:0 0 8px;}
+.rdf-cube-intro p{color:var(--uq-grey-900);margin:0;}
 
-/* ── CUBE FACE SECTION ── */
-.cube-section{
-  padding:72px 32px 64px;
-  display:flex;flex-direction:column;align-items:center;
-  background:linear-gradient(180deg, #f7f5f3 0%, #ffffff 100%);
+.rdf-cube{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  max-width:660px;width:100%;margin:0 auto;
+  background:linear-gradient(145deg,#1a1714,#2a2520);
+  border-radius:20px;padding:10px;
+  box-shadow:0 2px 4px rgba(0,0,0,.15),0 12px 40px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.06);
 }
-.cube-intro{
-  text-align:center;max-width:560px;margin-bottom:48px;
+.rdf-tile{
+  aspect-ratio:1;border-radius:12px;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:center;padding:24px;
+  transition:transform .25s cubic-bezier(.25,.46,.45,.94),box-shadow .25s ease;
 }
-.cube-intro h2{
-  font-size:28px;font-weight:700;line-height:1.2;margin-bottom:12px;
-}
-.cube-intro p{
-  font-size:15px;color:#6b6460;line-height:1.8;
-}
+a.rdf-tile{text-decoration:none;color:#fff;cursor:pointer;}
+a.rdf-tile:hover{transform:scale(1.03);box-shadow:0 8px 28px rgba(0,0,0,.3);z-index:2;}
+a.rdf-tile:active{transform:scale(.98);}
+a.rdf-tile:focus-visible{outline:3px solid #fff;outline-offset:2px;}
+.rdf-tile::before{content:'';position:absolute;inset:0;border-radius:12px;pointer-events:none;z-index:1;
+  background:linear-gradient(155deg,rgba(255,255,255,.2) 0%,rgba(255,255,255,.05) 35%,transparent 55%);}
+.rdf-tile::after{content:'';position:absolute;inset:0;border-radius:12px;pointer-events:none;z-index:1;
+  box-shadow:inset 0 -2px 8px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.12);}
+.rdf-tile-blue    {background:linear-gradient(145deg,#4a94d4,#3574ad);}
+.rdf-tile-purple  {background:linear-gradient(145deg,#6030a0,#4a1d7a);}
+.rdf-tile-magenta {background:linear-gradient(145deg,#a83599,#7a2270);}
+.rdf-tile-green   {background:linear-gradient(145deg,#38c040,#258a2c);}
+.rdf-tile-gold    {background:linear-gradient(145deg,#c8aa72,#a68a52);}
+.rdf-tile-red     {background:linear-gradient(145deg,#f03050,#c41d38);}
+.rdf-tile-blank{cursor:default;padding:0;}
+.rdf-tag{font-family:var(--uq-font-head);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.72);margin-bottom:8px;position:relative;z-index:2;}
+.rdf-tile-title{font-family:var(--uq-font-head);font-size:19px;font-weight:700;line-height:1.25;color:#fff;margin:0 0 6px;position:relative;z-index:2;}
+.rdf-desc{font-size:12px;color:rgba(255,255,255,.9);line-height:1.55;position:relative;z-index:2;
+  max-height:0;opacity:0;overflow:hidden;margin-top:0;
+  transition:max-height .35s cubic-bezier(.25,.46,.45,.94),opacity .3s ease,margin .3s ease;}
+a.rdf-tile:hover .rdf-desc,a.rdf-tile:focus .rdf-desc{max-height:90px;opacity:1;margin-top:6px;}
+.rdf-arrow{position:absolute;top:20px;right:20px;width:28px;height:28px;border-radius:50%;
+  background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:rgba(255,255,255,.75);z-index:2;transition:background .2s,color .2s;}
+a.rdf-tile:hover .rdf-arrow{background:rgba(255,255,255,.28);color:#fff;}
 
-/* ── 3×3 GRID ── */
-.cube-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  max-width:660px;
-  width:100%;
-  background:linear-gradient(145deg, #1a1714, #2a2520);
-  border-radius:20px;
-  padding:10px;
-  box-shadow:
-    0 2px 4px rgba(0,0,0,0.15),
-    0 12px 40px rgba(0,0,0,0.12),
-    inset 0 1px 0 rgba(255,255,255,0.06);
-}
+/* Reveal-on-scroll (disabled cleanly if the script never runs) */
+.rdf-reveal{opacity:0;transform:scale(.9);transition:opacity .45s ease,transform .45s cubic-bezier(.25,.46,.45,.94);}
+.rdf-reveal.is-in{opacity:1;transform:scale(1);}
 
-/* ── TILE (shared) ── */
-.tile{
-  aspect-ratio:1;
-  border-radius:12px;
-  position:relative;
-  overflow:hidden;
-  display:flex;flex-direction:column;
-  justify-content:flex-end;
-  padding:24px;
-  transition:transform .25s cubic-bezier(.25,.46,.45,.94), box-shadow .25s ease;
+@media (max-width:639px){
+  .rdf-cube{gap:5px;padding:7px;border-radius:14px;}
+  .rdf-tile{padding:14px;border-radius:8px;}
+  .rdf-tile::before,.rdf-tile::after{border-radius:8px;}
+  .rdf-tile-title{font-size:14px;}
+  .rdf-desc{font-size:10px;}
+  .rdf-tag{font-size:8px;}
+  .rdf-arrow{width:22px;height:22px;top:10px;right:10px;font-size:11px;}
+  a.rdf-tile:active .rdf-desc{max-height:70px;opacity:1;margin-top:4px;}
 }
-
-/* Interactive tiles */
-a.tile{
-  text-decoration:none;color:#fff;
-  cursor:pointer;
-  justify-content:center;
-}
-a.tile:hover{
-  transform:scale(1.03);
-  box-shadow:0 8px 28px rgba(0,0,0,0.3);
-  z-index:2;
-}
-a.tile:active{
-  transform:scale(0.98);
-}
-
-/* Bevel / gloss */
-.tile::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(
-    155deg,
-    rgba(255,255,255,0.2) 0%,
-    rgba(255,255,255,0.05) 35%,
-    transparent 55%
-  );
-  border-radius:12px;
-  pointer-events:none;z-index:1;
-}
-/* Inner shadow for depth */
-.tile::after{
-  content:'';position:absolute;inset:0;
-  border-radius:12px;
-  box-shadow:inset 0 -2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.12);
-  pointer-events:none;z-index:1;
-}
-
-/* ── TILE COLOURS ── */
-.tile-blue     { background:linear-gradient(145deg, #4a94d4, #3574ad); }
-.tile-purple   { background:linear-gradient(145deg, #6030a0, #4a1d7a); }
-.tile-magenta  { background:linear-gradient(145deg, #a83599, #7a2270); }
-.tile-green    { background:linear-gradient(145deg, #38c040, #258a2c); }
-.tile-gold     { background:linear-gradient(145deg, #c8aa72, #a68a52); }
-.tile-red      { background:linear-gradient(145deg, #f03050, #c41d38); }
-
-/* Blank tiles — just solid coloured squares */
-.tile-blank{
-  cursor:default;
-  padding:0;
-}
-
-/* ── TILE CONTENT ── */
-.tile-tag{
-  font-size:9px;font-weight:700;letter-spacing:.14em;
-  text-transform:uppercase;
-  color:rgba(255,255,255,0.6);
-  margin-bottom:8px;
-  position:relative;z-index:2;
-}
-.tile-title{
-  font-size:19px;font-weight:700;line-height:1.25;
-  color:#fff;margin-bottom:6px;
-  position:relative;z-index:2;
-}
-.tile-desc{
-  font-size:12px;color:rgba(255,255,255,0.85);
-  line-height:1.55;
-  position:relative;z-index:2;
-  max-height:0;
-  opacity:0;
-  overflow:hidden;
-  transition:max-height .35s cubic-bezier(.25,.46,.45,.94), opacity .3s ease, margin .3s ease;
-  margin-top:0;
-}
-a.tile:hover .tile-desc{
-  max-height:80px;
-  opacity:1;
-  margin-top:6px;
-}
-.tile-arrow{
-  position:absolute;top:20px;right:20px;
-  width:28px;height:28px;border-radius:50%;
-  background:rgba(255,255,255,0.12);
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;color:rgba(255,255,255,0.7);
-  z-index:2;
-  transition:background .2s, color .2s;
-}
-a.tile:hover .tile-arrow{
-  background:rgba(255,255,255,0.25);
-  color:#fff;
-}
-
-/* ── FOOTER ── */
-.footer{
-  padding:40px 32px;
-  border-top:1px solid #e4dfd9;
-  text-align:center;
-}
-.footer-text{
-  font-size:12px;color:#6b6460;line-height:1.8;
-}
-.footer-text a{color:#51247A;text-decoration:none}
-.footer-text a:hover{text-decoration:underline}
-
-/* ── REVEAL ── */
-.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
-.reveal.v{opacity:1;transform:translateY(0)}
-
-.tile-reveal{
-  opacity:0;
-  transform:scale(0.85) rotateX(8deg);
-  transition:opacity .45s ease, transform .45s cubic-bezier(.25,.46,.45,.94);
-}
-.tile-reveal.v{
-  opacity:1;
-  transform:scale(1) rotateX(0deg);
-}
-
-/* ── RESPONSIVE ── */
-@media(min-width:640px){
-  .hero{padding:88px 40px 72px}
-  .cube-section{padding:80px 40px 72px}
-}
-@media(max-width:639px){
-  .hero-title{font-size:32px}
-  .cube-intro h2{font-size:24px}
-  .cube-grid{max-width:100%;gap:5px;padding:7px;border-radius:14px;}
-  .tile{padding:14px;border-radius:8px;}
-  .tile::before,.tile::after{border-radius:8px}
-  .tile-title{font-size:14px}
-  .tile-desc{font-size:10px;}
-  .tile-tag{font-size:8px}
-  .tile-arrow{width:22px;height:22px;top:10px;right:10px;font-size:11px}
-  /* Touch: reveal desc on focus/active */
-  a.tile:active .tile-desc,
-  a.tile:focus .tile-desc{
-    max-height:60px;opacity:1;margin-top:4px;
-  }
-}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;}.rdf-reveal{opacity:1;transform:none;}}
 </style>
 </head>
 <body>
 
-<!-- ── HERO ── -->
-<header class="hero">
-  <div class="hero-inner">
-    <div class="hero-eyebrow">UQ Business School · Learning Design</div>
-    <h1 class="hero-title">Rubric Design Fundamentals</h1>
-    <p class="hero-sub">Guides, frameworks, and tools to help you design effective, criterion-referenced assessment rubrics — whether you're writing from scratch or reviewing one you've used for years.</p>
+<a class="uqweb-skip" href="#main">Skip to main content</a>
+
+<header class="uqweb-masthead">
+  <div class="uqweb-masthead__inner">
+    <a class="uqweb-masthead__wordmark" href="https://www.uq.edu.au" aria-label="The University of Queensland home">UQ<span>Business School</span></a>
+    <a class="uqweb-masthead__site" href="./">Rubric Design Fundamentals</a>
   </div>
 </header>
 
-<!-- ── CUBE FACE GRID ── -->
-<section class="cube-section">
-  <div class="cube-intro">
-    <h2 class="reveal">Explore the toolkit</h2>
-    <p class="reveal">Six resources. Pick a tile to dive in.</p>
+<main id="main" class="uqweb-page">
+  <div class="uqweb-content uqbs">
+
+    <header class="uqweb-pagehead rdf-hero">
+      <p class="rdf-eyebrow">UQ Business School · Learning Design</p>
+      <h1>Rubric Design Fundamentals</h1>
+      <p>Guides, frameworks and tools to help you design effective, criterion-referenced assessment rubrics — whether you are writing from scratch or reviewing one you have used for years.</p>
+    </header>
+
+    <div class="rdf-cube-intro">
+      <h2>Explore the toolkit</h2>
+      <p>Six resources. Pick a tile to dive in.</p>
+    </div>
+
+    <div class="rdf-cube" role="list" aria-label="Rubric design resources">
+
+      <!--
+        Row 1:  [blank gold]        [Core Principles blue]   [blank green]
+        Row 2:  [Build purple]      [blank red]              [GA & AoL magenta]
+        Row 3:  [Masterclass green] [Rubric Builder gold]    [Eval red]
+        No two same colours touch.
+      -->
+
+      <div class="rdf-tile rdf-tile-blank rdf-tile-gold rdf-reveal" style="transition-delay:.05s" aria-hidden="true"></div>
+
+      <a href="UQBS_Writing_Better_Rubrics.html" class="rdf-tile rdf-tile-blue rdf-reveal" style="transition-delay:.10s" role="listitem">
+        <span class="rdf-arrow" aria-hidden="true">&rarr;</span>
+        <span class="rdf-tag">Start here</span>
+        <span class="rdf-tile-title">Core Principles</span>
+        <span class="rdf-desc">Observable descriptors, spine-and-distinguisher structure, and capability-based criteria.</span>
+      </a>
+
+      <div class="rdf-tile rdf-tile-blank rdf-tile-green rdf-reveal" style="transition-delay:.15s" aria-hidden="true"></div>
+
+      <a href="UQBS_Rubric%20Design%20Fundamentals_FINAL.html" class="rdf-tile rdf-tile-purple rdf-reveal" style="transition-delay:.20s" role="listitem">
+        <span class="rdf-arrow" aria-hidden="true">&rarr;</span>
+        <span class="rdf-tag">Comprehensive guide</span>
+        <span class="rdf-tile-title">Build a Better Rubric</span>
+        <span class="rdf-desc">A six-part interactive guide covering SOLO taxonomy, observable descriptors and structural design.</span>
+      </a>
+
+      <div class="rdf-tile rdf-tile-blank rdf-tile-red rdf-reveal" style="transition-delay:.25s" aria-hidden="true"></div>
+
+      <a href="UQBS_GA_Mapping_Guide.html" class="rdf-tile rdf-tile-magenta rdf-reveal" style="transition-delay:.30s" role="listitem">
+        <span class="rdf-arrow" aria-hidden="true">&rarr;</span>
+        <span class="rdf-tag">GA integration</span>
+        <span class="rdf-tile-title">GA &amp; AoL Explained</span>
+        <span class="rdf-desc">The six Graduate Attributes, the two-tier approach, and what it means for your course.</span>
+      </a>
+
+      <a href="rubric-course/index.html" class="rdf-tile rdf-tile-green rdf-reveal" style="transition-delay:.35s" role="listitem">
+        <span class="rdf-arrow" aria-hidden="true">&rarr;</span>
+        <span class="rdf-tag">20 modules · 5–6 hours</span>
+        <span class="rdf-tile-title">Design Masterclass</span>
+        <span class="rdf-desc">Twenty interactive modules. No lectures, just doing. Build a complete rubric piece by piece.</span>
+      </a>
+
+      <a href="UQBS_Rubric_Builder.html" class="rdf-tile rdf-tile-gold rdf-reveal" style="transition-delay:.40s" role="listitem">
+        <span class="rdf-arrow" aria-hidden="true">&rarr;</span>
+        <span class="rdf-tag">Tool</span>
+        <span class="rdf-tile-title">Rubric Builder</span>
+        <span class="rdf-desc">The ATLAS rubric builder: what it does, who it is for, and how to get access.</span>
+      </a>
+
+      <a href="UQBS_Rubric_Evaluation_Guide.html" class="rdf-tile rdf-tile-red rdf-reveal" style="transition-delay:.45s" role="listitem">
+        <span class="rdf-arrow" aria-hidden="true">&rarr;</span>
+        <span class="rdf-tag">Quality assurance</span>
+        <span class="rdf-tile-title">Evaluating Outputs</span>
+        <span class="rdf-desc">A structured checklist — GA accuracy, constructive alignment, language clarity and usability.</span>
+      </a>
+
+    </div>
+
   </div>
+</main>
 
-  <div class="cube-grid">
-
-    <!--
-      LAYOUT:
-      Row 1:  [blank gold]       [Core Principles blue]    [blank green]
-      Row 2:  [Build Purple]     [blank red]               [GA&AoL Magenta]
-      Row 3:  [Masterclass Green][Rubric Builder Gold]      [Eval Outputs Red]
-
-      Colour adjacency check — no same colours touch:
-        Gold ↔ Blue ↔ Green
-        Gold ↔ Purple   Blue ↔ Red   Green ↔ Magenta
-        Purple ↔ Red ↔ Magenta
-        Purple ↔ Green   Red ↔ Gold   Magenta ↔ Red  ✓
-    -->
-
-    <!-- Row 1 -->
-    <div class="tile tile-blank tile-gold tile-reveal" style="transition-delay:.05s"></div>
-
-    <a href="UQBS_Writing_Better_Rubrics.html" class="tile tile-blue tile-reveal" style="transition-delay:.1s">
-      <span class="tile-arrow">&rarr;</span>
-      <span class="tile-tag">Start Here</span>
-      <div class="tile-title">Core Principles</div>
-      <p class="tile-desc">Observable descriptors, spine-and-distinguisher structure, and capability-based criteria.</p>
-    </a>
-
-    <div class="tile tile-blank tile-green tile-reveal" style="transition-delay:.15s"></div>
-
-    <!-- Row 2 -->
-    <a href="UQBS_Rubric%20Design%20Fundamentals_FINAL.html" class="tile tile-purple tile-reveal" style="transition-delay:.2s">
-      <span class="tile-arrow">&rarr;</span>
-      <span class="tile-tag">Comprehensive Guide</span>
-      <div class="tile-title">Build a Better Rubric</div>
-      <p class="tile-desc">Six-part interactive experience covering SOLO Taxonomy, observable descriptors, and structural design.</p>
-    </a>
-
-    <div class="tile tile-blank tile-red tile-reveal" style="transition-delay:.25s"></div>
-
-    <a href="UQBS_GA_Mapping_Guide.html" class="tile tile-magenta tile-reveal" style="transition-delay:.3s">
-      <span class="tile-arrow">&rarr;</span>
-      <span class="tile-tag">GA Integration</span>
-      <div class="tile-title">GA &amp; AoL Explained</div>
-      <p class="tile-desc">The six GAs, the two-tier approach, and what it means for your course.</p>
-    </a>
-
-    <!-- Row 3 -->
-    <a href="rubric-course/index.html" class="tile tile-green tile-reveal" style="transition-delay:.35s">
-      <span class="tile-arrow">&rarr;</span>
-      <span class="tile-tag">20 Modules · 5–6 Hours</span>
-      <div class="tile-title">Design Masterclass</div>
-      <p class="tile-desc">Twenty interactive modules. No lectures, just doing. Build a complete rubric piece by piece.</p>
-    </a>
-
-    <a href="UQBS_Rubric_Builder.html" class="tile tile-gold tile-reveal" style="transition-delay:.4s">
-      <span class="tile-arrow">&rarr;</span>
-      <span class="tile-tag">Tool</span>
-      <div class="tile-title">Rubric Builder</div>
-      <p class="tile-desc">Upload a course profile, select Graduate Attributes, and generate a structured rubric.</p>
-    </a>
-
-    <a href="UQBS_Rubric_Evaluation_Guide.html" class="tile tile-red tile-reveal" style="transition-delay:.45s">
-      <span class="tile-arrow">&rarr;</span>
-      <span class="tile-tag">Quality Assurance</span>
-      <div class="tile-title">Evaluating Outputs</div>
-      <p class="tile-desc">Structured checklist — GA accuracy, constructive alignment, language clarity, and usability.</p>
-    </a>
-
+<footer class="uqweb-footer">
+  <div class="uqweb-footer__inner">
+    <p class="uqweb-footer__ack">The University of Queensland (UQ) acknowledges the Traditional Owners and their custodianship of the lands on which UQ operates. We pay our respects to their Ancestors and their descendants, who continue cultural and spiritual connections to Country.</p>
+    <p class="uqweb-footer__meta">&copy; The University of Queensland &middot; CRICOS Provider 00025B &middot; TEQSA Provider PRV12080</p>
+    <p class="uqweb-footer__links">
+      <a href="https://www.uq.edu.au/terms-of-use/">Terms of use</a> &middot;
+      <a href="https://policies.uq.edu.au/document/view-current.php?id=101">Privacy</a> &middot;
+      <a href="mailto:learningdesign@business.uq.edu.au">Contact the Learning Design team</a>
+    </p>
   </div>
-</section>
-
-<!-- ── FOOTER ── -->
-<footer class="footer">
-  <p class="footer-text">
-    UQ Business School Learning Design · 2026<br>
-    Questions? <a href="mailto:learningdesign@business.uq.edu.au">Contact the Learning Design team</a>
-  </p>
 </footer>
 
 <script>
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('v');
-      obs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal, .tile-reveal').forEach(el => obs.observe(el));
+(function(){
+  var els=document.querySelectorAll('.rdf-reveal');
+  if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('is-in');});return;}
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-in');obs.unobserve(e.target);}});
+  },{threshold:.1});
+  els.forEach(function(el){obs.observe(el);});
+})();
 </script>
 
 </body>
