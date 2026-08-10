@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>You are Priya · HOSP7053 Week 3</title>
 <style>
-  /* Print first. Open in a browser, then Print, then Save as PDF. */
-  @page { size: A4; margin: 13mm 16mm; }
+
+  @page { size: A4; margin: 10mm 12mm; }
 
   :root {
     --purple: #51247a;
@@ -17,122 +17,178 @@
   }
 
   * { box-sizing: border-box; }
-
   html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
   body {
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-    font-size: 9.9pt;
-    line-height: 1.38;
-    color: var(--ink);
-    margin: 0;
-    padding: 0;
+    font-size: 9.6pt; line-height: 1.35; color: var(--ink);
+    margin: 0; padding: 0;
   }
 
-  /* On screen, sit the page on a grey desk so it reads as a sheet of paper. */
   @media screen {
-    body { background: #e9e7ea; padding: 28px 16px; }
+    body { background: #e9e7ea; padding: 26px 14px; }
     .sheet {
-      background: #fff; max-width: 210mm; min-height: 297mm;
-      margin: 0 auto; padding: 13mm 16mm;
-      box-shadow: 0 2px 18px rgba(0,0,0,.18);
+      background: #fff; max-width: 210mm; margin: 0 auto 18px;
+      padding: 10mm 12mm; box-shadow: 0 2px 18px rgba(0,0,0,.18);
     }
   }
   @media print {
     .sheet { padding: 0; }
     .no-print { display: none; }
+    .page-break { break-before: page; page-break-before: always; }
   }
 
-  h1 {
-    font-size: 19pt; color: var(--purple); margin: 0 0 1.6mm;
-    letter-spacing: -0.01em; line-height: 1.1;
-  }
+  h1 { font-size: 18pt; color: var(--purple); margin: 0 0 1.4mm; line-height: 1.1; }
   .standfirst {
-    font-size: 8.8pt; color: var(--muted); margin: 0 0 4mm;
-    padding-bottom: 2.2mm; border-bottom: 2px solid var(--purple);
+    font-size: 8.6pt; color: var(--muted); margin: 0 0 3.4mm;
+    padding-bottom: 2mm; border-bottom: 2px solid var(--purple);
   }
-  h2 {
-    font-size: 11.6pt; color: var(--purple); margin: 4.2mm 0 1.6mm;
+  h2 { font-size: 10.4pt; color: var(--purple); margin: 2.8mm 0 1.2mm; }
+  p { margin: 0 0 2mm; }
+
+  /* Panels, two across. Each stays whole across a page break. */
+  .strip {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3.2mm 3.6mm; margin: 0 0 3mm;
   }
-  p { margin: 0 0 2.1mm; }
+  figure {
+    margin: 0; break-inside: avoid; page-break-inside: avoid;
+  }
+  figure img {
+    display: block; width: 100%; height: auto;
+    border: 1px solid var(--rule);
+  }
+  figcaption {
+    font-size: 8.9pt; line-height: 1.28; margin-top: 1.3mm;
+  }
+  figure.wide { grid-column: 1 / -1; }
 
-  .lede { font-size: 10.6pt; }
+  /* Page two carries the panels plus the options, so its panels run a little smaller. */
+  .strip.compact { max-width: 164mm; margin-left: auto; margin-right: auto; }
 
-  ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
-  li { margin-bottom: 1.1mm; }
+  /* Panel 9's phone is deliberately blank. The messages are real text. */
+  .messages { margin-top: 1.3mm; display: grid; grid-template-columns: 1fr 1fr; gap: 1.6mm; }
+  .msg {
+    background: var(--tint); border-left: 3px solid var(--purple);
+    padding: 1.2mm 2mm; margin: 0; font-size: 8.4pt; line-height: 1.26;
+  }
+  .msg .who { font-weight: 700; color: var(--purple); }
 
-  /* The five options, numbered and set apart so they are scannable under time. */
+  .question {
+    text-align: center; padding: 2.2mm 4mm; margin: 0.5mm 0 2.4mm;
+    background: var(--purple); color: #fff;
+  }
+  .question p { margin: 0; font-size: 13.5pt; font-weight: 700; letter-spacing: -0.01em; }
+
   ol.options { counter-reset: opt; list-style: none; padding-left: 0; margin: 0; }
   ol.options > li {
-    counter-increment: opt;
-    position: relative;
-    padding: 1.9mm 0 1.9mm 10mm;
-    border-top: 1px solid var(--rule);
-    margin: 0;
+    counter-increment: opt; position: relative;
+    padding: 1.1mm 0 1.1mm 8.6mm;
+    line-height: 1.26;
+    border-top: 1px solid var(--rule); margin: 0;
+    break-inside: avoid;
   }
   ol.options > li:last-child { border-bottom: 1px solid var(--rule); }
   ol.options > li::before {
     content: counter(opt);
-    position: absolute; left: 0; top: 1.9mm;
-    width: 6.2mm; height: 6.2mm; border-radius: 50%;
-    background: var(--purple); color: #fff;
-    font-weight: 700; font-size: 9.6pt;
+    position: absolute; left: 0; top: 1.2mm;
+    width: 5.4mm; height: 5.4mm; border-radius: 50%;
+    background: var(--purple); color: #fff; font-weight: 700; font-size: 9.2pt;
     display: flex; align-items: center; justify-content: center;
   }
   .cost { color: var(--muted); }
 
+  .alsoknow { margin: 0 0 2mm; padding: 1.6mm 2.6mm; background: var(--tint); font-size: 8.9pt; line-height: 1.3; }
+
   .task {
-    margin-top: 4mm; padding: 3.2mm 4.5mm;
+    margin-top: 2.4mm; padding: 2mm 3.4mm;
     background: var(--tint); border-left: 3px solid var(--purple);
+    break-inside: avoid;
   }
   .task h2 { margin-top: 0; }
-  .task ol { margin: 0 0 2mm; padding-left: 5mm; }
-  .task .closing { margin: 0; font-style: italic; color: var(--muted); font-size: 9.8pt; }
-
-  .facts { margin: 0; padding-left: 5mm; }
+  .task ol { margin: 0 0 1.4mm; padding-left: 5mm; }
+  .task li { margin-bottom: 0.7mm; }
+  .task .closing { margin: 0; font-style: italic; color: var(--muted); font-size: 9pt; }
 
   footer {
-    margin-top: 5mm; padding-top: 2mm; border-top: 1px solid var(--rule);
-    font-size: 7.6pt; color: var(--muted);
+    margin-top: 3mm; padding-top: 1.5mm; border-top: 1px solid var(--rule);
+    font-size: 7.4pt; color: var(--muted);
     display: flex; justify-content: space-between;
   }
-
-  .hint {
-    max-width: 210mm; margin: 0 auto 12px; font-size: 13px; color: #55515a;
-  }
+  .hint { max-width: 210mm; margin: 0 auto 12px; font-size: 13px; color: #55515a; }
 </style>
 </head>
 <body>
 
-<p class="hint no-print">Open this file in a browser, then Print, then Save as PDF. A4, margins already set. Nothing on this page needs a network connection.</p>
 
+<!-- ---------------------------------------------------------------- page 1 -->
 <div class="sheet">
 
   <h1>You are Priya</h1>
   <p class="standfirst">HOSP7053 Service Leadership in Hospitality &middot; Week 3 seminar</p>
 
-  <p class="lede">You are the Food and Beverage Manager at a 180 seat hotel restaurant. You started five months ago.</p>
+  <div class="strip">
+    <figure>
+      <img src="panels-web/panel-01-the-floor.jpg" alt="A busy hotel restaurant seen from behind the kitchen pass. Your own hand rests on the steel edge.">
+      <figcaption>You are Priya. You manage the restaurant at this hotel. You started five months ago.</figcaption>
+    </figure>
+    <figure>
+      <img src="panels-web/panel-02-chef-hale-at-work.jpg" alt="A head chef plating a dish at the pass, absorbed in the work.">
+      <figcaption>Chef Hale runs the kitchen. He has been here seven years. The food has never been better.</figcaption>
+    </figure>
+    <figure>
+      <img src="panels-web/panel-03-teaching.jpg" alt="The head chef standing beside a young cook, guiding their knife hand at a prep bench.">
+      <figcaption>He trains people well. Two of his juniors are now senior chefs at other hotels.</figcaption>
+    </figure>
+    <figure>
+      <img src="panels-web/panel-04-three-gone.jpg" alt="A staff locker room with three lockers standing open and empty.">
+      <figcaption>In the last eight months, three junior kitchen staff have left.</figcaption>
+    </figure>
+    <figure>
+      <img src="panels-web/panel-05-exit-interview.jpg" alt="A young woman in a grey jacket sits across a small office table, speaking to you.">
+      <figcaption>Nina was one of them. When she left, she told you what the kitchen is like.</figcaption>
+    </figure>
+    <figure>
+      <img src="panels-web/panel-06-ninas-account.jpg" alt="A recollection, drawn with a torn edge: a steel tray and scattered tongs lying on a kitchen floor. Nobody is in the picture.">
+      <figcaption>She said he shouts at junior staff. She said he picks on one person at a time. She said he once threw a metal tray.</figcaption>
+    </figure>
+  </div>
 
-  <p>Chef Hale runs the kitchen. He has worked here seven years. The food has never been better. Food costs are down. He trains junior staff well, and two of his former juniors are now senior chefs at other hotels.</p>
+  <footer>
+    <span>The University of Queensland &middot; Business School</span>
+    <span>CRICOS Provider 00025B &middot; TEQSA PRV12080</span>
+  </footer>
+</div>
 
-  <p>In the last eight months, three junior kitchen staff have left.</p>
+<!-- ---------------------------------------------------------------- page 2 -->
+<div class="sheet page-break">
 
-  <p>One of them was Nina. In her exit interview, which is the meeting a person has when they leave a job, she told you that Chef Hale shouts at the junior staff. She said he picks on one person at a time. She said he once threw a metal tray across the kitchen. Then she said, &ldquo;Please do not use my name. I still need a reference.&rdquo;</p>
+  <div class="strip compact">
+    <figure>
+      <img src="panels-web/panel-07-ninas-request.jpg" alt="The same young woman leaning forward with one hand flat on the table, asking you something.">
+      <figcaption>Then she said: &ldquo;Please do not use my name. I still need a reference.&rdquo;</figcaption>
+    </figure>
+    <figure>
+      <img src="panels-web/panel-08-sam.jpg" alt="A young chef in whites and a blue neckerchief standing in a service corridor, arms folded, looking away.">
+      <figcaption>Yesterday Sam told you he is thinking of leaving. He asked you to say nothing as well.</figcaption>
+    </figure>
+    <figure>
+      <img src="panels-web/panel-09-two-messages.jpg" alt="Your phone in your hand, showing two message bubbles.">
+      <div class="messages">
+        <p class="msg"><span class="who">HR:</span> &ldquo;Without a written complaint, I cannot open a process.&rdquo;</p>
+        <p class="msg"><span class="who">Your manager:</span> &ldquo;The restaurant is the best part of this hotel. Do not upset the kitchen in peak season.&rdquo;</p>
+      </div>
+    </figure>
+    <figure>
+      <img src="panels-web/panel-10-still-at-the-pass.jpg" alt="The head chef seen through the pass at full service, working, not looking towards you.">
+      <figcaption>Chef Hale has never been told that anyone has a problem with him.</figcaption>
+    </figure>
+  </div>
 
-  <p>The other two only said the job was not for them.</p>
+  <div class="question"><p>What do you do?</p></div>
 
-  <p>Yesterday a junior chef named Sam told you he is thinking about leaving. He said the kitchen is not a good place to be. He also asked you to say nothing.</p>
-
-  <p>Chef Hale has never been told that anyone has a problem with him.</p>
-
-  <h2>What else you know</h2>
-  <ul class="facts">
-    <li>It is peak season. The restaurant is fully booked for four weeks.</li>
-    <li>There is no replacement head chef available at short notice.</li>
-    <li>HR has told you they cannot start a formal process without a written complaint.</li>
-    <li>Neither Nina nor Sam will put anything in writing.</li>
-    <li>Yesterday your own manager said: &ldquo;The restaurant is the best part of this hotel right now. Do not upset the kitchen in peak season.&rdquo;</li>
-  </ul>
+  <p class="alsoknow">It is peak season and the restaurant is fully booked for four weeks. There is no
+  replacement head chef available at short notice. Neither Nina nor Sam will put anything in writing.</p>
 
   <h2>Five things you could do</h2>
   <ol class="options">
@@ -144,8 +200,7 @@
   </ol>
 
   <div class="task">
-    <h2>Your group&rsquo;s task</h2>
-    <p><strong>You have twenty minutes.</strong></p>
+    <h2>Your group&rsquo;s task, twenty minutes</h2>
     <ol>
       <li>Agree what you should do next.</li>
       <li>Write down the one sentence you say to the person your decision hurts most.</li>
@@ -157,7 +212,6 @@
     <span>The University of Queensland &middot; Business School</span>
     <span>CRICOS Provider 00025B &middot; TEQSA PRV12080</span>
   </footer>
-
 </div>
 
 </body>
