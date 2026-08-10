@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>You are Priya · HOSP7053 Week 3</title>
+<style>
+  /* Print first. Open in a browser, then Print, then Save as PDF. */
+  @page { size: A4; margin: 13mm 16mm; }
+
+  :root {
+    --purple: #51247a;
+    --ink: #1c1a1f;
+    --muted: #6b6772;
+    --rule: #d7d1cc;
+    --tint: #f4f1f6;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 9.9pt;
+    line-height: 1.38;
+    color: var(--ink);
+    margin: 0;
+    padding: 0;
+  }
+
+  /* On screen, sit the page on a grey desk so it reads as a sheet of paper. */
+  @media screen {
+    body { background: #e9e7ea; padding: 28px 16px; }
+    .sheet {
+      background: #fff; max-width: 210mm; min-height: 297mm;
+      margin: 0 auto; padding: 13mm 16mm;
+      box-shadow: 0 2px 18px rgba(0,0,0,.18);
+    }
+  }
+  @media print {
+    .sheet { padding: 0; }
+    .no-print { display: none; }
+  }
+
+  h1 {
+    font-size: 19pt; color: var(--purple); margin: 0 0 1.6mm;
+    letter-spacing: -0.01em; line-height: 1.1;
+  }
+  .standfirst {
+    font-size: 8.8pt; color: var(--muted); margin: 0 0 4mm;
+    padding-bottom: 2.2mm; border-bottom: 2px solid var(--purple);
+  }
+  h2 {
+    font-size: 11.6pt; color: var(--purple); margin: 4.2mm 0 1.6mm;
+  }
+  p { margin: 0 0 2.1mm; }
+
+  .lede { font-size: 10.6pt; }
+
+  ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+  li { margin-bottom: 1.1mm; }
+
+  /* The five options, numbered and set apart so they are scannable under time. */
+  ol.options { counter-reset: opt; list-style: none; padding-left: 0; margin: 0; }
+  ol.options > li {
+    counter-increment: opt;
+    position: relative;
+    padding: 1.9mm 0 1.9mm 10mm;
+    border-top: 1px solid var(--rule);
+    margin: 0;
+  }
+  ol.options > li:last-child { border-bottom: 1px solid var(--rule); }
+  ol.options > li::before {
+    content: counter(opt);
+    position: absolute; left: 0; top: 1.9mm;
+    width: 6.2mm; height: 6.2mm; border-radius: 50%;
+    background: var(--purple); color: #fff;
+    font-weight: 700; font-size: 9.6pt;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cost { color: var(--muted); }
+
+  .task {
+    margin-top: 4mm; padding: 3.2mm 4.5mm;
+    background: var(--tint); border-left: 3px solid var(--purple);
+  }
+  .task h2 { margin-top: 0; }
+  .task ol { margin: 0 0 2mm; padding-left: 5mm; }
+  .task .closing { margin: 0; font-style: italic; color: var(--muted); font-size: 9.8pt; }
+
+  .facts { margin: 0; padding-left: 5mm; }
+
+  footer {
+    margin-top: 5mm; padding-top: 2mm; border-top: 1px solid var(--rule);
+    font-size: 7.6pt; color: var(--muted);
+    display: flex; justify-content: space-between;
+  }
+
+  .hint {
+    max-width: 210mm; margin: 0 auto 12px; font-size: 13px; color: #55515a;
+  }
+</style>
+</head>
+<body>
+
+<p class="hint no-print">Open this file in a browser, then Print, then Save as PDF. A4, margins already set. Nothing on this page needs a network connection.</p>
+
+<div class="sheet">
+
+  <h1>You are Priya</h1>
+  <p class="standfirst">HOSP7053 Service Leadership in Hospitality &middot; Week 3 seminar</p>
+
+  <p class="lede">You are the Food and Beverage Manager at a 180 seat hotel restaurant. You started five months ago.</p>
+
+  <p>Chef Hale runs the kitchen. He has worked here seven years. The food has never been better. Food costs are down. He trains junior staff well, and two of his former juniors are now senior chefs at other hotels.</p>
+
+  <p>In the last eight months, three junior kitchen staff have left.</p>
+
+  <p>One of them was Nina. In her exit interview, which is the meeting a person has when they leave a job, she told you that Chef Hale shouts at the junior staff. She said he picks on one person at a time. She said he once threw a metal tray across the kitchen. Then she said, &ldquo;Please do not use my name. I still need a reference.&rdquo;</p>
+
+  <p>The other two only said the job was not for them.</p>
+
+  <p>Yesterday a junior chef named Sam told you he is thinking about leaving. He said the kitchen is not a good place to be. He also asked you to say nothing.</p>
+
+  <p>Chef Hale has never been told that anyone has a problem with him.</p>
+
+  <h2>What else you know</h2>
+  <ul class="facts">
+    <li>It is peak season. The restaurant is fully booked for four weeks.</li>
+    <li>There is no replacement head chef available at short notice.</li>
+    <li>HR has told you they cannot start a formal process without a written complaint.</li>
+    <li>Neither Nina nor Sam will put anything in writing.</li>
+    <li>Yesterday your own manager said: &ldquo;The restaurant is the best part of this hotel right now. Do not upset the kitchen in peak season.&rdquo;</li>
+  </ul>
+
+  <h2>Five things you could do</h2>
+  <ol class="options">
+    <li>Talk to Chef Hale yourself, today, quietly. <span class="cost">He will work out who spoke to you. Only Nina and Sam could have.</span></li>
+    <li>Report it to HR yourself, in writing, using what Nina and Sam told you. <span class="cost">Their names go into a file, and Chef Hale is told there is a complaint.</span></li>
+    <li>Say nothing to anyone and wait until peak season is over. <span class="cost">That is eight more weeks, and Sam may not last them.</span></li>
+    <li>Move Sam away from Chef Hale and reroster the juniors under the sous chef. <span class="cost">Sam is safer. The next junior is not, and Chef Hale is never told why.</span></li>
+    <li>Go back to Nina and Sam and ask them to put it in writing. <span class="cost">It is the only way a process can start. Both of them asked you not to, and Nina no longer works here.</span></li>
+  </ol>
+
+  <div class="task">
+    <h2>Your group&rsquo;s task</h2>
+    <p><strong>You have twenty minutes.</strong></p>
+    <ol>
+      <li>Agree what you should do next.</li>
+      <li>Write down the one sentence you say to the person your decision hurts most.</li>
+    </ol>
+    <p class="closing">There is no right answer here. Every option costs somebody something. What matters is the reason you can give the person who pays.</p>
+  </div>
+
+  <footer>
+    <span>The University of Queensland &middot; Business School</span>
+    <span>CRICOS Provider 00025B &middot; TEQSA PRV12080</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
