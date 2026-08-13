@@ -1,1 +1,538 @@
-<h1> test 123<h1>
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Group Formation Decision Tool</title>
+<meta name="description" content="A short decision tool that helps course teams choose between self-selection, a hybrid approach and staff allocation when forming student groups for assessment.">
+<style>
+  :root {
+    --purple: #5b2c83;
+    --purple-dark: #43205f;
+    --purple-light: #f4eff8;
+    --text: #222;
+    --muted: #5f6368;
+    --border: #8f8f8f;
+    --white: #fff;
+    --success: #176b45;
+    --warning: #8a5a00;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text);
+    background: #f7f7f7;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 32px auto;
+    padding: 0 18px 40px;
+  }
+
+  .header {
+    background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+    color: white;
+    padding: 32px;
+    border-radius: 14px 14px 0 0;
+  }
+
+  .header h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+  }
+
+  .header p {
+    margin: 0;
+    font-size: 17px;
+  }
+
+  .intro, .questions, .results {
+    background: var(--white);
+    padding: 28px 32px;
+    border: 1px solid #e1e1e1;
+    border-top: none;
+  }
+
+  .intro p:last-child { margin-bottom: 0; }
+
+  .instruction {
+    background: var(--purple-light);
+    border-left: 5px solid var(--purple);
+    padding: 14px 16px;
+    margin: 20px 0 8px;
+  }
+
+  .question {
+    padding: 22px 0;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .question:last-child { border-bottom: none; }
+
+  .question.is-missing {
+    background: #fff6f6;
+    outline: 2px solid #b45a5a;
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
+  .question-number {
+    color: var(--purple);
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
+  .statement {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 5px 0 14px;
+  }
+
+  .choices {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .choice {
+    position: relative;
+    flex: 1 1 230px;
+  }
+
+  .choice input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .choice label {
+    display: block;
+    padding: 13px 16px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    background: white;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .choice label:hover {
+    border-color: var(--purple);
+  }
+
+  .choice input:checked + label {
+    border-color: var(--purple);
+    background: var(--purple-light);
+    color: var(--purple-dark);
+  }
+
+  .choice input:focus-visible + label {
+    outline: 3px solid #8eb9ff;
+    outline-offset: 2px;
+  }
+
+  .actions {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  button {
+    border: none;
+    border-radius: 8px;
+    padding: 13px 22px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .primary {
+    background: var(--purple);
+    color: white;
+  }
+
+  .primary:hover { background: var(--purple-dark); }
+
+  .secondary {
+    background: #eee;
+    color: #222;
+  }
+
+  .error {
+    display: none;
+    margin-top: 16px;
+    color: #8b1e1e;
+    background: #fff1f1;
+    border: 1px solid #e2bcbc;
+    padding: 12px 14px;
+    border-radius: 7px;
+  }
+
+  .results {
+    display: none;
+    border-radius: 0 0 14px 14px;
+  }
+
+  .result-card {
+    border: 2px solid var(--purple);
+    border-radius: 12px;
+    padding: 24px;
+    background: var(--purple-light);
+  }
+
+  .result-label {
+    color: var(--purple);
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: .05em;
+  }
+
+  .result-title {
+    font-size: 27px;
+    font-weight: normal;
+    font-family: inherit;
+    margin: 4px 0 8px;
+    color: var(--purple-dark);
+  }
+
+  .result-title:focus { outline: none; }
+
+  .score {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 0 18px;
+  }
+
+  .bar {
+    height: 18px;
+    background: #ddd;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 8px 0 22px;
+  }
+
+  .bar-fill {
+    height: 100%;
+    width: 0;
+    background: var(--purple);
+    transition: width .5s ease;
+  }
+
+  .feedback h3 {
+    margin-bottom: 8px;
+  }
+
+  .feedback ul {
+    padding-left: 22px;
+  }
+
+  .next-step {
+    margin-top: 20px;
+    padding: 16px;
+    background: white;
+    border-left: 5px solid var(--purple);
+    border-radius: 5px;
+  }
+
+  .note {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 22px;
+  }
+
+  .hidden { display: none; }
+
+  @media (max-width: 650px) {
+    .header, .intro, .questions, .results {
+      padding: 22px 18px;
+    }
+    .header h1 { font-size: 25px; }
+  }
+</style>
+</head>
+
+<body>
+<main class="container">
+
+  <div class="header">
+    <h1>How should students form groups?</h1>
+    <p>A group formation decision tool for assessment design</p>
+  </div>
+
+  <div class="intro">
+    <p>There is no single best approach to group formation. The most appropriate method depends on what students need to learn, what the assessment requires, and the context in which the group will work.</p>
+
+    <div class="instruction">
+      <strong>How to use this tool:</strong><br>
+      For each statement, select <strong>Important to this assessment</strong> or <strong>Not important to this assessment</strong>.
+      Your responses will indicate which group formation approach may best fit your assessment.
+    </div>
+  </div>
+
+  <form id="quizForm" class="questions">
+
+    <div class="question">
+      <div class="question-number">1 of 8 · Diverse perspectives</div>
+      <div class="statement" id="s1">Diverse perspectives are important to achieving the learning outcomes.</div>
+      <div class="choices" role="group" aria-labelledby="s1">
+        <div class="choice"><input type="radio" name="q1" value="1" id="q1y"><label for="q1y">Important to this assessment</label></div>
+        <div class="choice"><input type="radio" name="q1" value="0" id="q1n"><label for="q1n">Not important to this assessment</label></div>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="question-number">2 of 8 · Teamwork</div>
+      <div class="statement" id="s2">Teamwork is an important skill being assessed.</div>
+      <div class="choices" role="group" aria-labelledby="s2">
+        <div class="choice"><input type="radio" name="q2" value="1" id="q2y"><label for="q2y">Important to this assessment</label></div>
+        <div class="choice"><input type="radio" name="q2" value="0" id="q2n"><label for="q2n">Not important to this assessment</label></div>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="question-number">3 of 8 · Working with unfamiliar people</div>
+      <div class="statement" id="s3">Students need to develop the ability to work with unfamiliar people.</div>
+      <div class="choices" role="group" aria-labelledby="s3">
+        <div class="choice"><input type="radio" name="q3" value="1" id="q3y"><label for="q3y">Important to this assessment</label></div>
+        <div class="choice"><input type="radio" name="q3" value="0" id="q3n"><label for="q3n">Not important to this assessment</label></div>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="question-number">4 of 8 · Equity and inclusion</div>
+      <div class="statement" id="s4">Equity and inclusion are important considerations when forming groups.</div>
+      <div class="choices" role="group" aria-labelledby="s4">
+        <div class="choice"><input type="radio" name="q4" value="1" id="q4y"><label for="q4y">Important to this assessment</label></div>
+        <div class="choice"><input type="radio" name="q4" value="0" id="q4n"><label for="q4n">Not important to this assessment</label></div>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="question-number">5 of 8 · Interdependence</div>
+      <div class="statement" id="s5">Students need to depend on one another to successfully complete the assessment.</div>
+      <div class="choices" role="group" aria-labelledby="s5">
+        <div class="choice"><input type="radio" name="q5" value="1" id="q5y"><label for="q5y">Important to this assessment</label></div>
+        <div class="choice"><input type="radio" name="q5" value="0" id="q5n"><label for="q5n">Not important to this assessment</label></div>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="question-number">6 of 8 · Collaboration</div>
+      <div class="statement" id="s6">Collaboration is an important part of demonstrating achievement in the assessment.</div>
+      <div class="choices" role="group" aria-labelledby="s6">
+        <div class="choice"><input type="radio" name="q6" value="1" id="q6y"><label for="q6y">Important to this assessment</label></div>
+        <div class="choice"><input type="radio" name="q6" value="0" id="q6n"><label for="q6n">Not important to this assessment</label></div>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="question-number">7 of 8 · Demonstrated skills</div>
+      <div class="statement" id="s7">Students need to demonstrate their ability to collaborate with others.</div>
+      <div class="choices" role="group" aria-labelledby="s7">
+        <div class="choice"><input type="radio" name="q7" value="1" id="q7y"><label for="q7y">Important to this assessment</label></div>
+        <div class="choice"><input type="radio" name="q7" value="0" id="q7n"><label for="q7n">Not important to this assessment</label></div>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="question-number">8 of 8 · Working with peers</div>
+      <div class="statement" id="s8">Students would benefit from working with peers they might not otherwise choose.</div>
+      <div class="choices" role="group" aria-labelledby="s8">
+        <div class="choice"><input type="radio" name="q8" value="1" id="q8y"><label for="q8y">Important to this assessment</label></div>
+        <div class="choice"><input type="radio" name="q8" value="0" id="q8n"><label for="q8n">Not important to this assessment</label></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="primary" id="calculate">See my recommendation</button>
+      <button type="button" class="secondary" id="resetBtn">Reset</button>
+    </div>
+
+    <div class="error" id="error" role="alert">Please respond to all 8 statements before viewing your recommendation.</div>
+  </form>
+
+  <section class="results" id="results">
+    <div class="result-card">
+      <div class="result-label">Your result</div>
+      <h2 class="result-title" id="resultTitle" tabindex="-1"></h2>
+      <p class="score" id="scoreText"></p>
+      <div class="bar" aria-hidden="true"><div class="bar-fill" id="barFill"></div></div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="next-step">
+        <strong>Before you decide</strong>
+        <p>The result is a guide rather than a prescription. Consider the learning outcomes, assessment requirements, student experience, group composition and staff capacity before choosing your approach.</p>
+      </div>
+
+      <p class="note">The tool uses your responses to identify the level of need for deliberate group formation. It does not determine whether groupwork itself is appropriate.</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  const form = document.getElementById('quizForm');
+  const calculate = document.getElementById('calculate');
+  const resetBtn = document.getElementById('resetBtn');
+  const error = document.getElementById('error');
+  const results = document.getElementById('results');
+  const resultTitle = document.getElementById('resultTitle');
+  const scoreText = document.getElementById('scoreText');
+  const feedback = document.getElementById('feedback');
+  const barFill = document.getElementById('barFill');
+
+  const TOTAL = 8;
+
+  const feedbackData = {
+    selfStrong: {
+      title: 'Strongly consider self-selection',
+      html: `
+        <h3>Why this may fit</h3>
+        <p>Your responses indicate that there are relatively few educational reasons to deliberately control group composition.</p>
+        <p><strong>Self-selection</strong> may be appropriate where student choice, comfort, belonging or agency are important, and group composition has relatively little impact on the learning outcomes.</p>
+        <p><strong>Next step:</strong> Consider how you will support students to form productive and inclusive groups.</p>
+      `
+    },
+    self: {
+      title: 'Self-selection may be appropriate',
+      html: `
+        <h3>Why this may fit</h3>
+        <p>Your responses suggest that student choice may be appropriate, although some considerations may warrant attention when students form groups.</p>
+        <p>Consider whether particular students, skills or perspectives need to be distributed across groups.</p>
+        <p><strong>Next step:</strong> Consider how you will support students to form productive and inclusive groups.</p>
+      `
+    },
+    hybrid: {
+      title: 'Consider a hybrid approach',
+      html: `
+        <h3>Why this may fit</h3>
+        <p>Your responses suggest that there are competing considerations. Students may benefit from some choice while staff oversight may also be important.</p>
+        <p><strong>A hybrid approach</strong> can combine student choice with staff oversight.</p>
+        <ul>
+          <li>Students nominate preferred peers and staff form the final groups.</li>
+          <li>Students form groups and staff review or adjust them.</li>
+          <li>Students choose one or two group members while staff allocate the remainder.</li>
+          <li>Students choose from groups or topics established by staff.</li>
+        </ul>
+        <p><strong>Next step:</strong> Decide what students can choose and what aspects of group composition need to be managed by staff.</p>
+      `
+    },
+    staff: {
+      title: 'Staff allocation is likely appropriate',
+      html: `
+        <h3>Why this may fit</h3>
+        <p>Your responses indicate that deliberate group composition is likely to support the assessment objectives.</p>
+        <p>Staff allocation may be particularly relevant where diversity, teamwork, professional practice, equity, inclusion or genuine interdependence are important.</p>
+        <p><strong>Next step:</strong> Identify the criteria that should guide group formation and communicate these clearly to students.</p>
+      `
+    },
+    staffStrong: {
+      title: 'Strongly consider staff allocation',
+      html: `
+        <h3>Why this may fit</h3>
+        <p>Your responses indicate that purposeful group composition is central to the assessment.</p>
+        <p><strong>Staff allocation</strong> is strongly indicated where diversity, teamwork, interdependence, equity or working with unfamiliar people are important to achieving the learning outcomes.</p>
+        <p><strong>Next step:</strong> Identify the criteria that should guide group formation and communicate these clearly to students.</p>
+      `
+    }
+  };
+
+  function getResult(score) {
+    if (score === 0) return feedbackData.selfStrong;
+    if (score === 1 || score === 2) return feedbackData.self;
+    if (score === 3 || score === 4) return feedbackData.hybrid;
+    if (score === 5 || score === 6) return feedbackData.staff;
+    return feedbackData.staffStrong;
+  }
+
+  function clearFlags() {
+    const flagged = form.querySelectorAll('.question.is-missing');
+    for (let i = 0; i < flagged.length; i++) {
+      flagged[i].classList.remove('is-missing');
+    }
+  }
+
+  function hideResults() {
+    results.style.display = 'none';
+    barFill.style.width = '0';
+  }
+
+  function describeMissing(nums) {
+    if (nums.length === 1) return 'statement ' + nums[0];
+    return 'statements ' + nums.slice(0, -1).join(', ') + ' and ' + nums[nums.length - 1];
+  }
+
+  calculate.addEventListener('click', function () {
+    clearFlags();
+    error.style.display = 'none';
+
+    let score = 0;
+    const missing = [];
+
+    for (let i = 1; i <= TOTAL; i++) {
+      const selected = form.querySelector('input[name="q' + i + '"]:checked');
+      if (selected) {
+        score += Number(selected.value);
+      } else {
+        missing.push(i);
+      }
+    }
+
+    if (missing.length) {
+      hideResults();
+      error.textContent = 'Please respond to ' + describeMissing(missing) + ' before viewing your recommendation.';
+      error.style.display = 'block';
+
+      for (let i = 0; i < missing.length; i++) {
+        form.querySelector('input[name="q' + missing[i] + '"]')
+            .closest('.question').classList.add('is-missing');
+      }
+
+      const firstMissing = form.querySelector('input[name="q' + missing[0] + '"]');
+      firstMissing.focus({ preventScroll: true });
+      firstMissing.closest('.question').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const percentage = score / TOTAL * 100;
+    const result = getResult(score);
+
+    resultTitle.textContent = result.title;
+    scoreText.textContent = score + ' of ' + TOTAL + ' considerations identified as important (' + percentage.toFixed(1).replace('.0', '') + '%)';
+    feedback.innerHTML = result.html;
+    barFill.style.width = percentage + '%';
+
+    results.style.display = 'block';
+    resultTitle.focus({ preventScroll: true });
+    results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // Answering after a result is shown makes that result out of date, so clear it.
+  form.addEventListener('change', function (event) {
+    const question = event.target.closest('.question');
+    if (question) question.classList.remove('is-missing');
+    if (!form.querySelector('.question.is-missing')) error.style.display = 'none';
+    if (results.style.display === 'block') hideResults();
+  });
+
+  resetBtn.addEventListener('click', function () {
+    form.reset();
+    clearFlags();
+    error.style.display = 'none';
+    hideResults();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>
