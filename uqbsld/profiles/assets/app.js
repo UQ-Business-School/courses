@@ -45,14 +45,15 @@ function dataUrl(rel) {
 // LO overrides, the teaching periods) is read from the data host when one is set,
 // so this hosted edition follows the scrape without a rebuild (2026-09-07; until
 // then it shipped a frozen copy of the manifest and showed the 6 June scrape for
-// three months). Only aol-status.json, which this edition alone carries, stays local.
+// three months). Since 15 September 2026 that includes aol-status.json, the AoL register
+// feed, so a register refresh needs only a push to the data repo.
 const DATA_PATHS = {
   manifest: dataUrl("assets/manifest.json"),
   manifestAll: dataUrl("assets/manifest-all.json"),
   manifestLegacy: dataUrl("assets/manifest-legacy.json"),
   taxonomy: dataUrl("taxonomy/uqbs-programs.json"),
   taxonomyAll: dataUrl("taxonomy/all-programs.json"),
-  aol: "./taxonomy/aol-status.json",
+  aol: dataUrl("taxonomy/aol-status.json"),
   loOverrides: dataUrl("taxonomy/lo-overrides.json"),
   teachingPeriods: dataUrl("taxonomy/teaching-periods.json"),
 };
