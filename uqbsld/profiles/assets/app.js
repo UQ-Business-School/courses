@@ -56,6 +56,10 @@ const DATA_PATHS = {
   aol: dataUrl("taxonomy/aol-status.json"),
   loOverrides: dataUrl("taxonomy/lo-overrides.json"),
   teachingPeriods: dataUrl("taxonomy/teaching-periods.json"),
+  // Assessment security feed, built by scraper/build_security.py at every Pages
+  // deploy of the data repo (one row per course, one per assessment item).
+  securityCourses: dataUrl("assets/security-courses.csv"),
+  securityItems: dataUrl("assets/security-items.csv"),
 };
 
 async function loadManifest() {
@@ -157,24 +161,63 @@ function getAolForCourse(aol, courseCode, semesterCode) {
   return entries;
 }
 
+// UQ keyline icons. Thin outline, no fill, drawn in currentColor so the chip or
+// card that holds them sets the colour. Same 96-unit grid and 5-unit stroke as the
+// team's uq-icons library, so anything downloaded from the Noun Project drops in.
+const UQ_ICONS = {
+  ban:      '<circle cx="48" cy="48" r="34"/><path d="M24 24l48 48"/>',
+  question: '<circle cx="48" cy="48" r="34"/><path d="M37 39a11 11 0 1 1 16 10c-4 2-5 5-5 9"/><path d="M48 67v1"/>',
+  search:   '<circle cx="42" cy="42" r="26"/><path d="M61 61l21 21"/>',
+  document: '<path d="M24 12h32l18 18v54a4 4 0 0 1-4 4H24a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4Z"/><path d="M56 12v18h18"/><path d="M32 50h32"/><path d="M32 64h32"/>',
+  half:     '<circle cx="48" cy="48" r="34"/><path d="M48 14v68"/><path d="M48 20L24 44M48 32L18 62M48 44L24 68M48 56L34 70"/>',
+  envelope: '<rect x="14" y="26" width="68" height="46" rx="4"/><path d="M14 30l34 24 34-24"/>',
+  tick:     '<path d="M22 50l16 16 36-38"/>',
+  eye:      '<path d="M12 48s14-22 36-22 36 22 36 22-14 22-36 22-36-22-36-22Z"/><circle cx="48" cy="48" r="10"/>',
+  check:    '<circle cx="48" cy="48" r="34"/><path d="M33 49l11 11 20-23"/>',
+  shield:   '<path d="M48 12l30 10v24c0 18-13 31-30 38-17-7-30-20-30-38V22Z"/><path d="M36 48l9 9 16-18"/>',
+  warning:  '<path d="M48 14L10 80h76Z"/><path d="M48 38v20"/><path d="M48 68v1"/>',
+  chart:    '<path d="M14 82h68"/><path d="M24 70V46M42 70V30M60 70V52M78 70V22"/>',
+};
+
+// Inline SVG for one icon. Decorative by default: the label sits beside it, so
+// screen readers skip the picture. Pass a label to make it meaningful on its own.
+function uqIcon(name, opts) {
+  const o = opts || {};
+  const body = UQ_ICONS[name];
+  if (!body) return "";
+  const size = o.size || "1em";
+  const a11y = o.label
+    ? `role="img" aria-label="${escapeHtml(o.label)}"`
+    : 'aria-hidden="true"';
+  return `<svg class="uq-icon uq-icon-${name}" width="${size}" height="${size}" focusable="false" ${a11y} `
+    + 'xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none" stroke="currentColor" '
+    + `stroke-width="5" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
+}
+
 // Status display config
 // Mirrors the register's Lists tab and scraper/import_aol.py STATUSES. Order is
 // the ladder: change the register first, then import_aol.py, then this.
+// Icons are slugs into UQ_ICONS (keyline, on brand), not emoji.
 const AOL_STATUS = {
-  na:                         { label: "N/A",                         icon: "🚫", cls: "aol-na" },
-  tbd:                        { label: "TBD",                         icon: "📋", cls: "aol-tbd" },
-  identified:                 { label: "Identified",                  icon: "🔍", cls: "aol-identified" },
-  rubric_in_dev:              { label: "Rubric in development",       icon: "🔨", cls: "aol-rubric-dev" },
-  partial_mapping:            { label: "Partial mapping",             icon: "◐",  cls: "aol-partial" },
-  built_awaiting_coordinator: { label: "Built, awaiting coordinator", icon: "📨", cls: "aol-built" },
-  approved_not_installed:     { label: "Approved, not installed",     icon: "👍", cls: "aol-approved" },
-  awaiting_ld_check:          { label: "Awaiting LD check",           icon: "👀", cls: "aol-awaiting-ld" },
-  active:                     { label: "Active",                      icon: "✅", cls: "aol-active" },
+  na:                         { label: "N/A",                         icon: "ban",      cls: "aol-na" },
+  tbd:                        { label: "TBD",                         icon: "question", cls: "aol-tbd" },
+  identified:                 { label: "Identified",                  icon: "search",   cls: "aol-identified" },
+  rubric_in_dev:              { label: "Rubric in development",       icon: "document", cls: "aol-rubric-dev" },
+  partial_mapping:            { label: "Partial mapping",             icon: "half",     cls: "aol-partial" },
+  built_awaiting_coordinator: { label: "Built, awaiting coordinator", icon: "envelope", cls: "aol-built" },
+  approved_not_installed:     { label: "Approved, not installed",     icon: "tick",     cls: "aol-approved" },
+  awaiting_ld_check:          { label: "Awaiting LD check",           icon: "eye",      cls: "aol-awaiting-ld" },
+  active:                     { label: "Active",                      icon: "check",    cls: "aol-active" },
 };
 
+function aolStatusIcon(status, size) {
+  const s = AOL_STATUS[status] || {};
+  return s.icon ? uqIcon(s.icon, { size: size }) : "";
+}
+
 function aolStatusChip(status) {
-  const s = AOL_STATUS[status] || { label: status, icon: "?", cls: "aol-unknown" };
-  return `<span class="aol-chip ${s.cls}" title="${escapeHtml(s.label)}">${s.icon} ${escapeHtml(s.label)}</span>`;
+  const s = AOL_STATUS[status] || { label: status, icon: "", cls: "aol-unknown" };
+  return `<span class="aol-chip ${s.cls}" title="${escapeHtml(s.label)}">${aolStatusIcon(status)} ${escapeHtml(s.label)}</span>`;
 }
 
 function aolGaChip(ga) {
@@ -1695,12 +1738,12 @@ function renderCourseDetail($root, c, taxonomy, otherOfferings, currentFile) {
   const aolEntries = STORE.aol ? getAolForCourse(STORE.aol, c.course_code) : [];
   if (aolEntries.length) {
     const aolRows = aolEntries.map(e => {
-      const statusInfo = AOL_STATUS[e.status] || { label: e.status, icon: "?", cls: "" };
+      const statusInfo = AOL_STATUS[e.status] || { label: e.status, icon: "", cls: "" };
       return `<tr>
         <td>${escapeHtml(e.semester_label || e.semester_code)}</td>
         <td>${aolGaChip(e.ga)}</td>
         <td>${escapeHtml(e.assessment_title)}</td>
-        <td><span class="aol-chip ${statusInfo.cls}">${statusInfo.icon} ${escapeHtml(statusInfo.label)}</span></td>
+        <td><span class="aol-chip ${statusInfo.cls}">${aolStatusIcon(e.status)} ${escapeHtml(statusInfo.label)}</span></td>
         <td>${e.rubric_url ? `<a href="${escapeHtml(e.rubric_url)}" target="_blank" rel="noopener">View rubric ↗</a>` : '<span class="muted">—</span>'}</td>
         <td class="muted small">${escapeHtml(e.notes || "")}</td>
       </tr>`;
@@ -2245,7 +2288,7 @@ function renderAolDashboard($root, aol, taxonomy, courses) {
   const statusCards = statusOrder.map(s => {
     const info = AOL_STATUS[s] || {};
     const count = statusCounts[s] || 0;
-    return `<div class="aol-stat-card ${info.cls || ''}"><div class="aol-stat-icon">${info.icon || '?'}</div><div class="aol-stat-count">${count}</div><div class="aol-stat-label">${escapeHtml(info.label || s)}</div></div>`;
+    return `<div class="aol-stat-card ${info.cls || ''}"><div class="aol-stat-icon">${aolStatusIcon(s, "28px") || uqIcon("question", { size: "28px" })}</div><div class="aol-stat-count">${count}</div><div class="aol-stat-label">${escapeHtml(info.label || s)}</div></div>`;
   }).join("");
   parts.push(`<div class="aol-status-summary">${statusCards}</div>`);
 
@@ -2303,7 +2346,7 @@ function renderAolDashboard($root, aol, taxonomy, courses) {
         <td>${c ? escapeHtml(c.course_title || '') : '<span class="muted">—</span>'}</td>
         <td>${aolGaChip(e.ga)}</td>
         <td>${escapeHtml(e.assessment_title)}</td>
-        <td><span class="aol-chip ${info.cls || ''}">${info.icon || ''} ${escapeHtml(info.label || e.status)}</span></td>
+        <td><span class="aol-chip ${info.cls || ''}">${aolStatusIcon(e.status)} ${escapeHtml(info.label || e.status)}</span></td>
         <td>${e.rubric_url ? `<a href="${escapeHtml(e.rubric_url)}" target="_blank" rel="noopener">Rubric ↗</a>` : ''}</td>
         <td>${progChips}</td>
       </tr>`;
@@ -2321,6 +2364,432 @@ function renderAolDashboard($root, aol, taxonomy, courses) {
   }
 
   $root.innerHTML = parts.join("");
+}
+
+// =========================================================================
+// Page: ASSESSMENT SECURITY DASHBOARD (security.html)
+// =========================================================================
+// Reads the per-course and per-item security feed that scraper/build_security.py
+// in the data repo writes at every Pages deploy. The band is computed here from
+// the secure share, never read from a status column: 30% is the current rule,
+// 60% is the aim. Learning designer overrides live in the assessment register
+// workbook on SharePoint and are not in this feed.
+
+const SEC_BANDS = {
+  below: { label: "Under 30%",       long: "Below the 30% rule",   cls: "sec-below" },
+  rule:  { label: "30% to 59%",      long: "Meets the 30% rule",   cls: "sec-rule" },
+  aim:   { label: "60% or more",     long: "At the 60% aim",       cls: "sec-aim" },
+};
+const SEC_BAND_ORDER = ["below", "rule", "aim"];
+
+function secBand(pct) {
+  return pct >= 60 ? "aim" : pct >= 30 ? "rule" : "below";
+}
+
+// Small RFC 4180 reader: quoted fields, doubled quotes, CRLF. Returns objects.
+function parseCsv(text) {
+  const rows = [];
+  let row = [], field = "", inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inQ) {
+      if (ch === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; }
+        else inQ = false;
+      } else field += ch;
+    } else if (ch === '"') inQ = true;
+    else if (ch === ",") { row.push(field); field = ""; }
+    else if (ch === "\n" || ch === "\r") {
+      if (ch === "\r" && text[i + 1] === "\n") i++;
+      row.push(field); field = "";
+      if (row.length > 1 || row[0] !== "") rows.push(row);
+      row = [];
+    } else field += ch;
+  }
+  if (field !== "" || row.length) { row.push(field); rows.push(row); }
+  if (!rows.length) return [];
+  const head = rows[0];
+  return rows.slice(1).map(r => {
+    const o = {};
+    head.forEach((h, i) => { o[h] = r[i] == null ? "" : r[i]; });
+    return o;
+  });
+}
+
+async function loadSecurity() {
+  if (STORE.security) return STORE.security;
+  const [cRes, iRes] = await Promise.all([
+    fetch(DATA_PATHS.securityCourses, { cache: "no-cache" }),
+    fetch(DATA_PATHS.securityItems, { cache: "no-cache" }),
+  ]);
+  if (!cRes.ok) throw new Error(`Security feed not available (${cRes.status}). It is built when the data repo deploys.`);
+  const courseRows = parseCsv(await cRes.text());
+  const itemRows = iRes.ok ? parseCsv(await iRes.text()) : [];
+  const itemsBy = {};
+  for (const it of itemRows) {
+    (itemsBy[it.course_code] = itemsBy[it.course_code] || []).push({
+      no: Number(it.item_no) || 0,
+      title: it.title, category: it.category, weight: Number(it.weight) || 0,
+      weightText: it.weight_text, cls: it.security_class, method: it.method,
+      ai: it.ai_stance, hurdle: it.hurdle === "Yes", team: it.team === "Yes",
+      due: it.due, flags: it.flags,
+    });
+  }
+  const courses = courseRows.map(r => {
+    const pct = Number(r.secure_pct) || 0;
+    const items = (itemsBy[r.course_code] || []).sort((a, b) => a.no - b.no);
+    const secureItems = items.filter(i => i.cls === "Secure");
+    const secureWeight = secureItems.reduce((t, i) => t + i.weight, 0);
+    const eosWeight = secureItems.filter(i => i.method === "End-of-semester invigilated exam").reduce((t, i) => t + i.weight, 0);
+    return {
+      code: r.course_code, title: r.course_title, offering: r.offering, url: r.profile_url,
+      itemCount: Number(r.items) || items.length, total: Number(r.total_weight) || 0,
+      pct, grey: Number(r.grey_pct) || 0, open: Number(r.open_pct) || 0,
+      hurdleMax: Number(r.largest_secure_hurdle_pct) || 0,
+      aiInSecure: r.secure_with_ai === "Yes", otherOfferings: r.other_offerings || "",
+      band: secBand(pct), items, secureItems, secureWeight, eosWeight,
+      examOnly: secureItems.length > 0 && eosWeight === secureWeight,
+      singleSecure: secureItems.length === 1,
+    };
+  });
+  STORE.security = { courses, itemCount: itemRows.length, builtAt: (itemRows[0] || {}).built_at || "" };
+  return STORE.security;
+}
+
+async function initSecurity() {
+  const $root = document.getElementById("security-root");
+  try {
+    const [manifest, taxonomy, sec] = await Promise.all([
+      loadManifest(), loadTaxonomy().catch(() => null), loadSecurity(),
+    ]);
+    STORE.allCourses = getAllCourses(manifest);
+    STORE.taxonomy = taxonomy;
+    renderSecurityDashboard($root, sec, taxonomy, STORE.allCourses);
+  } catch (err) {
+    $root.innerHTML = `<h1>Assessment Security</h1><div class="error">Error: ${escapeHtml(err.message)}</div>`;
+    console.error(err);
+  }
+}
+
+function renderSecurityDashboard($root, sec, taxonomy, courses) {
+  const coursesByCode = {};
+  for (const c of courses) coursesByCode[c.course_code] = c;
+  const programs = (taxonomy && taxonomy.programs) || {};
+  const courseProgs = (taxonomy && taxonomy.course_programs) || {};
+
+  // Every course carries its subsections: "BBusMan: Core", "MBus: Human Resource Management".
+  for (const c of sec.courses) {
+    c.groups = (courseProgs[c.code] || []).map(r => ({
+      program: r.program, programName: r.program_name || (programs[r.program] || {}).name || r.program,
+      role: r.role || "Other", level: r.level || (programs[r.program] || {}).level || "",
+      key: `${r.program}: ${r.role || "Other"}`,
+    }));
+    c.levels = uniqueSorted(c.groups.map(g => g.level));
+    c.methods = uniqueSorted(c.secureItems.map(i => i.method));
+  }
+
+  const programKeys = Object.keys(programs).filter(k => k !== "Elective").sort((a, b) => {
+    const la = programs[a].level || "", lb = programs[b].level || "";
+    return la.localeCompare(lb) || a.localeCompare(b);
+  });
+  const allMethods = uniqueSorted(sec.courses.flatMap(c => c.methods));
+
+  const state = { program: "", group: "", band: "", level: "", method: "", ai: "", q: "", sort: "pct-asc" };
+
+  const progOptions = ['<option value="">All programs</option>']
+    .concat(programKeys.map(k => `<option value="${escapeHtml(k)}">${escapeHtml(k)} · ${escapeHtml(programs[k].name || k)}</option>`))
+    .concat(['<option value="_none">No program mapping</option>']).join("");
+  const methodOptions = ['<option value="">Any secure type</option>']
+    .concat(allMethods.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`)).join("");
+
+  $root.innerHTML = `
+    <h1>Assessment Security</h1>
+    <p class="subtitle">Secure share of assessment weight per course, from the latest offering in the profiles feed. 30% is the current rule, 60% is the aim. Learning designer overrides in the assessment register are not reflected here.</p>
+    <div class="sec-filters" id="sec-filters">
+      <label>Program <select id="sec-program">${progOptions}</select></label>
+      <label>Subsection <select id="sec-group" disabled><option value="">All subsections</option></select></label>
+      <label>Level <select id="sec-level"><option value="">UG and PG</option><option value="UG">Undergraduate</option><option value="PG">Postgraduate</option></select></label>
+      <label>Band <select id="sec-band"><option value="">All bands</option>${SEC_BAND_ORDER.map(b => `<option value="${b}">${SEC_BANDS[b].label}</option>`).join("")}</select></label>
+      <label>Secure type <select id="sec-method">${methodOptions}</select></label>
+      <label>AI in secure task <select id="sec-ai"><option value="">Any</option><option value="yes">Permitted or required</option><option value="no">Not permitted or not stated</option></select></label>
+      <label>Find <input id="sec-q" type="search" placeholder="Code or title"></label>
+      <button type="button" class="btn-link" id="sec-reset">Reset</button>
+    </div>
+    <div id="sec-body"></div>
+  `;
+
+  const $program = $root.querySelector("#sec-program");
+  const $group = $root.querySelector("#sec-group");
+  const $body = $root.querySelector("#sec-body");
+
+  function fillGroups() {
+    const prog = state.program;
+    const groups = prog && prog !== "_none"
+      ? uniqueSorted(sec.courses.flatMap(c => c.groups.filter(g => g.program === prog).map(g => g.role)))
+      : [];
+    $group.innerHTML = '<option value="">All subsections</option>'
+      + groups.map(r => `<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`).join("");
+    $group.disabled = !groups.length;
+    if (!groups.includes(state.group)) state.group = "";
+    $group.value = state.group;
+  }
+
+  function filtered() {
+    const q = state.q.trim().toLowerCase();
+    return sec.courses.filter(c => {
+      if (state.program === "_none") { if (c.groups.length) return false; }
+      else if (state.program) {
+        const gs = c.groups.filter(g => g.program === state.program && (!state.group || g.role === state.group));
+        if (!gs.length) return false;
+      }
+      if (state.level && !c.levels.includes(state.level)) return false;
+      if (state.band && c.band !== state.band) return false;
+      if (state.method && !c.methods.includes(state.method)) return false;
+      if (state.ai === "yes" && !c.aiInSecure) return false;
+      if (state.ai === "no" && c.aiInSecure) return false;
+      if (q && !(c.code.toLowerCase().includes(q) || (c.title || "").toLowerCase().includes(q))) return false;
+      return true;
+    });
+  }
+
+  function draw() {
+    const list = filtered();
+    $body.innerHTML = [
+      renderSecTiles(list, sec),
+      `<div class="sec-charts">
+        ${renderSecBandChart(list, state, programs)}
+        ${renderSecHistogram(list)}
+      </div>
+      <div class="sec-charts">
+        ${renderSecMethodChart(list)}
+      </div>`,
+      renderSecTable(list, state, coursesByCode),
+    ].join("");
+    // Clicking a row label in the band chart narrows the filter to it.
+    $body.querySelectorAll("[data-sec-program]").forEach(el => el.addEventListener("click", () => {
+      state.program = el.dataset.secProgram; state.group = el.dataset.secGroup || "";
+      $program.value = state.program; fillGroups(); draw();
+    }));
+    $body.querySelectorAll("[data-sec-sort]").forEach(el => el.addEventListener("click", () => {
+      state.sort = el.dataset.secSort; draw();
+    }));
+  }
+
+  $program.addEventListener("change", () => { state.program = $program.value; fillGroups(); draw(); });
+  $group.addEventListener("change", () => { state.group = $group.value; draw(); });
+  for (const [id, key] of [["sec-level", "level"], ["sec-band", "band"], ["sec-method", "method"], ["sec-ai", "ai"]]) {
+    $root.querySelector("#" + id).addEventListener("change", e => { state[key] = e.target.value; draw(); });
+  }
+  let qTimer = null;
+  $root.querySelector("#sec-q").addEventListener("input", e => {
+    clearTimeout(qTimer); qTimer = setTimeout(() => { state.q = e.target.value; draw(); }, 150);
+  });
+  $root.querySelector("#sec-reset").addEventListener("click", () => {
+    Object.assign(state, { program: "", group: "", band: "", level: "", method: "", ai: "", q: "" });
+    $root.querySelectorAll("#sec-filters select").forEach(s => { s.value = ""; });
+    $root.querySelector("#sec-q").value = "";
+    fillGroups(); draw();
+  });
+
+  fillGroups();
+  draw();
+}
+
+function pctText(n) { return `${Math.round(n * 10) / 10}%`; }
+
+function renderSecTiles(list, sec) {
+  const n = list.length;
+  const count = b => list.filter(c => c.band === b).length;
+  const share = k => n ? Math.round(k / n * 100) : 0;
+  const secureWeight = list.reduce((t, c) => t + c.secureWeight, 0);
+  const eosWeight = list.reduce((t, c) => t + c.eosWeight, 0);
+  const tile = (value, label, cls, sub) =>
+    `<div class="sec-tile ${cls || ""}"><div class="sec-tile-value">${value}</div><div class="sec-tile-label">${escapeHtml(label)}</div>${sub ? `<div class="sec-tile-sub">${escapeHtml(sub)}</div>` : ""}</div>`;
+  return `
+    <div class="stat-bar">
+      <div class="stat"><b>${n}</b><span>course${n === 1 ? "" : "s"} shown</span></div>
+      <div class="stat"><b>${sec.courses.length}</b><span>in the feed</span></div>
+      ${sec.builtAt ? `<div class="stat"><span>feed built ${escapeHtml(sec.builtAt.slice(0, 10))}</span></div>` : ""}
+    </div>
+    <div class="sec-tiles">
+      ${tile(count("aim"), SEC_BANDS.aim.long, "sec-aim", `${share(count("aim"))}% of courses shown`)}
+      ${tile(count("rule"), SEC_BANDS.rule.long, "sec-rule", `${share(count("rule"))}% of courses shown`)}
+      ${tile(count("below"), SEC_BANDS.below.long, "sec-below", `${share(count("below"))}% of courses shown`)}
+      ${tile(list.filter(c => c.singleSecure).length, "Rest on one secure item", "", "a single secure assessment carries the whole share")}
+      ${tile(list.filter(c => c.examOnly).length, "Secure only by final exam", "", "all secure weight in the end-of-semester exam")}
+      ${tile(list.filter(c => c.aiInSecure).length, "AI allowed in a secure task", "", "profile permits or requires AI in a secure item")}
+      ${tile(secureWeight ? Math.round(eosWeight / secureWeight * 100) + "%" : "0%", "Secure weight in final exams", "", "share of all secure weight across courses shown")}
+    </div>`;
+}
+
+// Stacked horizontal bars: one row per program, or per subsection once a program
+// is chosen. A course is counted in every row it belongs to.
+function renderSecBandChart(list, state, programs) {
+  const byProgram = !state.program || state.program === "_none";
+  const rows = {};
+  for (const c of list) {
+    if (state.program === "_none" || (!c.groups.length && byProgram)) {
+      const k = "No program mapping";
+      (rows[k] = rows[k] || { key: k, label: k, program: "_none", group: "", counts: { below: 0, rule: 0, aim: 0 }, seen: new Set() });
+      if (!rows[k].seen.has(c.code)) { rows[k].seen.add(c.code); rows[k].counts[c.band]++; }
+      continue;
+    }
+    for (const g of c.groups) {
+      if (!byProgram && g.program !== state.program) continue;
+      if (!byProgram && state.group && g.role !== state.group) continue;
+      const k = byProgram ? g.program : g.role;
+      const r = rows[k] = rows[k] || {
+        key: k, label: byProgram ? `${g.program}` : g.role, sub: byProgram ? (g.level || "") : "",
+        program: g.program, group: byProgram ? "" : g.role, counts: { below: 0, rule: 0, aim: 0 }, seen: new Set(),
+      };
+      if (!r.seen.has(c.code)) { r.seen.add(c.code); r.counts[c.band]++; }
+    }
+  }
+  const data = Object.values(rows).map(r => ({ ...r, total: r.seen.size }))
+    .sort((a, b) => b.total - a.total || a.key.localeCompare(b.key));
+  const title = byProgram ? "Courses by program and band" : `Courses in ${escapeHtml(state.program)} by subsection and band`;
+  if (!data.length) return `<div class="card sec-chart"><h3>${title}</h3><p class="muted">Nothing to show for this filter.</p></div>`;
+
+  const max = Math.max(...data.map(d => d.total));
+  const labelW = 230, barW = 400, rowH = 26, gap = 2, top = 8;
+  const height = top + data.length * rowH + 4;
+  const bars = data.map((d, i) => {
+    const y = top + i * rowH;
+    let x = labelW;
+    const segs = SEC_BAND_ORDER.map(b => {
+      const n = d.counts[b];
+      if (!n) return "";
+      const w = Math.max(0, n / max * barW - gap);
+      const seg = `<rect class="${SEC_BANDS[b].cls}" x="${x}" y="${y + 4}" width="${w}" height="${rowH - 10}" rx="3"><title>${escapeHtml(d.label)}: ${n} course${n === 1 ? "" : "s"} ${escapeHtml(SEC_BANDS[b].label.toLowerCase())}</title></rect>`
+        + (w >= 18 ? `<text class="sec-seg-label" x="${x + w / 2}" y="${y + rowH / 2 + 1}" text-anchor="middle">${n}</text>` : "");
+      x += w + gap;
+      return seg;
+    }).join("");
+    const clickable = d.program !== "_none";
+    const label = `<text class="sec-row-label${clickable ? " sec-clickable" : ""}" x="${labelW - 10}" y="${y + rowH / 2 + 1}" text-anchor="end"${clickable ? ` data-sec-program="${escapeHtml(d.program)}" data-sec-group="${escapeHtml(d.group)}"` : ""}><title>${escapeHtml(d.label)}${d.sub ? ` (${escapeHtml(d.sub)})` : ""}. Click to filter.</title>${escapeHtml(d.label.length > 36 ? d.label.slice(0, 35) + "…" : d.label)}</text>`;
+    const total = `<text class="sec-total-label" x="${x + 6}" y="${y + rowH / 2 + 1}">${d.total}</text>`;
+    return label + segs + total;
+  }).join("");
+  const legend = SEC_BAND_ORDER.map(b => `<span class="sec-legend-item"><i class="sec-swatch ${SEC_BANDS[b].cls}"></i>${escapeHtml(SEC_BANDS[b].label)}</span>`).join("");
+  const tableRows = data.map(d => `<tr><td>${escapeHtml(d.label)}</td><td>${d.counts.below}</td><td>${d.counts.rule}</td><td>${d.counts.aim}</td><td>${d.total}</td></tr>`).join("");
+  return `
+    <div class="card sec-chart">
+      <h3>${title}</h3>
+      <div class="sec-legend">${legend}</div>
+      <svg class="sec-svg" viewBox="0 0 ${labelW + barW + 40} ${height}" width="100%" role="img" aria-label="${title}">${bars}</svg>
+      <details class="sec-table-view"><summary>Show as a table</summary>
+        <table class="assessment"><thead><tr><th>${byProgram ? "Program" : "Subsection"}</th><th>Under 30%</th><th>30% to 59%</th><th>60% or more</th><th>Courses</th></tr></thead><tbody>${tableRows}</tbody></table>
+      </details>
+    </div>`;
+}
+
+// Histogram of secure share in 10-point bins, with the 30% and 60% lines drawn.
+function renderSecHistogram(list) {
+  const bins = Array.from({ length: 10 }, (_, i) => ({ lo: i * 10, hi: i * 10 + 10, n: 0 }));
+  for (const c of list) bins[Math.min(9, Math.floor(c.pct / 10))].n++;
+  const max = Math.max(1, ...bins.map(b => b.n));
+  const left = 36, w = 44, gap = 2, plotH = 160, top = 36, bottom = 30;
+  const height = top + plotH + bottom;
+  const width = left + bins.length * (w + gap) + 12;
+  const xAt = pct => left + pct / 10 * (w + gap) - gap / 2;
+  const bars = bins.map((b, i) => {
+    const h = b.n / max * plotH;
+    const x = left + i * (w + gap), y = top + plotH - h;
+    const band = secBand(b.lo);
+    return `<rect class="${SEC_BANDS[band].cls}" x="${x}" y="${y}" width="${w}" height="${h}" rx="3"><title>${b.lo} to ${b.hi === 100 ? "100" : b.hi - 1}% secure: ${b.n} course${b.n === 1 ? "" : "s"}</title></rect>`
+      + (b.n ? `<text class="sec-seg-label sec-on-surface" x="${x + w / 2}" y="${y - 5}" text-anchor="middle">${b.n}</text>` : "")
+      + `<text class="sec-axis-label" x="${x + w / 2}" y="${top + plotH + 16}" text-anchor="middle">${b.lo}</text>`;
+  }).join("");
+  const line = (pct, label) => `<line class="sec-threshold" x1="${xAt(pct)}" x2="${xAt(pct)}" y1="${top - 4}" y2="${top + plotH}"/><text class="sec-axis-label" x="${xAt(pct) + 4}" y="${12}">${label}</text>`;
+  return `
+    <div class="card sec-chart">
+      <h3>Courses by secure share</h3>
+      <svg class="sec-svg" viewBox="0 0 ${width} ${height}" width="100%" role="img" aria-label="Number of courses in each 10 point band of secure share">
+        <line class="sec-baseline" x1="${left}" x2="${width - 12}" y1="${top + plotH}" y2="${top + plotH}"/>
+        ${bars}
+        ${line(30, "30% rule")}
+        ${line(60, "60% aim")}
+        <text class="sec-axis-label" x="${left}" y="${height - 4}">Secure share of assessment weight (%)</text>
+      </svg>
+    </div>`;
+}
+
+// How the secure weight is earned: share of all secure weight, by method.
+function renderSecMethodChart(list) {
+  const totals = {};
+  let all = 0;
+  for (const c of list) for (const i of c.secureItems) { totals[i.method] = (totals[i.method] || 0) + i.weight; all += i.weight; }
+  let data = Object.entries(totals).map(([m, w]) => ({ m, w })).sort((a, b) => b.w - a.w);
+  if (data.length > 9) {
+    const rest = data.slice(8).reduce((t, d) => t + d.w, 0);
+    data = data.slice(0, 8).concat([{ m: "Other", w: rest }]);
+  }
+  if (!all) return `<div class="card sec-chart"><h3>Where the secure weight sits</h3><p class="muted">No secure items in this filter.</p></div>`;
+  const labelW = 250, barW = 380, rowH = 24, top = 6;
+  const max = data[0].w;
+  const height = top + data.length * rowH + 4;
+  const rows = data.map((d, i) => {
+    const y = top + i * rowH, w = d.w / max * barW, share = Math.round(d.w / all * 100);
+    return `<text class="sec-row-label" x="${labelW - 10}" y="${y + rowH / 2 + 1}" text-anchor="end">${escapeHtml(d.m)}</text>`
+      + `<rect class="sec-method" x="${labelW}" y="${y + 4}" width="${w}" height="${rowH - 8}" rx="3"><title>${escapeHtml(d.m)}: ${share}% of secure weight</title></rect>`
+      + `<text class="sec-total-label" x="${labelW + w + 6}" y="${y + rowH / 2 + 1}">${share}%</text>`;
+  }).join("");
+  const tableRows = data.map(d => `<tr><td>${escapeHtml(d.m)}</td><td>${Math.round(d.w / all * 100)}%</td></tr>`).join("");
+  return `
+    <div class="card sec-chart sec-chart-wide">
+      <h3>Where the secure weight sits</h3>
+      <p class="muted small">Share of all secure assessment weight across the courses shown, by the type of task. The method is a first read of the profile text, not a learning designer's call.</p>
+      <svg class="sec-svg" viewBox="0 0 ${labelW + barW + 60} ${height}" width="100%" role="img" aria-label="Share of secure weight by assessment type">${rows}</svg>
+      <details class="sec-table-view"><summary>Show as a table</summary>
+        <table class="assessment"><thead><tr><th>Type</th><th>Share of secure weight</th></tr></thead><tbody>${tableRows}</tbody></table>
+      </details>
+    </div>`;
+}
+
+function renderSecTable(list, state, coursesByCode) {
+  const sorters = {
+    "pct-asc": (a, b) => a.pct - b.pct || a.code.localeCompare(b.code),
+    "pct-desc": (a, b) => b.pct - a.pct || a.code.localeCompare(b.code),
+    "code": (a, b) => a.code.localeCompare(b.code),
+  };
+  const sorted = list.slice().sort(sorters[state.sort] || sorters["pct-asc"]);
+  const sortLink = (key, label) => `<button type="button" class="sec-sort${state.sort === key ? " active" : ""}" data-sec-sort="${key}">${label}</button>`;
+  const rows = sorted.map(c => {
+    const m = coursesByCode[c.code];
+    const link = m ? `<a href="course.html?file=${encodeURIComponent(m.file)}">${escapeHtml(c.code)}</a>` : escapeHtml(c.code);
+    const groups = c.groups.slice(0, 3).map(g => `<span class="chip" title="${escapeHtml(g.programName)}">${escapeHtml(g.key)}</span>`).join(" ")
+      + (c.groups.length > 3 ? ` <span class="muted small">+${c.groups.length - 3}</span>` : "");
+    const items = c.items.map(i => {
+      const cls = i.cls === "Secure" ? "sec-item-secure" : i.cls === "Grey zone" ? "sec-item-grey" : "sec-item-open";
+      const tip = `${i.title} (${i.category || ""}) ${i.weightText || ""}. ${i.cls}. ${i.method}. AI ${i.ai.toLowerCase()}.${i.hurdle ? " Hurdle." : ""}${i.flags ? " " + i.flags : ""}`;
+      return `<span class="sec-item ${cls}" title="${escapeHtml(tip)}">A${i.no} ${escapeHtml(i.weightText || i.weight + "%")}${i.hurdle ? " H" : ""}${i.cls === "Secure" && (i.ai === "Permitted" || i.ai === "Required") ? " AI" : ""}</span>`;
+    }).join(" ");
+    const notes = [];
+    if (c.total && Math.round(c.total) !== 100) notes.push(`Weights total ${c.total}%`);
+    if (c.otherOfferings) notes.push(c.otherOfferings);
+    if (c.hurdleMax >= 30) notes.push(`Secure hurdle ${c.hurdleMax}%`);
+    return `<tr>
+      <td class="code">${link}</td>
+      <td>${escapeHtml(c.title || "")}<div class="muted small">${escapeHtml(c.offering)}</div></td>
+      <td>${groups}</td>
+      <td class="sec-pct-cell"><div class="sec-pct-bar"><i class="${SEC_BANDS[c.band].cls}" style="width:${Math.min(100, c.pct)}%"></i></div><b>${pctText(c.pct)}</b></td>
+      <td><span class="sec-band-chip ${SEC_BANDS[c.band].cls}">${escapeHtml(SEC_BANDS[c.band].label)}</span></td>
+      <td class="sec-items">${items}</td>
+      <td class="muted small">${escapeHtml(notes.join("; "))}</td>
+    </tr>`;
+  }).join("");
+  return `
+    <div class="card">
+      <div class="sec-table-head">
+        <h3>Courses</h3>
+        <div class="sec-sorts">Sort: ${sortLink("pct-asc", "secure share, low to high")} ${sortLink("pct-desc", "high to low")} ${sortLink("code", "course code")}</div>
+      </div>
+      <p class="muted small">Items are in profile order. Filled chips are secure, outlined chips are open, hatched are in person but not tagged secure. H marks a hurdle, AI marks a secure item where the profile permits or requires AI. Hover an item for its title and type.</p>
+      <table class="assessment sec-table">
+        <thead><tr><th>Code</th><th>Course</th><th>Subsections</th><th>Secure</th><th>Band</th><th>Assessment items</th><th>Notes</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="7" class="muted">No courses match this filter.</td></tr>'}</tbody>
+      </table>
+    </div>`;
 }
 
 // =========================================================================
@@ -2498,6 +2967,7 @@ window.UQBS = {
   initCourseDetail,
   initProgram,
   initAol,
+  initSecurity,
   initMode,
   applyMode,
   // exposed for tests
@@ -2528,6 +2998,7 @@ function renderNav() {
     ["browse-all.html", "All UQ", "all"],
     ["program.html", "Programs", "programs"],
     ["aol.html", "AoL", "aol"],
+    ["security.html", "Security", "security"],
   ];
   const html = links
     .map(([href, label, key]) => `<a href="${href}"${key === page ? ' class="active"' : ""}>${escapeHtml(label)}</a>`)
