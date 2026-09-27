@@ -1,1 +1,618 @@
-Blank
+<!DOCTYPE html>
+<html lang="en-AU" data-theme="pastel">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not-a-Sean</title>
+<meta name="description" content="Everything Sean built or set up for the UQ Business School learning design team: what it is, who can get in, and who to ask while he is on leave.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='%23ff5ea8'/><text x='50' y='66' font-size='48' text-anchor='middle' font-family='sans-serif' font-weight='800' fill='%23111'>NaS</text></svg>">
+<style>
+/* ---------- palettes ---------- */
+:root{
+  --font-display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --font-mono:'DM Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --radius:18px;
+}
+[data-theme="pastel"]{
+  --bg:#fbf6ee; --bg-2:#fff; --ink:#26222b; --ink-2:#5b5563; --line:#26222b;
+  --shadow:6px 6px 0 var(--line);
+  --pink:#ffc6dd; --teal:#bdece6; --gold:#ffe7a3; --blue:#c9dcff; --green:#cfeec4; --orange:#ffd3b0; --purple:#dccdff;
+  --pink-ink:#8d1f57; --teal-ink:#0d5f57; --gold-ink:#7a5300; --blue-ink:#1f3f8f; --green-ink:#255f1b; --orange-ink:#8a3d00; --purple-ink:#4b2a8f;
+  --link:#26222b; --link-under:#ff5ea8;
+  --grain:radial-gradient(circle at 1px 1px, rgba(38,34,43,.10) 1px, transparent 0);
+}
+[data-theme="neon"]{
+  --bg:#0c0a14; --bg-2:#15121f; --ink:#f3efff; --ink-2:#b7afcc; --line:#f3efff;
+  --shadow:0 0 0 1px var(--line), 0 0 24px -6px var(--hue-glow, rgba(255,94,168,.6));
+  --pink:#ff3d9a; --teal:#1de9d1; --gold:#ffd33d; --blue:#4d8dff; --green:#6dff5c; --orange:#ff8a3d; --purple:#b26bff;
+  --pink-ink:#0c0a14; --teal-ink:#0c0a14; --gold-ink:#0c0a14; --blue-ink:#0c0a14; --green-ink:#0c0a14; --orange-ink:#0c0a14; --purple-ink:#0c0a14;
+  --link:#f3efff; --link-under:#1de9d1;
+  --grain:radial-gradient(circle at 1px 1px, rgba(243,239,255,.07) 1px, transparent 0);
+}
+/* per-section hue */
+[data-hue="pink"]{--hue:var(--pink);--hue-ink:var(--pink-ink);--hue-glow:var(--pink);}
+[data-hue="teal"]{--hue:var(--teal);--hue-ink:var(--teal-ink);--hue-glow:var(--teal);}
+[data-hue="gold"]{--hue:var(--gold);--hue-ink:var(--gold-ink);--hue-glow:var(--gold);}
+[data-hue="blue"]{--hue:var(--blue);--hue-ink:var(--blue-ink);--hue-glow:var(--blue);}
+[data-hue="green"]{--hue:var(--green);--hue-ink:var(--green-ink);--hue-glow:var(--green);}
+[data-hue="orange"]{--hue:var(--orange);--hue-ink:var(--orange-ink);--hue-glow:var(--orange);}
+[data-hue="purple"]{--hue:var(--purple);--hue-ink:var(--purple-ink);--hue-glow:var(--purple);}
+
+/* ---------- base ---------- */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg) var(--grain);background-size:22px 22px;color:var(--ink);font-family:var(--font-display);font-size:17px;line-height:1.6;font-weight:400;}
+a{color:var(--link);text-decoration:underline;text-decoration-color:var(--link-under);text-decoration-thickness:2px;text-underline-offset:3px;}
+a:hover{text-decoration-thickness:4px}
+:focus-visible{outline:3px solid var(--link-under);outline-offset:3px}
+code{font-family:var(--font-mono);font-size:.88em;background:var(--bg-2);padding:1px 6px;border:1px solid var(--line);border-radius:6px}
+h1,h2,h3{font-family:var(--font-display);line-height:1.05;margin:0;letter-spacing:-.01em}
+h2{font-size:clamp(28px,4vw,40px);font-weight:800}
+h3{font-size:22px;font-weight:700;margin:28px 0 8px}
+p{margin:0 0 14px}
+ul,ol{margin:0 0 14px;padding-left:22px}
+li{margin:0 0 6px}
+strong{font-weight:700}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+.skip{position:absolute;left:-999px;top:0;background:var(--pink);color:var(--pink-ink);padding:12px 16px;z-index:10}
+.skip:focus{left:0}
+
+/* ---------- top bar ---------- */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0}
+.brand{font-weight:800;font-size:20px;text-decoration:none;display:inline-flex;align-items:center;gap:10px}
+.brand__dot{width:14px;height:14px;border-radius:50%;background:var(--pink);box-shadow:0 0 0 2px var(--line)}
+.switch{display:inline-flex;border:2px solid var(--line);border-radius:999px;overflow:hidden;background:var(--bg-2);font-family:var(--font-mono);font-size:13px}
+.switch button{appearance:none;border:0;background:transparent;color:var(--ink);padding:7px 14px;cursor:pointer;font:inherit}
+.switch button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+
+/* ---------- hero ---------- */
+.hero{padding:40px 0 20px;position:relative}
+.hero h1{font-size:clamp(56px,12vw,140px);font-weight:800;letter-spacing:-.04em;line-height:.9;font-variation-settings:"opsz" 96;}
+.hero h1 span{display:inline-block;padding:0 .12em;border-radius:.2em;background:var(--pink);color:var(--pink-ink);transform:rotate(-2deg)}
+[data-theme="neon"] .hero h1 span{color:#0c0a14}
+.hero p{font-size:clamp(18px,2.4vw,24px);max-width:36em;margin:22px 0 0;color:var(--ink);font-weight:500}
+.hero .small{font-size:16px;color:var(--ink-2);font-weight:400;margin-top:10px}
+.confetti{position:absolute;right:0;top:20px;display:grid;grid-template-columns:repeat(3,22px);gap:10px;opacity:.9}
+.confetti i{display:block;width:22px;height:22px;border:2px solid var(--line);border-radius:50%}
+.confetti i:nth-child(1){background:var(--pink)} .confetti i:nth-child(2){background:var(--teal);border-radius:4px;transform:rotate(12deg)}
+.confetti i:nth-child(3){background:var(--gold)} .confetti i:nth-child(4){background:var(--blue);border-radius:4px}
+.confetti i:nth-child(5){background:var(--green)} .confetti i:nth-child(6){background:var(--orange);border-radius:4px;transform:rotate(-14deg)}
+.confetti i:nth-child(7){background:var(--purple)} .confetti i:nth-child(8){background:var(--pink);border-radius:4px}
+.confetti i:nth-child(9){background:var(--teal)}
+@media (max-width:640px){.confetti{display:none}}
+
+/* ---------- shelf (table of contents) ---------- */
+.shelf-wrap{margin:30px 0 10px}
+.shelf-wrap h2{font-size:14px;font-family:var(--font-mono);font-weight:500;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-2);margin:0 0 14px}
+.toc{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;list-style:none;padding:0;margin:0}
+.toc a{display:block;padding:14px 14px 12px;border:2px solid var(--line);border-radius:14px;background:var(--hue);color:var(--hue-ink);text-decoration:none;font-weight:700;line-height:1.2;box-shadow:var(--shadow);transition:transform .12s ease}
+.toc a:hover{transform:translate(-2px,-2px) rotate(-1deg)}
+.toc small{display:block;font-family:var(--font-mono);font-weight:400;font-size:11px;opacity:.75;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em}
+[data-theme="neon"] .toc a{box-shadow:0 0 0 1px var(--line),0 0 26px -6px var(--hue)}
+
+/* ---------- project sections ---------- */
+.proj{position:relative;margin:56px 0 0;padding:28px 28px 22px;background:var(--bg-2);border:2px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.proj::before{content:"";position:absolute;inset:-2px -2px auto -2px;height:14px;border-radius:var(--radius) var(--radius) 0 0;background:var(--hue);border:2px solid var(--line);border-bottom:0}
+.proj__head{display:flex;gap:18px;align-items:flex-start;margin:6px 0 18px}
+.doodle{flex:0 0 72px;width:72px;height:72px;border-radius:50%;background:var(--hue);border:2px solid var(--line);display:grid;place-items:center;transform:rotate(-6deg)}
+.doodle svg{width:46px;height:46px;fill:none;stroke:var(--hue-ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.doodle svg .f{fill:var(--hue-ink);stroke:none}
+.doodle svg .s2{stroke-width:2}
+[data-theme="neon"] .doodle svg{stroke:#0c0a14}[data-theme="neon"] .doodle svg .f{fill:#0c0a14}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:.12em;padding:3px 10px;border-radius:999px;background:var(--hue);color:var(--hue-ink);border:1.5px solid var(--line);margin-bottom:8px}
+.facts{display:grid;grid-template-columns:max-content 1fr;gap:8px 16px;margin:0 0 18px;padding:14px 16px;border-radius:12px;background:color-mix(in srgb,var(--hue) 35%, var(--bg-2));border:1.5px dashed var(--line);font-size:15.5px}
+.facts dt{font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:.12em;padding-top:4px}
+.facts dd{margin:0}
+@media (max-width:600px){.facts{grid-template-columns:1fr}.proj{padding:20px 16px}.proj__head{gap:12px}.doodle{flex-basis:56px;width:56px;height:56px}}
+
+/* note (callout) */
+.note{display:flex;gap:14px;padding:16px 18px;margin:16px 0;border:2px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--hue) 25%, var(--bg-2))}
+.note__icon{flex:0 0 24px;width:24px;height:24px;margin-top:3px;fill:var(--ink)}
+.note__title{font-weight:800;margin:0 0 4px}
+.note p:last-child{margin:0}
+
+/* shelf tiles (skills) */
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:8px 0 6px}
+.tile{display:block;padding:16px;border:2px solid var(--line);border-radius:14px;background:var(--bg-2);text-decoration:none;color:var(--ink);box-shadow:4px 4px 0 var(--hue);transition:transform .12s}
+.tile:hover{transform:translate(-2px,-2px)}
+.tile__title{font-family:var(--font-mono);font-weight:500;font-size:14px;margin:0 0 6px;padding:2px 8px;display:inline-block;border-radius:6px;background:var(--hue);color:var(--hue-ink)}
+.tile__body p:last-child{margin:0;font-size:15px}
+
+/* copy block */
+.copy{border:2px solid var(--line);border-radius:14px;overflow:hidden;margin:12px 0 18px;background:var(--bg-2)}
+.copy__label{margin:0;padding:8px 14px;font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:.12em;background:var(--hue);color:var(--hue-ink);border-bottom:2px solid var(--line)}
+.copy__text{margin:0;padding:14px 16px;max-height:280px;overflow:auto;font-family:var(--font-mono);font-size:13px;line-height:1.55;white-space:pre-wrap;color:var(--ink)}
+.copy__btn{appearance:none;border:0;border-top:2px solid var(--line);width:100%;padding:10px;background:var(--ink);color:var(--bg);font:inherit;font-weight:700;cursor:pointer}
+.copy__btn:hover{background:var(--hue);color:var(--hue-ink)}
+
+/* table */
+table{width:100%;border-collapse:separate;border-spacing:0;border:2px solid var(--line);border-radius:12px;overflow:hidden;font-size:15.5px}
+th,td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1.5px solid var(--line)}
+th{background:var(--hue);color:var(--hue-ink);font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:.12em}
+tr:last-child td{border-bottom:0}
+
+/* footer */
+.foot{margin:60px 0 40px;font-size:14px;color:var(--ink-2);font-family:var(--font-mono)}
+.foot a{color:var(--ink-2)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+
+/* ---------- tiers and tiles ---------- */
+.tier{margin:44px 0 0}
+.tier__head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin:0 0 16px}
+.tier__head h2{font-size:clamp(26px,3.6vw,36px)}
+.tier__head p{margin:0;color:var(--ink-2);font-size:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+details.proj{margin:0;padding:0;background:var(--bg-2);border:2px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);position:relative;overflow:hidden}
+details.proj::before{content:"";position:absolute;left:0;right:0;top:0;height:12px;background:var(--hue);border-bottom:2px solid var(--line)}
+details.proj[open]{grid-column:1/-1}
+.face{list-style:none;cursor:pointer;display:flex;flex-direction:column;gap:8px;padding:26px 18px 16px;min-height:230px;aspect-ratio:1/1;position:relative}
+.face::-webkit-details-marker{display:none}
+details.proj[open] .face{aspect-ratio:auto;min-height:0;flex-direction:row;flex-wrap:wrap;align-items:center;gap:14px 18px;padding:26px 24px 12px}
+.face .doodle{width:56px;height:56px;flex:0 0 56px}
+.face .doodle svg{width:36px;height:36px}
+.face .tag{align-self:flex-start;margin:0}
+.face__title{font-size:22px;font-weight:800;line-height:1.1}
+.face__blurb{font-size:14.5px;color:var(--ink-2);line-height:1.4;flex:1}
+details.proj[open] .face__blurb{flex-basis:100%;order:9;margin:0}
+.face__more{font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:.12em;align-self:flex-end;padding:4px 10px;border:1.5px solid var(--line);border-radius:999px;background:var(--hue);color:var(--hue-ink)}
+details.proj[open] .face__more{margin-left:auto}
+details.proj[open] .face__more::before{content:"close"}
+details.proj[open] .face__more{font-size:0}
+details.proj[open] .face__more::before{font-size:12px}
+.face:hover .face__more{transform:translate(-1px,-1px)}
+.proj__body{padding:6px 24px 24px;border-top:2px dashed var(--line);margin-top:6px}
+@media (max-width:600px){.face{aspect-ratio:auto;min-height:0;padding:24px 16px 14px}.proj__body{padding:6px 16px 18px}}
+/* who table */
+.who{background:var(--bg-2);border:2px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin:8px 0 18px}
+.gallery a{display:block;text-decoration:none;color:var(--ink)}
+.gallery img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;border:2px solid var(--line);border-radius:10px;transition:transform .12s}
+.gallery a:nth-child(odd) img{transform:rotate(-1.2deg)}.gallery a:nth-child(even) img{transform:rotate(1.2deg)}
+.gallery a:hover img{transform:rotate(0) scale(1.02)}
+.gallery span{display:block;font-family:var(--font-mono);font-size:12px;margin-top:6px;line-height:1.3}
+/* compact copy */
+.copy{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 12px}
+.copy__label{font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:.12em;padding:4px 10px;border-radius:999px;background:var(--hue);color:var(--hue-ink);border:1.5px solid var(--line)}
+.copy__btn{width:auto;border:2px solid var(--line);border-radius:999px;padding:7px 16px;background:var(--ink);color:var(--bg)}
+.copy__peek{flex-basis:100%;margin:0}
+.copy__peek summary{cursor:pointer;font-family:var(--font-mono);font-size:12px;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px}
+.copy__peek[open] summary{margin-bottom:8px}
+.copy__peek .copy__text{border:1.5px dashed var(--line);border-radius:10px;background:var(--bg)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="wrap">
+
+<div class="bar">
+  <a class="brand" href="./"><span class="brand__dot" aria-hidden="true"></span>Not-a-Sean</a>
+  <div class="switch" role="group" aria-label="Colour theme">
+    <button type="button" data-set="pastel" aria-pressed="true">pastel</button>
+    <button type="button" data-set="neon" aria-pressed="false">neon</button>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="confetti" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <h1>Not-a-<span>Sean</span></h1>
+  <p>The bits and pieces. Everything Sean built, set up or left lying around for the learning design team, with what it is, who can get in, and who to ask while he is on leave.</p>
+  <p class="small">Some of this is serious infrastructure and some of it is ducks. If something here is broken, the "ask" line is the answer, not Sean. Back around March 2027.</p>
+</header>
+
+<main id="main">
+
+
+<section class="tier"><div class="tier__head"><h2>Top tier</h2><p>The serious infrastructure. If one of these breaks, someone needs to know today.</p></div><div class="grid">
+<details class="proj" id="atlas" data-hue="teal">
+  <summary class="face">
+    <span class="doodle" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="22"/><path d="M10 32h44M32 10v44M18 18l28 28M46 18L18 46"/><circle cx="32" cy="32" r="5" class="f"/></svg></span>
+    <span class="tag">infrastructure</span>
+    <span class="face__title">ATLAS</span>
+    <span class="face__blurb">Assessment redesign and the team's AoL companion. Rubric builder, coverage, desktop analysis.</span>
+    <span class="face__more" aria-hidden="true">open</span>
+  </summary>
+  <div class="proj__body">
+<dl class="facts">
+      <dt>Link</dt><dd><a href="https://atlas-uq-acgbgpbefnbdc7f2.australiaeast-01.azurewebsites.net/">ATLAS (live app)</a> &middot; <a href="https://teach.business.uq.edu.au/ld/uqbsld/atlas/about/">About ATLAS</a> on teach.business</dd>
+      <dt>Access</dt><dd>Sign in with a UQBS LD account (the <code>uqbsld</code> tier). Every LD on the team has one. Academics get their own tier when an LD enrols them from the hub.</dd>
+      <dt>Ask</dt><dd>Michael Lin for anything Azure, accounts or deploys. Ree Jordan for the research and ethics side. The project mailbox is atlas.project@uq.edu.au; every team member has access and can <a href="https://uq.sharepoint.com/sites/topic-it-info/SitePages/Adding-a-shared-mailbox-to-your-Outlook.aspx">add it to Outlook</a>.</dd>
+    </dl>
+    <p>ATLAS (AI Transformation and Learning Assessment System) started as a Teaching Innovation Grant project for redesigning open assessment so that students still do the cognitive work when AI can produce the artefact. It reads a course's profile, produces a desktop analysis, and walks an academic and their LD through a redesign. Since September it is also the team's AoL companion: it holds a copy of the AoL register, shows every UQBS course's AoL position, and gives program-level coverage.</p>
+    <p>The <strong>toolkit</strong> on the hub is the part LDs use day to day, outside any course overhaul:</p>
+    <ul>
+      <li><strong>Rubric builder.</strong> A GA rubric for any assessment in any UQBS course, built from the official 2026 AoL trait descriptors and rewritten into task-specific language.</li>
+      <li><strong>AoL coverage.</strong> Where each GA is measured across a program or major, straight from the register, with the gaps. The register link and an upload button sit at the top, so the download-save-reupload loop is a two-minute job.</li>
+      <li><strong>Desktop analysis.</strong> A read of any course's assessment suite: what AI can do to each task, Bloom's and SOLO levels, and where the course sits against the 60% secure target.</li>
+      <li><strong>Ask ATLAS.</strong> A guide that explains where you are and what each screen wants. It points; it does not do the work.</li>
+    </ul>
+    <div class="note">
+      <svg class="note__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      <div>
+        <p class="note__title">Where it runs</p>
+        <p>ATLAS runs on an Azure App Service under Sean's personal subscription while ITS finishes the migration to UQ infrastructure. The notify flow (a Teams card and an email to learningdesign@ when an academic saves a brief) and the register push (every time the workbook is saved) both run as Power Automate flows on Sean's account. If either stops, Michael is the person with the keys.</p>
+      </div>
+    </div>
+  </div>
+</details>
+<details class="proj" id="profiles" data-hue="blue">
+  <summary class="face">
+    <span class="doodle" aria-hidden="true"><svg viewBox="0 0 64 64"><rect x="12" y="8" width="40" height="48" rx="4"/><path d="M20 20h24M20 30h24M20 40h16"/><path d="M40 44l6 6 10-12" class="s2"/></svg></span>
+    <span class="tag">data</span>
+    <span class="face__title">Course profiles</span>
+    <span class="face__blurb">Every UQBS course profile as JSON, scraped nightly, with a viewer and the AoL feed.</span>
+    <span class="face__more" aria-hidden="true">open</span>
+  </summary>
+  <div class="proj__body">
+<dl class="facts">
+      <dt>Link</dt><dd><a href="https://uq-business-school.github.io/uqbs-course-profiles/">Course profiles site</a> &middot; <a href="https://github.com/UQ-Business-School/uqbs-course-profiles">the repo</a> &middot; <a href="https://teach.business.uq.edu.au/ld/uqbsld/profiles/">UQ Course Profiles</a> page on teach.business</dd>
+      <dt>Access</dt><dd>Public. The repo is in the UQ-Business-School GitHub org; team members with org access can edit.</dd>
+      <dt>Ask</dt><dd>Michael Lin. Report errors to learningdesign@business.uq.edu.au.</dd>
+    </dl>
+    <p>Every UQBS course profile as structured JSON, one file per course, with assessment items, learning outcomes, AI categories and the LO-to-assessment mapping. A scraper keeps it current. The viewer on top of it is quicker and more useful than the official profile pages when you need to compare courses or pull an assessment list, and it is what ATLAS reads for its course feed. The AoL feed on the same site carries course, GA, item, status and rubric link for every register row (names and notes stay in the workbook).</p>
+    <p>It is not an official UQ source, and the site says so. Program workbooks for curriculum review (MBus, MCom and friends) are built from the same data with <code>build_program.py</code> in the repo.</p>
+  </div>
+</details>
+<details class="proj" id="register" data-hue="gold">
+  <summary class="face">
+    <span class="doodle" aria-hidden="true"><svg viewBox="0 0 64 64"><rect x="8" y="12" width="48" height="40" rx="3"/><path d="M8 24h48M8 36h48M24 12v40M40 12v40"/><circle cx="48" cy="44" r="4" class="f"/></svg></span>
+    <span class="tag">the master</span>
+    <span class="face__title">The AoL register</span>
+    <span class="face__blurb">The accreditation master on SharePoint. One row per course per GA.</span>
+    <span class="face__more" aria-hidden="true">open</span>
+  </summary>
+  <div class="proj__body">
+<dl class="facts">
+      <dt>Link</dt><dd><a href="https://uq.sharepoint.com/teams/bs3u7kls/Shared%20Documents/Curriculum%20Uplift%20and%20New%20Course%20Development/01.%20Assurance%20of%20Learning%20(AoL)/4.%20AoL%20(Sean)/UQBS-AoL-Register.xlsx">UQBS-AoL-Register.xlsx</a> &middot; <a href="https://uq.sharepoint.com/:f:/r/teams/bs3u7kls/Shared%20Documents/Curriculum%20Uplift%20and%20New%20Course%20Development/01.%20Assurance%20of%20Learning%20%28AoL%29/4.%20AoL%20%28Sean%29">the 4. AoL folder</a> (evidence, rubrics, notes, one folder per course)</dd>
+      <dt>Access</dt><dd>The Curriculum Uplift SharePoint. Everyone on the LD team has it.</dd>
+      <dt>Ask</dt><dd>The whole LD team owns it now. Chelsea Jarvis holds the curriculum uplift job while Sean is away.</dd>
+    </dl>
+    <p>The accreditation master: one row per course per GA, with the assessment item it is measured on, the status, the named LD, and a link to the rubric. Nine statuses, from Identified through Rubric in development, Approved not installed, Awaiting LD check and Partial mapping to Active. The Courses sheet is the taxonomy (programs, majors, cores) and drives the lookups, so add a course code there first.</p>
+    <p>Two habits keep it healthy. Edit it in Excel or in the browser, never by script, because the validations, conditional formatting and table part are fragile. And treat "Awaiting LD check" as a request to a named person: the row does nothing until someone opens the rubric and confirms all three traits are there.</p>
+    <p>Every save pushes to ATLAS within a few minutes, so the coverage view is never more than one save behind.</p>
+  </div>
+</details>
+</div></section>
+
+<section class="tier"><div class="tier__head"><h2>Cool projects</h2><p>Tools, standards and experiments the team can pick up and use.</p></div><div class="grid">
+<details class="proj" id="skills" data-hue="orange">
+  <summary class="face">
+    <span class="doodle" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M32 8v32M20 30l12 12 12-12"/><path d="M10 46v8h44v-8"/><circle cx="52" cy="14" r="5" class="f"/></svg></span>
+    <span class="tag">downloads</span>
+    <span class="face__title">Claude skills</span>
+    <span class="face__blurb">Six UQ skills for Claude: rubrics, Word, PowerPoint, icons, Blackboard and teach.business HTML.</span>
+    <span class="face__more" aria-hidden="true">open</span>
+  </summary>
+  <div class="proj__body">
+<dl class="facts">
+      <dt>Link</dt><dd>Downloads below</dd>
+      <dt>Access</dt><dd>Anyone. Install into your own Claude account.</dd>
+      <dt>Ask</dt><dd>Michael Lin, or improve them yourself and share the new file.</dd>
+    </dl>
+    <p>A skill is a folder of instructions (and any templates it needs) that Claude reads when the task matches. These six carry the UQ and UQBS house rules so you do not have to. To install one: in Claude, open Settings, turn on code execution under Capabilities if it is off, then go to Customise, Skills, and upload the <code>.skill</code> file. It is active in every new chat from then on.</p>
+    <div class="shelf">
+      <a class="tile" href="skills/ga-rubric-integration.skill" download>
+        <div class="tile__body"><p class="tile__title">ga-rubric-integration</p><p>Builds and revises rubrics with the Graduate Attribute criteria folded in, using the official 2026 AoL trait descriptors and the "smush" method. The rule set behind every GA rubric the team has shipped.</p></div>
+      </a>
+      <a class="tile" href="skills/uq-document-formatting.skill" download>
+        <div class="tile__body"><p class="tile__title">uq-document-formatting</p><p>Word documents on the real UQ .dotx templates (all eight), so reports, briefs, guides and memos inherit the actual styles, header art and footers.</p></div>
+      </a>
+      <a class="tile" href="skills/uq-powerpoint-template.skill" download>
+        <div class="tile__body"><p class="tile__title">uq-powerpoint-template</p><p>Slide decks on the official UQ PowerPoint template: the masters, the six-level text system, the colour and chart palette, and the standing slides.</p></div>
+      </a>
+      <a class="tile" href="skills/uq-icons.skill" download>
+        <div class="tile__body"><p class="tile__title">uq-icons</p><p>Keyline icons from the team's Noun Project seats, recoloured to UQ purple, inserted into PowerPoint as SVG or emitted as accessible inline SVG for HTML.</p></div>
+      </a>
+      <a class="tile" href="skills/uqbs-blackboard-html.skill" download>
+        <div class="tile__body"><p class="tile__title">uqbs-blackboard-html</p><p>On-brand, accessible HTML fragments for the Add HTML block in Ultra, including tabs, flashcards, self-checks and copy blocks.</p></div>
+      </a>
+      <a class="tile" href="skills/uqbs-teach-business-html.skill" download>
+        <div class="tile__body"><p class="tile__title">uqbs-teach-business-html</p><p>Complete standalone pages for teach.business.uq.edu.au: masthead, hero, footer, the shared stylesheet, and only the official components.</p></div>
+      </a>
+    </div>
+  </div>
+</details>
+<details class="proj" id="bookmarklets" data-hue="green">
+  <summary class="face">
+    <span class="doodle" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="34" r="8"/><path d="M32 26V10M32 42v14M24 34H6M40 34h18M26 28L14 16M38 28l12-12M26 40L14 52M38 40l12 12"/><circle cx="32" cy="34" r="3" class="f"/></svg></span>
+    <span class="tag">browser tools</span>
+    <span class="face__title">Blackboard bookmarklets</span>
+    <span class="face__blurb">Blackboard Map, the content inventory, and the Instructor-to-TA button. Drag to your bookmarks bar.</span>
+    <span class="face__more" aria-hidden="true">open</span>
+  </summary>
+  <div class="proj__body">
+<dl class="facts">
+      <dt>Link</dt><dd><a href="bookmarklets/blackboard-map.html">Blackboard Map</a> &middot; <a href="bookmarklets/findyourhtml_7.html">Content inventory (find your HTML) v7</a> &middot; <a href="bookmarklets/instructor-to-ta.html">Instructor to TA</a></dd>
+      <dt>Access</dt><dd>Anyone with a Blackboard login. Each runs in your own signed-in browser and talks only to learn.uq.edu.au. No AI, no server, nothing leaves your machine.</dd>
+      <dt>Ask</dt><dd>Vera Iushina for the inventory tool (v7 builds on her v6). Michael Lin for the others.</dd>
+    </dl>
+    <p>Open a page, drag the yellow button to your bookmarks bar, then click it on any Blackboard page.</p>
+    <ul>
+      <li><strong>Blackboard Map</strong> walks every item in the courses you choose, including what is embedded inside each Ultra document, and saves a course map as HTML, a manifest as JSON and a spreadsheet as CSV. Built for the AoL rubric sweep; useful any time you need to know what is actually in a course.</li>
+      <li><strong>Content inventory</strong> lists every HTML block, H5P and tool link in a course so you can find the thing you need to edit. Version 7 finds embedded H5P from the console copy too and tells H5P on the course page apart from H5P inside a document.</li>
+      <li><strong>Instructor to TA</strong> exists because the Blackboard team asked Educational Designers to hold long-term access as Teaching Assistant rather than Instructor, since Instructors are now copied forward into future course sites. It lists every course where you are an Instructor with a tick box; one button downgrades the ticked courses to TA, the other unenrols you. Only your own enrolment is touched, and nothing changes until you confirm. This is the one tool of the three that writes to Blackboard.</li>
+    </ul>
+  </div>
+</details>
+<details class="proj" id="drop" data-hue="blue">
+  <summary class="face">
+    <span class="doodle" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M32 8c8 14 18 24 18 34a18 18 0 0 1-36 0C14 32 24 22 32 8z"/><path d="M24 44a8 8 0 0 0 8 8" class="s2"/></svg></span>
+    <span class="tag">builder</span>
+    <span class="face__title">Drop</span>
+    <span class="face__blurb">The in-house Rise replacement. Build from blocks, copy for Blackboard, or export SCORM.</span>
+    <span class="face__more" aria-hidden="true">open</span>
+  </summary>
+  <div class="proj__body">
+<dl class="facts">
+      <dt>Link</dt><dd><a href="drop/">Open Drop</a></dd>
+      <dt>Access</dt><dd>Anyone. No sign-in. Your work autosaves in your own browser; Save writes it to a .json file and Open brings it back on any machine.</dd>
+      <dt>Ask</dt><dd>Michael Lin.</dd>
+    </dl>
+    <p>The team's in-house replacement for Rise. Build a module from blocks (text, callouts, images, video, documents, accordions, tabs, flashcards, self-checks), preview it, then "Copy for Blackboard" to get the on-brand HTML for an Add HTML block, or export a fragment or a SCORM package. It imports existing Rise exports so old modules can be rebuilt without starting again.</p>
+    <p>What changed in this version: Drop used to sit on Azure behind a password because it pushed images to GitHub in the background. That feature is gone, so the password is gone with it and Drop is a plain static page. Images you add go into the media basket; download the publish zip and put its media folder wherever your Media base URL (in Settings) points, such as a teach.business folder or the course's own file area.</p>
+  </div>
+</details>
+<details class="proj" id="html" data-hue="purple">
+  <summary class="face">
+    <span class="doodle" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M22 16L8 32l14 16M42 16l14 16-14 16M36 10L28 54"/></svg></span>
+    <span class="tag">standard</span>
+    <span class="face__title">The teach.business HTML standard</span>
+    <span class="face__blurb">One house style for Blackboard Ultra and teach.business pages, and the prompt that writes it.</span>
+    <span class="face__more" aria-hidden="true">open</span>
+  </summary>
+  <div class="proj__body">
+<dl class="facts">
+      <dt>Link</dt><dd><a href="https://teach.business.uq.edu.au/ld/uqbsld/bb-html/">On-brand HTML in Blackboard Ultra</a> &middot; <a href="https://github.com/UQ-Business-School/courses/blob/main/uqbsld/brand/uqbs-web-standard.md">the web standard</a> &middot; <a href="https://teach.business.uq.edu.au/ld/uqbsld/ai-disclosure/">Disclosing AI use</a></dd>
+      <dt>Access</dt><dd>Public pages. The source lives in <a href="https://github.com/UQ-Business-School/courses">UQ-Business-School/courses</a>, which mirrors to teach.business.uq.edu.au/ld/.</dd>
+      <dt>Ask</dt><dd>Anyone on the team who has pushed to the courses repo. Michael Lin for the mirror.</dd>
+    </dl>
+    <p>Two surfaces, one house style. For <strong>Blackboard Ultra</strong>, a CSS-only pattern for the Add HTML block that survives the sanitiser, with the callouts, cards, accordions and tabs, plus the prompt that gets a language model to write it correctly. For <strong>full pages on teach.business</strong>, a skeleton that links the shared <code>uqbs.css</code> and <code>uqbs.js</code> from <code>/ld/uqbs/</code> and uses only the official components, including the flashcards, self-check quiz and copy block. This page is built on it.</p>
+    <p>The two skills below (<code>uqbs-blackboard-html</code> and <code>uqbs-teach-business-html</code>) are the same standard packaged for Claude, so the output is right without pasting the rules in every time.</p>
+  </div>
+</details>
+<details class="proj" id="notabot" data-hue="teal">
+  <summary class="face">
+    <span class="doodle" aria-hidden="true"><svg viewBox="0 0 64 64"><rect x="10" y="14" width="44" height="30" rx="8"/><path d="M22 44l-4 10 12-10"/><path d="M22 26h20M22 33h12" class="s2"/></svg></span>
+    <span class="tag">explainer</span>
+    <span class="face__title">NotABot</span>
+    <span class="face__blurb">An AI writing coach for international students. Explainer and slides, no link.</span>
+    <span class="face__more" aria-hidden="true">open</span>
+  </summary>
+  <div class="proj__body">
+<dl class="facts">
+      <dt>Link</dt><dd><a href="notabot/AALL_presentation_2026_printable_version.pdf">The 2026 AALL presentation (PDF)</a>. No link to the live tool from here; it is a student-facing research instrument.</dd>
+      <dt>Access</dt><dd>Students in the courses that run it. Staff access by arrangement.</dd>
+      <dt>Ask</dt><dd>Andy Sankey.</dd>
+    </dl>
+    <p>An AI writing coach for international students in a postgraduate management course, built on the Claude API and embedded in Blackboard. It does not write for the student and it does not mark; it reads a draft against the task and the student's own goals and coaches, on Andy Sankey's six pedagogical principles. It has run under ethics approval since Semester 1 2026, with a two-survey study around it, and the S1 reception figures are in the deck. It is the case study in the team's 2026 BEL award nomination and in the book chapter on AI at the Business School.</p>
+  </div>
+</details>
+<details class="proj" id="touchstones" data-hue="purple">
+  <summary class="face">
+    <span class="doodle" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M12 48c4-16 12-26 20-26s16 10 20 26"/><circle cx="32" cy="14" r="5"/><path d="M20 48h24"/><circle cx="32" cy="38" r="3" class="f"/></svg></span>
+    <span class="tag">explainer</span>
+    <span class="face__title">HOSP7053 Touchstones</span>
+    <span class="face__blurb">Structured reflection conversations through HOSP7053. Explainer only.</span>
+    <span class="face__more" aria-hidden="true">open</span>
+  </summary>
+  <div class="proj__body">
+<dl class="facts">
+      <dt>Link</dt><dd>None from here. Student-facing, inside the course.</dd>
+      <dt>Access</dt><dd>HOSP7053 students and teaching staff.</dd>
+      <dt>Ask</dt><dd>Michael Lin for the app. Asha Worsteling and David Solnet own the pedagogy.</dd>
+    </dl>
+    <p>A series of short, structured self-reflection conversations that run through the semester in Service Leadership in Hospitality. Each Touchstone sits on a scenario and walks a student through Asha's five lenses (behaviour, literature, impact, blindspot, judgement), with an AI partner that asks rather than tells. Staff have named logins to read the reflections. A digitised emotional intelligence self-assessment sits alongside it for Week 7, and by design nothing in the platform scores or aggregates those results.</p>
+  </div>
+</details>
+<details class="proj" id="bbop" data-hue="orange">
+  <summary class="face">
+    <span class="doodle" aria-hidden="true"><svg viewBox="0 0 64 64"><rect x="14" y="18" width="36" height="28" rx="6"/><circle cx="26" cy="32" r="3" class="f"/><circle cx="38" cy="32" r="3" class="f"/><path d="M32 8v10M22 46v8M42 46v8M26 40h12" /></svg></span>
+    <span class="tag">2027</span>
+    <span class="face__title">BBOP and P.A.T.</span>
+    <span class="face__blurb">The AI tutor, coming back as part of ATLAS. Not this semester.</span>
+    <span class="face__more" aria-hidden="true">open</span>
+  </summary>
+  <div class="proj__body">
+<dl class="facts">
+      <dt>Status</dt><dd>Future project, not quite ready. TBD 2027.</dd>
+      <dt>Ask</dt><dd>Michael Lin.</dd>
+    </dl>
+    <p>BBOP is the AI tutor that ran in BISM1201 and MGTS7619; P.A.T. is its repackaging as a set of tutor conversations placed throughout a Blackboard course. Both come from the same codebase as NotABot and the Touchstones. The plan is a self-service, multi-tenant tutor platform that folds into ATLAS, so an academic who has redesigned a course with ATLAS can switch on a tutor for it without a build. Not this semester.</p>
+  </div>
+</details>
+<details class="proj" id="grotesque" data-hue="pink">
+  <summary class="face">
+    <span class="doodle" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M12 56V28l20-16 20 16v28"/><path d="M26 56V40h12v16"/><path d="M20 30l6-4M44 30l-6-4"/><circle cx="32" cy="24" r="3" class="f"/></svg></span>
+    <span class="tag">dark academia</span>
+    <span class="face__title">Grotesque Quest</span>
+    <span class="face__blurb">A dark academia scavenger hunt around the Great Court grotesques.</span>
+    <span class="face__more" aria-hidden="true">open</span>
+  </summary>
+  <div class="proj__body">
+<dl class="facts">
+      <dt>Status</dt><dd>Ran in the BBusMan first-year program. Materials are with the course team.</dd>
+      <dt>Ask</dt><dd>Gemma Irving.</dd>
+    </dl>
+    <p>A team scavenger hunt around the grotesques of the Great Court for first-year students, dressed in dark academia: parchment role cards, ink-line maps, a leaderboard fed from Google Forms. The mechanic is positive interdependence in the Johnson and Johnson sense. Each of the four roles on a team holds information the others need, so the interdependence is felt rather than explained and the debrief writes itself. It doubles as a response to the campus-disconnection problem by making the sandstone something students look at closely.</p>
+  </div>
+</details>
+</div></section>
+
+<section class="tier"><div class="tier__head"><h2>Purely LD team fun</h2><p>Morale, ducks and a whiteboard.</p></div><div class="grid">
+<details class="proj" id="qotw" data-hue="pink">
+  <summary class="face">
+    <span class="doodle" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="24"/><path d="M32 8v48M8 32h48M15 15l34 34M49 15L15 49"/><circle cx="32" cy="32" r="8" class="f"/></svg></span>
+    <span class="tag">whiteboard</span>
+    <span class="face__title">Question of the week</span>
+    <span class="face__blurb">The whiteboard, the questions so far, the hub posters, and the prompts to make the next one.</span>
+    <span class="face__more" aria-hidden="true">open</span>
+  </summary>
+  <div class="proj__body">
+<dl class="facts">
+      <dt>Where</dt><dd>The big whiteboard in the LD pod</dd>
+      <dt>Access</dt><dd>Walk up to it</dd>
+      <dt>Ask</dt><dd>Whoever put up the last question. That is the whole succession plan.</dd>
+    </dl>
+    <p>An A4 hub image goes in the middle of the whiteboard, wedges get drawn out from it, and everyone sticks their avatar in the wedge that answers the question. It works because the question forces a choice: fixed options cluster, open questions scatter. If someone suggests an open question ("what cartoon animal would you be?"), turn it into six named options and it will work.</p>
+    <p>Each week's hub gets a different visual style. Questions so far, roughly in order:</p>
+    <ol>
+      <li>Burgers or tacos (the first one)</li>
+      <li>Your ideal work-from-home and work-from-office spread</li>
+      <li>Best coffee on campus</li>
+      <li>How would a dog wear pants</li>
+      <li>Legit snacks</li>
+      <li>Which Disney princess are you</li>
+      <li>What milk goes in your coffee</li>
+      <li>Which cartoon animal are you (Garfield, Snoopy, Hello Kitty, Road Runner, Bugs Bunny, Po)</li>
+      <li>What should Sean name his baby (Sean's last one)</li>
+      <li>What should Trish's grandchild call her</li>
+    </ol>
+
+    <h3>The hubs so far</h3>
+    <p>Each week a different style. Click one to open it full size.</p>
+    <div class="gallery">
+      <a href="qotw/hub-tacos.jpg"><img src="qotw/hub-tacos.jpg" alt="Cartoon taco and burger in boxing gloves squaring off in a ring, captioned Taco vs Burger" loading="lazy"><span>Taco vs burger (the first one)</span></a>
+      <a href="qotw/hub-wfh.jpg"><img src="qotw/hub-wfh.jpg" alt="Illuminated-manuscript style poster for the work-from-home versus work-from-office spread question" loading="lazy"><span>WFH or WFO spread</span></a>
+      <a href="qotw/hub-coffee.jpg"><img src="qotw/hub-coffee.jpg" alt="Paper-craft wheel of campus coffee spots around a central cup" loading="lazy"><span>Best coffee on campus</span></a>
+      <a href="qotw/hub-dogs.jpg"><img src="qotw/hub-dogs.jpg" alt="Poster asking how would dogs wear pants, with a boxer modelling all four legs, front legs only and back legs only" loading="lazy"><span>How would dogs wear pants</span></a>
+      <a href="qotw/hub-snacks.jpg"><img src="qotw/hub-snacks.jpg" alt="Vintage vending-machine poster reading Legit Snacks" loading="lazy"><span>Legit snacks</span></a>
+      <a href="qotw/hub-princess.jpg"><img src="qotw/hub-princess.jpg" alt="Radial chart of Disney princesses with a personality hook each" loading="lazy"><span>Which Disney princess</span></a>
+      <a href="qotw/hub-milk.jpg"><img src="qotw/hub-milk.jpg" alt="The Milky Way, a ranked table of every milk in the office" loading="lazy"><span>Milk week: the companion ranking</span></a>
+      <a href="qotw/hub-cartoon.jpg"><img src="qotw/hub-cartoon.jpg" alt="Ukiyo-e woodblock style poster asking which cartoon animal are you" loading="lazy"><span>Which cartoon animal</span></a>
+    </div>
+    <h3>Prompt for the hub image</h3>
+    <p>This is the shape that has worked. Swap in the question, the options and this week's style. Text rendering in current image models is good enough to put the captions in the picture.</p>
+    <div class="copy"><span class="copy__label">Hub image prompt</span><button type="button" class="copy__btn">Copy to clipboard</button><details class="copy__peek"><summary>read it</summary><pre class="copy__text">Create a portrait A4 (vertical) poster in the style of [THIS WEEK'S STYLE, e.g. traditional Japanese ukiyo-e woodblock print / cosy 16-bit pixel art / 1950s travel poster / medieval illuminated manuscript], designed to sit in the centre of a whiteboard as the hub of a "which one are you?" chart.
+
+OVERALL LOOK: [three or four sentences that pin down the style: line quality, palette, paper or surface texture, period motifs for the border and background.]
+
+TITLE in a decorative cartouche across the top, in clear English lettering styled to suit the print: "[THE QUESTION IN CAPITALS]"
+
+Below the title, arrange [NUMBER] options around a central round medallion (evenly spaced at clock positions), each drawn in the same style and sitting in its own segment divided by thin radiating lines:
+
+1. [Option one, with two or three visual details]
+2. [Option two]
+3. [Option three]
+4. [Option four]
+5. [Option five]
+6. [Option six]
+
+Under each option, a small caption panel with the option's name and a short personality hook, e.g. "[Option one]: [hook]".
+
+Keep the dividing lines light so they guide hand-drawn wedges without dominating. Leave a little empty space in each segment so a printed staff avatar can be stuck there later. No photorealism, no 3D, no text other than the title and the captions.</pre></details></div>
+
+    <h3>Prompt for a staff avatar</h3>
+    <p>Every person on the board has a small printed avatar in one house style. New starters need one before they can vote. Attach two images to the image tool: a photo of the person, and <a href="qotw/avatar-style-reference.png">the style reference</a> (any existing avatar from the set). If the photo is a tight head shot, tell the tool to zoom out so the proportions match a normal profile picture, shoulders and upper torso.</p>
+    <div class="copy"><span class="copy__label">Avatar prompt</span><button type="button" class="copy__btn">Copy to clipboard</button><details class="copy__peek"><summary>read it</summary><pre class="copy__text">Create a square staff profile avatar using the supplied staff photograph for the person's likeness and the supplied illustrated team avatar as the STRICT STYLE REFERENCE.
+The finished image must look like it belongs to exactly the same existing set. Do not reinterpret, modernise or add realism to the style.
+
+PERSON
+Name: [FIRST NAME]
+Use the photograph only to determine the person's recognisable features: hairstyle, hair colour, face shape, glasses, facial hair, skin tone, clothing and other obvious distinguishing features.
+
+ILLUSTRATION STYLE
+* simple flat editorial/cartoon portrait
+* bold, clean dark-brown/near-black outlines
+* simplified geometric facial features
+* small simple oval/dot eyes
+* simple eyebrows and nose drawn with minimal lines
+* friendly simplified mouth
+* hair represented as clean flat illustrated shapes rather than individual realistic strands
+* facial hair, if present, must also be simplified into clean cartoon shapes, never realistic beard hairs or detailed stubble
+* very limited shading: broad flat areas only
+* subtle warm paper/grain texture is acceptable
+* no photorealism
+* no 3D rendering
+* no glossy digital-art effects
+* no exaggerated caricature
+
+Preserve distinctive accessories shown in the photograph, such as glasses. Glasses should sit naturally below the eyebrow line, leaving the eyebrows clearly visible above them.
+
+COMPOSITION
+* exactly 1:1 square
+* head-and-upper-torso portrait
+* person centred
+* head comfortably clear of the top edge
+* shoulders/body continue behind the nameplate
+* simple solid coloured background
+* no scenery, objects or extra decoration
+
+NAMEPLATE
+Across the lower portion of the image, add the same wide black rounded-rectangle nameplate used in the reference set.
+Write exactly:
+[FIRST NAME IN UPPERCASE]
+Use very large, bold, condensed sans-serif uppercase lettering. Centre the name horizontally and vertically inside the black bar. Choose the lettering colour to coordinate strongly with the background colour.
+The nameplate must sit in the same low position and proportions as the supplied team reference. Do not move it upwards into the middle of the torso.
+
+COLOUR
+Give this person their own strong background colour that works with their clothing and is distinct from the other staff avatars. Keep the overall palette warm, slightly muted and harmonious with the existing set.
+
+CRITICAL
+The supplied illustrated avatar is the house style. Match its line weight, facial simplification, proportions, texture, nameplate design and overall visual language as closely as possible. The photograph controls the person's likeness; the illustrated reference controls everything about how they are drawn.</pre></details></div>
+  </div>
+</details>
+<details class="proj" id="duck" data-hue="gold">
+  <summary class="face">
+    <span class="doodle" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="40" cy="22" r="10"/><path d="M50 22l10 4-10 2"/><path d="M14 40c0-6 8-10 18-10h10v6c0 10-10 16-18 16-6 0-10-6-10-12z"/><circle cx="43" cy="20" r="2" class="f"/></svg></span>
+    <span class="tag">the flock</span>
+    <span class="face__title">Who's That Duck</span>
+    <span class="face__blurb">26 colleagues as ducks in the Great Court, and a kit to make your own.</span>
+    <span class="face__more" aria-hidden="true">open</span>
+  </summary>
+  <div class="proj__body">
+<dl class="facts">
+      <dt>Link</dt><dd><a href="duck/">The team wall</a> &middot; <a href="duck/make-your-own-duck.md" download>Make your own duck (kit)</a> &middot; <a href="duck/duck-template.png" download>duck-template.png</a></dd>
+      <dt>Access</dt><dd>Anyone. The wall is now a frozen snapshot: no joining, no editing.</dd>
+      <dt>Ask</dt><dd>Nobody needs to. New ducks are self-serve with the kit.</dd>
+    </dl>
+    <p>The get-to-know-you activity that started all of this. Twenty survey questions, a model writes an image prompt from the answers, an image model renders you as a duck in the Great Court, and every duck lands on the wall with a short bio. The app that ran it is retired. The wall stays as it was on the day the app came down.</p>
+    <p>Want a duck? The kit is the whole workflow in one file: paste it into Claude or ChatGPT, answer the questions, take the prompt it gives you to an image tool with the template attached, and generate at 3:2. Ten minutes.</p>
+  </div>
+</details>
+</div></section>
+
+<section class="tier"><div class="tier__head"><h2>Who to ask</h2><p>One table. Who holds what while Sean is away.</p></div>
+<div class="who" data-hue="green"><table>
+      <thead><tr><th>For</th><th>Ask</th></tr></thead>
+      <tbody>
+        <tr><td>Anything on Azure: ATLAS, the Touchstone app, deploys, app settings, the Power Automate flows</td><td>Michael Lin</td></tr>
+        <tr><td>Anything AoL: the register, statuses, rubrics, coverage, the sweep evidence</td><td>The whole LD team; Chelsea Jarvis holds the curriculum uplift job</td></tr>
+        <tr><td>NotABot</td><td>Andy Sankey</td></tr>
+        <tr><td>Course profiles site and repo</td><td>Michael Lin; errors to learningdesign@business.uq.edu.au</td></tr>
+        <tr><td>The HTML standard, the skills, Drop, the bookmarklets, this page</td><td>Michael Lin, or fix it and push</td></tr>
+        <tr><td>Question of the week</td><td>Whoever did the last one</td></tr>
+        <tr><td>Ducks</td><td>The kit above</td></tr>
+      </tbody>
+    </table></div></section>
+</main>
+
+<footer class="foot">
+  <p>Made by Sean for the UQ Business School learning design team, September 2026. Not an official UQ page, on purpose. Questions to <a href="mailto:learningdesign@business.uq.edu.au">learningdesign@business.uq.edu.au</a>.</p>
+</footer>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement, KEY='nas-theme';
+  var saved=null; try{saved=localStorage.getItem(KEY);}catch(e){}
+  var theme=saved||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'neon':'pastel');
+  function apply(t){root.setAttribute('data-theme',t);document.querySelectorAll('.switch button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.set===t));});}
+  apply(theme);
+  document.querySelectorAll('.switch button').forEach(function(b){b.addEventListener('click',function(){apply(b.dataset.set);try{localStorage.setItem(KEY,b.dataset.set);}catch(e){}});});
+  document.querySelectorAll('.copy').forEach(function(box){
+    var btn=box.querySelector('.copy__btn'), pre=box.querySelector('.copy__text'); if(!btn||!pre)return;
+    btn.addEventListener('click',function(){
+      var done=function(){var t=btn.textContent;btn.textContent='Copied';setTimeout(function(){btn.textContent=t;},1600);};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(pre.textContent).then(done,function(){fallback();});}else{fallback();}
+      function fallback(){var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand('copy');done();}catch(e){}s.removeAllRanges();}
+    });
+  });
+  function openHash(){var id=location.hash.slice(1);if(!id)return;var d=document.getElementById(id);if(d&&d.tagName==='DETAILS'){d.open=true;d.scrollIntoView();}}
+  window.addEventListener('hashchange',openHash);openHash();
+})();
+</script>
+</body>
+</html>
