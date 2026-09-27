@@ -2254,116 +2254,187 @@ function renderAolDashboard($root, aol, taxonomy, courses) {
 
   const coursesByCode = {};
   for (const c of courses) coursesByCode[c.course_code] = c;
+  const programs = (taxonomy && taxonomy.programs) || {};
+  const courseProgs = (taxonomy && taxonomy.course_programs) || {};
 
-  const parts = [];
-  parts.push(`<h1>Assurance of Learning Dashboard</h1>`);
-
-  // Summary stats across all semesters
+  // Flatten every entry once, carrying its semester and its subsections
+  // ("BBusMan: Core", "MBus: Human Resource Management") from the taxonomy.
   const allEntries = [];
   for (const [sem, data] of Object.entries(aol.semesters)) {
     for (const e of (data.entries || [])) {
-      allEntries.push({ ...e, semester_code: sem, semester_label: data.label });
+      const groups = (courseProgs[e.course_code] || []).map(r => ({
+        program: r.program, role: r.role || "Other", level: r.level || (programs[r.program] || {}).level || "",
+      }));
+      allEntries.push({ ...e, semester_code: sem, semester_label: data.label || sem, groups, levels: uniqueSorted(groups.map(g => g.level)) });
     }
   }
 
-  const statusCounts = {};
-  const gaCounts = {};
-  const uniqueCourses = new Set();
-  for (const e of allEntries) {
-    statusCounts[e.status] = (statusCounts[e.status] || 0) + 1;
-    gaCounts[e.ga] = (gaCounts[e.ga] || 0) + 1;
-    uniqueCourses.add(e.course_code);
-  }
+  const programKeys = Object.keys(programs).filter(k => k !== "Elective").sort((a, b) => {
+    const la = programs[a].level || "", lb = programs[b].level || "";
+    return la.localeCompare(lb) || a.localeCompare(b);
+  });
+  const semesters = Object.entries(aol.semesters).sort(([a], [b]) => b.localeCompare(a));
+  const gas = ["GA1", "GA2", "GA3", "GA4", "GA5", "GA6"];
+  const gaNames = aol._metadata?.graduate_attributes || {};
+  const state = { program: "", group: "", level: "", ga: "", status: "", semester: "", q: "" };
 
-  parts.push(`
-    <div class="stat-bar">
-      <div class="stat"><b>${allEntries.length}</b><span>AoL entries</span></div>
-      <div class="stat"><b>${uniqueCourses.size}</b><span>courses with AoL</span></div>
-      <div class="stat"><b>${Object.keys(aol.semesters).length}</b><span>semester${Object.keys(aol.semesters).length === 1 ? '' : 's'}</span></div>
+  const opt = (v, label) => `<option value="${escapeHtml(v)}">${escapeHtml(label)}</option>`;
+  $root.innerHTML = `
+    <h1>Assurance of Learning Dashboard</h1>
+    <div class="sec-filters" id="aol-filters">
+      <label>Program <select id="aol-program">${opt("", "All programs")}${programKeys.map(k => opt(k, `${k} · ${programs[k].name || k}`)).join("")}${opt("_none", "No program mapping")}</select></label>
+      <label>Subsection <select id="aol-group" disabled>${opt("", "All subsections")}</select></label>
+      <label>Level <select id="aol-level">${opt("", "UG and PG")}${opt("UG", "Undergraduate")}${opt("PG", "Postgraduate")}</select></label>
+      <label>GA <select id="aol-ga">${opt("", "All GAs")}${gas.map(g => opt(g, gaNames[g] ? `${g} · ${gaNames[g]}` : g)).join("")}</select></label>
+      <label>Status <select id="aol-status">${opt("", "All statuses")}${Object.keys(AOL_STATUS).map(k => opt(k, AOL_STATUS[k].label)).join("")}</select></label>
+      <label>Semester <select id="aol-semester">${opt("", "All semesters")}${semesters.map(([sem, d]) => opt(sem, d.label || sem)).join("")}</select></label>
+      <label>Find <input id="aol-q" type="search" placeholder="Code, title or assessment"></label>
+      <button type="button" class="btn-link" id="aol-reset">Reset</button>
     </div>
-  `);
+    <div id="aol-body"></div>
+  `;
+  const $program = $root.querySelector("#aol-program");
+  const $group = $root.querySelector("#aol-group");
+  const $body = $root.querySelector("#aol-body");
 
-  // Status summary cards
-  const statusOrder = Object.keys(AOL_STATUS);
-  const statusCards = statusOrder.map(s => {
-    const info = AOL_STATUS[s] || {};
-    const count = statusCounts[s] || 0;
-    return `<div class="aol-stat-card ${info.cls || ''}"><div class="aol-stat-icon">${aolStatusIcon(s, "28px") || uqIcon("question", { size: "28px" })}</div><div class="aol-stat-count">${count}</div><div class="aol-stat-label">${escapeHtml(info.label || s)}</div></div>`;
-  }).join("");
-  parts.push(`<div class="aol-status-summary">${statusCards}</div>`);
-
-  // Per-semester sections
-  for (const [sem, data] of Object.entries(aol.semesters).sort(([a],[b]) => b.localeCompare(a))) {
-    const entries = data.entries || [];
-    if (!entries.length) continue;
-
-    // Group by programme (via taxonomy)
-    const byProg = {};
-    const noProg = [];
-    for (const e of entries) {
-      const progRoles = taxonomy && taxonomy.course_programs ? (taxonomy.course_programs[e.course_code] || []) : [];
-      if (progRoles.length) {
-        for (const r of progRoles) {
-          byProg[r.program] = byProg[r.program] || [];
-          byProg[r.program].push(e);
-        }
-      } else {
-        noProg.push(e);
-      }
-    }
-
-    parts.push(`<h2>${escapeHtml(data.label || sem)}</h2>`);
-
-    // GA coverage heatmap for this semester
-    const gaNames = aol._metadata?.graduate_attributes || {};
-    const gas = ["GA1", "GA2", "GA3", "GA4", "GA5", "GA6"];
-    const semGaCounts = {};
-    for (const e of entries) {
-      semGaCounts[e.ga] = (semGaCounts[e.ga] || 0) + 1;
-    }
-    const gaHeatRow = gas.map(g => {
-      const n = semGaCounts[g] || 0;
-      const label = gaNames[g] || g;
-      const intensity = n === 0 ? "aol-heat-0" : n <= 2 ? "aol-heat-1" : n <= 4 ? "aol-heat-2" : "aol-heat-3";
-      return `<td class="aol-heat ${intensity}" title="${escapeHtml(label)}: ${n} course${n === 1 ? '' : 's'}">${g}<br><b>${n}</b></td>`;
-    }).join("");
-    parts.push(`
-      <div class="card">
-        <h3 style="margin-top:0">GA Coverage</h3>
-        <table class="aol-heatmap"><tr>${gaHeatRow}</tr></table>
-      </div>
-    `);
-
-    // Full entry table for this semester
-    const rows = entries.map(e => {
-      const info = AOL_STATUS[e.status] || {};
-      const c = coursesByCode[e.course_code];
-      const courseLink = c ? `<a href="course.html?file=${encodeURIComponent(c.file)}">${escapeHtml(e.course_code)}</a>` : escapeHtml(e.course_code);
-      const progRoles = taxonomy && taxonomy.course_programs ? (taxonomy.course_programs[e.course_code] || []) : [];
-      const progChips = progRoles.slice(0, 2).map(r => `<span class="chip">${escapeHtml(r.program)}</span>`).join(" ");
-      return `<tr>
-        <td class="code">${courseLink}</td>
-        <td>${c ? escapeHtml(c.course_title || '') : '<span class="muted">—</span>'}</td>
-        <td>${aolGaChip(e.ga)}</td>
-        <td>${escapeHtml(e.assessment_title)}</td>
-        <td><span class="aol-chip ${info.cls || ''}">${aolStatusIcon(e.status)} ${escapeHtml(info.label || e.status)}</span></td>
-        <td>${e.rubric_url ? `<a href="${escapeHtml(e.rubric_url)}" target="_blank" rel="noopener">Rubric ↗</a>` : ''}</td>
-        <td>${progChips}</td>
-      </tr>`;
-    }).join("");
-
-    parts.push(`
-      <div class="card">
-        <h3 style="margin-top:0">All AoL Entries</h3>
-        <table class="assessment aol-table">
-          <thead><tr><th>Code</th><th>Title</th><th>GA</th><th>Assessment</th><th>Status</th><th>Rubric</th><th>Programs</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
-    `);
+  function fillGroups() {
+    const prog = state.program;
+    const roles = prog && prog !== "_none"
+      ? uniqueSorted(allEntries.flatMap(e => e.groups.filter(g => g.program === prog).map(g => g.role)))
+      : [];
+    $group.innerHTML = opt("", "All subsections") + roles.map(r => opt(r, r)).join("");
+    $group.disabled = !roles.length;
+    if (!roles.includes(state.group)) state.group = "";
+    $group.value = state.group;
   }
 
-  $root.innerHTML = parts.join("");
+  function filtered() {
+    const q = state.q.trim().toLowerCase();
+    return allEntries.filter(e => {
+      if (state.program === "_none") { if (e.groups.length) return false; }
+      else if (state.program && !e.groups.some(g => g.program === state.program && (!state.group || g.role === state.group))) return false;
+      if (state.level && !e.levels.includes(state.level)) return false;
+      if (state.ga && e.ga !== state.ga) return false;
+      if (state.status && e.status !== state.status) return false;
+      if (state.semester && e.semester_code !== state.semester) return false;
+      if (q) {
+        const c = coursesByCode[e.course_code];
+        const hay = `${e.course_code} ${c ? c.course_title || "" : ""} ${e.assessment_title || ""}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+  }
+
+  function draw() {
+    const entries = filtered();
+    const parts = [];
+    const statusCounts = {};
+    const uniqueCourses = new Set();
+    const semsShown = new Set();
+    for (const e of entries) {
+      statusCounts[e.status] = (statusCounts[e.status] || 0) + 1;
+      uniqueCourses.add(e.course_code);
+      semsShown.add(e.semester_code);
+    }
+
+    parts.push(`
+      <div class="stat-bar">
+        <div class="stat"><b>${entries.length}</b><span>AoL entr${entries.length === 1 ? "y" : "ies"}</span></div>
+        <div class="stat"><b>${uniqueCourses.size}</b><span>course${uniqueCourses.size === 1 ? "" : "s"} with AoL</span></div>
+        <div class="stat"><b>${semsShown.size}</b><span>semester${semsShown.size === 1 ? "" : "s"}</span></div>
+        ${entries.length !== allEntries.length ? `<div class="stat"><span>of ${allEntries.length} in the register</span></div>` : ""}
+      </div>
+    `);
+
+    // Status summary cards; clicking one filters to that status
+    const statusCards = Object.keys(AOL_STATUS).map(s => {
+      const info = AOL_STATUS[s] || {};
+      const count = statusCounts[s] || 0;
+      return `<button type="button" class="aol-stat-card ${info.cls || ''}${state.status === s ? " active" : ""}" data-aol-status="${s}" title="Show only ${escapeHtml(info.label || s)}"><div class="aol-stat-icon">${aolStatusIcon(s, "28px") || uqIcon("question", { size: "28px" })}</div><div class="aol-stat-count">${count}</div><div class="aol-stat-label">${escapeHtml(info.label || s)}</div></button>`;
+    }).join("");
+    parts.push(`<div class="aol-status-summary">${statusCards}</div>`);
+
+    if (!entries.length) {
+      parts.push(`<div class="card"><p class="muted">No AoL entries match this filter.</p></div>`);
+    }
+
+    // Per-semester sections
+    for (const [sem, data] of semesters) {
+      const semEntries = entries.filter(e => e.semester_code === sem);
+      if (!semEntries.length) continue;
+
+      parts.push(`<h2>${escapeHtml(data.label || sem)}</h2>`);
+
+      const semGaCounts = {};
+      for (const e of semEntries) semGaCounts[e.ga] = (semGaCounts[e.ga] || 0) + 1;
+      const gaHeatRow = gas.map(g => {
+        const n = semGaCounts[g] || 0;
+        const label = gaNames[g] || g;
+        const intensity = n === 0 ? "aol-heat-0" : n <= 2 ? "aol-heat-1" : n <= 4 ? "aol-heat-2" : "aol-heat-3";
+        return `<td class="aol-heat ${intensity}" title="${escapeHtml(label)}: ${n} entr${n === 1 ? 'y' : 'ies'}">${g}<br><b>${n}</b></td>`;
+      }).join("");
+      parts.push(`
+        <div class="card">
+          <h3 style="margin-top:0">GA Coverage</h3>
+          <table class="aol-heatmap"><tr>${gaHeatRow}</tr></table>
+        </div>
+      `);
+
+      const rows = semEntries.map(e => {
+        const info = AOL_STATUS[e.status] || {};
+        const c = coursesByCode[e.course_code];
+        const courseLink = c ? `<a href="course.html?file=${encodeURIComponent(c.file)}">${escapeHtml(e.course_code)}</a>` : escapeHtml(e.course_code);
+        const progChips = e.groups.slice(0, 3).map(g => `<span class="chip" title="${escapeHtml((programs[g.program] || {}).name || g.program)}">${escapeHtml(g.program)}: ${escapeHtml(g.role)}</span>`).join(" ")
+          + (e.groups.length > 3 ? ` <span class="muted small">+${e.groups.length - 3}</span>` : "");
+        return `<tr>
+          <td class="code">${courseLink}</td>
+          <td>${c ? escapeHtml(c.course_title || '') : '<span class="muted">not in the profiles feed</span>'}</td>
+          <td>${aolGaChip(e.ga)}</td>
+          <td>${escapeHtml(e.assessment_title)}</td>
+          <td><span class="aol-chip ${info.cls || ''}">${aolStatusIcon(e.status)} ${escapeHtml(info.label || e.status)}</span></td>
+          <td>${e.rubric_url ? `<a href="${escapeHtml(e.rubric_url)}" target="_blank" rel="noopener">Rubric ↗</a>` : ''}</td>
+          <td>${progChips}</td>
+        </tr>`;
+      }).join("");
+
+      parts.push(`
+        <div class="card">
+          <h3 style="margin-top:0">AoL Entries (${semEntries.length})</h3>
+          <table class="assessment aol-table">
+            <thead><tr><th>Code</th><th>Title</th><th>GA</th><th>Assessment</th><th>Status</th><th>Rubric</th><th>Subsections</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `);
+    }
+
+    $body.innerHTML = parts.join("");
+    $body.querySelectorAll("[data-aol-status]").forEach(el => el.addEventListener("click", () => {
+      state.status = state.status === el.dataset.aolStatus ? "" : el.dataset.aolStatus;
+      $root.querySelector("#aol-status").value = state.status;
+      draw();
+    }));
+  }
+
+  $program.addEventListener("change", () => { state.program = $program.value; fillGroups(); draw(); });
+  $group.addEventListener("change", () => { state.group = $group.value; draw(); });
+  for (const [id, key] of [["aol-level", "level"], ["aol-ga", "ga"], ["aol-status", "status"], ["aol-semester", "semester"]]) {
+    $root.querySelector("#" + id).addEventListener("change", e => { state[key] = e.target.value; draw(); });
+  }
+  let qTimer = null;
+  $root.querySelector("#aol-q").addEventListener("input", e => {
+    clearTimeout(qTimer); qTimer = setTimeout(() => { state.q = e.target.value; draw(); }, 150);
+  });
+  $root.querySelector("#aol-reset").addEventListener("click", () => {
+    Object.assign(state, { program: "", group: "", level: "", ga: "", status: "", semester: "", q: "" });
+    $root.querySelectorAll("#aol-filters select").forEach(s => { s.value = ""; });
+    $root.querySelector("#aol-q").value = "";
+    fillGroups(); draw();
+  });
+
+  fillGroups();
+  draw();
 }
 
 // =========================================================================

@@ -705,6 +705,9 @@ table.assessment .lo-list { white-space: normal; }
   text-align: center;
 }
 .aol-stat-icon { font-size: 24px; margin-bottom: 4px; }
+button.aol-stat-card { font: inherit; border: 2px solid transparent; cursor: pointer; color: inherit; }
+button.aol-stat-card:hover { border-color: var(--uq-purple); }
+button.aol-stat-card.active { border-color: var(--uq-purple); box-shadow: var(--shadow-lg); }
 .aol-stat-count { font-size: 28px; font-weight: 700; color: var(--ink); }
 .aol-stat-label { font-size: 12px; color: var(--ink-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
